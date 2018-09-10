@@ -5,28 +5,62 @@ import Item from "./Item";
 import ItemDescription from "./ItemDescription";
 import Town from "./Town";
 
-const styledGrid = {
-    display: "inline-block",
-    border: "1px solid pink",
-    width: "30px",
-    height: "30px",
-};
+const widthRightPanel = 300;
+const heightHeader = 100;
+const heightBottomPanel = 150;
+// const gridHeight = 20;
+// const gridWidth = 20;
+const gridLength = 20;
+const gridDimension = Math.floor((window.innerHeight - 250) / gridLength);
+const widthLeft = window.innerWidth - gridLength*gridDimension - gridLength * 2 - widthRightPanel;
+const heightLeft = gridLength*gridDimension;
+// const gridDimension = 30;
 
-const styledMap = {
-    border: "1px solid grey",
-    width: "512px",
-    height: "480px",
+const styledGrid = {
+    border: "1px solid pink",
+    width: `${gridDimension}px`,
+    height: `${gridDimension}px`,
     display: "inline-block",
     float: "left",
 };
 
+const styledRow = {
+    width: `${gridDimension * gridLength + gridLength * 2}px`,
+    height: `${gridDimension}px`,
+    display: "inline-block",
+    float: "left",
+};
+
+const styledHeader = {
+    borderBottom: "1px solid black",
+    width: "100%",
+    height: `${heightHeader}px`,
+};
+
+const styledMap = {
+    border: "1px solid grey",
+    width: `${gridDimension * gridLength + gridLength * 2}px`,
+    height: `${gridDimension * gridLength}px`,
+    display: "inline-block",
+    float: "left",
+};
+
+const styledBottomPanel = {
+    position: "absolute",
+    bottom: "0px",
+    left: "0px",
+    borderTop: "1px solid black",
+    width: `${window.innerWidth - widthRightPanel}px`,
+    height: `${heightBottomPanel}px`,
+};
+
 const styledRightPanel = {
-    position: 'absolute',
-    top: '0px',
-    right: '0px',
+    position: "absolute",
+    top: `${heightHeader}px`,
+    right: "0px",
     borderLeft: "1px solid black",
-    width: "300px",
-    height: "100%",
+    width: `${widthRightPanel}px`,
+    height: `${window.innerHeight - heightHeader}px`,
 };
 
 const styledCharPanel = {
@@ -47,8 +81,8 @@ const styledChatPanel = {
 
 const styledMapSide = {
     border: "1px solid brown",
-    width: "512px",
-    height: "480px",
+    width: `${widthLeft/2 - 3}px`,
+    height: `${heightLeft/2 - 1}px`,
     display: "inline-block",
     float: "left",
     textAlign: "left",
@@ -114,32 +148,6 @@ class App extends Component {
         });
     };
 
-    createGrid = positionX => {
-        const table = [];
-
-        for (let i = 0; i < 16; i++) {
-            table.push(
-                <div style={styledGrid}>
-                    {towns.map(town => {
-                        if (
-                            positionX === town.positionX &&
-                            i === town.positionY
-                        ) {
-                            return (
-                                <Town
-                                    {...town}
-                                    showMerchantList={this.showMerchantList}
-                                />
-                            );
-                        }
-                        return null;
-                    })}
-                </div>,
-            );
-        }
-        return table;
-    };
-
     showMerchantList = list => {
         this.setState(state => ({
             ...state,
@@ -164,24 +172,42 @@ class App extends Component {
         }));
     };
 
-    createTable = () => {
+    createGrid = positionX => {
         const table = [];
-        for (let i = 0; i < 16; i++) {
+
+        for (let i = 0; i < gridLength; i++) {
             table.push(
-                <div
-                    style={{
-                        width: "512px",
-                        height: "30px",
-                    }}
-                >
-                    {this.createGrid(i)}
+                <div style={styledGrid}>
+                    {towns.map(town => {
+                        if (
+                            positionX === town.positionX &&
+                            i === town.positionY
+                        ) {
+                            return (
+                                <Town
+                                    {...town}
+                                    showMerchantList={this.showMerchantList}
+                                />
+                            );
+                        }
+                        return null;
+                    })}
                 </div>,
             );
         }
         return table;
     };
 
+    createTable = () => {
+        const table = [];
+        for (let i = 0; i < gridLength; i++) {
+            table.push(<div style={styledRow}>{this.createGrid(i)}</div>);
+        }
+        return table;
+    };
+
     render() {
+        console.log(`${heightLeft/2 - 4}px`);
         const {
             isItemShowed,
             itemsList,
@@ -192,8 +218,11 @@ class App extends Component {
         } = this.state;
         return (
             <div className="App">
+                <div style={styledHeader}>Header</div>
                 <div style={styledMap}>{this.createTable()}</div>
-                {isMerchantsShowed && (<div style={styledMapSide}>Liste des quêtes</div>)}
+                {isMerchantsShowed && (
+                    <div style={styledMapSide}>Liste des quêtes</div>
+                )}
                 {isMerchantsShowed && (
                     <div style={styledMapSide}>
                         Liste des marchands
@@ -217,6 +246,7 @@ class App extends Component {
                     <div style={styledItemsPanel}>Items/Or</div>
                     <div style={styledChatPanel}>Chat</div>
                 </div>
+                <div style={styledBottomPanel}>Cameras</div>
             </div>
         );
     }

@@ -5,10 +5,12 @@ import ReactTooltip from "react-tooltip";
 const styledItem = {
     display: "inline-block",
     cursor: "pointer",
+    width: "100%",
+    height: "100%",
 };
 const styledIcon = {
-    width: "30px",
-    height: "30px",
+    width: "100%",
+    height: "100%",
 };
 
 class Town extends Component {
