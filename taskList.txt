@@ -1,0 +1,36 @@
+Tâches à faire :
+
+Trouver des illus pour chaque zone du site
+Trouver des illus pour chaque type de terrain pour la carte
+
+Remplir le Header avec la partie Carte, Bestiaire et Historique rencontre
+Remplir les zones Quêtes (Tableau de primes), Vendeurs, Objets et Description d'objet par un vrai design
+Remplir la zone de personnage avec les bonnes infos
+Remplir la zone des objets détenus par le perso avec de bonnes infos
+Faire un interface de chat correcte
+Faire une interface pour les webcams
+Gérer le brouillard de guerre (GM)
+
+Ajouter un bouton achat sur la description des objets (seulement si on clique depuis la boutique)
+Gérer les achats d'objets / Force du personnage / Or du personnage
+
+Ajouter la fonctionnalité de lancer des dés dans le chat (/dx)
+Lancer de dé caché (pour le GM)
+Discuter dans le chat (Input)
+Discuter en privé dans le chat (/pseudo ou /gm)
+
+Lancer des musiques
+Attribuer du butin gratuitement (GM)
+Retirer des HP
+Générer des événenements aléatoires
+
+Ajouter un système de compte
+Ajouter un formulaire pour la création de personnage
+Gérer le système par histoire (Sélection d'histoire -> chargement de carte, choix du personnage)
+Forcer la mise à jour de carte pour tous le monde
+
+Gérer la webcam/Micro/Audio
+Gérer les Websockets pour la mise à jour du site pour tous les joueurs de l'histoire
+
+Mettre en ligne le site
+Insérer les données
