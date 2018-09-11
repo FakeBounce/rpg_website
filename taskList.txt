@@ -10,6 +10,8 @@ Remplir la zone des objets détenus par le perso avec de bonnes infos
 Faire un interface de chat correcte
 Faire une interface pour les webcams
 Gérer le brouillard de guerre (GM)
+Ajouter des directions sur la carte
+Ajouter un zoom sur la carte
 
 Ajouter un bouton achat sur la description des objets (seulement si on clique depuis la boutique)
 Gérer les achats d'objets / Force du personnage / Or du personnage
@@ -34,3 +36,6 @@ Gérer les Websockets pour la mise à jour du site pour tous les joueurs de l'hi
 
 Mettre en ligne le site
 Insérer les données
+
+
+BDD : https://rpgwebsite-8a535.firebaseio.com/

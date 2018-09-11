@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import firebase from "firebase";
 import "./App.css";
 import Merchant from "./Merchant";
 import Item from "./Item";
@@ -12,9 +13,17 @@ const heightBottomPanel = 150;
 // const gridWidth = 20;
 const gridLength = 20;
 const gridDimension = Math.floor((window.innerHeight - 250) / gridLength);
-const widthLeft = window.innerWidth - gridLength*gridDimension - gridLength * 2 - widthRightPanel;
-const heightLeft = gridLength*gridDimension;
+const widthLeft =
+    window.innerWidth -
+    gridLength * gridDimension -
+    gridLength * 2 -
+    widthRightPanel;
+const heightLeft = gridLength * gridDimension;
 // const gridDimension = 30;
+
+const styledSignOut = {
+    float: "right",
+};
 
 const styledGrid = {
     border: "1px solid pink",
@@ -81,8 +90,8 @@ const styledChatPanel = {
 
 const styledMapSide = {
     border: "1px solid brown",
-    width: `${widthLeft/2 - 3}px`,
-    height: `${heightLeft/2 - 1}px`,
+    width: `${widthLeft / 2 - 3}px`,
+    height: `${heightLeft / 2 - 1}px`,
     display: "inline-block",
     float: "left",
     textAlign: "left",
@@ -123,12 +132,105 @@ const towns = [
 
 class App extends Component {
     state = {
+        isAuth: true,
+        errorMessage: "",
         isItemShowed: false,
         itemsList: [],
         isItemDescriptionShowed: false,
         itemToDescribe: {},
         isMerchantsShowed: false,
         merchantsList: [],
+        email: "",
+        password: "",
+        isAdmin: true,
+    };
+
+    componentDidMount() {}
+
+    onChange = (name, value) => {
+        const obj = {};
+        obj[name] = value;
+        this.setState(state => ({
+            ...state,
+            ...obj,
+        }));
+    };
+
+    signIn = () => {
+        const { email, password } = this.state;
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(() => {
+                this.setState(state => ({
+                    ...state,
+                    isAuth: true,
+                }));
+            })
+            .catch(error => {
+                // Handle Errors here.
+                this.setState(
+                    state => ({
+                        ...state,
+                        errorMessage: error.message,
+                    }),
+                    () => {
+                        setTimeout(() => {
+                            this.setState(state => ({
+                                ...state,
+                                errorMessage: "",
+                            }));
+                        }, 5000);
+                    },
+                );
+            });
+    };
+
+    signUp = () => {
+        const { email, password } = this.state;
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                this.setState(state => ({
+                    ...state,
+                    isAuth: true,
+                }));
+            })
+            .catch(error => {
+                // Handle Errors here.
+                this.setState(
+                    state => ({
+                        ...state,
+                        errorMessage: error.message,
+                    }),
+                    () => {
+                        setTimeout(() => {
+                            this.setState(state => ({
+                                ...state,
+                                errorMessage: "",
+                            }));
+                        }, 5000);
+                    },
+                );
+            });
+    };
+
+    signOut = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(() => {
+                // Sign-out successful.
+                this.setState(state => ({
+                    ...state,
+                    isAuth: false,
+                }));
+            })
+            .catch(error => {
+                // An error happened.
+                console.log("error", error);
+            });
     };
 
     getMerchantsFromTown = merchants => {
@@ -207,7 +309,6 @@ class App extends Component {
     };
 
     render() {
-        console.log(`${heightLeft/2 - 4}px`);
         const {
             isItemShowed,
             itemsList,
@@ -215,38 +316,87 @@ class App extends Component {
             itemToDescribe,
             isMerchantsShowed,
             merchantsList,
+            isAuth,
+            errorMessage,
+            email,
+            password,
+            isAdmin,
         } = this.state;
         return (
             <div className="App">
-                <div style={styledHeader}>Header</div>
-                <div style={styledMap}>{this.createTable()}</div>
-                {isMerchantsShowed && (
-                    <div style={styledMapSide}>Liste des quêtes</div>
-                )}
-                {isMerchantsShowed && (
-                    <div style={styledMapSide}>
-                        Liste des marchands
-                        {this.getMerchantsFromTown(merchantsList)}
+                {!isAuth && (
+                    <div>
+                        <input
+                            type="text"
+                            name="email"
+                            value={email}
+                            onChange={e => {
+                                this.onChange(e.target.name, e.target.value);
+                            }}
+                        />
+                        <input
+                            type="password"
+                            name="password"
+                            value={password}
+                            onChange={e => {
+                                this.onChange(e.target.name, e.target.value);
+                            }}
+                        />
+                        <button onClick={this.signIn}>Sign In</button>
+                        <button onClick={this.signUp}>Sign Up</button>
+
+                        {errorMessage !== "" && <div>{errorMessage}</div>}
                     </div>
                 )}
-                {isItemShowed && (
-                    <div style={styledMapSide}>
-                        Liste des objets
-                        {this.getItemsFromMerchant(itemsList)}
+                {isAuth && (
+                    <div>
+                        <div style={styledHeader}>
+                            Header
+                            <button
+                                style={styledSignOut}
+                                onClick={this.signOut}
+                            >
+                                Sign Out
+                            </button>
+                        </div>
+                        <div style={styledMap}>{this.createTable()}</div>
+                        {!isAdmin && (
+                            <div>
+                                {isMerchantsShowed && (
+                                    <div style={styledMapSide}>
+                                        Liste des quêtes
+                                    </div>
+                                )}
+                                {isMerchantsShowed && (
+                                    <div style={styledMapSide}>
+                                        Liste des marchands
+                                        {this.getMerchantsFromTown(
+                                            merchantsList,
+                                        )}
+                                    </div>
+                                )}
+                                {isItemShowed && (
+                                    <div style={styledMapSide}>
+                                        Liste des objets
+                                        {this.getItemsFromMerchant(itemsList)}
+                                    </div>
+                                )}
+                                {isItemDescriptionShowed && (
+                                    <div style={styledMapSide}>
+                                        Description
+                                        <ItemDescription {...itemToDescribe} />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        <div style={styledRightPanel}>
+                            <div style={styledCharPanel}>Personnage</div>
+                            <div style={styledItemsPanel}>Items/Or</div>
+                            <div style={styledChatPanel}>Chat</div>
+                        </div>
+                        <div style={styledBottomPanel}>Cameras</div>
                     </div>
                 )}
-                {isItemDescriptionShowed && (
-                    <div style={styledMapSide}>
-                        Description
-                        <ItemDescription {...itemToDescribe} />
-                    </div>
-                )}
-                <div style={styledRightPanel}>
-                    <div style={styledCharPanel}>Personnage</div>
-                    <div style={styledItemsPanel}>Items/Or</div>
-                    <div style={styledChatPanel}>Chat</div>
-                </div>
-                <div style={styledBottomPanel}>Cameras</div>
             </div>
         );
     }
