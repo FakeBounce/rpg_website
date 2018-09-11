@@ -25,6 +25,26 @@ const styledSignOut = {
     float: "right",
 };
 
+const styledBoxHeader = {
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
+};
+
+const styledMapButtons = {
+    border: "1px solid blue",
+    width: `${gridDimension * 3 + 3}px`,
+    height: `${gridDimension}px`,
+    display: "inline-block",
+    float: "left",
+};
+
+const styledGridContent = {
+    width: `${gridDimension}px`,
+    height: `${gridDimension}px`,
+};
+
 const styledGrid = {
     border: "1px solid pink",
     width: `${gridDimension}px`,
@@ -127,6 +147,21 @@ const towns = [
         positionY: 6,
         icon: "big_town",
         merchants: merchantList,
+    },
+];
+
+const gridTypes = [
+    {
+        name: "Fog",
+        background: "black",
+    },
+    {
+        name: "Ocean",
+        background: "blue",
+    },
+    {
+        name: "Forest",
+        icon: "forest.png",
     },
 ];
 
@@ -250,6 +285,39 @@ class App extends Component {
         });
     };
 
+    getGridTypes = grids => {
+        return grids.map(gridType => {
+            if(gridType.background)
+            {
+                return (
+                    <div
+                        style={{
+                            ...styledGrid,
+                            border: "none",
+                            borderLeft: "1px solid black",
+                            backgroundColor: gridType.background,
+                        }}
+                    />
+                );
+            }
+            else if(gridType.icon)
+            {
+                return (
+                    <div
+                        style={{
+                            ...styledGrid,
+                            border: "none",
+                            borderLeft: "1px solid black",
+                            backgroundImage:  `url(${gridType.icon})`,
+                            backgroundSize: 'cover',
+                        }}
+                    />
+                );
+            }
+            return null;
+        });
+    };
+
     showMerchantList = list => {
         this.setState(state => ({
             ...state,
@@ -351,7 +419,7 @@ class App extends Component {
                 {isAuth && (
                     <div>
                         <div style={styledHeader}>
-                            Header
+                            <div style={styledBoxHeader}>Header</div>
                             <button
                                 style={styledSignOut}
                                 onClick={this.signOut}
@@ -360,16 +428,30 @@ class App extends Component {
                             </button>
                         </div>
                         <div style={styledMap}>{this.createTable()}</div>
+                        {isAdmin && (
+                            <div style={styledMapSide}>
+                                <div style={styledBoxHeader}>
+                                    Modifier la carte
+                                </div>
+                                <div style={styledMapButtons}>
+                                    {this.getGridTypes(gridTypes)}
+                                </div>
+                            </div>
+                        )}
                         {!isAdmin && (
                             <div>
                                 {isMerchantsShowed && (
                                     <div style={styledMapSide}>
-                                        Liste des quêtes
+                                        <div style={styledBoxHeader}>
+                                            Liste des quêtes
+                                        </div>
                                     </div>
                                 )}
                                 {isMerchantsShowed && (
                                     <div style={styledMapSide}>
-                                        Liste des marchands
+                                        <div style={styledBoxHeader}>
+                                            Liste des marchands
+                                        </div>
                                         {this.getMerchantsFromTown(
                                             merchantsList,
                                         )}
@@ -377,24 +459,37 @@ class App extends Component {
                                 )}
                                 {isItemShowed && (
                                     <div style={styledMapSide}>
-                                        Liste des objets
+                                        <div style={styledBoxHeader}>
+                                            {" "}
+                                            Liste des objets{" "}
+                                        </div>
                                         {this.getItemsFromMerchant(itemsList)}
                                     </div>
                                 )}
                                 {isItemDescriptionShowed && (
                                     <div style={styledMapSide}>
-                                        Description
+                                        <div style={styledBoxHeader}>
+                                            Description
+                                        </div>
                                         <ItemDescription {...itemToDescribe} />
                                     </div>
                                 )}
                             </div>
                         )}
                         <div style={styledRightPanel}>
-                            <div style={styledCharPanel}>Personnage</div>
-                            <div style={styledItemsPanel}>Items/Or</div>
-                            <div style={styledChatPanel}>Chat</div>
+                            <div style={styledCharPanel}>
+                                <div style={styledBoxHeader}>Personnage</div>
+                            </div>
+                            <div style={styledItemsPanel}>
+                                <div style={styledBoxHeader}>Items/Or</div>
+                            </div>
+                            <div style={styledChatPanel}>
+                                <div style={styledBoxHeader}>Chat</div>
+                            </div>
                         </div>
-                        <div style={styledBottomPanel}>Cameras</div>
+                        <div style={styledBottomPanel}>
+                            <div style={styledBoxHeader}>Cameras</div>
+                        </div>
                     </div>
                 )}
             </div>
