@@ -5,6 +5,9 @@ import Merchant from "./Merchant";
 import Item from "./Item";
 import ItemDescription from "./ItemDescription";
 import Town from "./Town";
+import CharacterSelection from "./CharacterSelection";
+import CharacterCreation from "./CharacterCreation";
+import FileUploader from "./FileUploader";
 
 const widthRightPanel = 300;
 const heightHeader = 100;
@@ -176,6 +179,9 @@ class App extends Component {
         pseudo: "",
         pseudoInput: "",
         uid: "",
+        character: 0,
+        characters: {},
+        characterCreation: false,
     };
 
     componentDidMount() {}
@@ -195,25 +201,18 @@ class App extends Component {
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then(() => {
-                this.setState(
-                    state => ({
-                        ...state,
-                        uid: firebase.auth().currentUser.uid,
-                    }),
-                    () => {
-                        firebase
-                            .database()
-                            .ref("/users/" + this.state.uid)
-                            .once("value")
-                            .then(snapshot => {
-                                this.setState(state => ({
-                                    ...state,
-                                    ...snapshot.val(),
-                                    isAuth: true,
-                                }));
-                            });
-                    },
-                );
+                firebase
+                    .database()
+                    .ref("/users/" + firebase.auth().currentUser.uid)
+                    .once("value")
+                    .then(snapshot => {
+                        this.setState(state => ({
+                            ...state,
+                            ...snapshot.val(),
+                            isAuth: true,
+                            uid: firebase.auth().currentUser.uid,
+                        }));
+                    });
             })
             .catch(error => {
                 // Handle Errors here.
@@ -315,6 +314,50 @@ class App extends Component {
                 />
             );
         });
+    };
+
+    getCharacters = () => {
+        return Object.keys(this.state.characters).map(char => {
+            console.log("char", char);
+            return (
+                <CharacterSelection
+                    {...this.state.characters[char]}
+                    chooseCharacter={this.chooseCharacter}
+                />
+            );
+        });
+    };
+
+    chooseCharacter = id => {
+        this.setState(state => ({
+            ...state,
+            character: id,
+        }));
+    };
+
+    goToCharacterForm = () => {
+        this.setState(state => ({
+            ...state,
+            characterCreation: true,
+        }));
+    };
+
+    createCharacter = character => {
+        const charTab = this.state.characters;
+        charTab[character.id] = character;
+        this.setState(
+            state => ({
+                ...state,
+                characters: charTab,
+                character: character.id,
+            }),
+            () => {
+                firebase
+                    .database()
+                    .ref("users/" + this.state.uid + "/characters")
+                    .set({ ...this.state.characters });
+            },
+        );
     };
 
     getGridTypes = grids => {
@@ -420,6 +463,10 @@ class App extends Component {
             isAdmin,
             pseudo,
             pseudoInput,
+            character,
+            characters,
+            uid,
+            characterCreation,
         } = this.state;
         return (
             <div className="App">
@@ -428,6 +475,7 @@ class App extends Component {
                         <input
                             type="text"
                             name="email"
+                            placeholder="email"
                             value={email}
                             onChange={e => {
                                 this.onChange(e.target.name, e.target.value);
@@ -436,6 +484,7 @@ class App extends Component {
                         <input
                             type="password"
                             name="password"
+                            placeholder="password"
                             value={password}
                             onChange={e => {
                                 this.onChange(e.target.name, e.target.value);
@@ -454,6 +503,7 @@ class App extends Component {
                             <input
                                 type="text"
                                 name="pseudoInput"
+                                placeholder="pseudo"
                                 value={pseudoInput}
                                 onChange={e => {
                                     this.onChange(
@@ -467,8 +517,43 @@ class App extends Component {
                             </button>
                         </div>
                     )}
+
                 {isAuth &&
-                    pseudo !== "" && (
+                    pseudo !== "" &&
+                    character === 0 &&
+                    !characterCreation && (
+                        <div>
+                            <div style={styledBoxHeader}>
+                                Choisir un personnage
+                            </div>
+                            <button onClick={this.goToCharacterForm}>
+                                Créer un personnage
+                            </button>
+                            {this.getCharacters()}
+                        </div>
+                    )}
+
+                {isAuth &&
+                    pseudo !== "" &&
+                    character === 0 &&
+                    characterCreation && (
+                        <div>
+                            <div style={styledBoxHeader}>
+                                Créer un personnage
+                            </div>
+                            <CharacterCreation
+                                uid={uid}
+                                id={
+                                    Object.keys(this.state.characters).length +
+                                    1
+                                }
+                                createCharacter={this.createCharacter}
+                            />
+                        </div>
+                    )}
+                {isAuth &&
+                    pseudo !== "" &&
+                    character > 0 && (
                         <div>
                             <div style={styledHeader}>
                                 <div style={styledBoxHeader}>Header</div>
