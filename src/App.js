@@ -40,11 +40,6 @@ const styledMapButtons = {
     float: "left",
 };
 
-const styledGridContent = {
-    width: `${gridDimension}px`,
-    height: `${gridDimension}px`,
-};
-
 const styledGrid = {
     border: "1px solid pink",
     width: `${gridDimension}px`,
@@ -167,7 +162,7 @@ const gridTypes = [
 
 class App extends Component {
     state = {
-        isAuth: true,
+        isAuth: false,
         errorMessage: "",
         isItemShowed: false,
         itemsList: [],
@@ -177,7 +172,10 @@ class App extends Component {
         merchantsList: [],
         email: "",
         password: "",
-        isAdmin: true,
+        isAdmin: false,
+        pseudo: "",
+        pseudoInput: "",
+        uid: "",
     };
 
     componentDidMount() {}
@@ -197,10 +195,25 @@ class App extends Component {
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then(() => {
-                this.setState(state => ({
-                    ...state,
-                    isAuth: true,
-                }));
+                this.setState(
+                    state => ({
+                        ...state,
+                        uid: firebase.auth().currentUser.uid,
+                    }),
+                    () => {
+                        firebase
+                            .database()
+                            .ref("/users/" + this.state.uid)
+                            .once("value")
+                            .then(snapshot => {
+                                this.setState(state => ({
+                                    ...state,
+                                    ...snapshot.val(),
+                                    isAuth: true,
+                                }));
+                            });
+                    },
+                );
             })
             .catch(error => {
                 // Handle Errors here.
@@ -227,6 +240,14 @@ class App extends Component {
             .auth()
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
+                firebase
+                    .database()
+                    .ref("users/" + this.state.uid)
+                    .set({
+                        email,
+                        photoUrl: firebase.auth().currentUser.photoURL,
+                        name: firebase.auth().currentUser.displayName,
+                    });
                 this.setState(state => ({
                     ...state,
                     isAuth: true,
@@ -268,6 +289,17 @@ class App extends Component {
             });
     };
 
+    choosePseudo = () => {
+        firebase
+            .database()
+            .ref("users/" + firebase.auth().currentUser.uid + "/pseudo")
+            .set(this.state.pseudoInput);
+        this.setState(state => ({
+            ...state,
+            pseudo: state.pseudoInput,
+        }));
+    };
+
     getMerchantsFromTown = merchants => {
         return merchants.map(item => {
             return <Merchant {...item} showItems={this.showItems} />;
@@ -287,8 +319,7 @@ class App extends Component {
 
     getGridTypes = grids => {
         return grids.map(gridType => {
-            if(gridType.background)
-            {
+            if (gridType.background) {
                 return (
                     <div
                         style={{
@@ -299,17 +330,15 @@ class App extends Component {
                         }}
                     />
                 );
-            }
-            else if(gridType.icon)
-            {
+            } else if (gridType.icon) {
                 return (
                     <div
                         style={{
                             ...styledGrid,
                             border: "none",
                             borderLeft: "1px solid black",
-                            backgroundImage:  `url(${gridType.icon})`,
-                            backgroundSize: 'cover',
+                            backgroundImage: `url(${gridType.icon})`,
+                            backgroundSize: "cover",
                         }}
                     />
                 );
@@ -389,6 +418,8 @@ class App extends Component {
             email,
             password,
             isAdmin,
+            pseudo,
+            pseudoInput,
         } = this.state;
         return (
             <div className="App">
@@ -416,82 +447,109 @@ class App extends Component {
                         {errorMessage !== "" && <div>{errorMessage}</div>}
                     </div>
                 )}
-                {isAuth && (
-                    <div>
-                        <div style={styledHeader}>
-                            <div style={styledBoxHeader}>Header</div>
-                            <button
-                                style={styledSignOut}
-                                onClick={this.signOut}
-                            >
-                                Sign Out
+
+                {isAuth &&
+                    pseudo === "" && (
+                        <div>
+                            <input
+                                type="text"
+                                name="pseudoInput"
+                                value={pseudoInput}
+                                onChange={e => {
+                                    this.onChange(
+                                        e.target.name,
+                                        e.target.value,
+                                    );
+                                }}
+                            />
+                            <button onClick={this.choosePseudo}>
+                                Choisir un pseudo
                             </button>
                         </div>
-                        <div style={styledMap}>{this.createTable()}</div>
-                        {isAdmin && (
-                            <div style={styledMapSide}>
-                                <div style={styledBoxHeader}>
-                                    Modifier la carte
+                    )}
+                {isAuth &&
+                    pseudo !== "" && (
+                        <div>
+                            <div style={styledHeader}>
+                                <div style={styledBoxHeader}>Header</div>
+                                <button
+                                    style={styledSignOut}
+                                    onClick={this.signOut}
+                                >
+                                    Sign Out
+                                </button>
+                            </div>
+                            <div style={styledMap}>{this.createTable()}</div>
+                            {isAdmin && (
+                                <div style={styledMapSide}>
+                                    <div style={styledBoxHeader}>
+                                        Modifier la carte
+                                    </div>
+                                    <div style={styledMapButtons}>
+                                        {this.getGridTypes(gridTypes)}
+                                    </div>
                                 </div>
-                                <div style={styledMapButtons}>
-                                    {this.getGridTypes(gridTypes)}
+                            )}
+                            {!isAdmin && (
+                                <div>
+                                    {isMerchantsShowed && (
+                                        <div style={styledMapSide}>
+                                            <div style={styledBoxHeader}>
+                                                Liste des quêtes
+                                            </div>
+                                        </div>
+                                    )}
+                                    {isMerchantsShowed && (
+                                        <div style={styledMapSide}>
+                                            <div style={styledBoxHeader}>
+                                                Liste des marchands
+                                            </div>
+                                            {this.getMerchantsFromTown(
+                                                merchantsList,
+                                            )}
+                                        </div>
+                                    )}
+                                    {isItemShowed && (
+                                        <div style={styledMapSide}>
+                                            <div style={styledBoxHeader}>
+                                                {" "}
+                                                Liste des objets{" "}
+                                            </div>
+                                            {this.getItemsFromMerchant(
+                                                itemsList,
+                                            )}
+                                        </div>
+                                    )}
+                                    {isItemDescriptionShowed && (
+                                        <div style={styledMapSide}>
+                                            <div style={styledBoxHeader}>
+                                                Description
+                                            </div>
+                                            <ItemDescription
+                                                {...itemToDescribe}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                            <div style={styledRightPanel}>
+                                <div style={styledCharPanel}>
+                                    <div style={styledBoxHeader}>
+                                        Personnage
+                                    </div>
+                                </div>
+                                <div style={styledItemsPanel}>
+                                    <div style={styledBoxHeader}>Items/Or</div>
+                                </div>
+                                <div style={styledChatPanel}>
+                                    <div style={styledBoxHeader}>Chat</div>
                                 </div>
                             </div>
-                        )}
-                        {!isAdmin && (
-                            <div>
-                                {isMerchantsShowed && (
-                                    <div style={styledMapSide}>
-                                        <div style={styledBoxHeader}>
-                                            Liste des quêtes
-                                        </div>
-                                    </div>
-                                )}
-                                {isMerchantsShowed && (
-                                    <div style={styledMapSide}>
-                                        <div style={styledBoxHeader}>
-                                            Liste des marchands
-                                        </div>
-                                        {this.getMerchantsFromTown(
-                                            merchantsList,
-                                        )}
-                                    </div>
-                                )}
-                                {isItemShowed && (
-                                    <div style={styledMapSide}>
-                                        <div style={styledBoxHeader}>
-                                            {" "}
-                                            Liste des objets{" "}
-                                        </div>
-                                        {this.getItemsFromMerchant(itemsList)}
-                                    </div>
-                                )}
-                                {isItemDescriptionShowed && (
-                                    <div style={styledMapSide}>
-                                        <div style={styledBoxHeader}>
-                                            Description
-                                        </div>
-                                        <ItemDescription {...itemToDescribe} />
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                        <div style={styledRightPanel}>
-                            <div style={styledCharPanel}>
-                                <div style={styledBoxHeader}>Personnage</div>
-                            </div>
-                            <div style={styledItemsPanel}>
-                                <div style={styledBoxHeader}>Items/Or</div>
-                            </div>
-                            <div style={styledChatPanel}>
-                                <div style={styledBoxHeader}>Chat</div>
+                            <div style={styledBottomPanel}>
+                                <div style={styledBoxHeader}>Cameras</div>
                             </div>
                         </div>
-                        <div style={styledBottomPanel}>
-                            <div style={styledBoxHeader}>Cameras</div>
-                        </div>
-                    </div>
-                )}
+                    )}
             </div>
         );
     }
