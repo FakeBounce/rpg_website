@@ -1,13 +1,12 @@
-import React, { Component } from "react";
-import firebase from "firebase";
-import "./App.css";
-import Merchant from "./Merchant";
-import Item from "./Item";
-import ItemDescription from "./ItemDescription";
-import Town from "./Town";
-import CharacterSelection from "./CharacterSelection";
-import CharacterCreation from "./CharacterCreation";
-import FileUploader from "./FileUploader";
+import React, { Component } from 'react';
+import firebase from 'firebase';
+import './App.css';
+import Merchant from './Merchant';
+import Item from './Item';
+import ItemDescription from './ItemDescription';
+import Town from './Town';
+import CharacterSelection from './CharacterSelection';
+import CharacterCreation from './CharacterCreation';
 
 const widthRightPanel = 300;
 const heightHeader = 100;
@@ -25,163 +24,164 @@ const heightLeft = gridLength * gridDimension;
 // const gridDimension = 30;
 
 const styledSignOut = {
-    float: "right",
+    float: 'right',
 };
 
 const styledBoxHeader = {
-    width: "100%",
-    height: "20px",
-    marginBottom: "5px",
-    textAlign: "center",
+    width: '100%',
+    height: '20px',
+    marginBottom: '5px',
+    textAlign: 'center',
 };
 
 const styledMapButtons = {
-    border: "1px solid blue",
+    border: '1px solid blue',
     width: `${gridDimension * 3 + 3}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledGrid = {
-    border: "1px solid pink",
+    border: '1px solid pink',
     width: `${gridDimension}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledRow = {
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledHeader = {
-    borderBottom: "1px solid black",
-    width: "100%",
+    borderBottom: '1px solid black',
+    width: '100%',
     height: `${heightHeader}px`,
 };
 
 const styledMap = {
-    border: "1px solid grey",
+    border: '1px solid grey',
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension * gridLength}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledBottomPanel = {
-    position: "absolute",
-    bottom: "0px",
-    left: "0px",
-    borderTop: "1px solid black",
+    position: 'absolute',
+    bottom: '0px',
+    left: '0px',
+    borderTop: '1px solid black',
     width: `${window.innerWidth - widthRightPanel}px`,
     height: `${heightBottomPanel}px`,
 };
 
 const styledRightPanel = {
-    position: "absolute",
+    position: 'absolute',
     top: `${heightHeader}px`,
-    right: "0px",
-    borderLeft: "1px solid black",
+    right: '0px',
+    borderLeft: '1px solid black',
     width: `${widthRightPanel}px`,
     height: `${window.innerHeight - heightHeader}px`,
 };
 
 const styledCharPanel = {
-    borderBottom: "1px solid black",
-    width: "100%",
-    height: "33%",
+    borderBottom: '1px solid black',
+    width: '100%',
+    height: '33%',
 };
 
 const styledItemsPanel = {
-    borderBottom: "1px solid black",
-    width: "100%",
-    height: "33%",
+    borderBottom: '1px solid black',
+    width: '100%',
+    height: '33%',
 };
 
 const styledChatPanel = {
-    width: "100%",
+    width: '100%',
 };
 
 const styledMapSide = {
-    border: "1px solid brown",
+    border: '1px solid brown',
     width: `${widthLeft / 2 - 3}px`,
     height: `${heightLeft / 2 - 1}px`,
-    display: "inline-block",
-    float: "left",
-    textAlign: "left",
+    display: 'inline-block',
+    float: 'left',
+    textAlign: 'left',
 };
 
 const items = [
     {
-        name: "tamere",
-        description: "moncul",
-        icon: "potion_1",
+        name: 'tamere',
+        description: 'moncul',
+        icon: 'potion_1',
     },
     {
-        name: "tamere",
-        description: "mes fesses",
-        icon: "potion_1",
+        name: 'tamere',
+        description: 'mes fesses',
+        icon: 'potion_1',
     },
 ];
 
 const merchantList = [
     {
-        name: "alchimiste Debron",
-        description: "Homme sénil",
-        shop_description: "Vieux bâtiment",
-        icon: "alchimist",
+        name: 'alchimiste Debron',
+        description: 'Homme sénil',
+        shop_description: 'Vieux bâtiment',
+        icon: 'alchimist',
         items,
     },
 ];
 
 const towns = [
     {
-        name: "Hameau de mes fesses",
+        name: 'Hameau de mes fesses',
         positionX: 6,
         positionY: 6,
-        icon: "big_town",
+        icon: 'big_town',
         merchants: merchantList,
     },
 ];
 
 const gridTypes = [
     {
-        name: "Fog",
-        background: "black",
+        name: 'Fog',
+        background: 'black',
     },
     {
-        name: "Ocean",
-        background: "blue",
+        name: 'Ocean',
+        background: 'blue',
     },
     {
-        name: "Forest",
-        icon: "forest.png",
+        name: 'Forest',
+        icon: 'forest.png',
     },
 ];
 
 class App extends Component {
     state = {
         isAuth: false,
-        errorMessage: "",
+        errorMessage: '',
         isItemShowed: false,
         itemsList: [],
         isItemDescriptionShowed: false,
         itemToDescribe: {},
         isMerchantsShowed: false,
         merchantsList: [],
-        email: "",
-        password: "",
+        email: '',
+        password: '',
         isAdmin: false,
-        pseudo: "",
-        pseudoInput: "",
-        uid: "",
+        pseudo: '',
+        pseudoInput: '',
+        uid: '',
         character: 0,
         characters: {},
         characterCreation: false,
+        map: '',
     };
 
     componentDidMount() {}
@@ -203,15 +203,20 @@ class App extends Component {
             .then(() => {
                 firebase
                     .database()
-                    .ref("/users/" + firebase.auth().currentUser.uid)
-                    .once("value")
+                    .ref('/users/' + firebase.auth().currentUser.uid)
+                    .once('value')
                     .then(snapshot => {
-                        this.setState(state => ({
-                            ...state,
-                            ...snapshot.val(),
-                            isAuth: true,
-                            uid: firebase.auth().currentUser.uid,
-                        }));
+                        this.setState(
+                            state => ({
+                                ...state,
+                                ...snapshot.val(),
+                                isAuth: true,
+                                uid: firebase.auth().currentUser.uid,
+                            }),
+                            () => {
+                                this.createTable();
+                            },
+                        );
                     });
             })
             .catch(error => {
@@ -225,7 +230,7 @@ class App extends Component {
                         setTimeout(() => {
                             this.setState(state => ({
                                 ...state,
-                                errorMessage: "",
+                                errorMessage: '',
                             }));
                         }, 5000);
                     },
@@ -241,7 +246,7 @@ class App extends Component {
             .then(() => {
                 firebase
                     .database()
-                    .ref("users/" + this.state.uid)
+                    .ref('users/' + this.state.uid)
                     .set({
                         email,
                         photoUrl: firebase.auth().currentUser.photoURL,
@@ -263,7 +268,7 @@ class App extends Component {
                         setTimeout(() => {
                             this.setState(state => ({
                                 ...state,
-                                errorMessage: "",
+                                errorMessage: '',
                             }));
                         }, 5000);
                     },
@@ -284,14 +289,14 @@ class App extends Component {
             })
             .catch(error => {
                 // An error happened.
-                console.log("error", error);
+                console.log('error', error);
             });
     };
 
     choosePseudo = () => {
         firebase
             .database()
-            .ref("users/" + firebase.auth().currentUser.uid + "/pseudo")
+            .ref('users/' + firebase.auth().currentUser.uid + '/pseudo')
             .set(this.state.pseudoInput);
         this.setState(state => ({
             ...state,
@@ -318,7 +323,7 @@ class App extends Component {
 
     getCharacters = () => {
         return Object.keys(this.state.characters).map(char => {
-            console.log("char", char);
+            console.log('char', char);
             return (
                 <CharacterSelection
                     {...this.state.characters[char]}
@@ -354,7 +359,7 @@ class App extends Component {
             () => {
                 firebase
                     .database()
-                    .ref("users/" + this.state.uid + "/characters")
+                    .ref('users/' + this.state.uid + '/characters')
                     .set({ ...this.state.characters });
             },
         );
@@ -367,8 +372,8 @@ class App extends Component {
                     <div
                         style={{
                             ...styledGrid,
-                            border: "none",
-                            borderLeft: "1px solid black",
+                            border: 'none',
+                            borderLeft: '1px solid black',
                             backgroundColor: gridType.background,
                         }}
                     />
@@ -378,10 +383,10 @@ class App extends Component {
                     <div
                         style={{
                             ...styledGrid,
-                            border: "none",
-                            borderLeft: "1px solid black",
+                            border: 'none',
+                            borderLeft: '1px solid black',
                             backgroundImage: `url(${gridType.icon})`,
-                            backgroundSize: "cover",
+                            backgroundSize: 'cover',
                         }}
                     />
                 );
@@ -414,16 +419,16 @@ class App extends Component {
         }));
     };
 
-    createGrid = positionX => {
+    createGrid = (positionX, rowToRender) => {
         const table = [];
 
-        for (let i = 0; i < gridLength; i++) {
+        rowToRender.map((row, index) => {
             table.push(
                 <div style={styledGrid}>
                     {towns.map(town => {
                         if (
                             positionX === town.positionX &&
-                            i === town.positionY
+                            index === town.positionY
                         ) {
                             return (
                                 <Town
@@ -436,15 +441,32 @@ class App extends Component {
                     })}
                 </div>,
             );
-        }
+        });
+        console.log('table row', table);
         return table;
     };
 
     createTable = () => {
+        firebase
+            .database()
+            .ref('/maps/dravos')
+            .on('value', snapshot => {
+                // console.log('snapshot', snapshot.val());
+                this.setState(state => ({
+                    ...state,
+                    map: this.generateTable(snapshot.val()),
+                }));
+            });
+    };
+
+    generateTable = mapToRender => {
         const table = [];
-        for (let i = 0; i < gridLength; i++) {
-            table.push(<div style={styledRow}>{this.createGrid(i)}</div>);
-        }
+        mapToRender.map((row, index) => {
+            table.push(
+                <div style={styledRow}>{this.createGrid(index, row)}</div>,
+            );
+        });
+        console.log('table table', table);
         return table;
     };
 
@@ -467,24 +489,25 @@ class App extends Component {
             characters,
             uid,
             characterCreation,
+            map,
         } = this.state;
         return (
-            <div className="App">
+            <div className='App'>
                 {!isAuth && (
                     <div>
                         <input
-                            type="text"
-                            name="email"
-                            placeholder="email"
+                            type='text'
+                            name='email'
+                            placeholder='email'
                             value={email}
                             onChange={e => {
                                 this.onChange(e.target.name, e.target.value);
                             }}
                         />
                         <input
-                            type="password"
-                            name="password"
-                            placeholder="password"
+                            type='password'
+                            name='password'
+                            placeholder='password'
                             value={password}
                             onChange={e => {
                                 this.onChange(e.target.name, e.target.value);
@@ -493,17 +516,17 @@ class App extends Component {
                         <button onClick={this.signIn}>Sign In</button>
                         <button onClick={this.signUp}>Sign Up</button>
 
-                        {errorMessage !== "" && <div>{errorMessage}</div>}
+                        {errorMessage !== '' && <div>{errorMessage}</div>}
                     </div>
                 )}
 
                 {isAuth &&
-                    pseudo === "" && (
+                    pseudo === '' && (
                         <div>
                             <input
-                                type="text"
-                                name="pseudoInput"
-                                placeholder="pseudo"
+                                type='text'
+                                name='pseudoInput'
+                                placeholder='pseudo'
                                 value={pseudoInput}
                                 onChange={e => {
                                     this.onChange(
@@ -519,7 +542,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     character === 0 &&
                     !characterCreation && (
                         <div>
@@ -534,7 +557,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     character === 0 &&
                     characterCreation && (
                         <div>
@@ -552,7 +575,7 @@ class App extends Component {
                         </div>
                     )}
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     character > 0 && (
                         <div>
                             <div style={styledHeader}>
@@ -564,7 +587,7 @@ class App extends Component {
                                     Sign Out
                                 </button>
                             </div>
-                            <div style={styledMap}>{this.createTable()}</div>
+                            <div style={styledMap}>{map}</div>
                             {isAdmin && (
                                 <div style={styledMapSide}>
                                     <div style={styledBoxHeader}>
@@ -597,8 +620,7 @@ class App extends Component {
                                     {isItemShowed && (
                                         <div style={styledMapSide}>
                                             <div style={styledBoxHeader}>
-                                                {" "}
-                                                Liste des objets{" "}
+                                                Liste des objets
                                             </div>
                                             {this.getItemsFromMerchant(
                                                 itemsList,
