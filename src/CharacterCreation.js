@@ -154,6 +154,200 @@ class CharacterCreation extends Component {
         }));
     };
 
+    onChangeSkills = (index, value) => {
+        const obj = this.state.skills;
+        obj[index] = value;
+        this.setState(state => ({
+            ...state,
+            skills: obj,
+            error: "",
+        }));
+    };
+
+    addSkill = () => {
+        if (this.state.items.length === 6) {
+            this.triggerError({
+                message: "Can't have more than 6 skills",
+            });
+        } else {
+            const obj = this.state.skills;
+            obj.push("");
+            this.setState(state => ({
+                ...state,
+                skills: obj,
+                error: "",
+            }));
+        }
+    };
+
+    removeSkill = index => {
+        const { skills } = this.state;
+        if (skills.length === 1) {
+            this.setState(state => ({
+                ...state,
+                skills: [],
+                error: "",
+            }));
+        } else {
+            const obj = [];
+            for (let i = 0; i < skills.length; i++) {
+                if (i !== index) {
+                    obj.push(skills[i]);
+                }
+            }
+
+            this.setState(state => ({
+                ...state,
+                skills: obj,
+                error: "",
+            }));
+        }
+    };
+
+    onChangeAbilities = (index, value) => {
+        const obj = this.state.abilities;
+        obj[index] = value;
+        this.setState(state => ({
+            ...state,
+            abilities: obj,
+            error: "",
+        }));
+    };
+
+    addAbility = () => {
+        const obj = this.state.abilities;
+        obj.push("");
+        this.setState(state => ({
+            ...state,
+            abilities: obj,
+            error: "",
+        }));
+    };
+
+    removeAbility = index => {
+        const { abilities } = this.state;
+        if (abilities.length === 1) {
+            this.setState(state => ({
+                ...state,
+                abilities: [],
+                error: "",
+            }));
+        } else {
+            const obj = [];
+            for (let i = 0; i < abilities.length; i++) {
+                if (i !== index) {
+                    obj.push(abilities[i]);
+                }
+            }
+
+            this.setState(state => ({
+                ...state,
+                abilities: obj,
+                error: "",
+            }));
+        }
+    };
+
+    onChangeItems = (index, value) => {
+        const obj = this.state.items;
+        obj[index] = value;
+        this.setState(state => ({
+            ...state,
+            items: obj,
+            error: "",
+        }));
+    };
+
+    addItem = () => {
+        if (this.state.items.length === 10) {
+            this.triggerError({
+                message: "Can't have more than 10 items",
+            });
+        } else {
+            const obj = this.state.items;
+            obj.push("");
+            this.setState(state => ({
+                ...state,
+                items: obj,
+                error: "",
+            }));
+        }
+    };
+
+    removeItem = index => {
+        const { items } = this.state;
+        if (items.length === 1) {
+            this.setState(state => ({
+                ...state,
+                items: [],
+                error: "",
+            }));
+        } else {
+            const obj = [];
+            for (let i = 0; i < items.length; i++) {
+                if (i !== index) {
+                    obj.push(items[i]);
+                }
+            }
+
+            this.setState(state => ({
+                ...state,
+                items: obj,
+                error: "",
+            }));
+        }
+    };
+
+    onChangeWeapons = (index, value) => {
+        const obj = this.state.weapons;
+        obj[index] = value;
+        this.setState(state => ({
+            ...state,
+            weapons: obj,
+            error: "",
+        }));
+    };
+
+    addWeapon = () => {
+        if (this.state.weapons.length === 2) {
+            this.triggerError({
+                message: "Can't have more than 2 weapons equipped",
+            });
+        } else {
+            const obj = this.state.weapons;
+            obj.push("");
+            this.setState(state => ({
+                ...state,
+                weapons: obj,
+                error: "",
+            }));
+        }
+    };
+
+    removeWeapon = index => {
+        const { weapons } = this.state;
+        if (weapons.length === 1) {
+            this.setState(state => ({
+                ...state,
+                weapons: [],
+                error: "",
+            }));
+        } else {
+            const obj = [];
+            for (let i = 0; i < weapons.length; i++) {
+                if (i !== index) {
+                    obj.push(weapons[i]);
+                }
+            }
+
+            this.setState(state => ({
+                ...state,
+                weapons: obj,
+                error: "",
+            }));
+        }
+    };
+
     onDrop = picture => {
         const { uid, id } = this.props;
         let storageRef = firebase.storage().ref();
@@ -223,11 +417,20 @@ class CharacterCreation extends Component {
     };
 
     validateBeforeCreate = () => {
-        const { totalPointsleft, error, ...rest } = this.state;
+        const { totalPointsleft, error, name, icon, ...rest } = this.state;
         if (totalPointsleft < 0) {
             this.triggerError({ message: "Cannot exceed points limit !" });
+        } else if (name === "") {
+            this.triggerError({ message: "Name cannot be empty !!" });
+        } else if (icon === "") {
+            this.triggerError({ message: "Icon cannot be empty !" });
         } else {
-            this.props.createCharacter({...rest, id: this.props.id});
+            this.props.createCharacter({
+                ...rest,
+                name,
+                icon,
+                id: this.props.id,
+            });
         }
     };
 
@@ -374,6 +577,116 @@ class CharacterCreation extends Component {
                     }}
                 />
                 <div>Total points left : {totalPointsleft}</div>
+                <div>
+                    Skills :
+                    {skills.map((skill, index) => {
+                        return (
+                            <div key={`skill-${index}`}>
+                                <input
+                                    type="text"
+                                    placeholder={`Skill ${index +
+                                        1} + description if needed`}
+                                    value={skill}
+                                    onChange={e => {
+                                        this.onChangeSkills(
+                                            index,
+                                            e.target.value,
+                                        );
+                                    }}
+                                />
+                                <button onClick={() => this.removeSkill(index)}>
+                                    Remove this skill
+                                </button>
+                            </div>
+                        );
+                    })}
+                    {skills.length < 6 && (
+                        <button onClick={this.addSkill}>Add an skill</button>
+                    )}
+                </div>
+                <div>
+                    Weapons :
+                    {weapons.map((weapon, index) => {
+                        return (
+                            <div key={`weapon-${index}`}>
+                                <input
+                                    type="text"
+                                    placeholder={`Weapon ${index +
+                                        1} + description if needed`}
+                                    value={weapon}
+                                    onChange={e => {
+                                        this.onChangeWeapons(
+                                            index,
+                                            e.target.value,
+                                        );
+                                    }}
+                                />
+                                <button
+                                    onClick={() => this.removeWeapon(index)}
+                                >
+                                    Remove this weapon
+                                </button>
+                            </div>
+                        );
+                    })}
+                    {weapons.length < 2 && (
+                        <button onClick={this.addWeapon}>Add an weapon</button>
+                    )}
+                </div>
+                <div>
+                    Abilities :
+                    {abilities.map((ability, index) => {
+                        return (
+                            <div key={`ability-${index}`}>
+                                <input
+                                    type="text"
+                                    placeholder={`Ability ${index +
+                                        1} + description if needed`}
+                                    value={ability}
+                                    onChange={e => {
+                                        this.onChangeAbilities(
+                                            index,
+                                            e.target.value,
+                                        );
+                                    }}
+                                />
+                                <button
+                                    onClick={() => this.removeAbility(index)}
+                                >
+                                    Remove this ability
+                                </button>
+                            </div>
+                        );
+                    })}
+                    <button onClick={this.addAbility}>Add an ability</button>
+                </div>
+                <div>
+                    Items :
+                    {items.map((item, index) => {
+                        return (
+                            <div key={`item-${index}`}>
+                                <input
+                                    type="text"
+                                    placeholder={`Item ${index +
+                                        1} + description if needed`}
+                                    value={item}
+                                    onChange={e => {
+                                        this.onChangeItems(
+                                            index,
+                                            e.target.value,
+                                        );
+                                    }}
+                                />
+                                <button onClick={() => this.removeItem(index)}>
+                                    Remove this item
+                                </button>
+                            </div>
+                        );
+                    })}
+                    {items.length < 10 && (
+                        <button onClick={this.addItem}>Add an item</button>
+                    )}
+                </div>
                 <button onClick={this.validateBeforeCreate}>Validate</button>
                 {error}
             </div>
