@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import firebase from "firebase";
-import "./App.css";
-import Merchant from "./Merchant";
-import Item from "./Item";
-import ItemDescription from "./ItemDescription";
-import Town from "./Town";
-import CharacterSelection from "./CharacterSelection";
-import CharacterCreation from "./CharacterCreation";
+import React, { Component } from 'react';
+import firebase from 'firebase';
+import './App.css';
+import Merchant from './Merchant';
+import Item from './Item';
+import ItemDescription from './ItemDescription';
+import Town from './Town';
+import CharacterSelection from './CharacterSelection';
+import CharacterCreation from './CharacterCreation';
 
 const widthRightPanel = 300;
 const heightHeader = 100;
@@ -24,202 +24,203 @@ const heightLeft = gridLength * gridDimension;
 // const gridDimension = 30;
 
 const styledSignOut = {
-    float: "right",
+    float: 'right',
 };
 
 const styledBoxHeader = {
-    width: "100%",
-    height: "20px",
-    marginBottom: "5px",
-    textAlign: "center",
+    width: '100%',
+    height: '20px',
+    marginBottom: '5px',
+    textAlign: 'center',
 };
 
 const styledHistoric = {
-    width: "100%",
+    width: '100%',
     height: `${((window.innerHeight - heightHeader) * 33) / 100 - 25 - 20}px`,
-    float: "left",
-    display: "inline-block",
+    float: 'left',
+    display: 'inline-block',
 };
 
 const styledChatRow = {
-    width: "100%",
-    height: "20px",
-    float: "left",
-    display: "inline-block",
-    textAlign:'left',
+    width: '100%',
+    height: '20px',
+    float: 'left',
+    display: 'inline-block',
+    textAlign: 'left',
 };
 
 const styledChatBox = {
-    width: "100%",
-    height: "20px",
-    float: "left",
-    display: "inline-block",
+    width: '100%',
+    height: '20px',
+    float: 'left',
+    display: 'inline-block',
 };
 
 const styledChatInput = {
-    width: "88%",
-    height: "20px",
-    float: "left",
-    display: "inline-block",
+    width: '88%',
+    height: '20px',
+    float: 'left',
+    display: 'inline-block',
 };
 
 const styledChatButton = {
-    width: "10%",
-    height: "20px",
-    float: "left",
-    display: "inline-block",
+    width: '10%',
+    height: '20px',
+    float: 'left',
+    display: 'inline-block',
 };
 
 const styledMapButtons = {
-    border: "1px solid blue",
+    border: '1px solid blue',
     width: `${gridDimension * 3 + 3}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledGrid = {
-    border: "1px solid pink",
+    border: '1px solid pink',
     width: `${gridDimension}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledRow = {
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledHeader = {
-    borderBottom: "1px solid black",
-    width: "100%",
+    borderBottom: '1px solid black',
+    width: '100%',
     height: `${heightHeader}px`,
 };
 
 const styledMap = {
-    border: "1px solid grey",
+    border: '1px solid grey',
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension * gridLength}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledBottomPanel = {
-    position: "absolute",
-    bottom: "0px",
-    left: "0px",
-    borderTop: "1px solid black",
+    position: 'absolute',
+    bottom: '0px',
+    left: '0px',
+    borderTop: '1px solid black',
     width: `${window.innerWidth - widthRightPanel}px`,
     height: `${heightBottomPanel}px`,
 };
 
 const styledRightPanel = {
-    position: "absolute",
+    position: 'absolute',
     top: `${heightHeader}px`,
-    right: "0px",
-    borderLeft: "1px solid black",
+    right: '0px',
+    borderLeft: '1px solid black',
     width: `${widthRightPanel}px`,
     height: `${window.innerHeight - heightHeader}px`,
 };
 
 const styledCharPanel = {
-    borderBottom: "1px solid black",
-    width: "100%",
-    height: "33%",
+    borderBottom: '1px solid black',
+    width: '100%',
+    height: '33%',
 };
 
 const styledItemsPanel = {
-    borderBottom: "1px solid black",
-    width: "100%",
-    height: "33%",
+    borderBottom: '1px solid black',
+    width: '100%',
+    height: '33%',
 };
 
 const styledChatPanel = {
-    width: "100%",
+    width: '100%',
 };
 
 const styledMapSide = {
-    border: "1px solid brown",
+    border: '1px solid brown',
     width: `${widthLeft / 2 - 3}px`,
     height: `${heightLeft / 2 - 1}px`,
-    display: "inline-block",
-    float: "left",
-    textAlign: "left",
+    display: 'inline-block',
+    float: 'left',
+    textAlign: 'left',
 };
 
 const items = [
     {
-        name: "tamere",
-        description: "moncul",
-        icon: "potion_1",
+        name: 'tamere',
+        description: 'moncul',
+        icon: 'potion_1',
     },
     {
-        name: "tamere",
-        description: "mes fesses",
-        icon: "potion_1",
+        name: 'tamere',
+        description: 'mes fesses',
+        icon: 'potion_1',
     },
 ];
 
 const merchantList = [
     {
-        name: "alchimiste Debron",
-        description: "Homme sénil",
-        shop_description: "Vieux bâtiment",
-        icon: "alchimist",
+        name: 'alchimiste Debron',
+        description: 'Homme sénil',
+        shop_description: 'Vieux bâtiment',
+        icon: 'alchimist',
         items,
     },
 ];
 
 const towns = [
     {
-        name: "Hameau de mes fesses",
+        name: 'Hameau de mes fesses',
         positionX: 6,
         positionY: 6,
-        icon: "big_town",
+        icon: 'big_town',
         merchants: merchantList,
     },
 ];
 
 const gridTypes = [
     {
-        name: "Fog",
-        background: "black",
+        name: 'Fog',
+        background: 'black',
     },
     {
-        name: "Ocean",
-        background: "blue",
+        name: 'Ocean',
+        background: 'blue',
     },
     {
-        name: "Forest",
-        icon: "forest.png",
+        name: 'Forest',
+        icon: 'forest.png',
     },
 ];
 
 class App extends Component {
     state = {
         isAuth: false,
-        errorMessage: "",
+        errorMessage: '',
         isItemShowed: false,
         itemsList: [],
         isItemDescriptionShowed: false,
         itemToDescribe: {},
         isMerchantsShowed: false,
         merchantsList: [],
-        email: "",
-        password: "",
+        email: '',
+        password: '',
         isAdmin: false,
-        pseudo: "",
-        pseudoInput: "",
-        uid: "",
+        pseudo: '',
+        pseudoInput: '',
+        uid: '',
         character: 0,
         characters: {},
         characterCreation: false,
         map: [],
-        chatInput: "",
+        chatInput: '',
         chatHistory: [],
+        textureToApply: null,
     };
 
     componentDidMount() {}
@@ -241,8 +242,8 @@ class App extends Component {
             .then(() => {
                 firebase
                     .database()
-                    .ref("/users/" + firebase.auth().currentUser.uid)
-                    .once("value")
+                    .ref('/users/' + firebase.auth().currentUser.uid)
+                    .once('value')
                     .then(snapshot => {
                         this.setState(
                             state => ({
@@ -254,7 +255,7 @@ class App extends Component {
                             () => {
                                 this.createTable();
                                 this.createChat();
-                            },
+                            }
                         );
                     });
             })
@@ -272,7 +273,7 @@ class App extends Component {
             .then(() => {
                 firebase
                     .database()
-                    .ref("users/" + this.state.uid)
+                    .ref('users/' + this.state.uid)
                     .set({
                         email,
                         photoUrl: firebase.auth().currentUser.photoURL,
@@ -312,7 +313,7 @@ class App extends Component {
     choosePseudo = () => {
         firebase
             .database()
-            .ref("users/" + firebase.auth().currentUser.uid + "/pseudo")
+            .ref('users/' + firebase.auth().currentUser.uid + '/pseudo')
             .set(this.state.pseudoInput)
             .catch(error => {
                 this.triggerError(error);
@@ -385,13 +386,13 @@ class App extends Component {
             () => {
                 firebase
                     .database()
-                    .ref("users/" + this.state.uid + "/characters")
+                    .ref('users/' + this.state.uid + '/characters')
                     .set({ ...this.state.characters })
                     .catch(error => {
                         // Handle Errors here.
                         this.triggerError(error);
                     });
-            },
+            }
         );
     };
 
@@ -403,10 +404,11 @@ class App extends Component {
                         key={`gridType-${gridType.background}`}
                         style={{
                             ...styledGrid,
-                            border: "none",
-                            borderLeft: "1px solid black",
+                            border: 'none',
+                            borderLeft: '1px solid black',
                             backgroundColor: gridType.background,
                         }}
+                        onClick={() => this.loadTexture(gridType)}
                     />
                 );
             } else if (gridType.icon) {
@@ -415,16 +417,61 @@ class App extends Component {
                         key={`gridType-${gridType.icon}`}
                         style={{
                             ...styledGrid,
-                            border: "none",
-                            borderLeft: "1px solid black",
+                            border: 'none',
+                            borderLeft: '1px solid black',
                             backgroundImage: `url(${gridType.icon})`,
-                            backgroundSize: "cover",
+                            backgroundSize: 'cover',
                         }}
+                        onClick={() => this.loadTexture(gridType)}
                     />
                 );
             }
             return null;
         });
+    };
+
+    getGridSelected = grid => {
+        if (grid.background) {
+            return (
+                <div
+                    style={{
+                        ...styledGrid,
+                        border: 'none',
+                        borderLeft: '1px solid black',
+                        backgroundColor: grid.background,
+                    }}
+                    onClick={() => this.unloadTexture()}
+                />
+            );
+        } else if (grid.icon) {
+            return (
+                <div
+                    style={{
+                        ...styledGrid,
+                        border: 'none',
+                        borderLeft: '1px solid black',
+                        backgroundImage: `url(${grid.icon})`,
+                        backgroundSize: 'cover',
+                    }}
+                    onClick={() => this.unloadTexture()}
+                />
+            );
+        }
+        return null;
+    };
+
+    unloadTexture = () => {
+        this.setState(state => ({
+            ...state,
+            textureToApply: null,
+        }));
+    };
+
+    loadTexture = gridType => {
+        this.setState(state => ({
+            ...state,
+            textureToApply: gridType,
+        }));
     };
 
     showMerchantList = list => {
@@ -452,39 +499,93 @@ class App extends Component {
     };
 
     createGrid = (positionX, rowToRender) => {
+        const { isAdmin, textureToApply } = this.state;
         const table = [];
 
         rowToRender.map((row, index) => {
+            const tileStyle = row.background
+                ? {
+                      backgroundColor: row.background,
+                  }
+                : row.icon
+                    ? {
+                          backgroundImage: `url(${row.icon})`,
+                          backgroundSize: 'cover',
+                      }
+                    : {};
             table.push(
-                <div key={`row-${index}`} style={styledGrid}>
-                    {towns.map(town => {
-                        if (
-                            positionX === town.positionX &&
-                            index === town.positionY
-                        ) {
-                            return (
-                                <Town
-                                    key={`town-${town.positionX}-${
-                                        town.positionY
-                                    }`}
-                                    {...town}
-                                    showMerchantList={this.showMerchantList}
-                                />
-                            );
-                        }
-                        return null;
-                    })}
-                </div>,
+                isAdmin ? (
+                    <div
+                        key={`row-${index}`}
+                        style={{ ...styledGrid, ...tileStyle }}
+                        onClick={() => {
+                            if (textureToApply)
+                                this.setTexture(positionX, index);
+                        }}
+                    >
+                        {towns.map(town => {
+                            if (
+                                positionX === town.positionX &&
+                                index === town.positionY
+                            ) {
+                                return (
+                                    <Town
+                                        key={`town-${town.positionX}-${
+                                            town.positionY
+                                        }`}
+                                        {...town}
+                                        showMerchantList={this.showMerchantList}
+                                    />
+                                );
+                            }
+                            return null;
+                        })}
+                    </div>
+                ) : (
+                    <div
+                        key={`row-${index}`}
+                        style={{ ...styledGrid, ...tileStyle }}
+                    >
+                        {towns.map(town => {
+                            if (
+                                positionX === town.positionX &&
+                                index === town.positionY
+                            ) {
+                                return (
+                                    <Town
+                                        key={`town-${town.positionX}-${
+                                            town.positionY
+                                        }`}
+                                        {...town}
+                                        showMerchantList={this.showMerchantList}
+                                    />
+                                );
+                            }
+                            return null;
+                        })}
+                    </div>
+                )
             );
         });
         return table;
     };
 
+    setTexture = (x, y) => {
+        firebase
+            .database()
+            .ref('maps/dravos/' + x + '/' + y)
+            .set(this.state.textureToApply)
+            .catch(error => {
+                // Handle Errors here.
+                this.triggerError(error);
+            });
+    };
+
     createTable = () => {
         firebase
             .database()
-            .ref("/maps/dravos")
-            .on("value", snapshot => {
+            .ref('/maps/dravos')
+            .on('value', snapshot => {
                 // console.log('snapshot', snapshot.val());
                 this.setState(state => ({
                     ...state,
@@ -499,7 +600,7 @@ class App extends Component {
             table.push(
                 <div key={`table-row-${index}`} style={styledRow}>
                     {this.createGrid(index, row)}
-                </div>,
+                </div>
             );
         });
         return table;
@@ -510,8 +611,10 @@ class App extends Component {
         chatHistory.map((row, index) => {
             table.push(
                 <div key={`chat-row-${index}`} style={styledChatRow}>
-                    @{row.pseudo}:  {row.message}
-                </div>,
+                    {row.pseudo
+                        ? `@${row.pseudo}: ${row.message}`
+                        : row.message}
+                </div>
             );
         });
         return table;
@@ -520,10 +623,9 @@ class App extends Component {
     createChat = () => {
         firebase
             .database()
-            .ref("/chat")
-            .on("value", snapshot => {
-                if(snapshot.val() !== null)
-                {
+            .ref('/chat')
+            .on('value', snapshot => {
+                if (snapshot.val() !== null) {
                     this.setState(state => ({
                         ...state,
                         chatHistory: snapshot.val(),
@@ -533,18 +635,49 @@ class App extends Component {
     };
 
     talkInChat = () => {
-        const { chatInput, chatHistory, pseudo } = this.state;
+        const { chatInput, pseudo } = this.state;
+        let noMagicWord = true;
+        if (chatInput !== '') {
+            if (chatInput.length >= 3) {
+                if (chatInput[0] === '/') {
+                    if (chatInput[1] === 'd') {
+                        const splittedString = chatInput
+                            .toLowerCase()
+                            .split('/d')[1];
+                        const isnum = /^\d+$/.test(splittedString);
+                        if (isnum) {
+                            noMagicWord = false;
+                            this.sendChatInput({
+                                message: `@${pseudo} launched a D${splittedString}. Result : ${Math.floor(
+                                    Math.random() *
+                                        parseInt(splittedString, 10) +
+                                        1
+                                )}`,
+                            });
+                        }
+                    }
+                }
+            }
+
+            if (noMagicWord) {
+                this.sendChatInput({ message: chatInput, pseudo });
+            }
+        }
+    };
+
+    sendChatInput = input => {
+        const { chatHistory } = this.state;
         const nextChat = chatHistory;
-        nextChat.push({message:chatInput, pseudo});
+        nextChat.push(input);
         firebase
             .database()
-            .ref("chat/")
+            .ref('chat/')
             .set(nextChat)
             .then(() => {
                 this.setState(state => ({
                     ...state,
-                    error: "",
-                    chatInput: "",
+                    error: '',
+                    chatInput: '',
                 }));
             })
             .catch(error => {
@@ -563,10 +696,10 @@ class App extends Component {
                 setTimeout(() => {
                     this.setState(state => ({
                         ...state,
-                        error: "",
+                        error: '',
                     }));
                 }, 5000);
-            },
+            }
         );
     };
 
@@ -591,7 +724,10 @@ class App extends Component {
             map,
             chatInput,
             chatHistory,
+            textureToApply,
         } = this.state;
+
+        console.log('state', this.state);
         return (
             <div className="App">
                 {!isAuth && (
@@ -617,12 +753,12 @@ class App extends Component {
                         <button onClick={this.signIn}>Sign In</button>
                         <button onClick={this.signUp}>Sign Up</button>
 
-                        {errorMessage !== "" && <div>{errorMessage}</div>}
+                        {errorMessage !== '' && <div>{errorMessage}</div>}
                     </div>
                 )}
 
                 {isAuth &&
-                    pseudo === "" && (
+                    pseudo === '' && (
                         <div>
                             <input
                                 type="text"
@@ -632,7 +768,7 @@ class App extends Component {
                                 onChange={e => {
                                     this.onChange(
                                         e.target.name,
-                                        e.target.value,
+                                        e.target.value
                                     );
                                 }}
                             />
@@ -643,7 +779,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     character === 0 &&
                     !characterCreation && (
                         <div>
@@ -659,7 +795,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     character === 0 &&
                     characterCreation && (
                         <div>
@@ -677,7 +813,7 @@ class App extends Component {
                         </div>
                     )}
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     character > 0 && (
                         <div>
                             <div style={styledHeader}>
@@ -689,7 +825,9 @@ class App extends Component {
                                     Sign Out
                                 </button>
                             </div>
-                            <div style={styledMap}>{this.generateTable(map)}</div>
+                            <div style={styledMap}>
+                                {this.generateTable(map)}
+                            </div>
                             {isAdmin && (
                                 <div style={styledMapSide}>
                                     <div style={styledBoxHeader}>
@@ -697,6 +835,12 @@ class App extends Component {
                                     </div>
                                     <div style={styledMapButtons}>
                                         {this.getGridTypes(gridTypes)}
+                                    </div>
+                                    <div style={styledMapButtons}>
+                                        {textureToApply &&
+                                            this.getGridSelected(
+                                                textureToApply
+                                            )}
                                     </div>
                                 </div>
                             )}
@@ -715,7 +859,7 @@ class App extends Component {
                                                 Liste des marchands
                                             </div>
                                             {this.getMerchantsFromTown(
-                                                merchantsList,
+                                                merchantsList
                                             )}
                                         </div>
                                     )}
@@ -725,7 +869,7 @@ class App extends Component {
                                                 Liste des objets
                                             </div>
                                             {this.getItemsFromMerchant(
-                                                itemsList,
+                                                itemsList
                                             )}
                                         </div>
                                     )}
@@ -764,7 +908,7 @@ class App extends Component {
                                             onChange={e => {
                                                 this.onChange(
                                                     e.target.name,
-                                                    e.target.value,
+                                                    e.target.value
                                                 );
                                             }}
                                             style={styledChatInput}
