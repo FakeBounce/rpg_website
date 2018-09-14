@@ -7,6 +7,8 @@ import ItemDescription from './ItemDescription';
 import Town from './Town';
 import CharacterSelection from './CharacterSelection';
 import CharacterCreation from './CharacterCreation';
+import IsNotAuth from './IsNotAuth';
+import HasNoPseudo from "./HasNoPseudo";
 
 const widthRightPanel = 300;
 const heightHeader = 100;
@@ -727,55 +729,21 @@ class App extends Component {
             textureToApply,
         } = this.state;
 
-        console.log('state', this.state);
         return (
             <div className="App">
                 {!isAuth && (
-                    <div>
-                        <input
-                            type="text"
-                            name="email"
-                            placeholder="email"
-                            value={email}
-                            onChange={e => {
-                                this.onChange(e.target.name, e.target.value);
-                            }}
-                        />
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="password"
-                            value={password}
-                            onChange={e => {
-                                this.onChange(e.target.name, e.target.value);
-                            }}
-                        />
-                        <button onClick={this.signIn}>Sign In</button>
-                        <button onClick={this.signUp}>Sign Up</button>
-
-                        {errorMessage !== '' && <div>{errorMessage}</div>}
-                    </div>
+                    <IsNotAuth
+                        email={email}
+                        password={password}
+                        onChange={this.onChange}
+                        signIn={this.signIn}
+                        signUp={this.signUp}
+                    />
                 )}
 
                 {isAuth &&
                     pseudo === '' && (
-                        <div>
-                            <input
-                                type="text"
-                                name="pseudoInput"
-                                placeholder="pseudo"
-                                value={pseudoInput}
-                                onChange={e => {
-                                    this.onChange(
-                                        e.target.name,
-                                        e.target.value
-                                    );
-                                }}
-                            />
-                            <button onClick={this.choosePseudo}>
-                                Choisir un pseudo
-                            </button>
-                        </div>
+                        <HasNoPseudo pseudoInput={pseudoInput} onChange={this.onChange} choosePseudo={this.choosePseudo}/>
                     )}
 
                 {isAuth &&
