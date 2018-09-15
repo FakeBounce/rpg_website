@@ -1,9 +1,67 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import PropTypes from "prop-types";
+import firebase from "firebase";
 
 class IsNotAuth extends Component {
+    signIn = () => {
+        const { email, password, triggerError, doSetState, createTable, createChat } = this.props;
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(() => {
+                firebase
+                    .database()
+                    .ref("/users/" + firebase.auth().currentUser.uid)
+                    .once("value")
+                    .then(snapshot => {
+                        doSetState(
+                            {
+                                ...snapshot.val(),
+                                isAuth: true,
+                                uid: firebase.auth().currentUser.uid,
+                            },
+                            () => {
+                                createTable();
+                                createChat();
+                            },
+                        );
+                    });
+            })
+            .catch(error => {
+                // Handle Errors here.
+                triggerError(error);
+            });
+    };
+
+    signUp = () => {
+        const { email, password, doSetState, triggerError } = this.props;
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                firebase
+                    .database()
+                    .ref("users/" + this.state.uid)
+                    .set({
+                        email,
+                        photoUrl: firebase.auth().currentUser.photoURL,
+                        name: firebase.auth().currentUser.displayName,
+                    })
+                    .catch(error => {
+                        triggerError(error);
+                    });
+                doSetState({
+                    isAuth: true,
+                });
+            })
+            .catch(error => {
+                // Handle Errors here.
+                triggerError(error);
+            });
+    };
+
     render() {
-        const { email, password, onChange, signIn, signUp } = this.props;
+        const { email, password, onChange } = this.props;
 
         return (
             <div>
@@ -25,8 +83,8 @@ class IsNotAuth extends Component {
                         onChange(e.target.name, e.target.value);
                     }}
                 />
-                <button onClick={signIn}>Sign In</button>
-                <button onClick={signUp}>Sign Up</button>
+                <button onClick={this.signIn}>Sign In</button>
+                <button onClick={this.signUp}>Sign Up</button>
             </div>
         );
     }
@@ -36,8 +94,10 @@ IsNotAuth.propTypes = {
     email: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    signIn: PropTypes.func.isRequired,
-    signUp: PropTypes.func.isRequired,
+    doSetState: PropTypes.func.isRequired,
+    triggerError: PropTypes.func.isRequired,
+    createChat: PropTypes.func.isRequired,
+    createTable: PropTypes.func.isRequired,
 };
 
 export default IsNotAuth;

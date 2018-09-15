@@ -1,46 +1,102 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import "./App.css";
 
-const styledItem = {
-    display: "inline-block",
-    border: "1px solid green",
-    cursor: "pointer",
+import CharacterCreation from "./CharacterCreation";
+import PropTypes from "prop-types";
+import ChooseCharacter from "./ChooseCharacter";
+import firebase from "firebase";
+
+const styledBoxHeader = {
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
 };
-const styledIcon = {
-    width: "30px",
-    height: "30px",
-    float: "left",
-    display: "inline-block",
-};
-const styledText = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
-};
+
 class CharacterSelection extends Component {
-    render() {
-        const { icon, name, chooseCharacter, id } = this.props;
-        return (
-            <div
-                style={styledItem}
-                onClick={() => chooseCharacter(id)}
-            >
-                <img
-                    src={icon}
-                    alt={name}
-                    style={styledIcon}
+    getCharacters = () => {
+        const { characters } = this.props;
+        return Object.keys(characters).map(char => {
+            return (
+                <ChooseCharacter
+                    key={`char-${char.name}`}
+                    {...characters[char]}
+                    chooseCharacter={this.chooseCharacter}
                 />
-                <div style={styledText}>{name}</div>
-            </div>
+            );
+        });
+    };
+
+    chooseCharacter = id => {
+        this.props.doSetState({
+            character: id,
+        });
+    };
+
+    goToCharacterForm = () => {
+        this.props.doSetState({
+            characterCreation: true,
+        });
+    };
+
+    createCharacter = character => {
+        const { doSetState, characters, uid, triggerError } = this.props;
+        const charTab = characters;
+        charTab[character.id] = character;
+        doSetState(
+            {
+                characters: charTab,
+                character: character.id,
+            },
+            () => {
+                firebase
+                    .database()
+                    .ref("users/" + uid + "/characters")
+                    .set({ ...charTab })
+                    .catch(error => {
+                        // Handle Errors here.
+                        triggerError(error);
+                    });
+            },
         );
+    };
+
+    render() {
+        const { uid, characters, characterCreation, triggerError } = this.props;
+
+        if (characterCreation) {
+            return (
+                <div>
+                    <div style={styledBoxHeader}>Choisir un personnage</div>
+                    <button onClick={this.goToCharacterForm}>
+                        Créer un personnage
+                    </button>
+                    <div style={styledBoxHeader}>Vos personnages :</div>
+                    {this.getCharacters()}
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <div style={styledBoxHeader}>Créer un personnage</div>
+                    <CharacterCreation
+                        uid={uid}
+                        id={Object.keys(characters).length + 1}
+                        createCharacter={this.createCharacter}
+                        triggerError={triggerError}
+                    />
+                </div>
+            );
+        }
     }
 }
 
 CharacterSelection.propTypes = {
-    id: PropTypes.number.isRequired,
-    icon: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    chooseCharacter: PropTypes.func.isRequired,
+    uid: PropTypes.func.isRequired,
+    characterCreation: PropTypes.func.isRequired,
+    characters: PropTypes.object.isRequired,
+    doSetState: PropTypes.func.isRequired,
+    triggerError: PropTypes.func.isRequired,
 };
 
 export default CharacterSelection;

@@ -3,6 +3,14 @@ import PropTypes from "prop-types";
 import firebase from "firebase";
 import FileUploader from "./FileUploader";
 
+
+const styledBoxHeader = {
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
+};
+
 const styledItem = {
     display: "inline-block",
     border: "1px solid green",
@@ -166,7 +174,7 @@ class CharacterCreation extends Component {
 
     addSkill = () => {
         if (this.state.items.length === 6) {
-            this.triggerError({
+            this.props.triggerError({
                 message: "Can't have more than 6 skills",
             });
         } else {
@@ -260,7 +268,7 @@ class CharacterCreation extends Component {
 
     addItem = () => {
         if (this.state.items.length === 10) {
-            this.triggerError({
+            this.props.triggerError({
                 message: "Can't have more than 10 items",
             });
         } else {
@@ -310,7 +318,7 @@ class CharacterCreation extends Component {
 
     addWeapon = () => {
         if (this.state.weapons.length === 2) {
-            this.triggerError({
+            this.props.triggerError({
                 message: "Can't have more than 2 weapons equipped",
             });
         } else {
@@ -374,7 +382,7 @@ class CharacterCreation extends Component {
                     })
                     .catch(error => {
                         // Handle any errors
-                        this.triggerError(error);
+                        this.props.triggerError(error);
                     });
             });
     };
@@ -395,35 +403,20 @@ class CharacterCreation extends Component {
             })
             .catch(error => {
                 // Uh-oh, an error occurred!
-                this.triggerError(error);
+                this.props.triggerError(error);
             });
     };
 
-    triggerError = error => {
-        this.setState(
-            state => ({
-                ...state,
-                error: error.message,
-            }),
-            () => {
-                setTimeout(() => {
-                    this.setState(state => ({
-                        ...state,
-                        error: "",
-                    }));
-                }, 5000);
-            },
-        );
-    };
-
     validateBeforeCreate = () => {
-        const { totalPointsleft, error, name, icon, ...rest } = this.state;
+        const { totalPointsleft, name, icon, ...rest } = this.state;
         if (totalPointsleft < 0) {
-            this.triggerError({ message: "Cannot exceed points limit !" });
+            this.props.triggerError({
+                message: "Cannot exceed points limit !",
+            });
         } else if (name === "") {
-            this.triggerError({ message: "Name cannot be empty !!" });
+            this.props.triggerError({ message: "Name cannot be empty !!" });
         } else if (icon === "") {
-            this.triggerError({ message: "Icon cannot be empty !" });
+            this.props.triggerError({ message: "Icon cannot be empty !" });
         } else {
             this.props.createCharacter({
                 ...rest,
@@ -452,7 +445,6 @@ class CharacterCreation extends Component {
             perception,
             consitution,
             totalPointsleft,
-            error,
         } = this.state;
 
         return (
@@ -480,102 +472,88 @@ class CharacterCreation extends Component {
                         <img
                             src={icon}
                             style={{ maxWidth: "50px", maxHeight: "50px" }}
+                            alt={`${name}`}
                         />
                         <button onClick={this.removePicture}>
                             Remove picture
                         </button>
                     </div>
                 )}
-                <input
-                    type="number"
-                    name="strength"
-                    placeholder="strength"
-                    value={strength}
-                    onChange={e => {
-                        this.onChange(e.target.name, e.target.value);
-                    }}
-                />
-                <input
-                    type="number"
-                    name="strength"
-                    placeholder="strength"
-                    value={strength}
-                    onChange={e => {
-                        this.onChange(e.target.name, e.target.value);
-                    }}
-                />
-                <input
-                    type="number"
-                    name="strength"
-                    placeholder="strength"
-                    value={strength}
-                    onChange={e => {
-                        this.onChange(e.target.name, e.target.value);
-                    }}
-                />
-                <input
-                    type="number"
-                    name="dexterity"
-                    placeholder="dexterity"
-                    value={dexterity}
-                    onChange={e => {
-                        this.onChange(e.target.name, e.target.value);
-                    }}
-                />
-                <input
-                    type="number"
-                    name="charisma"
-                    placeholder="charisma"
-                    value={charisma}
-                    onChange={e => {
-                        this.onChange(e.target.name, e.target.value);
-                    }}
-                />
-                <input
-                    type="number"
-                    name="luck"
-                    placeholder="luck"
-                    value={luck}
-                    onChange={e => {
-                        this.onChange(e.target.name, e.target.value);
-                    }}
-                />
-                <input
-                    type="number"
-                    name="education"
-                    placeholder="education"
-                    value={education}
-                    onChange={e => {
-                        this.onChange(e.target.name, e.target.value);
-                    }}
-                />
-                <input
-                    type="number"
-                    name="perception"
-                    placeholder="perception"
-                    value={perception}
-                    onChange={e => {
-                        this.onChange(e.target.name, e.target.value);
-                    }}
-                />
-                <input
-                    type="number"
-                    name="magic"
-                    placeholder="magic"
-                    value={magic}
-                    onChange={e => {
-                        this.onChange(e.target.name, e.target.value);
-                    }}
-                />
-                <input
-                    type="number"
-                    name="consitution"
-                    placeholder="consitution"
-                    value={consitution}
-                    onChange={e => {
-                        this.onChange(e.target.name, e.target.value);
-                    }}
-                />
+                <div>
+                    <div style={styledBoxHeader}>Attributes :</div>
+                    Strength : <input
+                        type="number"
+                        name="strength"
+                        placeholder="strength"
+                        value={strength}
+                        onChange={e => {
+                            this.onChange(e.target.name, e.target.value);
+                        }}
+                    />
+                    Dexterity : <input
+                        type="number"
+                        name="dexterity"
+                        placeholder="dexterity"
+                        value={dexterity}
+                        onChange={e => {
+                            this.onChange(e.target.name, e.target.value);
+                        }}
+                    />
+                    Charisma : <input
+                        type="number"
+                        name="charisma"
+                        placeholder="charisma"
+                        value={charisma}
+                        onChange={e => {
+                            this.onChange(e.target.name, e.target.value);
+                        }}
+                    />
+                    Luck : <input
+                        type="number"
+                        name="luck"
+                        placeholder="luck"
+                        value={luck}
+                        onChange={e => {
+                            this.onChange(e.target.name, e.target.value);
+                        }}
+                    />
+                    Education : <input
+                        type="number"
+                        name="education"
+                        placeholder="education"
+                        value={education}
+                        onChange={e => {
+                            this.onChange(e.target.name, e.target.value);
+                        }}
+                    />
+                    Perception : <input
+                        type="number"
+                        name="perception"
+                        placeholder="perception"
+                        value={perception}
+                        onChange={e => {
+                            this.onChange(e.target.name, e.target.value);
+                        }}
+                    />
+                    Magic : <input
+                        type="number"
+                        name="magic"
+                        placeholder="magic"
+                        value={magic}
+                        onChange={e => {
+                            this.onChange(e.target.name, e.target.value);
+                        }}
+                    />
+                    Constitution : <input
+                        type="number"
+                        name="consitution"
+                        placeholder="consitution"
+                        value={consitution}
+                        onChange={e => {
+                            this.onChange(e.target.name, e.target.value);
+                        }}
+                    />
+                </div>
                 <div>Total points left : {totalPointsleft}</div>
                 <div>
                     Skills :
@@ -688,7 +666,6 @@ class CharacterCreation extends Component {
                     )}
                 </div>
                 <button onClick={this.validateBeforeCreate}>Validate</button>
-                {error}
             </div>
         );
     }
@@ -698,6 +675,7 @@ CharacterCreation.propTypes = {
     uid: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
     createCharacter: PropTypes.func.isRequired,
+    triggerError: PropTypes.func.isRequired,
 };
 
 export default CharacterCreation;

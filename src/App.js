@@ -1,226 +1,116 @@
-import React, { Component } from 'react';
-import firebase from 'firebase';
-import './App.css';
-import Merchant from './Merchant';
-import Item from './Item';
-import ItemDescription from './ItemDescription';
-import Town from './Town';
-import CharacterSelection from './CharacterSelection';
-import CharacterCreation from './CharacterCreation';
-import IsNotAuth from './IsNotAuth';
+import React, { Component } from "react";
+import firebase from "firebase";
+import "./App.css";
+import Town from "./Town";
+import IsNotAuth from "./IsNotAuth";
 import HasNoPseudo from "./HasNoPseudo";
+import CharacterSelection from "./CharacterSelection";
+import BottomPanel from "./BottomPanel";
+import RightPanel from "./RightPanel";
+import PlayerMapPanel from "./PlayerMapPanel";
+import GMMapPanel from "./GMMapPanel";
 
-const widthRightPanel = 300;
 const heightHeader = 100;
-const heightBottomPanel = 150;
 // const gridHeight = 20;
 // const gridWidth = 20;
 const gridLength = 20;
 const gridDimension = Math.floor((window.innerHeight - 250) / gridLength);
-const widthLeft =
-    window.innerWidth -
-    gridLength * gridDimension -
-    gridLength * 2 -
-    widthRightPanel;
-const heightLeft = gridLength * gridDimension;
 // const gridDimension = 30;
 
 const styledSignOut = {
-    float: 'right',
+    float: "right",
 };
 
 const styledBoxHeader = {
-    width: '100%',
-    height: '20px',
-    marginBottom: '5px',
-    textAlign: 'center',
-};
-
-const styledHistoric = {
-    width: '100%',
-    height: `${((window.innerHeight - heightHeader) * 33) / 100 - 25 - 20}px`,
-    float: 'left',
-    display: 'inline-block',
-};
-
-const styledChatRow = {
-    width: '100%',
-    height: '20px',
-    float: 'left',
-    display: 'inline-block',
-    textAlign: 'left',
-};
-
-const styledChatBox = {
-    width: '100%',
-    height: '20px',
-    float: 'left',
-    display: 'inline-block',
-};
-
-const styledChatInput = {
-    width: '88%',
-    height: '20px',
-    float: 'left',
-    display: 'inline-block',
-};
-
-const styledChatButton = {
-    width: '10%',
-    height: '20px',
-    float: 'left',
-    display: 'inline-block',
-};
-
-const styledMapButtons = {
-    border: '1px solid blue',
-    width: `${gridDimension * 3 + 3}px`,
-    height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
 };
 
 const styledGrid = {
-    border: '1px solid pink',
+    border: "1px solid pink",
     width: `${gridDimension}px`,
     height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
+    display: "inline-block",
+    float: "left",
 };
 
 const styledRow = {
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
+    display: "inline-block",
+    float: "left",
 };
 
 const styledHeader = {
-    borderBottom: '1px solid black',
-    width: '100%',
+    borderBottom: "1px solid black",
+    width: "100%",
     height: `${heightHeader}px`,
 };
 
 const styledMap = {
-    border: '1px solid grey',
+    border: "1px solid grey",
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension * gridLength}px`,
-    display: 'inline-block',
-    float: 'left',
-};
-
-const styledBottomPanel = {
-    position: 'absolute',
-    bottom: '0px',
-    left: '0px',
-    borderTop: '1px solid black',
-    width: `${window.innerWidth - widthRightPanel}px`,
-    height: `${heightBottomPanel}px`,
-};
-
-const styledRightPanel = {
-    position: 'absolute',
-    top: `${heightHeader}px`,
-    right: '0px',
-    borderLeft: '1px solid black',
-    width: `${widthRightPanel}px`,
-    height: `${window.innerHeight - heightHeader}px`,
-};
-
-const styledCharPanel = {
-    borderBottom: '1px solid black',
-    width: '100%',
-    height: '33%',
-};
-
-const styledItemsPanel = {
-    borderBottom: '1px solid black',
-    width: '100%',
-    height: '33%',
-};
-
-const styledChatPanel = {
-    width: '100%',
-};
-
-const styledMapSide = {
-    border: '1px solid brown',
-    width: `${widthLeft / 2 - 3}px`,
-    height: `${heightLeft / 2 - 1}px`,
-    display: 'inline-block',
-    float: 'left',
-    textAlign: 'left',
+    display: "inline-block",
+    float: "left",
 };
 
 const items = [
     {
-        name: 'tamere',
-        description: 'moncul',
-        icon: 'potion_1',
+        name: "tamere",
+        description: "moncul",
+        icon: "potion_1",
     },
     {
-        name: 'tamere',
-        description: 'mes fesses',
-        icon: 'potion_1',
+        name: "tamere",
+        description: "mes fesses",
+        icon: "potion_1",
     },
 ];
 
 const merchantList = [
     {
-        name: 'alchimiste Debron',
-        description: 'Homme sénil',
-        shop_description: 'Vieux bâtiment',
-        icon: 'alchimist',
+        name: "alchimiste Debron",
+        description: "Homme sénil",
+        shop_description: "Vieux bâtiment",
+        icon: "alchimist",
         items,
     },
 ];
 
 const towns = [
     {
-        name: 'Hameau de mes fesses',
+        name: "Hameau de mes fesses",
         positionX: 6,
         positionY: 6,
-        icon: 'big_town',
+        icon: "big_town",
         merchants: merchantList,
-    },
-];
-
-const gridTypes = [
-    {
-        name: 'Fog',
-        background: 'black',
-    },
-    {
-        name: 'Ocean',
-        background: 'blue',
-    },
-    {
-        name: 'Forest',
-        icon: 'forest.png',
     },
 ];
 
 class App extends Component {
     state = {
         isAuth: false,
-        errorMessage: '',
+        errorMessage: "",
         isItemShowed: false,
         itemsList: [],
         isItemDescriptionShowed: false,
         itemToDescribe: {},
         isMerchantsShowed: false,
         merchantsList: [],
-        email: '',
-        password: '',
+        email: "",
+        password: "",
         isAdmin: false,
-        pseudo: '',
-        pseudoInput: '',
-        uid: '',
+        pseudo: "",
+        pseudoInput: "",
+        uid: "",
         character: 0,
         characters: {},
         characterCreation: false,
         map: [],
-        chatInput: '',
+        chatInput: "",
         chatHistory: [],
         textureToApply: null,
     };
@@ -234,65 +124,6 @@ class App extends Component {
             ...state,
             ...obj,
         }));
-    };
-
-    signIn = () => {
-        const { email, password } = this.state;
-        firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then(() => {
-                firebase
-                    .database()
-                    .ref('/users/' + firebase.auth().currentUser.uid)
-                    .once('value')
-                    .then(snapshot => {
-                        this.setState(
-                            state => ({
-                                ...state,
-                                ...snapshot.val(),
-                                isAuth: true,
-                                uid: firebase.auth().currentUser.uid,
-                            }),
-                            () => {
-                                this.createTable();
-                                this.createChat();
-                            }
-                        );
-                    });
-            })
-            .catch(error => {
-                // Handle Errors here.
-                this.triggerError(error);
-            });
-    };
-
-    signUp = () => {
-        const { email, password } = this.state;
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(() => {
-                firebase
-                    .database()
-                    .ref('users/' + this.state.uid)
-                    .set({
-                        email,
-                        photoUrl: firebase.auth().currentUser.photoURL,
-                        name: firebase.auth().currentUser.displayName,
-                    })
-                    .catch(error => {
-                        this.triggerError(error);
-                    });
-                this.setState(state => ({
-                    ...state,
-                    isAuth: true,
-                }));
-            })
-            .catch(error => {
-                // Handle Errors here.
-                this.triggerError(error);
-            });
     };
 
     signOut = () => {
@@ -312,191 +143,11 @@ class App extends Component {
             });
     };
 
-    choosePseudo = () => {
-        firebase
-            .database()
-            .ref('users/' + firebase.auth().currentUser.uid + '/pseudo')
-            .set(this.state.pseudoInput)
-            .catch(error => {
-                this.triggerError(error);
-            });
-        this.setState(state => ({
-            ...state,
-            pseudo: state.pseudoInput,
-        }));
-    };
-
-    getMerchantsFromTown = merchants => {
-        return merchants.map(item => {
-            return (
-                <Merchant
-                    key={`merchant-${item.name}`}
-                    {...item}
-                    showItems={this.showItems}
-                />
-            );
-        });
-    };
-
-    getItemsFromMerchant = itemsFormMerchant => {
-        return itemsFormMerchant.map(itemFromMerchant => {
-            return (
-                <Item
-                    key={`item-${itemFromMerchant.name}`}
-                    {...itemFromMerchant}
-                    showItemDescription={this.showItemDescription}
-                />
-            );
-        });
-    };
-
-    getCharacters = () => {
-        return Object.keys(this.state.characters).map(char => {
-            return (
-                <CharacterSelection
-                    key={`char-${char.name}`}
-                    {...this.state.characters[char]}
-                    chooseCharacter={this.chooseCharacter}
-                />
-            );
-        });
-    };
-
-    chooseCharacter = id => {
-        this.setState(state => ({
-            ...state,
-            character: id,
-        }));
-    };
-
-    goToCharacterForm = () => {
-        this.setState(state => ({
-            ...state,
-            characterCreation: true,
-        }));
-    };
-
-    createCharacter = character => {
-        const charTab = this.state.characters;
-        charTab[character.id] = character;
-        this.setState(
-            state => ({
-                ...state,
-                characters: charTab,
-                character: character.id,
-            }),
-            () => {
-                firebase
-                    .database()
-                    .ref('users/' + this.state.uid + '/characters')
-                    .set({ ...this.state.characters })
-                    .catch(error => {
-                        // Handle Errors here.
-                        this.triggerError(error);
-                    });
-            }
-        );
-    };
-
-    getGridTypes = grids => {
-        return grids.map(gridType => {
-            if (gridType.background) {
-                return (
-                    <div
-                        key={`gridType-${gridType.background}`}
-                        style={{
-                            ...styledGrid,
-                            border: 'none',
-                            borderLeft: '1px solid black',
-                            backgroundColor: gridType.background,
-                        }}
-                        onClick={() => this.loadTexture(gridType)}
-                    />
-                );
-            } else if (gridType.icon) {
-                return (
-                    <div
-                        key={`gridType-${gridType.icon}`}
-                        style={{
-                            ...styledGrid,
-                            border: 'none',
-                            borderLeft: '1px solid black',
-                            backgroundImage: `url(${gridType.icon})`,
-                            backgroundSize: 'cover',
-                        }}
-                        onClick={() => this.loadTexture(gridType)}
-                    />
-                );
-            }
-            return null;
-        });
-    };
-
-    getGridSelected = grid => {
-        if (grid.background) {
-            return (
-                <div
-                    style={{
-                        ...styledGrid,
-                        border: 'none',
-                        borderLeft: '1px solid black',
-                        backgroundColor: grid.background,
-                    }}
-                    onClick={() => this.unloadTexture()}
-                />
-            );
-        } else if (grid.icon) {
-            return (
-                <div
-                    style={{
-                        ...styledGrid,
-                        border: 'none',
-                        borderLeft: '1px solid black',
-                        backgroundImage: `url(${grid.icon})`,
-                        backgroundSize: 'cover',
-                    }}
-                    onClick={() => this.unloadTexture()}
-                />
-            );
-        }
-        return null;
-    };
-
-    unloadTexture = () => {
-        this.setState(state => ({
-            ...state,
-            textureToApply: null,
-        }));
-    };
-
-    loadTexture = gridType => {
-        this.setState(state => ({
-            ...state,
-            textureToApply: gridType,
-        }));
-    };
-
     showMerchantList = list => {
         this.setState(state => ({
             ...state,
             isMerchantsShowed: true,
             merchantsList: list,
-        }));
-    };
-
-    showItems = list => {
-        this.setState(state => ({
-            ...state,
-            isItemShowed: true,
-            itemsList: list,
-        }));
-    };
-
-    showItemDescription = itemToDescribe => {
-        this.setState(state => ({
-            ...state,
-            isItemDescriptionShowed: true,
-            itemToDescribe: itemToDescribe,
         }));
     };
 
@@ -512,7 +163,7 @@ class App extends Component {
                 : row.icon
                     ? {
                           backgroundImage: `url(${row.icon})`,
-                          backgroundSize: 'cover',
+                          backgroundSize: "cover",
                       }
                     : {};
             table.push(
@@ -566,8 +217,9 @@ class App extends Component {
                             return null;
                         })}
                     </div>
-                )
+                ),
             );
+            return null;
         });
         return table;
     };
@@ -575,7 +227,7 @@ class App extends Component {
     setTexture = (x, y) => {
         firebase
             .database()
-            .ref('maps/dravos/' + x + '/' + y)
+            .ref("maps/dravos/" + x + "/" + y)
             .set(this.state.textureToApply)
             .catch(error => {
                 // Handle Errors here.
@@ -586,8 +238,8 @@ class App extends Component {
     createTable = () => {
         firebase
             .database()
-            .ref('/maps/dravos')
-            .on('value', snapshot => {
+            .ref("/maps/dravos")
+            .on("value", snapshot => {
                 // console.log('snapshot', snapshot.val());
                 this.setState(state => ({
                     ...state,
@@ -602,22 +254,9 @@ class App extends Component {
             table.push(
                 <div key={`table-row-${index}`} style={styledRow}>
                     {this.createGrid(index, row)}
-                </div>
+                </div>,
             );
-        });
-        return table;
-    };
-
-    generateChat = chatHistory => {
-        const table = [];
-        chatHistory.map((row, index) => {
-            table.push(
-                <div key={`chat-row-${index}`} style={styledChatRow}>
-                    {row.pseudo
-                        ? `@${row.pseudo}: ${row.message}`
-                        : row.message}
-                </div>
-            );
+            return null;
         });
         return table;
     };
@@ -625,8 +264,8 @@ class App extends Component {
     createChat = () => {
         firebase
             .database()
-            .ref('/chat')
-            .on('value', snapshot => {
+            .ref("/chat")
+            .on("value", snapshot => {
                 if (snapshot.val() !== null) {
                     this.setState(state => ({
                         ...state,
@@ -636,56 +275,16 @@ class App extends Component {
             });
     };
 
-    talkInChat = () => {
-        const { chatInput, pseudo } = this.state;
-        let noMagicWord = true;
-        if (chatInput !== '') {
-            if (chatInput.length >= 3) {
-                if (chatInput[0] === '/') {
-                    if (chatInput[1] === 'd') {
-                        const splittedString = chatInput
-                            .toLowerCase()
-                            .split('/d')[1];
-                        const isnum = /^\d+$/.test(splittedString);
-                        if (isnum) {
-                            noMagicWord = false;
-                            this.sendChatInput({
-                                message: `@${pseudo} launched a D${splittedString}. Result : ${Math.floor(
-                                    Math.random() *
-                                        parseInt(splittedString, 10) +
-                                        1
-                                )}`,
-                            });
-                        }
-                    }
-                }
-            }
-
-            if (noMagicWord) {
-                this.sendChatInput({ message: chatInput, pseudo });
-            }
-        }
-    };
-
-    sendChatInput = input => {
-        const { chatHistory } = this.state;
-        const nextChat = chatHistory;
-        nextChat.push(input);
-        firebase
-            .database()
-            .ref('chat/')
-            .set(nextChat)
-            .then(() => {
-                this.setState(state => ({
-                    ...state,
-                    error: '',
-                    chatInput: '',
-                }));
-            })
-            .catch(error => {
-                // Handle Errors here.
-                this.triggerError(error);
-            });
+    doSetState = (obj, cb = null) => {
+        this.setState(
+            state => ({
+                ...state,
+                ...obj,
+            }),
+            () => {
+                if (cb) cb();
+            },
+        );
     };
 
     triggerError = error => {
@@ -698,10 +297,10 @@ class App extends Component {
                 setTimeout(() => {
                     this.setState(state => ({
                         ...state,
-                        error: '',
+                        error: "",
                     }));
                 }, 5000);
-            }
+            },
         );
     };
 
@@ -714,19 +313,19 @@ class App extends Component {
             isMerchantsShowed,
             merchantsList,
             isAuth,
-            errorMessage,
             email,
             password,
             isAdmin,
             pseudo,
             pseudoInput,
             character,
-            uid,
             characterCreation,
             map,
             chatInput,
             chatHistory,
             textureToApply,
+            characters,
+            error,
         } = this.state;
 
         return (
@@ -736,52 +335,36 @@ class App extends Component {
                         email={email}
                         password={password}
                         onChange={this.onChange}
-                        signIn={this.signIn}
-                        signUp={this.signUp}
+                        doSetState={this.doSetState}
+                        triggerError={this.triggerError}
+                        createChat={this.createChat}
+                        createTable={this.createTable}
                     />
                 )}
 
                 {isAuth &&
-                    pseudo === '' && (
-                        <HasNoPseudo pseudoInput={pseudoInput} onChange={this.onChange} choosePseudo={this.choosePseudo}/>
+                    pseudo === "" && (
+                        <HasNoPseudo
+                            pseudoInput={pseudoInput}
+                            onChange={this.onChange}
+                            doSetState={this.doSetState}
+                            triggerError={this.triggerError}
+                        />
                     )}
 
                 {isAuth &&
-                    pseudo !== '' &&
-                    character === 0 &&
-                    !characterCreation && (
-                        <div>
-                            <div style={styledBoxHeader}>
-                                Choisir un personnage
-                            </div>
-                            <button onClick={this.goToCharacterForm}>
-                                Créer un personnage
-                            </button>
-                            <div style={styledBoxHeader}>Vos personnages :</div>
-                            {this.getCharacters()}
-                        </div>
+                    pseudo !== "" &&
+                    character === 0 && (
+                        <CharacterSelection
+                            characterCreation={characterCreation}
+                            characters={characters}
+                            doSetState={this.doSetState}
+                            triggerError={this.triggerError}
+                        />
                     )}
 
                 {isAuth &&
-                    pseudo !== '' &&
-                    character === 0 &&
-                    characterCreation && (
-                        <div>
-                            <div style={styledBoxHeader}>
-                                Créer un personnage
-                            </div>
-                            <CharacterCreation
-                                uid={uid}
-                                id={
-                                    Object.keys(this.state.characters).length +
-                                    1
-                                }
-                                createCharacter={this.createCharacter}
-                            />
-                        </div>
-                    )}
-                {isAuth &&
-                    pseudo !== '' &&
+                    pseudo !== "" &&
                     character > 0 && (
                         <div>
                             <div style={styledHeader}>
@@ -797,104 +380,36 @@ class App extends Component {
                                 {this.generateTable(map)}
                             </div>
                             {isAdmin && (
-                                <div style={styledMapSide}>
-                                    <div style={styledBoxHeader}>
-                                        Modifier la carte
-                                    </div>
-                                    <div style={styledMapButtons}>
-                                        {this.getGridTypes(gridTypes)}
-                                    </div>
-                                    <div style={styledMapButtons}>
-                                        {textureToApply &&
-                                            this.getGridSelected(
-                                                textureToApply
-                                            )}
-                                    </div>
-                                </div>
+                                <GMMapPanel
+                                    textureToApply={textureToApply}
+                                    doSetState={this.doSetState}
+                                    triggerError={this.triggerError}
+                                />
                             )}
                             {!isAdmin && (
-                                <div>
-                                    {isMerchantsShowed && (
-                                        <div style={styledMapSide}>
-                                            <div style={styledBoxHeader}>
-                                                Liste des quêtes
-                                            </div>
-                                        </div>
-                                    )}
-                                    {isMerchantsShowed && (
-                                        <div style={styledMapSide}>
-                                            <div style={styledBoxHeader}>
-                                                Liste des marchands
-                                            </div>
-                                            {this.getMerchantsFromTown(
-                                                merchantsList
-                                            )}
-                                        </div>
-                                    )}
-                                    {isItemShowed && (
-                                        <div style={styledMapSide}>
-                                            <div style={styledBoxHeader}>
-                                                Liste des objets
-                                            </div>
-                                            {this.getItemsFromMerchant(
-                                                itemsList
-                                            )}
-                                        </div>
-                                    )}
-                                    {isItemDescriptionShowed && (
-                                        <div style={styledMapSide}>
-                                            <div style={styledBoxHeader}>
-                                                Description
-                                            </div>
-                                            <ItemDescription
-                                                {...itemToDescribe}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
+                                <PlayerMapPanel
+                                    isItemShowed={isItemShowed}
+                                    itemsList={itemsList}
+                                    isItemDescriptionShowed={
+                                        isItemDescriptionShowed
+                                    }
+                                    itemToDescribe={itemToDescribe}
+                                    isMerchantsShowed={isMerchantsShowed}
+                                    merchantsList={merchantsList}
+                                />
                             )}
-                            <div style={styledRightPanel}>
-                                <div style={styledCharPanel}>
-                                    <div style={styledBoxHeader}>
-                                        Personnage
-                                    </div>
-                                </div>
-                                <div style={styledItemsPanel}>
-                                    <div style={styledBoxHeader}>Items/Or</div>
-                                </div>
-                                <div style={styledChatPanel}>
-                                    <div style={styledBoxHeader}>Chat</div>
-                                    <div style={styledHistoric}>
-                                        {this.generateChat(chatHistory)}
-                                    </div>
-                                    <div style={styledChatBox}>
-                                        <input
-                                            type="text"
-                                            name="chatInput"
-                                            placeholder="Chat !"
-                                            value={chatInput}
-                                            onChange={e => {
-                                                this.onChange(
-                                                    e.target.name,
-                                                    e.target.value
-                                                );
-                                            }}
-                                            style={styledChatInput}
-                                        />
-                                        <button
-                                            style={styledChatButton}
-                                            onClick={this.talkInChat}
-                                        >
-                                            OK
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style={styledBottomPanel}>
-                                <div style={styledBoxHeader}>Cameras</div>
-                            </div>
+                            <RightPanel
+                                pseudo={pseudo}
+                                chatInput={chatInput}
+                                chatHistory={chatHistory}
+                                onChange={this.onChange}
+                                doSetState={this.doSetState}
+                                triggerError={this.triggerError}
+                            />
+                            <BottomPanel />
                         </div>
                     )}
+                {error}
             </div>
         );
     }
