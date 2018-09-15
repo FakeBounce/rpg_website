@@ -366,7 +366,7 @@ class App extends Component {
     accessChatHelp = () => {
         this.setState(state => ({
             ...state,
-            onChatHelp: true,
+            onChatHelp: !state.onChatHelp,
         }));
     };
 
@@ -470,6 +470,18 @@ class App extends Component {
                     (onChatHelp ? (
                         <div>
                             <div style={styledBoxHeader}>Chat commands</div>
+                            <button
+                                style={styledSignOut}
+                                onClick={this.signOut}
+                            >
+                                Sign Out
+                            </button>
+                            <button
+                                style={styledSignOut}
+                                onClick={this.accessChatHelp}
+                            >
+                                Return to map
+                            </button>
                             {chatCommands.map(chatCommand => {
                                 return (
                                     <div style={styledChatHelpBox}>
