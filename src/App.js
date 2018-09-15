@@ -134,8 +134,28 @@ class App extends Component {
             .then(() => {
                 // Sign-out successful.
                 this.setState(state => ({
-                    ...state,
                     isAuth: false,
+                    errorMessage: "",
+                    isItemShowed: false,
+                    itemsList: [],
+                    isItemDescriptionShowed: false,
+                    itemToDescribe: {},
+                    isMerchantsShowed: false,
+                    merchantsList: [],
+                    email: "",
+                    password: "",
+                    isAdmin: false,
+                    pseudo: "",
+                    pseudoInput: "",
+                    uid: "",
+                    character: 0,
+                    characters: {},
+                    characterCreation: false,
+                    map: [],
+                    chatInput: "",
+                    chatHistory: [],
+                    textureToApply: null,
+                    users: null,
                 }));
             })
             .catch(error => {

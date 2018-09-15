@@ -64,7 +64,7 @@ class CharacterSelection extends Component {
     render() {
         const { uid, characters, characterCreation, triggerError } = this.props;
 
-        if (characters && !characterCreation) {
+        if (typeof characters[1] !== 'undefined' && !characterCreation) {
             return (
                 <div>
                     <div style={styledBoxHeader}>Choisir un personnage</div>
