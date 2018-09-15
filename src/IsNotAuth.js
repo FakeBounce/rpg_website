@@ -4,7 +4,15 @@ import firebase from "firebase";
 
 class IsNotAuth extends Component {
     signIn = () => {
-        const { email, password, triggerError, doSetState, createTable, createChat } = this.props;
+        const {
+            email,
+            password,
+            triggerError,
+            doSetState,
+            createTable,
+            createChat,
+            loadUsers,
+        } = this.props;
         firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
@@ -23,6 +31,7 @@ class IsNotAuth extends Component {
                             () => {
                                 createTable();
                                 createChat();
+                                loadUsers();
                             },
                         );
                     });
@@ -34,16 +43,23 @@ class IsNotAuth extends Component {
     };
 
     signUp = () => {
-        const { email, password, doSetState, triggerError } = this.props;
+        const {
+            email,
+            password,
+            doSetState,
+            triggerError,
+            createTable,
+            createChat,
+            loadUsers,
+        } = this.props;
         firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
                 firebase
                     .database()
-                    .ref("users/" + this.state.uid)
+                    .ref("users/" + firebase.auth().currentUser.uid)
                     .set({
-                        email,
                         photoUrl: firebase.auth().currentUser.photoURL,
                         name: firebase.auth().currentUser.displayName,
                     })
@@ -53,6 +69,9 @@ class IsNotAuth extends Component {
                 doSetState({
                     isAuth: true,
                 });
+                createTable();
+                createChat();
+                loadUsers();
             })
             .catch(error => {
                 // Handle Errors here.
@@ -98,6 +117,7 @@ IsNotAuth.propTypes = {
     triggerError: PropTypes.func.isRequired,
     createChat: PropTypes.func.isRequired,
     createTable: PropTypes.func.isRequired,
+    loadUsers: PropTypes.func.isRequired,
 };
 
 export default IsNotAuth;

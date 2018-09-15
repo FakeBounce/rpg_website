@@ -15,8 +15,8 @@ const styles = {
     Historic: {
         width: "100%",
         height: `${((window.innerHeight - heightHeader) * 33) / 100 -
-        25 -
-        20}px`,
+            25 -
+            20}px`,
         float: "left",
         display: "inline-block",
     },
@@ -54,46 +54,293 @@ class Chat extends Component {
     generateChat = chatHistory => {
         const table = [];
         chatHistory.map((row, index) => {
-            table.push(
-                <div key={`chat-row-${index}`} style={styles.ChatRow}>
-                    {row.pseudo
-                        ? `@${row.pseudo}: ${row.message}`
-                        : row.message}
-                </div>,
-            );
+            if (row.viewers && this.isAViewer(row.viewers)) {
+                table.push(
+                    <div key={`chat-row-${index}`} style={styles.ChatRow}>
+                        {row.pseudo
+                            ? `@${row.pseudo}: ${row.message}`
+                            : row.message}
+                    </div>,
+                );
+            } else if (!row.viewers) {
+                table.push(
+                    <div key={`chat-row-${index}`} style={styles.ChatRow}>
+                        {row.pseudo
+                            ? `@${row.pseudo}: ${row.message}`
+                            : row.message}
+                    </div>,
+                );
+            }
             return null;
         });
         return table;
     };
 
+    isAViewer = viewersTab => {
+        const { pseudo, isAdmin } = this.props;
+        let canSeeMessage = false;
+
+        viewersTab.map(viewer => {
+            if (viewer === "admin" && isAdmin) canSeeMessage = true;
+            if (viewer === pseudo) canSeeMessage = true;
+            return null;
+        });
+        return canSeeMessage;
+    };
+
     talkInChat = () => {
-        const { chatInput, pseudo } = this.props;
+        const { chatInput, pseudo, isAdmin } = this.props;
         let noMagicWord = true;
         if (chatInput !== "") {
             if (chatInput.length >= 3) {
-                if (chatInput[0] === "/") {
-                    if (chatInput[1] === "d") {
-                        const splittedString = chatInput
-                            .toLowerCase()
-                            .split("/d")[1];
-                        const isnum = /^\d+$/.test(splittedString);
-                        if (isnum) {
-                            noMagicWord = false;
-                            this.sendChatInput({
-                                message: `@${pseudo} launched a D${splittedString}. Result : ${Math.floor(
-                                    Math.random() *
-                                    parseInt(splittedString, 10) +
-                                    1,
-                                )}`,
-                            });
-                        }
-                    }
+                if (this.diceAction("/d")) {
+                    noMagicWord = false;
+                }
+                if (this.diceAction("/dice")) {
+                    noMagicWord = false;
+                }
+                if (this.diceAction("/gmd", ["admin", pseudo])) {
+                    noMagicWord = false;
+                }
+                if (this.diceAction("/gmdice", ["admin", pseudo])) {
+                    noMagicWord = false;
+                }
+                if (this.whisperPlayerAction()) {
+                    noMagicWord = false;
+                }
+                if (this.whisperTeamAction()) {
+                    noMagicWord = false;
+                }
+                if (this.whisperGMAction()) {
+                    noMagicWord = false;
+                }
+            }
+
+            if (!isAdmin) {
+                switch (chatInput) {
+                    case "/strength":
+                    case "/str":
+                    case "/force":
+                    case "/for":
+                        noMagicWord = false;
+                        this.attributeAction("strength");
+                        break;
+                    case "/dexterity":
+                    case "/dex":
+                    case "/dextérité":
+                        noMagicWord = false;
+                        this.attributeAction("dexterity");
+                        break;
+                    case "/luck":
+                    case "/luc":
+                    case "/chance":
+                    case "/chan":
+                        noMagicWord = false;
+                        this.attributeAction("luck");
+                        break;
+                    case "/charisma":
+                    case "/char":
+                    case "/charisme":
+                        noMagicWord = false;
+                        this.attributeAction("charisma");
+                        break;
+                    case "/education":
+                    case "/edu":
+                        noMagicWord = false;
+                        this.attributeAction("education");
+                        break;
+                    case "/perception":
+                    case "/per":
+                        noMagicWord = false;
+                        this.attributeAction("perception");
+                        break;
+                    case "/constitution":
+                    case "/con":
+                        noMagicWord = false;
+                        this.attributeAction("constitution");
+                        break;
+                    case "/magic":
+                    case "/mag":
+                    case "/magie":
+                        noMagicWord = false;
+                        this.attributeAction("magic");
+                        break;
+                    case "/gmstrength":
+                    case "/gmstr":
+                    case "/gmforce":
+                    case "/gmfor":
+                        noMagicWord = false;
+                        this.attributeAction("strength", true);
+                        break;
+                    case "/gmdexterity":
+                    case "/gmdex":
+                    case "/gmdextérité":
+                        noMagicWord = false;
+                        this.attributeAction("dexterity", true);
+                        break;
+                    case "/gmluck":
+                    case "/gmluc":
+                    case "/gmchance":
+                    case "/gmchan":
+                        noMagicWord = false;
+                        this.attributeAction("luck", true);
+                        break;
+                    case "/gmcharisma":
+                    case "/gmchar":
+                    case "/gmcharisme":
+                        noMagicWord = false;
+                        this.attributeAction("charisma", true);
+                        break;
+                    case "/gmeducation":
+                    case "/gmedu":
+                        noMagicWord = false;
+                        this.attributeAction("education", true);
+                        break;
+                    case "/gmperception":
+                    case "/gmper":
+                        noMagicWord = false;
+                        this.attributeAction("perception", true);
+                        break;
+                    case "/gmconstitution":
+                    case "/gmcon":
+                        noMagicWord = false;
+                        this.attributeAction("constitution", true);
+                        break;
+                    case "/gmmagic":
+                    case "/gmmag":
+                    case "/gmmagie":
+                        noMagicWord = false;
+                        this.attributeAction("magic", true);
+                        break;
+
+                    default:
+                        break;
                 }
             }
 
             if (noMagicWord) {
                 this.sendChatInput({ message: chatInput, pseudo });
             }
+        }
+    };
+
+    whisperPlayerAction = () => {
+        const { chatInput, pseudo, users } = this.props;
+        const splittedString = chatInput.split("/w ");
+        let hasWhisperAction = false;
+        if (splittedString.length > 1) {
+            hasWhisperAction = true;
+            Object.keys(users).map(key => {
+                if ( splittedString[1].split(users[key].pseudo).length > 1) {
+                    this.sendChatInput({
+                        message: `@${pseudo}, you say to @${users[key].pseudo} :${
+                            splittedString[1].split(users[key].pseudo)[1]
+                            }`,
+                        viewers: [pseudo],
+                    });
+                    this.sendChatInput({
+                        message: `@${pseudo} tells you secretly :${
+                            splittedString[1].split(users[key].pseudo)[1]
+                        }`,
+                        viewers: [users[key].pseudo],
+                    });
+                }
+                return null;
+            });
+        }
+        return hasWhisperAction;
+    };
+
+    whisperGMAction = () => {
+        const { chatInput, pseudo, users } = this.props;
+        const splittedString = chatInput.split("/gmw ");
+        let hasWhisperAction = false;
+        if (splittedString.length > 1) {
+            hasWhisperAction = true;
+            Object.keys(users).map(key => {
+                if (users[key].isAdmin) {
+                    this.sendChatInput({
+                        message: `@${pseudo}, you say to GM :${
+                            splittedString[1]
+                            }`,
+                        viewers: [pseudo],
+                    });
+                    this.sendChatInput({
+                        message: `@${pseudo} tells GM secretly :${
+                            splittedString[1]
+                        }`,
+                        viewers: [users[key].pseudo],
+                    });
+                }
+                return null;
+            });
+        }
+        return hasWhisperAction;
+    };
+
+    whisperTeamAction = () => {
+        const { chatInput, pseudo, users } = this.props;
+        const splittedString = chatInput.split("/tmw ");
+        let hasWhisperAction = false;
+        if (splittedString.length > 1) {
+            hasWhisperAction = true;
+            const team = [];
+
+            Object.keys(users).map(key => {
+                if (!users[key].isAdmin) {
+                    team.push(users[key].pseudo);
+                }
+                return null;
+            });
+
+            this.sendChatInput({
+                message: `@${pseudo} tells to team :${
+                    splittedString[1]
+                }`,
+                viewers: team,
+            });
+        }
+        return hasWhisperAction;
+    };
+
+    diceAction = (limiter, viewers = null) => {
+        const { chatInput, pseudo } = this.props;
+        const splittedString = chatInput.toLowerCase().split(limiter)[1];
+        const isnum = /^\d+$/.test(splittedString);
+        if (isnum) {
+            this.sendChatInput({
+                message: `@${pseudo} launched a D${splittedString}. Result : ${Math.floor(
+                    Math.random() * parseInt(splittedString, 10) + 1,
+                )}`,
+                viewers,
+            });
+        }
+        return isnum;
+    };
+
+    attributeAction = (attribute, isGm = false) => {
+        const { pseudo, character } = this.props;
+        const dice = Math.floor(Math.random() * parseInt(100, 10) + 1);
+        let message = "";
+
+        if (dice < 6) {
+            message = `@${pseudo} tried a ${attribute} action. Result : ${dice} (Critical success !)`;
+        } else if (dice <= character[attribute]) {
+            message = `@${pseudo} tried a ${attribute} action. Result : ${dice} (Success !)`;
+        } else if (dice > 95) {
+            message = `@${pseudo} tried a ${attribute} action. Result : ${dice} (Critical fail !)`;
+        } else {
+            message = `@${pseudo} tried a ${attribute} action. Result : ${dice} (Fail !)`;
+        }
+        if (isGm) {
+            this.sendChatInput({
+                message,
+                viewers: ["admin", pseudo],
+            });
+        } else {
+            this.sendChatInput({
+                message,
+            });
         }
     };
 
@@ -137,10 +384,7 @@ class Chat extends Component {
                         }}
                         style={styles.ChatInput}
                     />
-                    <button
-                        style={styles.ChatButton}
-                        onClick={this.talkInChat}
-                    >
+                    <button style={styles.ChatButton} onClick={this.talkInChat}>
                         OK
                     </button>
                 </div>
@@ -150,6 +394,9 @@ class Chat extends Component {
 }
 
 Chat.propTypes = {
+    users: PropTypes.object.isRequired,
+    character: PropTypes.object.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     pseudo: PropTypes.string.isRequired,
     chatInput: PropTypes.string.isRequired,
     chatHistory: PropTypes.array.isRequired,

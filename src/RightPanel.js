@@ -41,7 +41,10 @@ class RightPanel extends Component {
             chatHistory,
             onChange,
             doSetState,
+            isAdmin,
             triggerError,
+            character,
+            users,
         } = this.props;
 
         return (
@@ -53,6 +56,9 @@ class RightPanel extends Component {
                     <div style={styles.BoxHeader}>Items/Or</div>
                 </div>
                 <Chat
+                    users={users}
+                    character={character}
+                    isAdmin={isAdmin}
                     pseudo={pseudo}
                     chatInput={chatInput}
                     chatHistory={chatHistory}
@@ -66,6 +72,9 @@ class RightPanel extends Component {
 }
 
 RightPanel.propTypes = {
+    users: PropTypes.object.isRequired,
+    character: PropTypes.object.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     pseudo: PropTypes.string.isRequired,
     chatInput: PropTypes.string.isRequired,
     chatHistory: PropTypes.array.isRequired,

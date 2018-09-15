@@ -113,6 +113,7 @@ class App extends Component {
         chatInput: "",
         chatHistory: [],
         textureToApply: null,
+        users: null,
     };
 
     componentDidMount() {}
@@ -248,6 +249,19 @@ class App extends Component {
             });
     };
 
+    loadUsers = () => {
+        firebase
+            .database()
+            .ref("/users")
+            .on("value", snapshot => {
+                // console.log('snapshot', snapshot.val());
+                this.setState(state => ({
+                    ...state,
+                    users: snapshot.val(),
+                }));
+            });
+    };
+
     generateTable = mapToRender => {
         const table = [];
         mapToRender.map((row, index) => {
@@ -326,6 +340,8 @@ class App extends Component {
             textureToApply,
             characters,
             error,
+            users,
+            uid,
         } = this.state;
 
         return (
@@ -339,6 +355,7 @@ class App extends Component {
                         triggerError={this.triggerError}
                         createChat={this.createChat}
                         createTable={this.createTable}
+                        loadUsers={this.loadUsers}
                     />
                 )}
 
@@ -356,6 +373,7 @@ class App extends Component {
                     pseudo !== "" &&
                     character === 0 && (
                         <CharacterSelection
+                            uid={uid}
                             characterCreation={characterCreation}
                             characters={characters}
                             doSetState={this.doSetState}
@@ -399,6 +417,9 @@ class App extends Component {
                                 />
                             )}
                             <RightPanel
+                                users={users}
+                                character={characters[character]}
+                                isAdmin={isAdmin}
                                 pseudo={pseudo}
                                 chatInput={chatInput}
                                 chatHistory={chatHistory}

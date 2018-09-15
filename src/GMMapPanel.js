@@ -137,7 +137,7 @@ class GMMapPanel extends Component {
     };
 
     render() {
-        const { textureToApply } = this.state;
+        const { textureToApply } = this.props;
 
         return (
             <div style={styledMapSide}>
