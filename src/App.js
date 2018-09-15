@@ -28,6 +28,30 @@ const styledBoxHeader = {
     textAlign: "center",
 };
 
+const styledChatHelpBox = {
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
+    borderBottom: '1px solid black'
+};
+
+const styledCommandName = {
+    width: "20%",
+    height: "20px",
+    textAlign: "left",
+    float: "left",
+    display: "inline-block",
+};
+
+const styledCommandAction = {
+    width: "80%",
+    height: "20px",
+    textAlign: "left",
+    float: "left",
+    display: "inline-block",
+};
+
 const styledGrid = {
     border: "1px solid pink",
     width: `${gridDimension}px`,
@@ -87,6 +111,35 @@ const towns = [
         positionY: 6,
         icon: "big_town",
         merchants: merchantList,
+    },
+];
+
+const chatCommands = [
+    {
+        name: "/dX, /diceX",
+        action: "Launch dice X, returning random number between 1 and X",
+    },
+    {
+        name: "/gmdX, /gmdiceX",
+        action:
+            "Launch dice X, returning random number between 1 and X. Only GM and you can see it.",
+    },
+    {
+        name: "/strength, /str, /force, /for...",
+        action:
+            "Launch dice 100 corresponding to attribute. Says if succeeded or failed.",
+    },
+    {
+        name: "/w Player Message",
+        action: "Send Message to Player only.",
+    },
+    {
+        name: "/gmw Message",
+        action: "Send Message to GM only.",
+    },
+    {
+        name: "/tmw Message",
+        action: "Send Message to team only (GM can't see it).",
     },
 ];
 
@@ -156,6 +209,7 @@ class App extends Component {
                     chatHistory: [],
                     textureToApply: null,
                     users: null,
+                    onChatHelp: false,
                 }));
             })
             .catch(error => {
@@ -309,6 +363,13 @@ class App extends Component {
             });
     };
 
+    accessChatHelp = () => {
+        this.setState(state => ({
+            ...state,
+            onChatHelp: true,
+        }));
+    };
+
     doSetState = (obj, cb = null) => {
         this.setState(
             state => ({
@@ -362,6 +423,7 @@ class App extends Component {
             error,
             users,
             uid,
+            onChatHelp,
         } = this.state;
 
         return (
@@ -389,7 +451,8 @@ class App extends Component {
                         />
                     )}
 
-                {isAuth &&
+                {!isAdmin &&
+                    isAuth &&
                     pseudo !== "" &&
                     character === 0 && (
                         <CharacterSelection
@@ -403,7 +466,24 @@ class App extends Component {
 
                 {isAuth &&
                     pseudo !== "" &&
-                    character > 0 && (
+                    (character > 0 || isAdmin) &&
+                    (onChatHelp ? (
+                        <div>
+                            <div style={styledBoxHeader}>Chat commands</div>
+                            {chatCommands.map(chatCommand => {
+                                return (
+                                    <div style={styledChatHelpBox}>
+                                        <div style={styledCommandName}>
+                                            Name : {chatCommand.name}
+                                        </div>
+                                        <div style={styledCommandAction}>
+                                            Action : {chatCommand.action}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ) : (
                         <div>
                             <div style={styledHeader}>
                                 <div style={styledBoxHeader}>Header</div>
@@ -412,6 +492,12 @@ class App extends Component {
                                     onClick={this.signOut}
                                 >
                                     Sign Out
+                                </button>
+                                <button
+                                    style={styledSignOut}
+                                    onClick={this.accessChatHelp}
+                                >
+                                    Access chat help
                                 </button>
                             </div>
                             <div style={styledMap}>
@@ -449,7 +535,7 @@ class App extends Component {
                             />
                             <BottomPanel />
                         </div>
-                    )}
+                    ))}
                 {error}
             </div>
         );

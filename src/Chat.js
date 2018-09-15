@@ -15,10 +15,10 @@ const styles = {
     Historic: {
         width: "100%",
         height: `${((window.innerHeight - heightHeader) * 33) / 100 -
-            25 -
-            20}px`,
+            (25 + 20 + 5)}px`,
         float: "left",
         display: "inline-block",
+        overflowY: "scroll",
     },
     ChatRow: {
         width: "100%",
@@ -32,6 +32,7 @@ const styles = {
         height: "20px",
         float: "left",
         display: "inline-block",
+        marginTop: '5px',
     },
     ChatInput: {
         width: "88%",
@@ -51,6 +52,26 @@ const styles = {
 };
 
 class Chat extends Component {
+    messagesEnd = null;
+
+    componentDidMount() {
+        this.scrollToBottom();
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom();
+    }
+
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    };
+
+    handleKeyPress = event => {
+        if (event.key === "Enter") {
+            this.talkInChat();
+        }
+    };
+
     generateChat = chatHistory => {
         const table = [];
         chatHistory.map((row, index) => {
@@ -231,11 +252,11 @@ class Chat extends Component {
         if (splittedString.length > 1) {
             hasWhisperAction = true;
             Object.keys(users).map(key => {
-                if ( splittedString[1].split(users[key].pseudo).length > 1) {
+                if (splittedString[1].split(users[key].pseudo).length > 1) {
                     this.sendChatInput({
-                        message: `@${pseudo}, you say to @${users[key].pseudo} :${
-                            splittedString[1].split(users[key].pseudo)[1]
-                            }`,
+                        message: `@${pseudo}, you say to @${
+                            users[key].pseudo
+                        } :${splittedString[1].split(users[key].pseudo)[1]}`,
                         viewers: [pseudo],
                     });
                     this.sendChatInput({
@@ -262,7 +283,7 @@ class Chat extends Component {
                     this.sendChatInput({
                         message: `@${pseudo}, you say to GM :${
                             splittedString[1]
-                            }`,
+                        }`,
                         viewers: [pseudo],
                     });
                     this.sendChatInput({
@@ -294,9 +315,7 @@ class Chat extends Component {
             });
 
             this.sendChatInput({
-                message: `@${pseudo} tells to team :${
-                    splittedString[1]
-                }`,
+                message: `@${pseudo} tells to team :${splittedString[1]}`,
                 viewers: team,
             });
         }
@@ -372,6 +391,12 @@ class Chat extends Component {
                 <div style={styles.BoxHeader}>Chat</div>
                 <div style={styles.Historic}>
                     {this.generateChat(chatHistory)}
+                    <div
+                        style={{ float: "left", clear: "both" }}
+                        ref={el => {
+                            this.messagesEnd = el;
+                        }}
+                    />
                 </div>
                 <div style={styles.ChatBox}>
                     <input
@@ -383,6 +408,7 @@ class Chat extends Component {
                             onChange(e.target.name, e.target.value);
                         }}
                         style={styles.ChatInput}
+                        onKeyPress={this.handleKeyPress}
                     />
                     <button style={styles.ChatButton} onClick={this.talkInChat}>
                         OK

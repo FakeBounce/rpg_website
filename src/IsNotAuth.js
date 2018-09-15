@@ -3,6 +3,12 @@ import PropTypes from "prop-types";
 import firebase from "firebase";
 
 class IsNotAuth extends Component {
+    handleKeyPress = event => {
+        if (event.key === "Enter") {
+            this.signIn();
+        }
+    };
+
     signIn = () => {
         const {
             email,
@@ -92,6 +98,7 @@ class IsNotAuth extends Component {
                     onChange={e => {
                         onChange(e.target.name, e.target.value);
                     }}
+                    onKeyPress={this.handleKeyPress}
                 />
                 <input
                     type="password"
@@ -101,6 +108,7 @@ class IsNotAuth extends Component {
                     onChange={e => {
                         onChange(e.target.name, e.target.value);
                     }}
+                    onKeyPress={this.handleKeyPress}
                 />
                 <button onClick={this.signIn}>Sign In</button>
                 <button onClick={this.signUp}>Sign Up</button>

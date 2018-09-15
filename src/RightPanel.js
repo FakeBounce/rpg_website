@@ -53,7 +53,7 @@ class RightPanel extends Component {
                     <div style={styles.BoxHeader}>Personnage</div>
                 </div>
                 <div style={styles.ItemsPanel}>
-                    <div style={styles.BoxHeader}>Items/Or</div>
+                    <div style={styles.BoxHeader}>Equipe</div>
                 </div>
                 <Chat
                     users={users}
