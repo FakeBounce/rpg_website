@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import firebase from "firebase";
 import FileUploader from "./FileUploader";
 
-
 const styledBoxHeader = {
     width: "100%",
     height: "20px",
@@ -34,9 +33,8 @@ class CharacterCreation extends Component {
         education: 50,
         magic: 50,
         perception: 50,
-        consitution: 50,
+        constitution: 50,
         totalPointsleft: 0,
-        error: "",
     };
 
     onChange = (name, value) => {
@@ -48,7 +46,7 @@ class CharacterCreation extends Component {
             education,
             magic,
             perception,
-            consitution,
+            constitution,
         } = this.state;
         const obj = {};
         let pointsLeft = 0;
@@ -64,7 +62,7 @@ class CharacterCreation extends Component {
                     education -
                     magic -
                     perception -
-                    consitution;
+                    constitution;
                 break;
             case "dexterity":
                 pointsLeft =
@@ -76,7 +74,7 @@ class CharacterCreation extends Component {
                     education -
                     magic -
                     perception -
-                    consitution;
+                    constitution;
                 break;
             case "luck":
                 pointsLeft =
@@ -88,7 +86,7 @@ class CharacterCreation extends Component {
                     education -
                     magic -
                     perception -
-                    consitution;
+                    constitution;
                 break;
             case "charisma":
                 pointsLeft =
@@ -100,7 +98,7 @@ class CharacterCreation extends Component {
                     education -
                     magic -
                     perception -
-                    consitution;
+                    constitution;
                 break;
             case "education":
                 pointsLeft =
@@ -112,7 +110,7 @@ class CharacterCreation extends Component {
                     value -
                     magic -
                     perception -
-                    consitution;
+                    constitution;
                 break;
             case "magic":
                 pointsLeft =
@@ -124,7 +122,7 @@ class CharacterCreation extends Component {
                     education -
                     value -
                     perception -
-                    consitution;
+                    constitution;
                 break;
             case "perception":
                 pointsLeft =
@@ -136,9 +134,9 @@ class CharacterCreation extends Component {
                     education -
                     magic -
                     value -
-                    consitution;
+                    constitution;
                 break;
-            case "consitution":
+            case "constitution":
                 pointsLeft =
                     400 -
                     strength -
@@ -158,7 +156,6 @@ class CharacterCreation extends Component {
             ...state,
             ...obj,
             totalPointsleft: pointsLeft,
-            error: "",
         }));
     };
 
@@ -168,7 +165,6 @@ class CharacterCreation extends Component {
         this.setState(state => ({
             ...state,
             skills: obj,
-            error: "",
         }));
     };
 
@@ -183,7 +179,6 @@ class CharacterCreation extends Component {
             this.setState(state => ({
                 ...state,
                 skills: obj,
-                error: "",
             }));
         }
     };
@@ -194,7 +189,6 @@ class CharacterCreation extends Component {
             this.setState(state => ({
                 ...state,
                 skills: [],
-                error: "",
             }));
         } else {
             const obj = [];
@@ -207,7 +201,6 @@ class CharacterCreation extends Component {
             this.setState(state => ({
                 ...state,
                 skills: obj,
-                error: "",
             }));
         }
     };
@@ -218,7 +211,6 @@ class CharacterCreation extends Component {
         this.setState(state => ({
             ...state,
             abilities: obj,
-            error: "",
         }));
     };
 
@@ -228,7 +220,6 @@ class CharacterCreation extends Component {
         this.setState(state => ({
             ...state,
             abilities: obj,
-            error: "",
         }));
     };
 
@@ -238,7 +229,6 @@ class CharacterCreation extends Component {
             this.setState(state => ({
                 ...state,
                 abilities: [],
-                error: "",
             }));
         } else {
             const obj = [];
@@ -251,18 +241,31 @@ class CharacterCreation extends Component {
             this.setState(state => ({
                 ...state,
                 abilities: obj,
-                error: "",
             }));
         }
     };
 
     onChangeItems = (index, value) => {
         const obj = this.state.items;
-        obj[index] = value;
+        obj[index] = {
+            ...obj[index],
+            name :value,
+        };
         this.setState(state => ({
             ...state,
             items: obj,
-            error: "",
+        }));
+    };
+
+    onChangeItemsQuantity = (index, value) => {
+        const obj = this.state.items;
+        obj[index] = {
+            ...obj[index],
+            quantity :value,
+        };
+        this.setState(state => ({
+            ...state,
+            items: obj,
         }));
     };
 
@@ -273,11 +276,13 @@ class CharacterCreation extends Component {
             });
         } else {
             const obj = this.state.items;
-            obj.push("");
+            obj.push({
+                name: "",
+                quantity: 1,
+            });
             this.setState(state => ({
                 ...state,
                 items: obj,
-                error: "",
             }));
         }
     };
@@ -288,7 +293,6 @@ class CharacterCreation extends Component {
             this.setState(state => ({
                 ...state,
                 items: [],
-                error: "",
             }));
         } else {
             const obj = [];
@@ -301,7 +305,6 @@ class CharacterCreation extends Component {
             this.setState(state => ({
                 ...state,
                 items: obj,
-                error: "",
             }));
         }
     };
@@ -312,7 +315,6 @@ class CharacterCreation extends Component {
         this.setState(state => ({
             ...state,
             weapons: obj,
-            error: "",
         }));
     };
 
@@ -327,7 +329,6 @@ class CharacterCreation extends Component {
             this.setState(state => ({
                 ...state,
                 weapons: obj,
-                error: "",
             }));
         }
     };
@@ -338,7 +339,6 @@ class CharacterCreation extends Component {
             this.setState(state => ({
                 ...state,
                 weapons: [],
-                error: "",
             }));
         } else {
             const obj = [];
@@ -351,7 +351,6 @@ class CharacterCreation extends Component {
             this.setState(state => ({
                 ...state,
                 weapons: obj,
-                error: "",
             }));
         }
     };
@@ -377,7 +376,6 @@ class CharacterCreation extends Component {
                         this.setState({
                             icon: url,
                             iconPath: path,
-                            error: "",
                         });
                     })
                     .catch(error => {
@@ -422,6 +420,7 @@ class CharacterCreation extends Component {
                 ...rest,
                 name,
                 icon,
+                life:this.state.constitution+10,
                 id: this.props.id,
             });
         }
@@ -443,7 +442,7 @@ class CharacterCreation extends Component {
             education,
             magic,
             perception,
-            consitution,
+            constitution,
             totalPointsleft,
         } = this.state;
 
@@ -481,7 +480,8 @@ class CharacterCreation extends Component {
                 )}
                 <div>
                     <div style={styledBoxHeader}>Attributes :</div>
-                    Strength : <input
+                    Strength :{" "}
+                    <input
                         type="number"
                         name="strength"
                         placeholder="strength"
@@ -490,7 +490,8 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Dexterity : <input
+                    Dexterity :{" "}
+                    <input
                         type="number"
                         name="dexterity"
                         placeholder="dexterity"
@@ -499,7 +500,8 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Charisma : <input
+                    Charisma :{" "}
+                    <input
                         type="number"
                         name="charisma"
                         placeholder="charisma"
@@ -508,7 +510,8 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Luck : <input
+                    Luck :{" "}
+                    <input
                         type="number"
                         name="luck"
                         placeholder="luck"
@@ -517,7 +520,8 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Education : <input
+                    Education :{" "}
+                    <input
                         type="number"
                         name="education"
                         placeholder="education"
@@ -526,7 +530,8 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Perception : <input
+                    Perception :{" "}
+                    <input
                         type="number"
                         name="perception"
                         placeholder="perception"
@@ -535,7 +540,8 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Magic : <input
+                    Magic :{" "}
+                    <input
                         type="number"
                         name="magic"
                         placeholder="magic"
@@ -544,11 +550,12 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Constitution : <input
+                    Constitution :{" "}
+                    <input
                         type="number"
-                        name="consitution"
-                        placeholder="consitution"
-                        value={consitution}
+                        name="constitution"
+                        placeholder="constitution"
+                        value={constitution}
                         onChange={e => {
                             this.onChange(e.target.name, e.target.value);
                         }}
@@ -579,7 +586,7 @@ class CharacterCreation extends Component {
                         );
                     })}
                     {skills.length < 6 && (
-                        <button onClick={this.addSkill}>Add an skill</button>
+                        <button onClick={this.addSkill}>Add a skill</button>
                     )}
                 </div>
                 <div>
@@ -608,7 +615,7 @@ class CharacterCreation extends Component {
                         );
                     })}
                     {weapons.length < 2 && (
-                        <button onClick={this.addWeapon}>Add an weapon</button>
+                        <button onClick={this.addWeapon}>Add a weapon</button>
                     )}
                 </div>
                 <div>
@@ -647,9 +654,20 @@ class CharacterCreation extends Component {
                                     type="text"
                                     placeholder={`Item ${index +
                                         1} + description if needed`}
-                                    value={item}
+                                    value={item.name}
                                     onChange={e => {
                                         this.onChangeItems(
+                                            index,
+                                            e.target.value,
+                                        );
+                                    }}
+                                />
+                                <input
+                                    type="number"
+                                    placeholder='X'
+                                    value={item.quantity ? item.quantity : 1}
+                                    onChange={e => {
+                                        this.onChangeItemsQuantity(
                                             index,
                                             e.target.value,
                                         );

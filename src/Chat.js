@@ -22,7 +22,6 @@ const styles = {
     },
     ChatRow: {
         width: "100%",
-        height: "20px",
         float: "left",
         display: "inline-block",
         textAlign: "left",
@@ -42,9 +41,11 @@ const styles = {
     },
     ChatButton: {
         width: "10%",
-        height: "20px",
+        height: "26px",
         float: "left",
         display: "inline-block",
+        textAlign:'center',
+        padding: '0px',
     },
     ChatPanel: {
         width: "100%",

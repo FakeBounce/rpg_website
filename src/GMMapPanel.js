@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import PropTypes from "prop-types";
 
-const widthRightPanel = 300;
+const widthRightPanel = 350;
 const gridLength = 20;
 const gridDimension = Math.floor((window.innerHeight - 250) / gridLength);
 const widthLeft =
