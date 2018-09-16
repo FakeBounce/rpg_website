@@ -117,6 +117,8 @@ PlayerMapPanel.propTypes = {
     itemToDescribe: PropTypes.object.isRequired,
     isMerchantsShowed: PropTypes.bool.isRequired,
     merchantsList: PropTypes.array.isRequired,
+    doSetState: PropTypes.func.isRequired,
+    triggerError: PropTypes.func.isRequired,
 };
 
 export default PlayerMapPanel;

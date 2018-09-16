@@ -532,6 +532,8 @@ class App extends Component {
                                     itemToDescribe={itemToDescribe}
                                     isMerchantsShowed={isMerchantsShowed}
                                     merchantsList={merchantsList}
+                                    doSetState={this.doSetState}
+                                    triggerError={this.triggerError}
                                 />
                             )}
                             <RightPanel
