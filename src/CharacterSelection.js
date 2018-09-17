@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
 
-import CharacterCreation from './CharacterCreation';
-import PropTypes from 'prop-types';
-import ChooseCharacter from './ChooseCharacter';
-import firebase from 'firebase';
+import CharacterCreation from "./CharacterCreation";
+import PropTypes from "prop-types";
+import ChooseCharacter from "./ChooseCharacter";
+import firebase from "firebase";
 
 const styledBoxHeader = {
-    width: '100%',
-    height: '20px',
-    marginBottom: '5px',
-    textAlign: 'center',
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
 };
 
 class CharacterSelection extends Component {
@@ -30,21 +30,32 @@ class CharacterSelection extends Component {
     chooseCharacter = id => {
         const {
             characters,
-            doSetState,
+            chooseStory,
             currentStory,
             uid,
             triggerError,
+            doSetState,
         } = this.props;
+
+        const charToRegister = characters[id];
+        charToRegister.gold =
+            Math.floor(Math.random() * characters[id].luck + 1) * 5;
+        charToRegister.status = "OK";
 
         firebase
             .database()
-            .ref('stories/' + currentStory + '/' + uid)
-            .set({ character: characters[id], characterId: id })
+            .ref("stories/" + currentStory + "/characters/" + uid)
+            .set({ character: charToRegister, characterId: id })
             .then(() => {
-                doSetState({
-                    characterId: id,
-                    character: characters[id],
-                });
+                doSetState(
+                    {
+                        character: charToRegister,
+                        characterId: id,
+                    },
+                    () => {
+                        chooseStory(currentStory);
+                    },
+                );
             })
             .catch(error => {
                 // Handle Errors here.
@@ -65,6 +76,7 @@ class CharacterSelection extends Component {
             uid,
             triggerError,
             currentStory,
+            chooseStory,
         } = this.props;
         const charTab = characters;
         charTab[character.id] = character;
@@ -77,13 +89,21 @@ class CharacterSelection extends Component {
             () => {
                 firebase
                     .database()
-                    .ref('users/' + uid + '/characters')
+                    .ref("users/" + uid + "/characters")
                     .set({ ...charTab })
                     .then(() => {
                         firebase
                             .database()
-                            .ref('stories/' + currentStory + '/' + uid)
+                            .ref(
+                                "stories/" +
+                                    currentStory +
+                                    "/characters/" +
+                                    uid,
+                            )
                             .set({ character, characterId: character.id })
+                            .then(() => {
+                                chooseStory(currentStory);
+                            })
                             .catch(error => {
                                 // Handle Errors here.
                                 triggerError(error);
@@ -93,14 +113,14 @@ class CharacterSelection extends Component {
                         // Handle Errors here.
                         triggerError(error);
                     });
-            }
+            },
         );
     };
 
     render() {
         const { uid, characters, characterCreation, triggerError } = this.props;
 
-        if (typeof characters[1] !== 'undefined' && !characterCreation) {
+        if (typeof characters[1] !== "undefined" && !characterCreation) {
             return (
                 <div>
                     <div style={styledBoxHeader}>Choisir un personnage</div>
@@ -133,6 +153,7 @@ CharacterSelection.propTypes = {
     characters: PropTypes.object.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
+    chooseStory: PropTypes.func.isRequired,
     currentStory: PropTypes.number.isRequired,
 };
 

@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import './App.css';
-import PropTypes from 'prop-types';
-import Chat from './Chat';
+import React, { Component } from "react";
+import "./App.css";
+import PropTypes from "prop-types";
+import Chat from "./Chat";
+import firebase from "firebase";
 
 const widthRightPanel = 350;
 const heightHeader = 100;
@@ -10,219 +11,271 @@ const widthLeft = widthRightPanel - imageSize;
 
 const styles = {
     BoxHeader: {
-        width: '100%',
-        height: '20px',
-        marginBottom: '5px',
-        textAlign: 'center',
+        width: "100%",
+        height: 20,
+        marginBottom: 5,
+        textAlign: "center",
     },
     RightPanel: {
-        position: 'absolute',
+        position: "absolute",
         top: `${heightHeader}px`,
-        right: '0px',
-        borderLeft: '1px solid black',
+        right: 0,
+        borderLeft: "1px solid black",
         width: `${widthRightPanel}px`,
         height: `${window.innerHeight - heightHeader}px`,
     },
     CharPanel: {
-        position: 'relative',
-        borderBottom: '1px solid black',
-        width: '100%',
-        height: '33%',
+        borderBottom: "1px solid black",
+        width: "100%",
+        height: "33%",
     },
-    CharacterBox: { position: 'relative', height: '100%' },
-    ItemsPanel: {
-        borderBottom: '1px solid black',
-        width: '100%',
-        height: '33%',
+    CharacterBox: { position: "relative", height: "100%" },
+    TeamPanel: {
+        borderBottom: "1px solid black",
+        width: "100%",
+        height: "33%",
+    },
+    teamCharacters: {
+        width: `${widthRightPanel}px`,
+        height: `${(window.innerHeight - heightHeader) * 0.33 - 30}px`,
+        marginTop: 30,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        overflowY: "auto",
+    },
+    characterHeader: {
+        width: `${widthRightPanel}px`,
+        height: `${heightHeader}px`,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
     },
     characterHeaderinfos: {
         width: `${widthLeft}px`,
-        height: '49px',
-        position: 'relative',
-        float: 'left',
-        display: 'inline-block',
-        borderBottom: '1px solid black',
+        height: 49,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        borderBottom: "1px solid black",
+    },
+    characterTeamHeader: {
+        width: `${widthRightPanel - 20}px`,
+        height: `${heightHeader / 2}px`,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        borderTop: "1px solid black",
+        borderBottom: "1px solid black",
+    },
+    characterTeamHeaderInfo: {
+        position: "relative",
+        width: `${(widthLeft - 20 + imageSize / 2) / 3}px`,
+        height: 25,
+        float: "left",
+        display: "inline-block",
+    },
+    characterTeamHeaderImage: {
+        position: "relative",
+        width: `${imageSize / 2}px`,
+        height: `${imageSize / 2}px`,
+        float: "left",
+        display: "inline-block",
     },
     characterAttributeInfos: {
         width: `${imageSize - 1}px`,
         height: `${(window.innerHeight - heightHeader) * 0.33 - imageSize}px`,
-        position: 'relative',
-        float: 'left',
-        display: 'inline-block',
-        borderRight: '1px solid black',
-        overflowY: 'scroll',
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        borderRight: "1px solid black",
+        overflowY: "auto",
     },
     characterOtherInfos: {
         width: `${widthLeft}px`,
         height: `${(window.innerHeight - heightHeader) * 0.33 - imageSize}px`,
-        position: 'relative',
-        float: 'left',
-        display: 'inline-block',
+        position: "relative",
+        float: "left",
+        display: "inline-block",
     },
     tabsButtons: {
         width: `${widthLeft}px`,
-        height: '25px',
-        position: 'relative',
-        float: 'left',
-        display: 'inline-block',
+        height: 25,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
     },
     tabButton: {
         width: `${widthLeft / 4}px`,
-        height: '25px',
-        padding: '0px',
-        position: 'relative',
-        float: 'left',
-        display: 'inline-block',
+        height: 25,
+        padding: 0,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
     },
     tabPanel: {
         width: `${widthLeft}px`,
         height: `${(window.innerHeight - heightHeader) * 0.33 -
             imageSize -
             50}px`,
-        padding: '0px',
-        position: 'relative',
-        float: 'left',
-        display: 'inline-block',
-        overflowY: 'scroll',
+        padding: 0,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        overflowY: "auto",
     },
     tabPanelItem: {
         width: `${widthLeft - 20}px`,
-        height: '25px',
-        paddingHorizontal: '5px',
-        position: 'relative',
-        float: 'left',
-        display: 'inline-block',
+        height: 25,
+        paddingHorizontal: 5,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
     },
     itemName: {
         width: `${widthLeft - 70}px`,
-        height: '25px',
-        position: 'relative',
-        float: 'left',
-        display: 'inline-block',
+        height: 25,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
     },
     itemQuantity: {
-        width: '30px',
-        height: '15px',
-        position: 'relative',
-        float: 'left',
-        display: 'inline-block',
-        padding: '0px',
-        margin: '0px',
-        textAlign: 'center',
+        width: 30,
+        height: 15,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        padding: 0,
+        margin: 0,
+        textAlign: "center",
     },
     healthBar: {
-        boxSizing: 'border-box',
+        boxSizing: "border-box",
         width: `${widthLeft}px`,
-        height: '20px',
-        padding: '5px',
-        background: '#ddd',
-        borderRadius: '5px',
-        position: 'relative',
-        float: 'left',
-        display: 'inline-block',
-        marginBottom: '5px',
+        height: 20,
+        padding: 5,
+        background: "#ddd",
+        borderRadius: 5,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        marginBottom: 5,
+    },
+    teamHealthBar: {
+        boxSizing: "border-box",
+        width: `${widthLeft - 20 + imageSize / 2}px`,
+        height: 20,
+        padding: 5,
+        background: "#ddd",
+        borderRadius: 5,
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        marginBottom: 5,
     },
     bar: {
-        background: '#c54',
-        position: 'relative',
-        height: '10px',
-        transition: 'width .5s linear',
+        background: "#c54",
+        position: "relative",
+        height: 10,
+        transition: "width .5s linear",
     },
     hit: {
-        background: 'rgba(255,255,255,0.6)',
-        position: 'absolute',
-        top: '0px',
-        right: '0px',
-        bottom: '0px',
-        transition: 'width .5s linear',
+        background: "rgba(255,255,255,0.6)",
+        position: "absolute",
+        top: 0,
+        right: 0,
+        bottom: 0,
+        transition: "width .5s linear",
+    },
+    lifeInput: {
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        width: 35,
+        height: 19,
+    },
+    lifeSelect: {
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        width: 50,
+        height: 19,
+    },
+    lifeButton: {
+        position: "relative",
+        float: "left",
+        display: "inline-block",
+        width: 40,
+        height: 25,
+        padding: 0,
     },
 };
 const styledName = {
-    position: 'relative',
+    position: "relative",
     width: `${widthLeft}px`,
-    height: '25px',
-    float: 'left',
-    display: 'inline-block',
+    height: 25,
+    float: "left",
+    display: "inline-block",
+};
+const styledHeaderText = {
+    position: "absolute",
+    width: `${widthRightPanel}px`,
+    height: 25,
+    float: "left",
+    display: "inline-block",
+    left: 0,
 };
 const styledHeaderStatus = {
-    position: 'relative',
+    position: "relative",
     width: `${widthLeft}px`,
-    height: '25px',
-    float: 'left',
-    display: 'inline-block',
+    height: 25,
+    float: "left",
+    display: "inline-block",
 };
 const styledHeaderGold = {
-    position: 'relative',
+    position: "relative",
     width: `${widthLeft}px`,
-    height: '25px',
-    float: 'left',
-    display: 'inline-block',
+    height: 25,
+    float: "left",
+    display: "inline-block",
 };
 const styledIcon = {
-    position: 'relative',
+    position: "relative",
     width: `${imageSize}px`,
     height: `${imageSize}px`,
-    float: 'left',
-    display: 'inline-block',
-};
-const styledText = {
-    marginLeft: '5px',
-    float: 'left',
-    display: 'inline-block',
-};
-const styledWeapon = {
-    marginLeft: '5px',
-    float: 'left',
-    display: 'inline-block',
+    float: "left",
+    display: "inline-block",
 };
 const styledAttribute = {
-    marginLeft: '5px',
-    float: 'left',
-    display: 'inline-block',
+    marginLeft: 5,
+    float: "left",
+    display: "inline-block",
 };
-const styledSkill = {
-    marginLeft: '5px',
-    float: 'left',
-    display: 'inline-block',
-};
-const styledAbility = {
-    marginLeft: '5px',
-    float: 'left',
-    display: 'inline-block',
-};
-const styledItem = {
-    marginLeft: '5px',
-    float: 'left',
-    display: 'inline-block',
-};
-const styledItemName = {
-    marginLeft: '5px',
-    float: 'left',
-    display: 'inline-block',
-};
-const styledItemQuantity = {
-    marginLeft: '5px',
-    float: 'left',
-    display: 'inline-block',
-};
-const styledGold = {
-    marginLeft: '5px',
-    float: 'left',
-    display: 'inline-block',
-};
+
+const statusList = [
+    "OK",
+    "Poisoned",
+    "Paralyzed",
+    "Burned",
+    "Sleepy",
+    "Under control",
+    "Dead",
+];
 
 class RightPanel extends Component {
     state = {
-        maxHealth: this.props.character.life,
-        healthPoints: '100%',
-        healthHit: '0%',
-        infoTab: 'Weapons',
+        status: this.props.character.status
+            ? this.props.character.status
+            : "OK",
+        infoTab: "Weapons",
         damageTaken: 0,
+        gold: 0,
     };
 
     onChange = (name, value) => {
         const obj = {};
         obj[name] = value;
+        console.log('obj',obj);
         this.setState(state => ({
             ...state,
             ...obj,
@@ -236,62 +289,77 @@ class RightPanel extends Component {
         }));
     };
 
-    onHit = () => {
+    onLifeChange = () => {
         const {
-            character: { life },
+            character: { health, maxHealth },
+            currentStory,
+            uid,
         } = this.props;
-        const { damageTaken, maxHealth } = this.state;
+        const { damageTaken } = this.state;
 
-        const percentHealthLeft = ((life - damageTaken) / maxHealth) * 100;
-        const percentHealthDealt = (life / maxHealth) * 100 - percentHealthLeft;
-
-        const pHL =
-            percentHealthLeft < 0
+        const healthLeft =
+            health + damageTaken < 0
                 ? 0
-                : percentHealthLeft > 100
-                    ? 100
-                    : percentHealthLeft;
-        const pHD =
-            percentHealthDealt < 0
-                ? 0
-                : percentHealthDealt > 100
-                    ? 100
-                    : percentHealthDealt;
+                : health + damageTaken > maxHealth
+                    ? maxHealth
+                    : health + damageTaken;
 
-        this.setState(
-            state => ({
-                ...state,
-                healthHit: `${pHD}%`,
-            }),
-            () => {
-                setTimeout(() => {
-                    this.setState(state => ({
-                        ...state,
-                        healthPoints: `${pHL}%`,
-                        healthHit: '0%',
-                    }));
-                }, 1000);
-            }
-        );
+        firebase
+            .database()
+            .ref(
+                "stories/" +
+                    currentStory +
+                    "/characters/" +
+                    uid +
+                    "/character/health",
+            )
+            .set(healthLeft)
+            .catch(error => {
+                // Handle Errors here.
+                this.triggerError(error);
+            });
     };
 
-    onSave = () => {
-        this.setState(
-            state => ({
-                ...state,
-                healthPoints: '100%',
-                healthHit: '20%',
-            }),
-            () => {
-                setTimeout(() => {
-                    this.setState(state => ({
-                        ...state,
-                        healthPoints: '100%',
-                        healthHit: '0%',
-                    }));
-                }, 1000);
-            }
-        );
+    onStatusChange = () => {
+        const { currentStory, uid } = this.props;
+        const { status } = this.state;
+
+        firebase
+            .database()
+            .ref(
+                "stories/" +
+                    currentStory +
+                    "/characters/" +
+                    uid +
+                    "/character/status",
+            )
+            .set(status)
+            .catch(error => {
+                // Handle Errors here.
+                this.triggerError(error);
+            });
+    };
+
+    onGoldChange = () => {
+        const { character, currentStory, uid } = this.props;
+        const { gold } = this.state;
+
+        const goldToSet = character.gold + gold < 0 ? 0 : character.gold + gold;
+
+        firebase
+            .database()
+            .ref(
+                "stories/" +
+                    currentStory +
+                    "/characters/" +
+                    uid +
+                    "/character/gold",
+            )
+            .set(goldToSet)
+            .catch(error => {
+                // Handle Errors here.
+                this.triggerError(error);
+            });
     };
 
     displayCharacter = () => {
@@ -300,7 +368,7 @@ class RightPanel extends Component {
 
         return (
             <div style={styles.CharacterBox}>
-                <div>
+                <div style={styles.characterHeader}>
                     <img
                         src={character.icon}
                         alt={character.name}
@@ -311,20 +379,15 @@ class RightPanel extends Component {
                         <div
                             style={{
                                 ...styles.bar,
-                                width: this.state.healthPoints,
+                                width: `${(character.health /
+                                    character.maxHealth) *
+                                    100}%`,
                             }}
-                        >
-                            <div
-                                style={{
-                                    ...styles.hit,
-                                    width: this.state.healthHit,
-                                }}
-                            />
-                        </div>
+                        />
                     </div>
                     <div style={styles.characterHeaderinfos}>
                         <div style={styledHeaderStatus}>
-                            Status :{character.status ? character.status : 'OK'}
+                            Status :{character.status ? character.status : "OK"}
                         </div>
                         <div style={styledHeaderGold}>
                             Gold : {character.gold ? character.gold : 0}
@@ -357,32 +420,32 @@ class RightPanel extends Component {
                 <div style={styles.characterOtherInfos}>
                     <div style={styles.tabsButtons}>
                         <button
-                            onClick={() => this.onChangeTab('Weapons')}
+                            onClick={() => this.onChangeTab("Weapons")}
                             style={styles.tabButton}
                         >
                             Weapons
                         </button>
                         <button
-                            onClick={() => this.onChangeTab('Abilities')}
+                            onClick={() => this.onChangeTab("Abilities")}
                             style={styles.tabButton}
                         >
                             Abilities
                         </button>
                         <button
-                            onClick={() => this.onChangeTab('Skills')}
+                            onClick={() => this.onChangeTab("Skills")}
                             style={styles.tabButton}
                         >
                             Skills
                         </button>
                         <button
-                            onClick={() => this.onChangeTab('Items')}
+                            onClick={() => this.onChangeTab("Items")}
                             style={styles.tabButton}
                         >
                             Items
                         </button>
                     </div>
                     <div style={styles.tabPanel}>
-                        {infoTab === 'Weapons' && (
+                        {infoTab === "Weapons" && (
                             <div>
                                 <div style={styles.BoxHeader}>Weapons :</div>
                                 {character.weapons.map(weapon => {
@@ -394,7 +457,7 @@ class RightPanel extends Component {
                                 })}
                             </div>
                         )}
-                        {infoTab === 'Abilities' && (
+                        {infoTab === "Abilities" && (
                             <div>
                                 <div style={styles.BoxHeader}>Abilities :</div>
                                 {character.abilities.map(ability => {
@@ -406,7 +469,7 @@ class RightPanel extends Component {
                                 })}
                             </div>
                         )}
-                        {infoTab === 'Skills' && (
+                        {infoTab === "Skills" && (
                             <div>
                                 <div style={styles.BoxHeader}>Skills :</div>
                                 {character.skills.map(skill => {
@@ -418,7 +481,7 @@ class RightPanel extends Component {
                                 })}
                             </div>
                         )}
-                        {infoTab === 'Items' && (
+                        {infoTab === "Items" && (
                             <div>
                                 <div style={styles.BoxHeader}>Items :</div>
                                 {character.items.map(item => {
@@ -446,24 +509,46 @@ class RightPanel extends Component {
                         onChange={e => {
                             this.onChange(e.target.name, e.target.value);
                         }}
-                        style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 0,
-                            width: 30,
-                        }}
+                        style={styles.lifeInput}
                     />
                     <button
-                        onClick={this.onHit}
-                        style={{ position: 'absolute', bottom: 0, left: 40 }}
+                        onClick={this.onLifeChange}
+                        style={styles.lifeButton}
                     >
-                        Hp lost
+                        HP
                     </button>
-                    <button
-                        onClick={this.onSave}
-                        style={{ position: 'absolute', bottom: 0, right: 0 }}
+                    <select
+                        value={this.state.status}
+                        onChange={e => {
+                            this.onChange('status', e.target.value);
+                        }}
+                        style={styles.lifeSelect}
                     >
-                        Save
+                        {statusList.map(sts => {
+                            return <option value={sts}>{sts}</option>;
+                        })}
+                    </select>
+                    <button
+                        onClick={this.onStatusChange}
+                        style={styles.lifeButton}
+                    >
+                        Status
+                    </button>
+                    <input
+                        type="number"
+                        placeholder="X"
+                        name="gold"
+                        value={this.state.gold}
+                        onChange={e => {
+                            this.onChange(e.target.name, e.target.value);
+                        }}
+                        style={styles.lifeInput}
+                    />
+                    <button
+                        onClick={this.onGoldChange}
+                        style={styles.lifeButton}
+                    >
+                        Gold
                     </button>
                 </div>
             </div>
@@ -481,13 +566,50 @@ class RightPanel extends Component {
             triggerError,
             character,
             users,
+            storyCharacters,
         } = this.props;
 
         return (
             <div style={styles.RightPanel}>
                 <div style={styles.CharPanel}>{this.displayCharacter()}</div>
-                <div style={styles.ItemsPanel}>
-                    <div style={styles.BoxHeader}>Equipe</div>
+                <div style={styles.TeamPanel}>
+                    <div style={styledHeaderText}>Equipe</div>
+                    <div style={styles.teamCharacters}>
+                        {storyCharacters.map(storyCharacter => {
+                            return (
+                                <div style={styles.characterTeamHeader}>
+                                    <img
+                                        src={character.icon}
+                                        alt={character.name}
+                                        style={styles.characterTeamHeaderImage}
+                                    />
+                                    <div style={styles.characterTeamHeaderInfo}>
+                                        {character.name}
+                                    </div>
+                                    <div style={styles.characterTeamHeaderInfo}>
+                                        Status :
+                                        {character.status
+                                            ? character.status
+                                            : "OK"}
+                                    </div>
+                                    <div style={styles.characterTeamHeaderInfo}>
+                                        Gold :
+                                        {character.gold ? character.gold : 0}
+                                    </div>
+                                    <div style={styles.teamHealthBar}>
+                                        <div
+                                            style={{
+                                                ...styles.bar,
+                                                width: `${(character.health /
+                                                    character.maxHealth) *
+                                                    100}%`,
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
                 <Chat
                     users={users}
@@ -506,12 +628,15 @@ class RightPanel extends Component {
 }
 
 RightPanel.propTypes = {
+    uid: PropTypes.string.isRequired,
+    currentStory: PropTypes.number.isRequired,
     users: PropTypes.object.isRequired,
     character: PropTypes.object.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     pseudo: PropTypes.string.isRequired,
     chatInput: PropTypes.string.isRequired,
     chatHistory: PropTypes.array.isRequired,
+    storyCharacters: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,

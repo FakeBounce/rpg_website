@@ -420,7 +420,8 @@ class CharacterCreation extends Component {
                 ...rest,
                 name,
                 icon,
-                life:this.state.constitution+10,
+                health:this.state.constitution+10,
+                maxHealth:this.state.constitution+10,
                 id: this.props.id,
             });
         }

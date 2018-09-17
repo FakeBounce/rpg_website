@@ -18,7 +18,7 @@ const styles = {
             (25 + 20 + 5)}px`,
         float: "left",
         display: "inline-block",
-        overflowY: "scroll",
+        overflowY: "auto",
     },
     ChatRow: {
         width: "100%",
