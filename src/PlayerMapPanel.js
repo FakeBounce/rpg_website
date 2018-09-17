@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import "./App.css";
-import Merchant from "./Merchant";
-import Item from "./Item";
-import ItemDescription from "./ItemDescription";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import './App.css';
+import Merchant from './Merchant';
+import Item from './Item';
+import ItemDescription from './ItemDescription';
+import PropTypes from 'prop-types';
 
 const widthRightPanel = 350;
 const gridLength = 20;
@@ -16,19 +16,21 @@ const widthLeft =
 const heightLeft = gridLength * gridDimension;
 
 const styledBoxHeader = {
-    width: "100%",
-    height: "20px",
-    marginBottom: "5px",
-    textAlign: "center",
+    width: '100%',
+    height: '20px',
+    marginBottom: '5px',
+    textAlign: 'center',
 };
 
+console.log('widthLeft',widthLeft);
+
 const styledMapSide = {
-    border: "1px solid brown",
-    width: `${widthLeft / 2 - 3}px`,
+    border: '1px solid brown',
+    width: `${widthLeft / 2 - 11}px`,
     height: `${heightLeft / 2 - 1}px`,
-    display: "inline-block",
-    float: "left",
-    textAlign: "left",
+    display: 'inline-block',
+    float: 'left',
+    textAlign: 'left',
 };
 
 class PlayerMapPanel extends Component {
@@ -81,7 +83,13 @@ class PlayerMapPanel extends Component {
         } = this.props;
 
         return (
-            <div>
+            <div
+                style={{
+                    float: 'left',
+                    width: `${widthLeft}px`,
+                    display: 'inline-block',
+                }}
+            >
                 {isMerchantsShowed && (
                     <div style={styledMapSide}>
                         <div style={styledBoxHeader}>Liste des quêtes</div>

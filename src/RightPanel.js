@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import "./App.css";
-import PropTypes from "prop-types";
-import Chat from "./Chat";
+import React, { Component } from 'react';
+import './App.css';
+import PropTypes from 'prop-types';
+import Chat from './Chat';
 
 const widthRightPanel = 350;
 const heightHeader = 100;
@@ -10,212 +10,213 @@ const widthLeft = widthRightPanel - imageSize;
 
 const styles = {
     BoxHeader: {
-        width: "100%",
-        height: "20px",
-        marginBottom: "5px",
-        textAlign: "center",
+        width: '100%',
+        height: '20px',
+        marginBottom: '5px',
+        textAlign: 'center',
     },
     RightPanel: {
-        position: "absolute",
+        position: 'absolute',
         top: `${heightHeader}px`,
-        right: "0px",
-        borderLeft: "1px solid black",
+        right: '0px',
+        borderLeft: '1px solid black',
         width: `${widthRightPanel}px`,
         height: `${window.innerHeight - heightHeader}px`,
     },
     CharPanel: {
-        position: "relative",
-        borderBottom: "1px solid black",
-        width: "100%",
-        height: "33%",
+        position: 'relative',
+        borderBottom: '1px solid black',
+        width: '100%',
+        height: '33%',
     },
-    CharacterBox: { position: "relative", height: "100%" },
+    CharacterBox: { position: 'relative', height: '100%' },
     ItemsPanel: {
-        borderBottom: "1px solid black",
-        width: "100%",
-        height: "33%",
+        borderBottom: '1px solid black',
+        width: '100%',
+        height: '33%',
     },
     characterHeaderinfos: {
         width: `${widthLeft}px`,
-        height: "49px",
-        position: "relative",
-        float: "left",
-        display: "inline-block",
-        borderBottom: "1px solid black",
+        height: '49px',
+        position: 'relative',
+        float: 'left',
+        display: 'inline-block',
+        borderBottom: '1px solid black',
     },
     characterAttributeInfos: {
         width: `${imageSize - 1}px`,
         height: `${(window.innerHeight - heightHeader) * 0.33 - imageSize}px`,
-        position: "relative",
-        float: "left",
-        display: "inline-block",
-        borderRight: "1px solid black",
+        position: 'relative',
+        float: 'left',
+        display: 'inline-block',
+        borderRight: '1px solid black',
+        overflowY: 'scroll',
     },
     characterOtherInfos: {
         width: `${widthLeft}px`,
         height: `${(window.innerHeight - heightHeader) * 0.33 - imageSize}px`,
-        position: "relative",
-        float: "left",
-        display: "inline-block",
+        position: 'relative',
+        float: 'left',
+        display: 'inline-block',
     },
     tabsButtons: {
         width: `${widthLeft}px`,
-        height: "25px",
-        position: "relative",
-        float: "left",
-        display: "inline-block",
+        height: '25px',
+        position: 'relative',
+        float: 'left',
+        display: 'inline-block',
     },
     tabButton: {
         width: `${widthLeft / 4}px`,
-        height: "25px",
-        padding: "0px",
-        position: "relative",
-        float: "left",
-        display: "inline-block",
+        height: '25px',
+        padding: '0px',
+        position: 'relative',
+        float: 'left',
+        display: 'inline-block',
     },
     tabPanel: {
         width: `${widthLeft}px`,
         height: `${(window.innerHeight - heightHeader) * 0.33 -
             imageSize -
             50}px`,
-        padding: "0px",
-        position: "relative",
-        float: "left",
-        display: "inline-block",
-        overflowY: "scroll",
+        padding: '0px',
+        position: 'relative',
+        float: 'left',
+        display: 'inline-block',
+        overflowY: 'scroll',
     },
     tabPanelItem: {
         width: `${widthLeft - 20}px`,
-        height: "25px",
-        paddingHorizontal: "5px",
-        position: "relative",
-        float: "left",
-        display: "inline-block",
+        height: '25px',
+        paddingHorizontal: '5px',
+        position: 'relative',
+        float: 'left',
+        display: 'inline-block',
     },
     itemName: {
         width: `${widthLeft - 70}px`,
-        height: "25px",
-        position: "relative",
-        float: "left",
-        display: "inline-block",
+        height: '25px',
+        position: 'relative',
+        float: 'left',
+        display: 'inline-block',
     },
     itemQuantity: {
-        width: "30px",
-        height: "15px",
-        position: "relative",
-        float: "left",
-        display: "inline-block",
+        width: '30px',
+        height: '15px',
+        position: 'relative',
+        float: 'left',
+        display: 'inline-block',
         padding: '0px',
         margin: '0px',
         textAlign: 'center',
     },
     healthBar: {
-        boxSizing: "border-box",
+        boxSizing: 'border-box',
         width: `${widthLeft}px`,
-        height: "20px",
-        padding: "5px",
-        background: "#ddd",
-        borderRadius: "5px",
-        position: "relative",
-        float: "left",
-        display: "inline-block",
-        marginBottom: "5px",
+        height: '20px',
+        padding: '5px',
+        background: '#ddd',
+        borderRadius: '5px',
+        position: 'relative',
+        float: 'left',
+        display: 'inline-block',
+        marginBottom: '5px',
     },
     bar: {
-        background: "#c54",
-        position: "relative",
-        height: "10px",
-        transition: "width .5s linear",
+        background: '#c54',
+        position: 'relative',
+        height: '10px',
+        transition: 'width .5s linear',
     },
     hit: {
-        background: "rgba(255,255,255,0.6)",
-        position: "absolute",
-        top: "0px",
-        right: "0px",
-        bottom: "0px",
-        transition: "width .5s linear",
+        background: 'rgba(255,255,255,0.6)',
+        position: 'absolute',
+        top: '0px',
+        right: '0px',
+        bottom: '0px',
+        transition: 'width .5s linear',
     },
 };
 const styledName = {
-    position: "relative",
+    position: 'relative',
     width: `${widthLeft}px`,
-    height: "25px",
-    float: "left",
-    display: "inline-block",
+    height: '25px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledHeaderStatus = {
-    position: "relative",
+    position: 'relative',
     width: `${widthLeft}px`,
-    height: "25px",
-    float: "left",
-    display: "inline-block",
+    height: '25px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledHeaderGold = {
-    position: "relative",
+    position: 'relative',
     width: `${widthLeft}px`,
-    height: "25px",
-    float: "left",
-    display: "inline-block",
+    height: '25px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledIcon = {
-    position: "relative",
+    position: 'relative',
     width: `${imageSize}px`,
     height: `${imageSize}px`,
-    float: "left",
-    display: "inline-block",
+    float: 'left',
+    display: 'inline-block',
 };
 const styledText = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
+    marginLeft: '5px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledWeapon = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
+    marginLeft: '5px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledAttribute = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
+    marginLeft: '5px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledSkill = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
+    marginLeft: '5px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledAbility = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
+    marginLeft: '5px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledItem = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
+    marginLeft: '5px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledItemName = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
+    marginLeft: '5px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledItemQuantity = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
+    marginLeft: '5px',
+    float: 'left',
+    display: 'inline-block',
 };
 const styledGold = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
+    marginLeft: '5px',
+    float: 'left',
+    display: 'inline-block',
 };
 
 class RightPanel extends Component {
     state = {
         maxHealth: this.props.character.life,
-        healthPoints: "100%",
-        healthHit: "0%",
-        infoTab: "Weapons",
+        healthPoints: '100%',
+        healthHit: '0%',
+        infoTab: 'Weapons',
         damageTaken: 0,
     };
 
@@ -236,14 +237,26 @@ class RightPanel extends Component {
     };
 
     onHit = () => {
-        const {character: {life}} = this.props;
-        const {damageTaken, maxHealth} = this.state;
+        const {
+            character: { life },
+        } = this.props;
+        const { damageTaken, maxHealth } = this.state;
 
-        const percentHealthLeft = (life - damageTaken)/maxHealth * 100;
-        const percentHealthDealt = life/maxHealth*100 - percentHealthLeft;
+        const percentHealthLeft = ((life - damageTaken) / maxHealth) * 100;
+        const percentHealthDealt = (life / maxHealth) * 100 - percentHealthLeft;
 
-        const pHL = percentHealthLeft < 0 ? 0 : percentHealthLeft > 100 ? 100 : percentHealthLeft;
-        const pHD = percentHealthDealt < 0 ? 0 : percentHealthDealt > 100 ? 100 : percentHealthDealt;
+        const pHL =
+            percentHealthLeft < 0
+                ? 0
+                : percentHealthLeft > 100
+                    ? 100
+                    : percentHealthLeft;
+        const pHD =
+            percentHealthDealt < 0
+                ? 0
+                : percentHealthDealt > 100
+                    ? 100
+                    : percentHealthDealt;
 
         this.setState(
             state => ({
@@ -255,10 +268,10 @@ class RightPanel extends Component {
                     this.setState(state => ({
                         ...state,
                         healthPoints: `${pHL}%`,
-                        healthHit: "0%",
+                        healthHit: '0%',
                     }));
                 }, 1000);
-            },
+            }
         );
     };
 
@@ -266,18 +279,18 @@ class RightPanel extends Component {
         this.setState(
             state => ({
                 ...state,
-                healthPoints: "100%",
-                healthHit: "20%",
+                healthPoints: '100%',
+                healthHit: '20%',
             }),
             () => {
                 setTimeout(() => {
                     this.setState(state => ({
                         ...state,
-                        healthPoints: "100%",
-                        healthHit: "0%",
+                        healthPoints: '100%',
+                        healthHit: '0%',
                     }));
                 }, 1000);
-            },
+            }
         );
     };
 
@@ -311,7 +324,7 @@ class RightPanel extends Component {
                     </div>
                     <div style={styles.characterHeaderinfos}>
                         <div style={styledHeaderStatus}>
-                            Status :{character.status ? character.status : "OK"}
+                            Status :{character.status ? character.status : 'OK'}
                         </div>
                         <div style={styledHeaderGold}>
                             Gold : {character.gold ? character.gold : 0}
@@ -344,32 +357,32 @@ class RightPanel extends Component {
                 <div style={styles.characterOtherInfos}>
                     <div style={styles.tabsButtons}>
                         <button
-                            onClick={() => this.onChangeTab("Weapons")}
+                            onClick={() => this.onChangeTab('Weapons')}
                             style={styles.tabButton}
                         >
                             Weapons
                         </button>
                         <button
-                            onClick={() => this.onChangeTab("Abilities")}
+                            onClick={() => this.onChangeTab('Abilities')}
                             style={styles.tabButton}
                         >
                             Abilities
                         </button>
                         <button
-                            onClick={() => this.onChangeTab("Skills")}
+                            onClick={() => this.onChangeTab('Skills')}
                             style={styles.tabButton}
                         >
                             Skills
                         </button>
                         <button
-                            onClick={() => this.onChangeTab("Items")}
+                            onClick={() => this.onChangeTab('Items')}
                             style={styles.tabButton}
                         >
                             Items
                         </button>
                     </div>
                     <div style={styles.tabPanel}>
-                        {infoTab === "Weapons" && (
+                        {infoTab === 'Weapons' && (
                             <div>
                                 <div style={styles.BoxHeader}>Weapons :</div>
                                 {character.weapons.map(weapon => {
@@ -381,7 +394,7 @@ class RightPanel extends Component {
                                 })}
                             </div>
                         )}
-                        {infoTab === "Abilities" && (
+                        {infoTab === 'Abilities' && (
                             <div>
                                 <div style={styles.BoxHeader}>Abilities :</div>
                                 {character.abilities.map(ability => {
@@ -393,7 +406,7 @@ class RightPanel extends Component {
                                 })}
                             </div>
                         )}
-                        {infoTab === "Skills" && (
+                        {infoTab === 'Skills' && (
                             <div>
                                 <div style={styles.BoxHeader}>Skills :</div>
                                 {character.skills.map(skill => {
@@ -405,7 +418,7 @@ class RightPanel extends Component {
                                 })}
                             </div>
                         )}
-                        {infoTab === "Items" && (
+                        {infoTab === 'Items' && (
                             <div>
                                 <div style={styles.BoxHeader}>Items :</div>
                                 {character.items.map(item => {
@@ -427,21 +440,28 @@ class RightPanel extends Component {
                     </div>
                     <input
                         type="number"
-                        placeholder='X'
+                        placeholder="X"
                         name="damageTaken"
                         value={this.state.damageTaken}
                         onChange={e => {
                             this.onChange(e.target.name, e.target.value);
                         }}
-                        style={{ position: "absolute", bottom: 0, left: 0, width: 30 }}
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            width: 30,
+                        }}
                     />
                     <button
                         onClick={this.onHit}
-                        style={{ position: "absolute", bottom: 0, left: 40 }}
-                    >Hp lost</button>
+                        style={{ position: 'absolute', bottom: 0, left: 40 }}
+                    >
+                        Hp lost
+                    </button>
                     <button
                         onClick={this.onSave}
-                        style={{ position: "absolute", bottom: 0, right: 0 }}
+                        style={{ position: 'absolute', bottom: 0, right: 0 }}
                     >
                         Save
                     </button>

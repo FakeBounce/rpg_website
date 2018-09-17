@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import "./App.css";
+import React, { Component } from 'react';
+import './App.css';
 
-import CharacterCreation from "./CharacterCreation";
-import PropTypes from "prop-types";
-import ChooseCharacter from "./ChooseCharacter";
-import firebase from "firebase";
+import CharacterCreation from './CharacterCreation';
+import PropTypes from 'prop-types';
+import ChooseCharacter from './ChooseCharacter';
+import firebase from 'firebase';
 
 const styledBoxHeader = {
-    width: "100%",
-    height: "20px",
-    marginBottom: "5px",
-    textAlign: "center",
+    width: '100%',
+    height: '20px',
+    marginBottom: '5px',
+    textAlign: 'center',
 };
 
 class CharacterSelection extends Component {
@@ -28,9 +28,28 @@ class CharacterSelection extends Component {
     };
 
     chooseCharacter = id => {
-        this.props.doSetState({
-            character: id,
-        });
+        const {
+            characters,
+            doSetState,
+            currentStory,
+            uid,
+            triggerError,
+        } = this.props;
+
+        firebase
+            .database()
+            .ref('stories/' + currentStory + '/' + uid)
+            .set({ character: characters[id], characterId: id })
+            .then(() => {
+                doSetState({
+                    characterId: id,
+                    character: characters[id],
+                });
+            })
+            .catch(error => {
+                // Handle Errors here.
+                triggerError(error);
+            });
     };
 
     goToCharacterForm = () => {
@@ -40,24 +59,41 @@ class CharacterSelection extends Component {
     };
 
     createCharacter = character => {
-        const { doSetState, characters, uid, triggerError } = this.props;
+        const {
+            doSetState,
+            characters,
+            uid,
+            triggerError,
+            currentStory,
+        } = this.props;
         const charTab = characters;
         charTab[character.id] = character;
         doSetState(
             {
                 characters: charTab,
-                character: character.id,
+                characterId: character.id,
+                character: character,
             },
             () => {
                 firebase
                     .database()
-                    .ref("users/" + uid + "/characters")
+                    .ref('users/' + uid + '/characters')
                     .set({ ...charTab })
+                    .then(() => {
+                        firebase
+                            .database()
+                            .ref('stories/' + currentStory + '/' + uid)
+                            .set({ character, characterId: character.id })
+                            .catch(error => {
+                                // Handle Errors here.
+                                triggerError(error);
+                            });
+                    })
                     .catch(error => {
                         // Handle Errors here.
                         triggerError(error);
                     });
-            },
+            }
         );
     };
 
@@ -97,6 +133,7 @@ CharacterSelection.propTypes = {
     characters: PropTypes.object.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
+    currentStory: PropTypes.number.isRequired,
 };
 
 export default CharacterSelection;

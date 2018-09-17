@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import firebase from "firebase";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
 
 class IsNotAuth extends Component {
     handleKeyPress = event => {
-        if (event.key === "Enter") {
+        if (event.key === 'Enter') {
             this.signIn();
         }
     };
@@ -18,15 +18,17 @@ class IsNotAuth extends Component {
             createTable,
             createChat,
             loadUsers,
+            loadStories,
         } = this.props;
+
         firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then(() => {
                 firebase
                     .database()
-                    .ref("/users/" + firebase.auth().currentUser.uid)
-                    .once("value")
+                    .ref('/users/' + firebase.auth().currentUser.uid)
+                    .once('value')
                     .then(snapshot => {
                         doSetState(
                             {
@@ -38,7 +40,8 @@ class IsNotAuth extends Component {
                                 createTable();
                                 createChat();
                                 loadUsers();
-                            },
+                                loadStories();
+                            }
                         );
                     });
             })
@@ -64,7 +67,7 @@ class IsNotAuth extends Component {
             .then(() => {
                 firebase
                     .database()
-                    .ref("users/" + firebase.auth().currentUser.uid)
+                    .ref('users/' + firebase.auth().currentUser.uid)
                     .set({
                         photoUrl: firebase.auth().currentUser.photoURL,
                         name: firebase.auth().currentUser.displayName,
@@ -126,6 +129,7 @@ IsNotAuth.propTypes = {
     createChat: PropTypes.func.isRequired,
     createTable: PropTypes.func.isRequired,
     loadUsers: PropTypes.func.isRequired,
+    loadStories: PropTypes.func.isRequired,
 };
 
 export default IsNotAuth;
