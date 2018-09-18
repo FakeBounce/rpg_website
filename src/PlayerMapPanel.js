@@ -1,42 +1,33 @@
-import React, { Component } from 'react';
-import './App.css';
-import Merchant from './Merchant';
-import Item from './Item';
-import ItemDescription from './ItemDescription';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
 
-const widthRightPanel = 350;
-const gridLength = 20;
-const gridDimension = Math.floor((window.innerHeight - 250) / gridLength);
-const widthLeft =
-    window.innerWidth -
-    gridLength * gridDimension -
-    gridLength * 2 -
-    widthRightPanel;
-const heightLeft = gridLength * gridDimension;
+import Merchant from "./Merchant";
+import Item from "./Item";
+import ItemDescription from "./ItemDescription";
+import PropTypes from "prop-types";
+import { widthLeft, heightLeft } from "./StyleConstants";
 
 const styledBoxHeader = {
-    width: '100%',
-    height: '20px',
-    marginBottom: '5px',
-    textAlign: 'center',
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
 };
 
 const styledMapSide = {
-    border: '1px solid brown',
+    border: "1px solid brown",
     width: `${widthLeft / 2 - 11}px`,
     height: `${heightLeft / 2 - 1}px`,
-    display: 'inline-block',
-    float: 'left',
-    textAlign: 'left',
+    display: "inline-block",
+    float: "left",
+    textAlign: "left",
 };
 
 class PlayerMapPanel extends Component {
     getItemsFromMerchant = itemsFormMerchant => {
-        return itemsFormMerchant.map(itemFromMerchant => {
+        return itemsFormMerchant.map((itemFromMerchant, index) => {
             return (
                 <Item
-                    key={`item-${itemFromMerchant.name}`}
+                    key={`item-${itemFromMerchant.name}-${index}`}
                     {...itemFromMerchant}
                     showItemDescription={this.showItemDescription}
                 />
@@ -83,9 +74,9 @@ class PlayerMapPanel extends Component {
         return (
             <div
                 style={{
-                    float: 'left',
+                    float: "left",
                     width: `${widthLeft}px`,
-                    display: 'inline-block',
+                    display: "inline-block",
                 }}
             >
                 {isMerchantsShowed && (
