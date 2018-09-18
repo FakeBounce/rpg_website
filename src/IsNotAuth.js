@@ -60,6 +60,7 @@ class IsNotAuth extends Component {
             createTable,
             createChat,
             loadUsers,
+            loadStories,
         } = this.props;
         firebase
             .auth()
@@ -77,10 +78,12 @@ class IsNotAuth extends Component {
                     });
                 doSetState({
                     isAuth: true,
+                    uid: firebase.auth().currentUser.uid,
                 });
                 createTable();
                 createChat();
                 loadUsers();
+                loadStories();
             })
             .catch(error => {
                 // Handle Errors here.

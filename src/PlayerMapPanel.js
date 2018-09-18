@@ -22,8 +22,6 @@ const styledBoxHeader = {
     textAlign: 'center',
 };
 
-console.log('widthLeft',widthLeft);
-
 const styledMapSide = {
     border: '1px solid brown',
     width: `${widthLeft / 2 - 11}px`,
