@@ -1,40 +1,72 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import FileUploader from "./FileUploader";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import FileUploader from './FileUploader';
 
 const styledBoxHeader = {
-    width: "100%",
-    height: "20px",
-    marginBottom: "5px",
-    textAlign: "center",
+    width: '100%',
+    height: '20px',
+    marginBottom: '5px',
+    textAlign: 'center',
 };
 
 const styledItem = {
-    display: "inline-block",
-    border: "1px solid green",
-    cursor: "pointer",
+    display: 'inline-block',
+    border: '1px solid green',
+    cursor: 'pointer',
 };
 
 class CharacterCreation extends Component {
-    state = {
-        name: "",
-        icon: "",
-        iconPath: "",
-        description: "",
-        skills: [],
-        abilities: [],
-        weapons: [],
-        items: [],
-        strength: 50,
-        dexterity: 50,
-        luck: 50,
-        charisma: 50,
-        education: 50,
-        magic: 50,
-        perception: 50,
-        constitution: 50,
-        totalPointsleft: 0,
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            name: '',
+            icon: '',
+            iconPath: '',
+            description: '',
+            skills: [],
+            abilities: [],
+            weapons: [],
+            items: [],
+            strength: 50,
+            dexterity: 50,
+            luck: 50,
+            charisma: 50,
+            education: 50,
+            magic: 50,
+            perception: 50,
+            constitution: 50,
+            totalPointsleft: props.isAnUpdate ? this.calculatePointsLeft() : 0,
+            ...props.character,
+        };
+    }
+
+    calculatePointsLeft = () => {
+        const {
+            character: {
+                strength,
+                dexterity,
+                luck,
+                charisma,
+                education,
+                magic,
+                perception,
+                constitution,
+            },
+        } = this.props;
+
+        return (
+            400 -
+            strength -
+            dexterity -
+            luck -
+            constitution -
+            charisma -
+            education -
+            magic -
+            perception
+        );
     };
 
     onChange = (name, value) => {
@@ -52,7 +84,7 @@ class CharacterCreation extends Component {
         let pointsLeft = 0;
         obj[name] = value;
         switch (name) {
-            case "strength":
+            case 'strength':
                 pointsLeft =
                     400 -
                     value -
@@ -64,7 +96,7 @@ class CharacterCreation extends Component {
                     perception -
                     constitution;
                 break;
-            case "dexterity":
+            case 'dexterity':
                 pointsLeft =
                     400 -
                     strength -
@@ -76,7 +108,7 @@ class CharacterCreation extends Component {
                     perception -
                     constitution;
                 break;
-            case "luck":
+            case 'luck':
                 pointsLeft =
                     400 -
                     strength -
@@ -88,7 +120,7 @@ class CharacterCreation extends Component {
                     perception -
                     constitution;
                 break;
-            case "charisma":
+            case 'charisma':
                 pointsLeft =
                     400 -
                     strength -
@@ -100,7 +132,7 @@ class CharacterCreation extends Component {
                     perception -
                     constitution;
                 break;
-            case "education":
+            case 'education':
                 pointsLeft =
                     400 -
                     strength -
@@ -112,7 +144,7 @@ class CharacterCreation extends Component {
                     perception -
                     constitution;
                 break;
-            case "magic":
+            case 'magic':
                 pointsLeft =
                     400 -
                     strength -
@@ -124,7 +156,7 @@ class CharacterCreation extends Component {
                     perception -
                     constitution;
                 break;
-            case "perception":
+            case 'perception':
                 pointsLeft =
                     400 -
                     strength -
@@ -136,7 +168,7 @@ class CharacterCreation extends Component {
                     value -
                     constitution;
                 break;
-            case "constitution":
+            case 'constitution':
                 pointsLeft =
                     400 -
                     strength -
@@ -175,7 +207,7 @@ class CharacterCreation extends Component {
             });
         } else {
             const obj = this.state.skills;
-            obj.push("");
+            obj.push('');
             this.setState(state => ({
                 ...state,
                 skills: obj,
@@ -216,7 +248,7 @@ class CharacterCreation extends Component {
 
     addAbility = () => {
         const obj = this.state.abilities;
-        obj.push("");
+        obj.push('');
         this.setState(state => ({
             ...state,
             abilities: obj,
@@ -249,7 +281,7 @@ class CharacterCreation extends Component {
         const obj = this.state.items;
         obj[index] = {
             ...obj[index],
-            name :value,
+            name: value,
         };
         this.setState(state => ({
             ...state,
@@ -261,7 +293,7 @@ class CharacterCreation extends Component {
         const obj = this.state.items;
         obj[index] = {
             ...obj[index],
-            quantity :value,
+            quantity: value,
         };
         this.setState(state => ({
             ...state,
@@ -277,7 +309,7 @@ class CharacterCreation extends Component {
         } else {
             const obj = this.state.items;
             obj.push({
-                name: "",
+                name: '',
                 quantity: 1,
             });
             this.setState(state => ({
@@ -325,7 +357,7 @@ class CharacterCreation extends Component {
             });
         } else {
             const obj = this.state.weapons;
-            obj.push("");
+            obj.push('');
             this.setState(state => ({
                 ...state,
                 weapons: obj,
@@ -359,12 +391,12 @@ class CharacterCreation extends Component {
         const { uid, id } = this.props;
         let storageRef = firebase.storage().ref();
         const path =
-            "images/" +
+            'images/' +
             uid +
-            "/character_" +
+            '/character_' +
             id +
-            "." +
-            picture[0].name.split(".")[1];
+            '.' +
+            picture[0].name.split('.')[1];
         storageRef
             .child(path)
             .put(picture[0])
@@ -395,8 +427,8 @@ class CharacterCreation extends Component {
                 // File deleted successfully
                 this.setState(state => ({
                     ...state,
-                    icon: "",
-                    iconPath: "",
+                    icon: '',
+                    iconPath: '',
                 }));
             })
             .catch(error => {
@@ -407,22 +439,45 @@ class CharacterCreation extends Component {
 
     validateBeforeCreate = () => {
         const { totalPointsleft, name, icon, ...rest } = this.state;
+        const {
+            id,
+            triggerError,
+            createCharacter,
+            updateCharacter,
+            isAnUpdate,
+            character,
+        } = this.props;
         if (totalPointsleft < 0) {
-            this.props.triggerError({
-                message: "Cannot exceed points limit !",
+            triggerError({
+                message: 'Cannot exceed points limit !',
             });
-        } else if (name === "") {
-            this.props.triggerError({ message: "Name cannot be empty !!" });
-        } else if (icon === "") {
-            this.props.triggerError({ message: "Icon cannot be empty !" });
-        } else {
-            this.props.createCharacter({
+        } else if (name === '') {
+            triggerError({ message: 'Name cannot be empty !!' });
+        } else if (icon === '') {
+            triggerError({ message: 'Icon cannot be empty !' });
+        } else if (isAnUpdate) {
+            const health =
+                this.state.constitution !== character.constitution
+                    ? character.health +
+                      (this.state.constitution - character.constitution)
+                    : character.health;
+
+            updateCharacter({
                 ...rest,
                 name,
                 icon,
-                health:this.state.constitution+10,
-                maxHealth:this.state.constitution+10,
-                id: this.props.id,
+                health,
+                maxHealth: parseInt(this.state.constitution, 10) + 10,
+                id,
+            });
+        } else {
+            createCharacter({
+                ...rest,
+                name,
+                icon,
+                health: this.state.constitution + 10,
+                maxHealth: this.state.constitution + 10,
+                id,
             });
         }
     };
@@ -466,12 +521,12 @@ class CharacterCreation extends Component {
                         this.onChange(e.target.name, e.target.value);
                     }}
                 />
-                {icon === "" && <FileUploader onDrop={this.onDrop} />}
-                {icon !== "" && (
+                {icon === '' && <FileUploader onDrop={this.onDrop} />}
+                {icon !== '' && (
                     <div>
                         <img
                             src={icon}
-                            style={{ maxWidth: "50px", maxHeight: "50px" }}
+                            style={{ maxWidth: '50px', maxHeight: '50px' }}
                             alt={`${name}`}
                         />
                         <button onClick={this.removePicture}>
@@ -481,7 +536,7 @@ class CharacterCreation extends Component {
                 )}
                 <div>
                     <div style={styledBoxHeader}>Attributes :</div>
-                    Strength :{" "}
+                    Strength :{' '}
                     <input
                         type="number"
                         name="strength"
@@ -491,7 +546,7 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Dexterity :{" "}
+                    Dexterity :{' '}
                     <input
                         type="number"
                         name="dexterity"
@@ -501,7 +556,7 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Charisma :{" "}
+                    Charisma :{' '}
                     <input
                         type="number"
                         name="charisma"
@@ -511,7 +566,7 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Luck :{" "}
+                    Luck :{' '}
                     <input
                         type="number"
                         name="luck"
@@ -521,7 +576,7 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Education :{" "}
+                    Education :{' '}
                     <input
                         type="number"
                         name="education"
@@ -531,7 +586,7 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Perception :{" "}
+                    Perception :{' '}
                     <input
                         type="number"
                         name="perception"
@@ -541,7 +596,7 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Magic :{" "}
+                    Magic :{' '}
                     <input
                         type="number"
                         name="magic"
@@ -551,7 +606,7 @@ class CharacterCreation extends Component {
                             this.onChange(e.target.name, e.target.value);
                         }}
                     />
-                    Constitution :{" "}
+                    Constitution :{' '}
                     <input
                         type="number"
                         name="constitution"
@@ -576,7 +631,7 @@ class CharacterCreation extends Component {
                                     onChange={e => {
                                         this.onChangeSkills(
                                             index,
-                                            e.target.value,
+                                            e.target.value
                                         );
                                     }}
                                 />
@@ -603,7 +658,7 @@ class CharacterCreation extends Component {
                                     onChange={e => {
                                         this.onChangeWeapons(
                                             index,
-                                            e.target.value,
+                                            e.target.value
                                         );
                                     }}
                                 />
@@ -632,7 +687,7 @@ class CharacterCreation extends Component {
                                     onChange={e => {
                                         this.onChangeAbilities(
                                             index,
-                                            e.target.value,
+                                            e.target.value
                                         );
                                     }}
                                 />
@@ -659,18 +714,18 @@ class CharacterCreation extends Component {
                                     onChange={e => {
                                         this.onChangeItems(
                                             index,
-                                            e.target.value,
+                                            e.target.value
                                         );
                                     }}
                                 />
                                 <input
                                     type="number"
-                                    placeholder='X'
+                                    placeholder="X"
                                     value={item.quantity ? item.quantity : 1}
                                     onChange={e => {
                                         this.onChangeItemsQuantity(
                                             index,
-                                            e.target.value,
+                                            e.target.value
                                         );
                                     }}
                                 />
@@ -690,10 +745,17 @@ class CharacterCreation extends Component {
     }
 }
 
+CharacterCreation.defaultProps = {
+    character: {},
+};
+
 CharacterCreation.propTypes = {
     uid: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
+    isAnUpdate: PropTypes.bool.isRequired,
+    character: PropTypes.object,
     createCharacter: PropTypes.func.isRequired,
+    updateCharacter: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
 };
 

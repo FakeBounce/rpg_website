@@ -21,16 +21,19 @@ const styledHeader = {
 
 class Header extends Component {
     render() {
-        const { signOut, accessChatHelp } = this.props;
+        const { title, signOut, accessChatHelp, chatHelpTitle, selectAnotherCharacter } = this.props;
 
         return (
             <div style={styledHeader}>
-                <div style={styledBoxHeader}>Header</div>
+                <div style={styledBoxHeader}>{title}</div>
                 <button style={styledSignOut} onClick={signOut}>
                     Sign Out
                 </button>
+                <button style={styledSignOut} onClick={selectAnotherCharacter}>
+                    Select another character
+                </button>
                 <button style={styledSignOut} onClick={accessChatHelp}>
-                    Access chat help
+                  {chatHelpTitle}
                 </button>
             </div>
         );
@@ -38,8 +41,11 @@ class Header extends Component {
 }
 
 Header.propTypes = {
+    title: PropTypes.string.isRequired,
+  chatHelpTitle: PropTypes.string.isRequired,
     signOut: PropTypes.func.isRequired,
     accessChatHelp: PropTypes.func.isRequired,
+  selectAnotherCharacter: PropTypes.func.isRequired,
 };
 
 export default Header;

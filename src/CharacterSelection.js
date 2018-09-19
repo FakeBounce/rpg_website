@@ -14,6 +14,11 @@ const styledBoxHeader = {
 };
 
 class CharacterSelection extends Component {
+    state = {
+        isAnUpdate: false,
+        updateCharacterId: 0,
+    };
+
     getCharacters = () => {
         const { characters } = this.props;
         return Object.keys(characters).map(char => {
@@ -22,9 +27,25 @@ class CharacterSelection extends Component {
                     key={`char-${char.name}`}
                     {...characters[char]}
                     chooseCharacter={this.chooseCharacter}
+                    modifyCharacter={this.modifyCharacter}
                 />
             );
         });
+    };
+
+    modifyCharacter = id => {
+        this.setState(
+            state => ({
+                ...state,
+                isAnUpdate: true,
+                updateCharacterId: id,
+            }),
+            () => {
+                this.props.doSetState({
+                    characterCreation: true,
+                });
+            }
+        );
     };
 
     chooseCharacter = id => {
@@ -67,6 +88,66 @@ class CharacterSelection extends Component {
         this.props.doSetState({
             characterCreation: true,
         });
+    };
+
+    updateCharacter = character => {
+        const {
+            doSetState,
+            uid,
+            characters,
+            currentStory,
+            chooseStory,
+            triggerError,
+        } = this.props;
+        this.setState(
+            state => ({
+                ...state,
+                isAnUpdate: true,
+                updateCharacterId: 0,
+            }),
+            () => {
+                const charTab = characters;
+                charTab[character.id] = character;
+                doSetState(
+                    {
+                        characters: charTab,
+                        characterId: character.id,
+                        character,
+                    },
+                    () => {
+                        firebase
+                            .database()
+                            .ref('users/' + uid + '/characters')
+                            .set({ ...charTab })
+                            .then(() => {
+                                firebase
+                                    .database()
+                                    .ref(
+                                        'stories/' +
+                                            currentStory +
+                                            '/characters/' +
+                                            uid
+                                    )
+                                    .set({
+                                        character,
+                                        characterId: character.id,
+                                    })
+                                    .then(() => {
+                                        chooseStory(currentStory);
+                                    })
+                                    .catch(error => {
+                                        // Handle Errors here.
+                                        triggerError(error);
+                                    });
+                            })
+                            .catch(error => {
+                                // Handle Errors here.
+                                triggerError(error);
+                            });
+                    }
+                );
+            }
+        );
     };
 
     createCharacter = character => {
@@ -124,6 +205,7 @@ class CharacterSelection extends Component {
     };
 
     render() {
+        const { isAnUpdate, updateCharacterId } = this.state;
         const { uid, characters, characterCreation, triggerError } = this.props;
 
         if (typeof characters[1] !== 'undefined' && !characterCreation) {
@@ -140,12 +222,27 @@ class CharacterSelection extends Component {
         } else {
             return (
                 <div>
-                    <div style={styledBoxHeader}>Créer un personnage</div>
+                    <div style={styledBoxHeader}>
+                        {isAnUpdate
+                            ? 'Update a character'
+                            : 'Create a character'}
+                    </div>
                     <CharacterCreation
                         uid={uid}
-                        id={Object.keys(characters).length + 1}
+                        id={
+                            isAnUpdate
+                                ? updateCharacterId
+                                : Object.keys(characters).length + 1
+                        }
                         createCharacter={this.createCharacter}
+                        updateCharacter={this.updateCharacter}
                         triggerError={triggerError}
+                        isAnUpdate={isAnUpdate}
+                        character={
+                            isAnUpdate
+                                ? { ...characters[updateCharacterId] }
+                                : {}
+                        }
                     />
                 </div>
             );
@@ -154,9 +251,9 @@ class CharacterSelection extends Component {
 }
 
 CharacterSelection.propTypes = {
-    uid: PropTypes.func.isRequired,
-    characterCreation: PropTypes.func.isRequired,
-    characters: PropTypes.object.isRequired,
+    uid: PropTypes.string.isRequired,
+    characterCreation: PropTypes.bool.isRequired,
+    characters: PropTypes.array.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
     chooseStory: PropTypes.func.isRequired,
