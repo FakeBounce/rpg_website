@@ -9,6 +9,7 @@
     "react-dom": "^16.5.0",
     "react-images-upload": "^1.2.3",
     "react-scripts": "1.1.5",
+    "react-sound": "^1.2.0",
     "react-tooltip": "^3.8.1"
   },
   "scripts": {

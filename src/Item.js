@@ -1,36 +1,33 @@
 import React, { Component } from "react";
+import "./Item.css";
 import PropTypes from "prop-types";
 
-const styledItem = {
-    display: "inline-block",
-    border: "1px solid green",
-    cursor: "pointer",
-};
-const styledIcon = {
-    width: "30px",
-    height: "30px",
-    float: "left",
-    display: "inline-block",
-};
-const styledText = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
-};
 class Item extends Component {
     render() {
-        const { icon, name, description, showItemDescription } = this.props;
+        const {
+            icon,
+            name,
+            description,
+            price,
+            showItemDescription,
+        } = this.props;
         return (
             <div
-                style={styledItem}
-                onClick={() => showItemDescription({ ...this.props })}
+                className="item"
+                onClick={() =>
+                    showItemDescription({
+                        ...this.props,
+                        showItemDescription: null,
+                    })
+                }
             >
                 <img
-                    src={"./" + icon + ".jpg"}
+                    src={"./" + icon}
                     alt={description}
-                    style={styledIcon}
+                    className="item-icon"
                 />
-                <div style={styledText}>{name}</div>
+                <div className="item-text">{name}</div>
+                <div className="item-price">{price}g</div>
             </div>
         );
     }
@@ -40,6 +37,7 @@ Item.propTypes = {
     icon: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
     showItemDescription: PropTypes.func.isRequired,
 };
 

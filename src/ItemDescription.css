@@ -1,0 +1,58 @@
+.item-description{
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.item-description-header{
+    width: 100%;
+    height: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.item-description-icon{
+    width: 60px;
+    height: 60px;
+    float: left;
+    display: inline-block;
+}
+
+.item-description-text{
+    width: 70%;
+    height: 25px;
+    text-align: center;
+    margin-top: 15px;
+    margin-left: 5px;
+    float: left;
+    display: inline-block;
+}
+
+.item-description-description{
+    text-align: left;
+    padding: 10px;
+    float: left;
+    display: inline-block;
+}
+
+.item-description-effect{
+    text-align: left;
+    padding: 10px;
+    margin-top: 20px;
+    float: left;
+    display: inline-block;
+}
+
+.item-description-price{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    cursor: pointer;
+    margin-right: 5px;
+    float: right;
+}
+
+.item-description-cant-buy{
+    color:red;
+}

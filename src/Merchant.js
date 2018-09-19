@@ -1,34 +1,20 @@
 import React, { Component } from "react";
+import "./Merchant.css";
 import PropTypes from "prop-types";
-
-const styledItem = {
-    display: "inline-block",
-    border: "1px solid yellow",
-    cursor:"pointer",
-};
-const styledIcon = {
-    width: "30px",
-    height: "30px",
-    float: "left",
-    display: "inline-block",
-};
-const styledText = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
-};
+const styledText = {};
 
 class Merchant extends Component {
     render() {
         const { name, items, icon, description, showItems } = this.props;
         return (
-            <div style={styledItem} onClick={() => showItems(items)}>
+            <div className="merchant" onClick={() => showItems(items)}>
                 <img
-                    src={"./" + icon + ".jpg"}
+                    src={"./" + icon}
                     alt={description}
-                    style={styledIcon}
+                    className="merchant-icon"
                 />
-                <div style={styledText}>{name}</div>
+                <div className="merchant-text">{name}</div>
+                <div className="merchant-text">{description}</div>
             </div>
         );
     }
@@ -43,9 +29,9 @@ Merchant.propTypes = {
         PropTypes.shape({
             name: PropTypes.string.isRequired,
             icon: PropTypes.string.isRequired,
-            description: PropTypes.string.isRequired
-        })
-    ).isRequired
+            description: PropTypes.string.isRequired,
+        }),
+    ).isRequired,
 };
 
 export default Merchant;

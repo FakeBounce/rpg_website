@@ -1,43 +1,68 @@
 import React, { Component } from "react";
+import "./ItemDescription.css";
 import PropTypes from "prop-types";
+import { widthLeft, heightLeft } from "./StyleConstants";
 
-const styledItem = {
+const styledMapSide = {
+    border: "1px solid brown",
+    width: `${widthLeft / 2 - 11}px`,
+    height: `${heightLeft / 2 - 1}px`,
     display: "inline-block",
-    border: "1px solid red",
-};
-const styledIcon = {
-    width: "30px",
-    height: "30px",
     float: "left",
-    display: "inline-block",
-};
-const styledText = {
-    marginLeft: "5px",
-    float: "left",
-    display: "inline-block",
+    textAlign: "left",
+    position: "relative",
 };
 
 class ItemDescription extends Component {
     render() {
-        const { icon, name, description } = this.props;
+        const {
+            icon,
+            name,
+            price,
+            description,
+            effect,
+            gold,
+            buyItem,
+        } = this.props;
         return (
-            <div style={styledItem}>
-                <img
-                    src={"./" + icon + ".jpg"}
-                    alt={description}
-                    style={styledIcon}
-                />
-                <div style={styledText}>{name}</div>
-                <div style={styledText}>{description}</div>
+            <div style={styledMapSide}>
+                <div className="item-description">
+                    <div className="item-description-header">Description</div>
+                    <img
+                        src={"./" + icon}
+                        alt={description}
+                        className="item-description-icon"
+                    />
+                    <div className="item-description-text">{name}</div>
+                    <div className="item-description-description">
+                        {description}
+                    </div>
+                    <div className="item-description-effect">{effect}</div>
+                    <button
+                        className={`item-description-price ${gold < price &&
+                            "item-description-cant-buy"}`}
+                        onClick={gold >= price && buyItem}
+                    >
+                        Buy ({price}
+                        g)
+                    </button>
+                </div>
             </div>
         );
     }
 }
+ItemDescription.defaultProps = {
+    effect: "",
+};
 
 ItemDescription.propTypes = {
     icon: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
+    effect: PropTypes.string,
+    price: PropTypes.number.isRequired,
+    gold: PropTypes.number.isRequired,
+    buyItem: PropTypes.number.isRequired,
 };
 
 export default ItemDescription;

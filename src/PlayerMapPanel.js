@@ -20,6 +20,7 @@ const styledMapSide = {
     display: "inline-block",
     float: "left",
     textAlign: "left",
+    position: "relative",
 };
 
 class PlayerMapPanel extends Component {
@@ -63,12 +64,14 @@ class PlayerMapPanel extends Component {
 
     render() {
         const {
+            character,
             isItemShowed,
             itemsList,
             isItemDescriptionShowed,
             itemToDescribe,
             isMerchantsShowed,
             merchantsList,
+            buyItem,
         } = this.props;
 
         return (
@@ -77,6 +80,7 @@ class PlayerMapPanel extends Component {
                     float: "left",
                     width: `${widthLeft}px`,
                     display: "inline-block",
+                    position: "relative",
                 }}
             >
                 {isMerchantsShowed && (
@@ -97,10 +101,11 @@ class PlayerMapPanel extends Component {
                     </div>
                 )}
                 {isItemDescriptionShowed && (
-                    <div style={styledMapSide}>
-                        <div style={styledBoxHeader}>Description</div>
-                        <ItemDescription {...itemToDescribe} />
-                    </div>
+                    <ItemDescription
+                        {...itemToDescribe}
+                        buyItem={() => buyItem(itemToDescribe, itemToDescribe.price)}
+                        gold={character.gold}
+                    />
                 )}
             </div>
         );
@@ -108,12 +113,14 @@ class PlayerMapPanel extends Component {
 }
 
 PlayerMapPanel.propTypes = {
+    character: PropTypes.object.isRequired,
     isItemShowed: PropTypes.bool.isRequired,
     itemsList: PropTypes.array.isRequired,
     isItemDescriptionShowed: PropTypes.bool.isRequired,
     itemToDescribe: PropTypes.object.isRequired,
     isMerchantsShowed: PropTypes.bool.isRequired,
     merchantsList: PropTypes.array.isRequired,
+    buyItem: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
 };
