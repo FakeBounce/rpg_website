@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 class Item extends Component {
     render() {
         const {
+            index,
             icon,
             name,
             description,
@@ -18,7 +19,8 @@ class Item extends Component {
                     showItemDescription({
                         ...this.props,
                         showItemDescription: null,
-                    })
+                        index: null,
+                    }, index)
                 }
             >
                 <img
@@ -34,6 +36,7 @@ class Item extends Component {
 }
 
 Item.propTypes = {
+    index: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,

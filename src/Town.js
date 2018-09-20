@@ -15,14 +15,14 @@ const styledIcon = {
 
 class Town extends Component {
     render() {
-        const { icon, name, merchants, showMerchantList } = this.props;
+        const { town, showTownList } = this.props;
         return (
             <div
                 style={styledItem}
-                onClick={() => showMerchantList(merchants)}
-                data-tip={name}
+                onClick={() => showTownList(town)}
+                data-tip={town.name}
             >
-                <img src={"./" + icon + ".jpg"} style={styledIcon} alt={name}/>
+                <img src={"./" + town.icon + ".jpg"} style={styledIcon} alt={town.name}/>
                 <ReactTooltip />
             </div>
         );
@@ -30,8 +30,8 @@ class Town extends Component {
 }
 
 Town.propTypes = {
-    icon: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    town: PropTypes.object.isRequired,
+    showTownList: PropTypes.func.isRequired,
 };
 
 export default Town;

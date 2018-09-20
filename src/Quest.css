@@ -1,0 +1,26 @@
+.quest{
+    position: relative;
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.quest:hover{
+    border-bottom: 1px solid red;
+    border-top: 1px solid red;
+}
+
+.quest-icon{
+    width: 50px;
+    height: 50px;
+    float: left;
+    display: inline-block;
+}
+
+.quest-text{
+    width: 70%;
+    height: 25px;
+    display: inline-block;
+}

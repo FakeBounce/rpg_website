@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./Merchant.css";
 import PropTypes from "prop-types";
-const styledText = {};
 
 class Merchant extends Component {
     render() {

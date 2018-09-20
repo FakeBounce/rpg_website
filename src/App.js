@@ -107,6 +107,31 @@ const merchantList = [
     },
 ];
 
+const questList = [
+    {
+        name: "Recherche d'ingrédients",
+        icon: "notice_1.jpg",
+        description:
+            "Cherche des ingrédients de qualité rare. Venez me voir pour en savoir plus " +
+            "(Demandez Gi Tan, 3 Baraque à gauche après le poste de garde)",
+        dangerosity: 0,
+        monsterId: "0",
+        reward: 800,
+    },
+    {
+        name: "Extermination d'autochtone",
+        icon: "notice_2.jpg",
+        description:
+            "Des autochtones attaquent les convois entre les bourgades de Imédétongs et de SotMouton." +
+            " Les villageois ont du mal à se ravitailler et doivent faire un détour. " +
+            "Nombreuses pertes économiques. " +
+            "Les autochtones sont peu nombreux et n'ont spécialement de force d'attaque.",
+        dangerosity: 3,
+        monsterId: "1",
+        reward: 1550,
+    },
+];
+
 const towns = [
     {
         name: "Hameau de mes fesses",
@@ -114,6 +139,7 @@ const towns = [
         positionY: 6,
         icon: "big_town",
         merchants: merchantList,
+        quests: questList,
     },
 ];
 
@@ -126,6 +152,7 @@ class App extends Component {
         chatInput: "",
         chatHistory: [],
         currentStory: -1,
+        currentQuest: {},
         errorMessage: "",
         email: "",
         gameMaster: "",
@@ -134,16 +161,19 @@ class App extends Component {
         itemsList: [],
         isItemDescriptionShowed: false,
         itemToDescribe: {},
-        isMerchantsShowed: false,
+        itemDescribed: 0,
+        isTownShowed: false,
+        isQuestShowed: false,
         isAdmin: false,
         isGameMaster: false,
         map: [],
         merchantsList: [],
-        musicStatus: 'PLAYING',
+        musicStatus: "PAUSED",
         onChatHelp: false,
         password: "",
         pseudo: "",
         pseudoInput: "",
+        questsList: [],
         uid: "",
         users: null,
         stories: [],
@@ -156,7 +186,7 @@ class App extends Component {
     toggleMusic = () => {
         this.setState(state => ({
             ...state,
-            musicStatus: state.musicStatus === 'PLAYING' ? 'PAUSED' : 'PLAYING',
+            musicStatus: state.musicStatus === "PLAYING" ? "PAUSED" : "PLAYING",
         }));
     };
 
@@ -178,7 +208,13 @@ class App extends Component {
     };
 
     buyItem = (item, price) => {
-        const { currentStory, uid, character } = this.state;
+        const {
+            currentStory,
+            uid,
+            character,
+            itemsList,
+            itemDescribed,
+        } = this.state;
         const newItemsTab = character.items;
         let hasAlready = false;
         character.items.map((i, index) => {
@@ -192,20 +228,36 @@ class App extends Component {
             item.quantity = 1;
             newItemsTab.push(item);
         }
-        firebase
-            .database()
-            .ref(
-                "stories/" + currentStory + "/characters/" + uid + "/character",
-            )
-            .set({
-                ...character,
-                gold: character.gold - price,
-                items: newItemsTab,
-            })
-            .catch(error => {
-                // Handle Errors here.
-                this.triggerError(error);
-            });
+        const newMerchantList = itemsList;
+        newMerchantList.splice(itemDescribed, 1);
+        this.setState(
+            state => ({
+                ...state,
+                itemToDescribe: {},
+                isItemDescriptionShowed: false,
+                itemsList: newMerchantList,
+            }),
+            () => {
+                firebase
+                    .database()
+                    .ref(
+                        "stories/" +
+                            currentStory +
+                            "/characters/" +
+                            uid +
+                            "/character",
+                    )
+                    .set({
+                        ...character,
+                        gold: character.gold - price,
+                        items: newItemsTab,
+                    })
+                    .catch(error => {
+                        // Handle Errors here.
+                        this.triggerError(error);
+                    });
+            },
+        );
     };
 
     signOut = () => {
@@ -222,6 +274,7 @@ class App extends Component {
                     chatInput: "",
                     chatHistory: [],
                     currentStory: -1,
+                    currentQuest: {},
                     errorMessage: "",
                     email: "",
                     gameMaster: "",
@@ -230,7 +283,9 @@ class App extends Component {
                     itemsList: [],
                     isItemDescriptionShowed: false,
                     itemToDescribe: {},
-                    isMerchantsShowed: false,
+                    itemDescribed: 0,
+                    isTownShowed: false,
+                    isQuestShowed: false,
                     isAdmin: false,
                     isGameMaster: false,
                     map: [],
@@ -239,6 +294,7 @@ class App extends Component {
                     password: "",
                     pseudo: "",
                     pseudoInput: "",
+                    questsList: [],
                     uid: "",
                     users: null,
                     stories: [],
@@ -252,11 +308,12 @@ class App extends Component {
             });
     };
 
-    showMerchantList = list => {
+    showTownList = town => {
         this.setState(state => ({
             ...state,
-            isMerchantsShowed: true,
-            merchantsList: list,
+            isTownShowed: true,
+            merchantsList: town.merchants,
+            questsList: town.quests,
         }));
     };
 
@@ -295,8 +352,8 @@ class App extends Component {
                                         key={`town-${town.positionX}-${
                                             town.positionY
                                         }`}
-                                        {...town}
-                                        showMerchantList={this.showMerchantList}
+                                        town={town}
+                                        showTownList={this.showTownList}
                                     />
                                 );
                             }
@@ -509,7 +566,7 @@ class App extends Component {
             itemsList,
             isItemDescriptionShowed,
             itemToDescribe,
-            isMerchantsShowed,
+            isTownShowed,
             merchantsList,
             isAuth,
             email,
@@ -535,6 +592,9 @@ class App extends Component {
             storyCharacters,
             gameMaster,
             musicStatus,
+            currentQuest,
+            isQuestShowed,
+            questsList,
         } = this.state;
 
         return (
@@ -623,6 +683,8 @@ class App extends Component {
                                     )}
                                     {!isGameMaster && (
                                         <PlayerMapPanel
+                                            isQuestShowed={isQuestShowed}
+                                            currentQuest={currentQuest}
                                             character={character}
                                             isItemShowed={isItemShowed}
                                             itemsList={itemsList}
@@ -630,10 +692,11 @@ class App extends Component {
                                                 isItemDescriptionShowed
                                             }
                                             itemToDescribe={itemToDescribe}
-                                            isMerchantsShowed={
-                                                isMerchantsShowed
+                                            isTownShowed={
+                                                isTownShowed
                                             }
                                             merchantsList={merchantsList}
+                                            questsList={questsList}
                                             buyItem={this.buyItem}
                                             doSetState={this.doSetState}
                                             triggerError={this.triggerError}
@@ -660,7 +723,12 @@ class App extends Component {
                             <BottomPanel />
                         </div>
                     )}
-                <Sound url="./Auberge.mp3" playStatus={musicStatus} autoLoad loop />
+                <Sound
+                    url="./Auberge.mp3"
+                    playStatus={musicStatus}
+                    autoLoad
+                    loop
+                />
                 {error}
             </div>
         );
