@@ -40,17 +40,11 @@ const styledPosition = [
 class Quest extends Component {
     render() {
         const {
-            name,
             position,
             index,
             icon,
-            description,
-            dangerosity,
-            reward,
-            monsterId,
             showQuest,
         } = this.props;
-        console.log("position", position, styledPosition[position]);
         return (
             <div
                 className="quest"
@@ -59,7 +53,7 @@ class Quest extends Component {
             >
                 <img
                     src={"./" + icon}
-                    alt={description}
+                    alt='A quest'
                     className="quest-icon"
                 />
             </div>
@@ -68,12 +62,7 @@ class Quest extends Component {
 }
 
 Quest.propTypes = {
-    name: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    dangerosity: PropTypes.number.isRequired,
-    monsterId: PropTypes.string.isRequired,
-    reward: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
     position: PropTypes.number.isRequired,
     showQuest: PropTypes.func.isRequired,

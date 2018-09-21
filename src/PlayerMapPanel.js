@@ -6,6 +6,7 @@ import Item from "./Item";
 import ItemDescription from "./ItemDescription";
 import PropTypes from "prop-types";
 import { widthLeft, heightLeft } from "./StyleConstants";
+import QuestFullscreen from "./QuestFullscreen";
 
 const styledBoxHeader = {
     width: "100%",
@@ -100,9 +101,10 @@ class PlayerMapPanel extends Component {
     };
 
     showQuest = quest => {
+        console.log('qyest',quest);
         this.props.doSetState({
             isQuestShowed: true,
-            currentQuest: quest,
+            currentQuest: this.props.questsList[quest],
         });
     };
 
@@ -117,6 +119,8 @@ class PlayerMapPanel extends Component {
             merchantsList,
             questsList,
             buyItem,
+            currentQuest,
+            isQuestShowed,
         } = this.props;
 
         return (
@@ -128,12 +132,28 @@ class PlayerMapPanel extends Component {
                     position: "relative",
                 }}
             >
-                {isTownShowed && (
-                    <div style={{...styledMapSide,
-                        backgroundImage: `url(quest_panel.jpg)`,
-                        backgroundSize: "cover",}}>
-                        <div style={styledBoxHeader}>Liste des quêtes</div>
-                        {this.getQuestsFromTown(questsList)}
+                {isTownShowed &&
+                    !isQuestShowed && (
+                        <div
+                            style={{
+                                ...styledMapSide,
+                                backgroundImage: `url(quest_panel.jpg)`,
+                                backgroundSize: "cover",
+                            }}
+                        >
+                            <div style={styledBoxHeader}>Liste des quêtes</div>
+                            {this.getQuestsFromTown(questsList)}
+                        </div>
+                    )}
+                {isQuestShowed && (
+                    <div
+                        style={{
+                            ...styledMapSide,
+                            backgroundImage: `url(quest_panel.jpg)`,
+                            backgroundSize: "cover",
+                        }}
+                    >
+                        <QuestFullscreen {...currentQuest} />
                     </div>
                 )}
                 {isTownShowed && (
@@ -163,6 +183,8 @@ class PlayerMapPanel extends Component {
 }
 
 PlayerMapPanel.propTypes = {
+    isQuestShowed: PropTypes.bool.isRequired,
+    currentQuest: PropTypes.object.isRequired,
     character: PropTypes.object.isRequired,
     isItemShowed: PropTypes.bool.isRequired,
     itemsList: PropTypes.array.isRequired,
