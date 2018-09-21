@@ -110,7 +110,7 @@ const merchantList = [
 const questList = [
     {
         name: "Recherche d'ingrédients",
-        icon: "notice_1.jpg",
+        icon: "notice_6.jpg",
         description:
             "Cherche des ingrédients de qualité rare. Venez me voir pour en savoir plus " +
             "(Demandez Gi Tan, 3 Baraque à gauche après le poste de garde)",
@@ -120,7 +120,7 @@ const questList = [
     },
     {
         name: "Extermination d'autochtone",
-        icon: "notice_2.jpg",
+        icon: "notice_4.jpg",
         description:
             "Des autochtones attaquent les convois entre les bourgades de Imédétongs et de SotMouton." +
             " Les villageois ont du mal à se ravitailler et doivent faire un détour. " +

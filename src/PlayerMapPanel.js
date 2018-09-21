@@ -25,16 +25,7 @@ const styledMapSide = {
 };
 
 class PlayerMapPanel extends Component {
-    state = {
-        quest1: false,
-        quest2: false,
-        quest3: false,
-        quest4: false,
-        quest5: false,
-        quest6: false,
-        quest7: false,
-        quest8: false,
-    };
+    positionList = [];
 
     getItemsFromMerchant = itemsFormMerchant => {
         return itemsFormMerchant.map((itemFromMerchant, index) => {
@@ -71,24 +62,30 @@ class PlayerMapPanel extends Component {
 
     getPosition = () => {
         let hasPosition = false;
-        while (!hasPosition) {
-            const i = Math.floor(Math.random() * 8 + 1);
-            if (!this.state[`quest${i}`]) {
-                hasPosition = true;
-                this.setState(state => ({
-                    ...state,
-                }));
-            }
+        const i = Math.floor(Math.random() * 8);
+        console.log("i", Math.floor(Math.random() * 8));
+        if (this.positionList.indexOf(i) === -1) {
+            const newPositionList = this.positionList;
+            hasPosition = true;
+            newPositionList.push(i);
+            this.positionList = newPositionList;
         }
+        if (hasPosition || this.positionList.length === 8)
+            return this.positionList[this.positionList.length - 1];
+
+        return this.getPosition();
     };
 
     getQuestsFromTown = quests => {
+        this.positionList = [];
         return quests.map((quest, index) => {
+            const pos = this.getPosition();
             return (
                 <Quest
                     key={`merchant-${quest.name}`}
                     {...quest}
                     index={index}
+                    position={pos}
                     showQuest={this.showQuest}
                 />
             );
@@ -132,7 +129,9 @@ class PlayerMapPanel extends Component {
                 }}
             >
                 {isTownShowed && (
-                    <div style={styledMapSide} ref={this._element}>
+                    <div style={{...styledMapSide,
+                        backgroundImage: `url(quest_panel.jpg)`,
+                        backgroundSize: "cover",}}>
                         <div style={styledBoxHeader}>Liste des quêtes</div>
                         {this.getQuestsFromTown(questsList)}
                     </div>
