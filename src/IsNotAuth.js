@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import firebase from 'firebase';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import firebase from "firebase";
 
 class IsNotAuth extends Component {
     handleKeyPress = event => {
-        if (event.key === 'Enter') {
+        if (event.key === "Enter") {
             this.signIn();
         }
     };
@@ -15,8 +15,6 @@ class IsNotAuth extends Component {
             password,
             triggerError,
             doSetState,
-            createTable,
-            createChat,
             loadUsers,
             loadStories,
         } = this.props;
@@ -27,8 +25,8 @@ class IsNotAuth extends Component {
             .then(() => {
                 firebase
                     .database()
-                    .ref('/users/' + firebase.auth().currentUser.uid)
-                    .once('value')
+                    .ref("/users/" + firebase.auth().currentUser.uid)
+                    .once("value")
                     .then(snapshot => {
                         doSetState(
                             {
@@ -37,11 +35,9 @@ class IsNotAuth extends Component {
                                 uid: firebase.auth().currentUser.uid,
                             },
                             () => {
-                                createTable();
-                                createChat();
                                 loadUsers();
                                 loadStories();
-                            }
+                            },
                         );
                     });
             })
@@ -57,8 +53,6 @@ class IsNotAuth extends Component {
             password,
             doSetState,
             triggerError,
-            createTable,
-            createChat,
             loadUsers,
             loadStories,
         } = this.props;
@@ -68,7 +62,7 @@ class IsNotAuth extends Component {
             .then(() => {
                 firebase
                     .database()
-                    .ref('users/' + firebase.auth().currentUser.uid)
+                    .ref("users/" + firebase.auth().currentUser.uid)
                     .set({
                         photoUrl: firebase.auth().currentUser.photoURL,
                         name: firebase.auth().currentUser.displayName,
@@ -80,8 +74,6 @@ class IsNotAuth extends Component {
                     isAuth: true,
                     uid: firebase.auth().currentUser.uid,
                 });
-                createTable();
-                createChat();
                 loadUsers();
                 loadStories();
             })
@@ -129,8 +121,6 @@ IsNotAuth.propTypes = {
     onChange: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
-    createChat: PropTypes.func.isRequired,
-    createTable: PropTypes.func.isRequired,
     loadUsers: PropTypes.func.isRequired,
     loadStories: PropTypes.func.isRequired,
 };

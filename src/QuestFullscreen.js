@@ -5,31 +5,40 @@ import PropTypes from "prop-types";
 class QuestFullscreen extends Component {
     render() {
         const {
-            position,
-            index,
+            name,
+            description,
+            reward,
+            dangerosity,
             icon,
-            showQuest,
+            hideQuest,
         } = this.props;
         return (
             <div
                 className="quest-fullscreen"
-                onClick={() => showQuest(index)}
+                onClick={hideQuest}
             >
                 <img
-                    src={"./" + icon}
+                    src={"./empty_" + icon}
                     alt='A quest'
                     className="quest-fullscreen-icon"
                 />
+                <div className="quest-fullscreen-name" >{name}</div>
+                <div className="quest-fullscreen-description" >{description}</div>
+                <div className="quest-fullscreen-dangerosity" >Danger : {dangerosity}/10</div>
+                <div className="quest-fullscreen-reward" >Reward : {reward}g</div>
             </div>
         );
     }
 }
 
 QuestFullscreen.propTypes = {
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
+    dangerosity: PropTypes.number.isRequired,
+    reward: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
-    position: PropTypes.number.isRequired,
-    showQuest: PropTypes.func.isRequired,
+    hideQuest: PropTypes.func.isRequired,
 };
 
 export default QuestFullscreen;

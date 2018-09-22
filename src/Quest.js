@@ -4,58 +4,77 @@ import PropTypes from "prop-types";
 
 const styledPosition = [
     {
-        left: 0,
-        top: 0,
+        left: "5%",
+        top: "10%",
     },
     {
         left: "25%",
-        top: 0,
+        top: "10%",
     },
     {
-        left: "50%",
-        top: 0,
+        left: "45%",
+        top: "10%",
     },
     {
-        left: "75%",
-        top: 0,
+        left: "65%",
+        top: "10%",
+    },
+    {
+        left: "5%",
+        top: "55%",
     },
     {
         left: "25%",
-        top: "50%",
+        top: "55%",
     },
     {
-        left: "50%",
-        top: "50%",
+        left: "45%",
+        top: "55%",
     },
     {
-        left: 0,
-        top: "50%",
-    },
-    {
-        left: "75%",
-        top: "50%",
+        left: "65%",
+        top: "55%",
     },
 ];
 
+const styledRandom = [
+    'rotate(5deg)',
+    'rotate(-5deg)',
+    'rotate(10deg)',
+    'rotate(-10deg)',
+    'translate(0px,-20px)',
+    'translate(0px,20px)',
+    'translate(0px,20px)',
+    'translate(10px,0px)',
+    'translate(-10px,0px)',
+    'translate(10px,20px)',
+    'translate(-10px,20px)',
+    'translate(-10px,-20px)',
+    'translate(-10px,-20px)',
+];
+
 class Quest extends Component {
+    getRandomStyle = () => {
+        let rdm = '';
+        this.props.randomStyle.map(value => {
+            rdm += styledRandom[value] + ' ';
+            return null;
+        });
+        return {transform: rdm};
+    };
+
     render() {
-        const {
-            position,
-            index,
-            icon,
-            showQuest,
-        } = this.props;
+        const { position, index, icon, showQuest } = this.props;
         return (
             <div
                 className="quest"
-                style={{ ...styledPosition[position] }}
+                style={{
+                    ...styledPosition[position],
+                    ...this.getRandomStyle(),
+                }}
                 onClick={() => showQuest(index)}
             >
-                <img
-                    src={"./" + icon}
-                    alt='A quest'
-                    className="quest-icon"
-                />
+                <img src={"./" + icon} alt="A quest" className="quest-icon" />
             </div>
         );
     }
@@ -65,6 +84,7 @@ Quest.propTypes = {
     icon: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired,
     position: PropTypes.number.isRequired,
+    randomStyle: PropTypes.array.isRequired,
     showQuest: PropTypes.func.isRequired,
 };
 

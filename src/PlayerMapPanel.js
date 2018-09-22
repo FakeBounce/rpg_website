@@ -61,10 +61,10 @@ class PlayerMapPanel extends Component {
         });
     };
 
+    // For GM quest positionning
     getPosition = () => {
         let hasPosition = false;
         const i = Math.floor(Math.random() * 8);
-        console.log("i", Math.floor(Math.random() * 8));
         if (this.positionList.indexOf(i) === -1) {
             const newPositionList = this.positionList;
             hasPosition = true;
@@ -78,15 +78,12 @@ class PlayerMapPanel extends Component {
     };
 
     getQuestsFromTown = quests => {
-        this.positionList = [];
         return quests.map((quest, index) => {
-            const pos = this.getPosition();
             return (
                 <Quest
                     key={`merchant-${quest.name}`}
                     {...quest}
                     index={index}
-                    position={pos}
                     showQuest={this.showQuest}
                 />
             );
@@ -101,10 +98,16 @@ class PlayerMapPanel extends Component {
     };
 
     showQuest = quest => {
-        console.log('qyest',quest);
         this.props.doSetState({
             isQuestShowed: true,
             currentQuest: this.props.questsList[quest],
+        });
+    };
+
+    hideQuest = () => {
+        this.props.doSetState({
+            isQuestShowed: false,
+            currentQuest: {},
         });
     };
 
@@ -132,8 +135,7 @@ class PlayerMapPanel extends Component {
                     position: "relative",
                 }}
             >
-                {isTownShowed &&
-                    !isQuestShowed && (
+                {isTownShowed && !isQuestShowed && (
                         <div
                             style={{
                                 ...styledMapSide,
@@ -153,7 +155,10 @@ class PlayerMapPanel extends Component {
                             backgroundSize: "cover",
                         }}
                     >
-                        <QuestFullscreen {...currentQuest} />
+                        <QuestFullscreen
+                            {...currentQuest}
+                            hideQuest={this.hideQuest}
+                        />
                     </div>
                 )}
                 {isTownShowed && (

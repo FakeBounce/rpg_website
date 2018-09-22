@@ -114,6 +114,8 @@ const questList = [
         description:
             "Cherche des ingrédients de qualité rare. Venez me voir pour en savoir plus " +
             "(Demandez Gi Tan, 3 Baraque à gauche après le poste de garde)",
+        position: 2,
+        randomStyle: [2, 10],
         dangerosity: 0,
         monsterId: "0",
         reward: 800,
@@ -126,6 +128,8 @@ const questList = [
             " Les villageois ont du mal à se ravitailler et doivent faire un détour. " +
             "Nombreuses pertes économiques. " +
             "Les autochtones sont peu nombreux et n'ont spécialement de force d'attaque.",
+        position: 5,
+        randomStyle: [1, 7],
         dangerosity: 3,
         monsterId: "1",
         reward: 1550,
@@ -223,6 +227,7 @@ class App extends Component {
                 newItemsTab[index].quantity =
                     parseInt(newItemsTab[index].quantity, 10) + 1;
             }
+            return null;
         });
         if (!hasAlready) {
             item.quantity = 1;
@@ -391,10 +396,11 @@ class App extends Component {
     };
 
     setTexture = (x, y) => {
+        const { stories, currentStory, textureToApply } = this.state;
         firebase
             .database()
-            .ref("maps/dravos/" + x + "/" + y)
-            .set(this.state.textureToApply)
+            .ref("maps/" + stories[currentStory].map + "/" + x + "/" + y)
+            .set(textureToApply)
             .catch(error => {
                 // Handle Errors here.
                 this.triggerError(error);
@@ -402,9 +408,10 @@ class App extends Component {
     };
 
     createTable = () => {
+        const { stories, currentStory } = this.state;
         firebase
             .database()
-            .ref("/maps/dravos")
+            .ref("/maps/" + stories[currentStory].map)
             .on("value", snapshot => {
                 // console.log('snapshot', snapshot.val());
                 this.setState(state => ({
@@ -459,23 +466,35 @@ class App extends Component {
                 .ref("/stories/" + i + "/characters/" + uid + "/character")
                 .on("value", snapshot => {
                     //@TODO : Activate when GM will have proper tabs
-                    this.setState(state => ({
-                        ...state,
-                        character: snapshot.val(),
-                        currentStory: i,
-                        gameMaster: stories[i].gameMaster,
-                        // isGameMaster: isGM,
-                        characterId: stories[i].characters[uid].characterId,
-                    }));
+                    this.setState(
+                        state => ({
+                            ...state,
+                            character: snapshot.val(),
+                            currentStory: i,
+                            gameMaster: stories[i].gameMaster,
+                            // isGameMaster: isGM,
+                            characterId: stories[i].characters[uid].characterId,
+                        }),
+                        () => {
+                            this.createTable();
+                            this.createChat();
+                        },
+                    );
                 });
         } else {
             //@TODO : Activate when GM will have proper tabs
-            this.setState(state => ({
-                ...state,
-                currentStory: i,
-                gameMaster: stories[i].gameMaster,
-                // isGameMaster: isGM,
-            }));
+            this.setState(
+                state => ({
+                    ...state,
+                    currentStory: i,
+                    gameMaster: stories[i].gameMaster,
+                    // isGameMaster: isGM,
+                }),
+                () => {
+                    this.createTable();
+                    this.createChat();
+                },
+            );
         }
         firebase
             .database()
@@ -606,8 +625,6 @@ class App extends Component {
                         onChange={this.onChange}
                         doSetState={this.doSetState}
                         triggerError={this.triggerError}
-                        createChat={this.createChat}
-                        createTable={this.createTable}
                         loadUsers={this.loadUsers}
                         loadStories={this.loadStories}
                     />
@@ -692,9 +709,7 @@ class App extends Component {
                                                 isItemDescriptionShowed
                                             }
                                             itemToDescribe={itemToDescribe}
-                                            isTownShowed={
-                                                isTownShowed
-                                            }
+                                            isTownShowed={isTownShowed}
                                             merchantsList={merchantsList}
                                             questsList={questsList}
                                             buyItem={this.buyItem}
