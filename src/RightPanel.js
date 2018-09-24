@@ -36,6 +36,18 @@ class RightPanel extends Component {
         gold: 0,
     };
 
+    chatWithTeamMember = pseudo => {
+        if (pseudo === "GM") {
+            this.props.doSetState({
+                chatInput: `/gmw `,
+            });
+        } else {
+            this.props.doSetState({
+                chatInput: `/w ${pseudo} `,
+            });
+        }
+    };
+
     onChange = (name, value) => {
         const obj = {};
         obj[name] = value;
@@ -162,12 +174,16 @@ class RightPanel extends Component {
             storyCharacters,
             gameMaster,
             uid,
+            chatWithTeamMember,
         } = this.props;
 
         return (
             <div style={styles.RightPanel}>
                 <div style={styles.CharPanel}>{this.displayCharacter()}</div>
-                <TeamPanel storyCharacters={storyCharacters} />
+                <TeamPanel
+                    storyCharacters={storyCharacters}
+                    chatWithTeamMember={this.chatWithTeamMember}
+                />
                 <Chat
                     uid={uid}
                     users={users}
@@ -198,6 +214,7 @@ RightPanel.propTypes = {
     chatHistory: PropTypes.array.isRequired,
     storyCharacters: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
+    chatWithTeamMember: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
 };

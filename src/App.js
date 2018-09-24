@@ -230,7 +230,6 @@ class App extends Component {
 
         const newMerchantList = itemsList;
         let isQuantityLeft = false;
-        console.log("itemDescribed", newMerchantList[itemDescribed]);
         if (newMerchantList[itemDescribed].quantity > 1) {
             newMerchantList[itemDescribed].quantity =
                 newMerchantList[itemDescribed].quantity - 1;
@@ -694,6 +693,7 @@ class App extends Component {
                     characterId === 0 && (
                         <CharacterSelection
                             uid={uid}
+                            pseudo={pseudo}
                             currentStory={currentStory}
                             characterCreation={characterCreation}
                             characters={characters}

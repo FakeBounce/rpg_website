@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
 
-import CharacterCreation from './CharacterCreation';
-import PropTypes from 'prop-types';
-import ChooseCharacter from './ChooseCharacter';
-import firebase from 'firebase';
+import CharacterCreation from "./CharacterCreation";
+import PropTypes from "prop-types";
+import ChooseCharacter from "./ChooseCharacter";
+import firebase from "firebase";
 
 const styledBoxHeader = {
-    width: '100%',
-    height: '20px',
-    marginBottom: '5px',
-    textAlign: 'center',
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
 };
 
 class CharacterSelection extends Component {
@@ -44,7 +44,7 @@ class CharacterSelection extends Component {
                 this.props.doSetState({
                     characterCreation: true,
                 });
-            }
+            },
         );
     };
 
@@ -61,11 +61,11 @@ class CharacterSelection extends Component {
         const charToRegister = characters[id];
         charToRegister.gold =
             Math.floor(Math.random() * characters[id].luck + 1) * 5;
-        charToRegister.status = 'OK';
+        charToRegister.status = "OK";
 
         firebase
             .database()
-            .ref('stories/' + currentStory + '/characters/' + uid)
+            .ref("stories/" + currentStory + "/characters/" + uid)
             .set({ character: charToRegister, characterId: id })
             .then(() => {
                 doSetState(
@@ -75,7 +75,7 @@ class CharacterSelection extends Component {
                     },
                     () => {
                         chooseStory(currentStory);
-                    }
+                    },
                 );
             })
             .catch(error => {
@@ -117,16 +117,16 @@ class CharacterSelection extends Component {
                     () => {
                         firebase
                             .database()
-                            .ref('users/' + uid + '/characters')
+                            .ref("users/" + uid + "/characters")
                             .set({ ...charTab })
                             .then(() => {
                                 firebase
                                     .database()
                                     .ref(
-                                        'stories/' +
+                                        "stories/" +
                                             currentStory +
-                                            '/characters/' +
-                                            uid
+                                            "/characters/" +
+                                            uid,
                                     )
                                     .set({
                                         character,
@@ -144,9 +144,9 @@ class CharacterSelection extends Component {
                                 // Handle Errors here.
                                 triggerError(error);
                             });
-                    }
+                    },
                 );
-            }
+            },
         );
     };
 
@@ -155,6 +155,7 @@ class CharacterSelection extends Component {
             doSetState,
             characters,
             uid,
+            pseudo,
             triggerError,
             currentStory,
             chooseStory,
@@ -164,7 +165,8 @@ class CharacterSelection extends Component {
         const charToRegister = character;
         charToRegister.gold =
             Math.floor(Math.random() * character.luck + 1) * 5;
-        charToRegister.status = 'OK';
+        charToRegister.status = "OK";
+        charToRegister.userPseudo = pseudo;
 
         charTab[character.id] = charToRegister;
         doSetState(
@@ -176,13 +178,16 @@ class CharacterSelection extends Component {
             () => {
                 firebase
                     .database()
-                    .ref('users/' + uid + '/characters')
+                    .ref("users/" + uid + "/characters")
                     .set({ ...charTab })
                     .then(() => {
                         firebase
                             .database()
                             .ref(
-                                'stories/' + currentStory + '/characters/' + uid
+                                "stories/" +
+                                    currentStory +
+                                    "/characters/" +
+                                    uid,
                             )
                             .set({
                                 character: charToRegister,
@@ -200,7 +205,7 @@ class CharacterSelection extends Component {
                         // Handle Errors here.
                         triggerError(error);
                     });
-            }
+            },
         );
     };
 
@@ -208,7 +213,7 @@ class CharacterSelection extends Component {
         const { isAnUpdate, updateCharacterId } = this.state;
         const { uid, characters, characterCreation, triggerError } = this.props;
 
-        if (typeof characters[1] !== 'undefined' && !characterCreation) {
+        if (typeof characters[1] !== "undefined" && !characterCreation) {
             return (
                 <div>
                     <div style={styledBoxHeader}>Choisir un personnage</div>
@@ -224,8 +229,8 @@ class CharacterSelection extends Component {
                 <div>
                     <div style={styledBoxHeader}>
                         {isAnUpdate
-                            ? 'Update a character'
-                            : 'Create a character'}
+                            ? "Update a character"
+                            : "Create a character"}
                     </div>
                     <CharacterCreation
                         uid={uid}
@@ -252,6 +257,7 @@ class CharacterSelection extends Component {
 
 CharacterSelection.propTypes = {
     uid: PropTypes.string.isRequired,
+    pseudo: PropTypes.string.isRequired,
     characterCreation: PropTypes.bool.isRequired,
     characters: PropTypes.array.isRequired,
     doSetState: PropTypes.func.isRequired,

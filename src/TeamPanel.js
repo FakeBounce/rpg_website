@@ -30,28 +30,24 @@ const styles = {
 
 class TeamPanel extends Component {
     render() {
-        const { storyCharacters } = this.props;
+        const { storyCharacters, chatWithTeamMember } = this.props;
 
-        return (
-            <div style={styles.TeamPanel}>
+        return <div style={styles.TeamPanel}>
                 <div style={styles.HeaderText}>Equipe</div>
                 <div style={styles.teamCharacters}>
+                    <TeamCharacter icon="./gameMaster.jpg" name="Game Master" status="OK" gold={999999} health={9999} maxHealth={9999} isGM chatWithTeamMember={() => chatWithTeamMember("GM")} />
+
                     {storyCharacters.map(storyCharacter => {
-                        return (
-                            <TeamCharacter
-                                key={storyCharacter.name}
-                                {...storyCharacter}
-                            />
-                        );
+                        return <TeamCharacter key={storyCharacter.name} {...storyCharacter} chatWithTeamMember={() => chatWithTeamMember(storyCharacter.userPseudo)} />;
                     })}
                 </div>
-            </div>
-        );
+            </div>;
     }
 }
 
 TeamPanel.propTypes = {
     storyCharacters: PropTypes.array.isRequired,
+    chatWithTeamMember: PropTypes.func.isRequired,
 };
 
 export default TeamPanel;

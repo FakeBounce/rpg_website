@@ -33,14 +33,20 @@ const styles = {
 
 class HealthBar extends Component {
     render() {
-        const { width, maxWidth } = this.props;
+        const { width, maxWidth, isGM } = this.props;
 
         return (
-            <div style={{ ...styles.healthBar, width: maxWidth }}>
+            <div
+                style={{
+                    ...styles.healthBar,
+                    width: maxWidth,
+                }}
+            >
                 <div
                     style={{
                         ...styles.bar,
                         width,
+                        background: isGM ? "purple" : "#c54",
                     }}
                 />
             </div>
@@ -50,11 +56,13 @@ class HealthBar extends Component {
 
 HealthBar.defaultProps = {
     maxWidth: "100%",
+    isGM: false,
 };
 
 HealthBar.propTypes = {
     width: PropTypes.string.isRequired,
     maxWidth: PropTypes.string,
+    isGM: PropTypes.bool,
 };
 
 export default HealthBar;

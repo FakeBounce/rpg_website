@@ -18,6 +18,7 @@ const styles = {
         display: "inline-block",
         borderTop: "1px solid black",
         borderBottom: "1px solid black",
+        cursor: "pointer",
     },
     characterTeamHeaderImage: {
         position: "relative",
@@ -30,10 +31,22 @@ const styles = {
 
 class TeamCharacter extends Component {
     render() {
-        const { icon, name, status, gold, health, maxHealth } = this.props;
+        const {
+            icon,
+            name,
+            status,
+            gold,
+            health,
+            maxHealth,
+            chatWithTeamMember,
+            isGM,
+        } = this.props;
 
         return (
-            <div style={styles.characterTeamHeader}>
+            <div
+                style={styles.characterTeamHeader}
+                onClick={chatWithTeamMember}
+            >
                 <img
                     src={icon}
                     alt={name}
@@ -46,6 +59,7 @@ class TeamCharacter extends Component {
                 />
                 <CharacterTeamInfo title="Gold :" text={gold ? gold : 0} />
                 <HealthBar
+                    isGM={isGM}
                     width={`${(health / maxHealth) * 100}%`}
                     maxWidth={`${widthRightPanelLeft - 20 + imageSize / 2}px`}
                 />
@@ -57,6 +71,7 @@ class TeamCharacter extends Component {
 TeamCharacter.defaultProps = {
     health: 50,
     maxHealth: 50,
+    isGM: false,
 };
 
 TeamCharacter.propTypes = {
@@ -66,6 +81,8 @@ TeamCharacter.propTypes = {
     gold: PropTypes.number.isRequired,
     health: PropTypes.number,
     maxHealth: PropTypes.number,
+    isGM: PropTypes.bool,
+    chatWithTeamMember: PropTypes.func.isRequired,
 };
 
 export default TeamCharacter;
