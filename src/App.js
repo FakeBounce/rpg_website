@@ -709,7 +709,7 @@ class App extends Component {
                     (characterId > 0 || isGameMaster) && (
                         <div>
                             <Header
-                                title="Header"
+                                title={stories[currentStory].name}
                                 selectAnotherCharacter={
                                     this.selectAnotherCharacter
                                 }
@@ -721,6 +721,7 @@ class App extends Component {
                                         ? "Return to map"
                                         : "Access chat help"
                                 }
+                                musicMute={musicMute}
                             />
                             {onChatHelp ? (
                                 <ChatCommandsPanel />
