@@ -44,6 +44,15 @@
     display: inline-block;
 }
 
+.item-description-quantity{
+    position: absolute;
+    bottom: 30px;
+    right: 0px;
+    cursor: pointer;
+    margin-right: 5px;
+    float: right;
+}
+
 .item-description-price{
     position: absolute;
     bottom: 0px;

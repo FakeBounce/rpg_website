@@ -19,6 +19,7 @@ class ItemDescription extends Component {
             icon,
             name,
             price,
+            quantity,
             description,
             effect,
             gold,
@@ -38,6 +39,7 @@ class ItemDescription extends Component {
                         {description}
                     </div>
                     <div className="item-description-effect">{effect}</div>
+                    <div className="item-description-quantity">Quantity left :{quantity}</div>
                     <button
                         className={`item-description-price ${gold < price &&
                             "item-description-cant-buy"}`}
@@ -60,6 +62,7 @@ ItemDescription.propTypes = {
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     effect: PropTypes.string,
+    quantity: PropTypes.number.isRequired,
     price: PropTypes.number.isRequired,
     gold: PropTypes.number.isRequired,
     buyItem: PropTypes.number.isRequired,

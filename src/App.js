@@ -41,51 +41,33 @@ const styledMap = {
 
 const items = [
     {
+        index: 0,
         name: "Potion de soin léger",
         description:
             "Potion de soin léger, referme les petites blessures et arrête les hémorragies.",
         effect: "Rend 5 + 1d10 points de vie.",
         icon: "potion_1.jpg",
-        price: 50,
-    },
-    {
-        name: "Potion de soin léger",
-        description:
-            "Potion de soin léger, referme les petites blessures et arrête les hémorragies.",
-        effect: "Rend 5 + 1d10 points de vie.",
-        icon: "potion_1.jpg",
-        price: 50,
-    },
-    {
-        name: "Potion de soin léger",
-        description:
-            "Potion de soin léger, referme les petites blessures et arrête les hémorragies.",
-        effect: "Rend 5 + 1d10 points de vie.",
-        icon: "potion_1.jpg",
-        price: 50,
-    },
-    {
-        name: "Potion de soin léger",
-        description:
-            "Potion de soin léger, referme les petites blessures et arrête les hémorragies.",
-        effect: "Rend 5 + 1d10 points de vie.",
-        icon: "potion_1.jpg",
+        quantity: 4,
         price: 50,
     },
 ];
 
 const items2 = [
     {
+        index: 0,
         name: "Lance",
         description: "Lance classique en bois. Embout en fer. Emoussée.",
         icon: "spear.png",
+        quantity: 2,
         price: 150,
     },
     {
+        index: 1,
         name: "Epée à deux mains",
         description:
             "Une belle épée à deux mains. La lame scintille à la lumière.",
         icon: "two_hand_sword.png",
+        quantity: 1,
         price: 250,
     },
 ];
@@ -147,6 +129,10 @@ const towns = [
     },
 ];
 
+const musicList = ["Auberge", "Combat"];
+
+const noiseList = ["Applaudissement", "Brouhaha", "Pluie"];
+
 class App extends Component {
     state = {
         characterId: 0,
@@ -173,6 +159,13 @@ class App extends Component {
         map: [],
         merchantsList: [],
         musicStatus: "PAUSED",
+        musicName: "",
+        musicMute: false,
+        musicVolume: 100,
+        noiseName: "",
+        noiseStatus: "PAUSED",
+        noiseMute: false,
+        noiseVolume: 100,
         onChatHelp: false,
         password: "",
         pseudo: "",
@@ -190,7 +183,8 @@ class App extends Component {
     toggleMusic = () => {
         this.setState(state => ({
             ...state,
-            musicStatus: state.musicStatus === "PLAYING" ? "PAUSED" : "PLAYING",
+            musicMute: !state.musicMute,
+            noiseMute: !state.noiseMute,
         }));
     };
 
@@ -233,13 +227,22 @@ class App extends Component {
             item.quantity = 1;
             newItemsTab.push(item);
         }
+
         const newMerchantList = itemsList;
-        newMerchantList.splice(itemDescribed, 1);
+        let isQuantityLeft = false;
+        console.log("itemDescribed", newMerchantList[itemDescribed]);
+        if (newMerchantList[itemDescribed].quantity > 1) {
+            newMerchantList[itemDescribed].quantity =
+                newMerchantList[itemDescribed].quantity - 1;
+            isQuantityLeft = true;
+        } else {
+            newMerchantList.splice(itemDescribed, 1);
+        }
         this.setState(
             state => ({
                 ...state,
-                itemToDescribe: {},
-                isItemDescriptionShowed: false,
+                itemToDescribe: isQuantityLeft ? newMerchantList[itemDescribed] : {},
+                isItemDescriptionShowed: isQuantityLeft,
                 itemsList: newMerchantList,
             }),
             () => {
@@ -295,6 +298,10 @@ class App extends Component {
                     isGameMaster: false,
                     map: [],
                     merchantsList: [],
+                    musicStatus: "PAUSED",
+                    musicName: "",
+                    noiseName: "",
+                    noiseStatus: "PAUSED",
                     onChatHelp: false,
                     password: "",
                     pseudo: "",
@@ -451,6 +458,28 @@ class App extends Component {
             });
     };
 
+    loadMusic = () => {
+        const { stories, currentStory } = this.state;
+        firebase
+            .database()
+            .ref("/stories/" + currentStory + "/music")
+            .on("value", snapshot => {
+                this.setState(state => ({
+                    ...state,
+                    ...snapshot.val(),
+                }));
+            });
+        firebase
+            .database()
+            .ref("/stories/" + currentStory + "/noise")
+            .on("value", snapshot => {
+                this.setState(state => ({
+                    ...state,
+                    ...snapshot.val(),
+                }));
+            });
+    };
+
     chooseStory = i => {
         const { stories, uid } = this.state;
         let isGM = false;
@@ -478,6 +507,7 @@ class App extends Component {
                         () => {
                             this.createTable();
                             this.createChat();
+                            this.loadMusic();
                         },
                     );
                 });
@@ -493,6 +523,7 @@ class App extends Component {
                 () => {
                     this.createTable();
                     this.createChat();
+                    this.loadMusic();
                 },
             );
         }
@@ -614,6 +645,13 @@ class App extends Component {
             currentQuest,
             isQuestShowed,
             questsList,
+            musicName,
+            musicMute,
+            musicVolume,
+            noiseName,
+            noiseStatus,
+            noiseMute,
+            noiseVolume,
         } = this.state;
 
         return (
@@ -739,10 +777,17 @@ class App extends Component {
                         </div>
                     )}
                 <Sound
-                    url="./Auberge.mp3"
+                    url={`./music/${musicName}.mp3`}
                     playStatus={musicStatus}
+                    volume={musicMute ? 0 : musicVolume}
                     autoLoad
                     loop
+                />
+                <Sound
+                    url={`./noise/${noiseName}.mp3`}
+                    playStatus={noiseStatus}
+                    volume={noiseMute ? 0 : noiseVolume}
+                    autoLoad
                 />
                 {error}
             </div>

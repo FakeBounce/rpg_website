@@ -34,7 +34,6 @@ class PlayerMapPanel extends Component {
                 <Item
                     key={`item-${itemFromMerchant.name}-${index}`}
                     {...itemFromMerchant}
-                    index={index}
                     showItemDescription={this.showItemDescription}
                 />
             );
