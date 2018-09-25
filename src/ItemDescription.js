@@ -65,7 +65,7 @@ ItemDescription.propTypes = {
     quantity: PropTypes.number.isRequired,
     price: PropTypes.number.isRequired,
     gold: PropTypes.number.isRequired,
-    buyItem: PropTypes.number.isRequired,
+    buyItem: PropTypes.func.isRequired,
 };
 
 export default ItemDescription;

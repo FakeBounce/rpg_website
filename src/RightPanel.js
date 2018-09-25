@@ -174,7 +174,6 @@ class RightPanel extends Component {
             storyCharacters,
             gameMaster,
             uid,
-            chatWithTeamMember,
         } = this.props;
 
         return (
@@ -214,7 +213,6 @@ RightPanel.propTypes = {
     chatHistory: PropTypes.array.isRequired,
     storyCharacters: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
-    chatWithTeamMember: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
 };

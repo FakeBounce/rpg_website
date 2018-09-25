@@ -37,7 +37,6 @@ QuestFullscreen.propTypes = {
     icon: PropTypes.string.isRequired,
     dangerosity: PropTypes.number.isRequired,
     reward: PropTypes.number.isRequired,
-    index: PropTypes.number.isRequired,
     hideQuest: PropTypes.func.isRequired,
 };
 

@@ -110,6 +110,48 @@ class IsNotAuth extends Component {
                 />
                 <button onClick={this.signIn}>Sign In</button>
                 <button onClick={this.signUp}>Sign Up</button>
+
+                <div>
+                    <div className="commit"> FakeBounce, le 2018-09-25 : Added Items spreadsheet url + key </div>
+                    <div className="commit"> fakebounce, le 2018-09-24 : Modified header style and added symbol for music muting </div>
+                    <div className="commit"> fakebounce, le 2018-09-24 : Added images and musics </div>
+                    <div className="commit"> fakebounce, le 2018-09-24 : Added click on team to chat function + GameMaster character to team </div>
+                    <div className="commit"> fakebounce, le 2018-09-24 : Added sound story dependancy and regrouped items by quantity </div>
+                    <div className="commit"> fakebounce, le 2018-09-22 : Finalized quests style + Load map and chat after choosing history </div>
+                    <div className="commit"> fakebounce, le 2018-09-21 : Quest fullscreen </div>
+                    <div className="commit"> fakebounce, le 2018-09-21 : Real quest pannel </div>
+                    <div className="commit"> fakebounce, le 2018-09-20 : Added quests </div>
+                    <div className="commit"> fakebounce, le 2018-09-20 : Reviewed merchants and item css. Can buy an item. Added music package. </div>
+                    <div className="commit"> FakeBounce, le 2018-09-19 : Added character modification </div>
+                    <div className="commit"> fakebounce, le 2018-09-18 : Restructured code and corrected all errors from console </div>
+                    <div className="commit"> FakeBounce, le 2018-09-18 : Corrected Chat GM, Team display, Gold input and window overflow </div>
+                    <div className="commit"> fakebounce, le 2018-09-18 : Finalized Character Panel with story bound. Team tab on progress. </div>
+                    <div className="commit"> FakeBounce, le 2018-09-17 : Added stories and corrected some styles issue, code not structured </div>
+                    <div className="commit"> fakebounce, le 2018-09-16 : UI images </div>
+                    <div className="commit"> fakebounce, le 2018-09-16 : Corrected some rules </div>
+                    <div className="commit"> fakebounce, le 2018-09-16 : Character panel for players </div>
+                    <div className="commit"> fakebounce, le 2018-09-16 : Added toggle for chat help. Now can return to map panel. </div>
+                    <div className="commit"> fakebounce, le 2018-09-16 : Added chat commands </div>
+                    <div className="commit"> fakebounce, le 2018-09-15 : Corrected character auto creation </div>
+                    <div className="commit"> fakebounce, le 2018-09-15 : Chat and character creation correction </div>
+                    <div className="commit"> fakebounce, le 2018-09-15 : Restructured code </div>
+                    <div className="commit"> FakeBounce, le 2018-09-14 : Began file restructuration </div>
+                    <div className="commit"> FakeBounce, le 2018-09-14 : Added map edition for Admins and chat /dice function </div>
+                    <div className="commit"> fakebounce, le 2018-09-14 : Finished character creation form and added chat </div>
+                    <div className="commit"> FakeBounce, le 2018-09-13 : Merge pull request #1 from FakeBounce/feature/loadMapFromDb </div>
+                    <div className="commit"> FakeBounce, le 2018-09-13 : Added a map loader from DB </div>
+                    <div className="commit"> fakebounce, le 2018-09-12 : Character creation </div>
+                    <div className="commit"> fakebounce, le 2018-09-12 : Added firebase correctly, plus account name selection (Pseudo) </div>
+                    <div className="commit"> fakebounce, le 2018-09-11 : Added tiles to update map </div>
+                    <div className="commit"> fakebounce, le 2018-09-11 : updated gitignore </div>
+                    <div className="commit"> fakebounce, le 2018-09-11 : Added Firebase and auth plugin, running as admin for now </div>
+                    <div className="commit"> fakebounce, le 2018-09-11 : MAJ TODO </div>
+                    <div className="commit"> fakebounce, le 2018-09-11 : Added image for transparency </div>
+                    <div className="commit"> fakebounce, le 2018-09-11 : Screen ready </div>
+                    <div className="commit"> FakeBounce, le 2018-09-10 : Update readme without format </div>
+                    <div className="commit"> fakebounce, le 2018-09-10 : Constructed base of the website </div>
+                    <div className="commit"> FakeBounce, le 2018-09-10 : Initial commit </div>
+                </div>
             </div>
         );
     }

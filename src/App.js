@@ -130,10 +130,6 @@ const towns = [
     },
 ];
 
-const musicList = ["Auberge", "Combat"];
-
-const noiseList = ["Applaudissement", "Brouhaha", "Pluie"];
-
 class App extends Component {
     state = {
         characterId: 0,
@@ -459,7 +455,7 @@ class App extends Component {
     };
 
     loadMusic = () => {
-        const { stories, currentStory } = this.state;
+        const { currentStory } = this.state;
         firebase
             .database()
             .ref("/stories/" + currentStory + "/music")

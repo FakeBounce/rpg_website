@@ -63,6 +63,7 @@ class Header extends Component {
                                 : "./soundUnmuted.png"
                         }
                         style={styledSound}
+                        alt="sound muted or not"
                     />
                 </button>
             </div>

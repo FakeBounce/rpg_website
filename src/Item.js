@@ -37,7 +37,7 @@ class Item extends Component {
 }
 
 Item.propTypes = {
-    index: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
     icon: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
