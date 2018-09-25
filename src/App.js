@@ -1,53 +1,54 @@
-import React, { Component } from "react";
-import firebase from "firebase";
-import Sound from "react-sound";
-import "./App.css";
-import Town from "./Town";
-import IsNotAuth from "./IsNotAuth";
-import HasNoPseudo from "./HasNoPseudo";
-import CharacterSelection from "./CharacterSelection";
-import BottomPanel from "./BottomPanel";
-import RightPanel from "./RightPanel";
-import PlayerMapPanel from "./PlayerMapPanel";
-import GMMapPanel from "./GMMapPanel";
-import StoriesList from "./StoriesList";
-import ChatCommandsPanel from "./ChatCommandsPanel";
-import Header from "./Header";
+import React, { Component } from 'react';
+import firebase from 'firebase';
+import axios from 'axios';
+import Sound from 'react-sound';
+import './App.css';
+import Town from './Town';
+import IsNotAuth from './IsNotAuth';
+import HasNoPseudo from './HasNoPseudo';
+import CharacterSelection from './CharacterSelection';
+import BottomPanel from './BottomPanel';
+import RightPanel from './RightPanel';
+import PlayerMapPanel from './PlayerMapPanel';
+import GMMapPanel from './GMMapPanel';
+import StoriesList from './StoriesList';
+import ChatCommandsPanel from './ChatCommandsPanel';
+import Header from './Header';
 // https://sheets.googleapis.com/v4/spreadsheets/1VgBWvm0uKuNedA3mS98NUcZNMLucYL9I64Jinly6Pvc?key=AIzaSyCrpca5keUJdvpIPUY7LXDBz0-lyU7QVeg
 
-import { gridDimension, gridLength } from "./StyleConstants";
+import { gridDimension, gridLength } from './StyleConstants';
 
 const styledGrid = {
-    border: "1px solid pink",
+    border: '1px solid pink',
     width: `${gridDimension}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledRow = {
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledMap = {
-    border: "1px solid grey",
+    border: '1px solid grey',
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension * gridLength}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const items = [
     {
         index: 0,
-        name: "Potion de soin léger",
+        name: 'Potion de soin léger',
         description:
-            "Potion de soin léger, referme les petites blessures et arrête les hémorragies.",
-        effect: "Rend 5 + 1d10 points de vie.",
-        icon: "potion_1.jpg",
+            'Potion de soin léger, referme les petites blessures et arrête les hémorragies.',
+        effect: 'Rend 5 + 1d10 points de vie.',
+        icon: 'potion_1.jpg',
         quantity: 4,
         price: 50,
     },
@@ -56,18 +57,18 @@ const items = [
 const items2 = [
     {
         index: 0,
-        name: "Lance",
-        description: "Lance classique en bois. Embout en fer. Emoussée.",
-        icon: "spear.png",
+        name: 'Lance',
+        description: 'Lance classique en bois. Embout en fer. Emoussée.',
+        icon: 'spear.png',
         quantity: 2,
         price: 150,
     },
     {
         index: 1,
-        name: "Epée à deux mains",
+        name: 'Epée à deux mains',
         description:
-            "Une belle épée à deux mains. La lame scintille à la lumière.",
-        icon: "two_hand_sword.png",
+            'Une belle épée à deux mains. La lame scintille à la lumière.',
+        icon: 'two_hand_sword.png',
         quantity: 1,
         price: 250,
     },
@@ -75,17 +76,17 @@ const items2 = [
 
 const merchantList = [
     {
-        name: "Alchimiste Debron",
-        description: "Homme sénil",
-        shop_description: "Vieux bâtiment",
-        icon: "alchimist.jpg",
+        name: 'Alchimiste Debron',
+        description: 'Homme sénil',
+        shop_description: 'Vieux bâtiment',
+        icon: 'alchimist.jpg',
         items,
     },
     {
-        name: "Forgeron Passim",
-        description: "Cornu boursouflé",
-        shop_description: "Forge en lein air",
-        icon: "blacksmith.jpg",
+        name: 'Forgeron Passim',
+        description: 'Cornu boursouflé',
+        shop_description: 'Forge en lein air',
+        icon: 'blacksmith.jpg',
         items: items2,
     },
 ];
@@ -93,42 +94,45 @@ const merchantList = [
 const questList = [
     {
         name: "Recherche d'ingrédients",
-        icon: "notice_6.jpg",
+        icon: 'notice_6.jpg',
         description:
-            "Cherche des ingrédients de qualité rare. Venez me voir pour en savoir plus " +
-            "(Demandez Gi Tan, 3 Baraque à gauche après le poste de garde)",
+            'Cherche des ingrédients de qualité rare. Venez me voir pour en savoir plus ' +
+            '(Demandez Gi Tan, 3 Baraque à gauche après le poste de garde)',
         position: 2,
         randomStyle: [2, 10],
         dangerosity: 0,
-        monsterId: "0",
+        monsterId: '0',
         reward: 800,
     },
     {
         name: "Extermination d'autochtone",
-        icon: "notice_4.jpg",
+        icon: 'notice_4.jpg',
         description:
-            "Des autochtones attaquent les convois entre les bourgades de Imédétongs et de SotMouton." +
-            " Les villageois ont du mal à se ravitailler et doivent faire un détour. " +
-            "Nombreuses pertes économiques. " +
+            'Des autochtones attaquent les convois entre les bourgades de Imédétongs et de SotMouton.' +
+            ' Les villageois ont du mal à se ravitailler et doivent faire un détour. ' +
+            'Nombreuses pertes économiques. ' +
             "Les autochtones sont peu nombreux et n'ont spécialement de force d'attaque.",
         position: 5,
         randomStyle: [1, 7],
         dangerosity: 3,
-        monsterId: "1",
+        monsterId: '1',
         reward: 1550,
     },
 ];
 
 const towns = [
     {
-        name: "Hameau de mes fesses",
+        name: 'Hameau de mes fesses',
         positionX: 6,
         positionY: 6,
-        icon: "big_town",
+        icon: 'big_town',
         merchants: merchantList,
         quests: questList,
     },
 ];
+
+const headerValues = [];
+const rowValues = [];
 
 class App extends Component {
     state = {
@@ -136,13 +140,13 @@ class App extends Component {
         character: {},
         characters: {},
         characterCreation: false,
-        chatInput: "",
+        chatInput: '',
         chatHistory: [],
         currentStory: -1,
         currentQuest: {},
-        errorMessage: "",
-        email: "",
-        gameMaster: "",
+        errorMessage: '',
+        email: '',
+        gameMaster: '',
         isAuth: false,
         isItemShowed: false,
         itemsList: [],
@@ -155,27 +159,54 @@ class App extends Component {
         isGameMaster: false,
         map: [],
         merchantsList: [],
-        musicStatus: "PAUSED",
-        musicName: "",
+        musicStatus: 'PAUSED',
+        musicName: '',
         musicMute: false,
         musicVolume: 100,
-        noiseName: "",
-        noiseStatus: "PAUSED",
+        noiseName: '',
+        noiseStatus: 'PAUSED',
         noiseMute: false,
         noiseVolume: 100,
         onChatHelp: false,
-        password: "",
-        pseudo: "",
-        pseudoInput: "",
+        password: '',
+        pseudo: '',
+        pseudoInput: '',
         questsList: [],
-        uid: "",
+        uid: '',
         users: null,
         stories: [],
         storyCharacters: [],
         textureToApply: null,
     };
 
-    componentDidMount() {}
+    componentDidMount() {
+        axios
+            .get(
+                'https://sheets.googleapis.com/v4/spreadsheets/1VgBWvm0uKuNedA3mS98NUcZNMLucYL9I64Jinly6Pvc?key=AIzaSyCrpca5keUJdvpIPUY7LXDBz0-lyU7QVeg&includeGridData=true&ranges=Consumables!A1:G55'
+            )
+            .then(response => {
+                response.data.sheets[0].data[0].rowData.map(
+                    (rowData, rowIndex) => {
+                        const rowValue = {};
+                        rowData.values.map((columnData,columnIndex) => {
+                            if (rowIndex === 0) {
+                                headerValues.push(
+                                    columnData.effectiveValue.stringValue
+                                );
+                            } else {
+                                rowValue[headerValues[columnIndex]] = columnData.effectiveValue.stringValue;
+                            }
+                        });
+                        if (rowIndex !== 0) {
+                            rowValues.push(rowValue);
+                        }
+                    }
+                );
+            })
+            .catch(e => this.triggerError(e));
+
+        // 'https://sheets.googleapis.com/v4/spreadsheets/1VgBWvm0uKuNedA3mS98NUcZNMLucYL9I64Jinly6Pvc?key=AIzaSyCrpca5keUJdvpIPUY7LXDBz0-lyU7QVeg&includeGridData=true&ranges=Weapons!A1:G55'
+    }
 
     toggleMusic = () => {
         this.setState(state => ({
@@ -237,7 +268,9 @@ class App extends Component {
         this.setState(
             state => ({
                 ...state,
-                itemToDescribe: isQuantityLeft ? newMerchantList[itemDescribed] : {},
+                itemToDescribe: isQuantityLeft
+                    ? newMerchantList[itemDescribed]
+                    : {},
                 isItemDescriptionShowed: isQuantityLeft,
                 itemsList: newMerchantList,
             }),
@@ -245,11 +278,11 @@ class App extends Component {
                 firebase
                     .database()
                     .ref(
-                        "stories/" +
+                        'stories/' +
                             currentStory +
-                            "/characters/" +
+                            '/characters/' +
                             uid +
-                            "/character",
+                            '/character'
                     )
                     .set({
                         ...character,
@@ -260,7 +293,7 @@ class App extends Component {
                         // Handle Errors here.
                         this.triggerError(error);
                     });
-            },
+            }
         );
     };
 
@@ -275,13 +308,13 @@ class App extends Component {
                     character: {},
                     characters: {},
                     characterCreation: false,
-                    chatInput: "",
+                    chatInput: '',
                     chatHistory: [],
                     currentStory: -1,
                     currentQuest: {},
-                    errorMessage: "",
-                    email: "",
-                    gameMaster: "",
+                    errorMessage: '',
+                    email: '',
+                    gameMaster: '',
                     isAuth: false,
                     isItemShowed: false,
                     itemsList: [],
@@ -294,16 +327,16 @@ class App extends Component {
                     isGameMaster: false,
                     map: [],
                     merchantsList: [],
-                    musicStatus: "PAUSED",
-                    musicName: "",
-                    noiseName: "",
-                    noiseStatus: "PAUSED",
+                    musicStatus: 'PAUSED',
+                    musicName: '',
+                    noiseName: '',
+                    noiseStatus: 'PAUSED',
                     onChatHelp: false,
-                    password: "",
-                    pseudo: "",
-                    pseudoInput: "",
+                    password: '',
+                    pseudo: '',
+                    pseudoInput: '',
                     questsList: [],
-                    uid: "",
+                    uid: '',
                     users: null,
                     stories: [],
                     storyCharacters: [],
@@ -337,7 +370,7 @@ class App extends Component {
                 : row.icon
                     ? {
                           backgroundImage: `url(${row.icon})`,
-                          backgroundSize: "cover",
+                          backgroundSize: 'cover',
                       }
                     : {};
             table.push(
@@ -391,7 +424,7 @@ class App extends Component {
                             return null;
                         })}
                     </div>
-                ),
+                )
             );
             return null;
         });
@@ -402,7 +435,7 @@ class App extends Component {
         const { stories, currentStory, textureToApply } = this.state;
         firebase
             .database()
-            .ref("maps/" + stories[currentStory].map + "/" + x + "/" + y)
+            .ref('maps/' + stories[currentStory].map + '/' + x + '/' + y)
             .set(textureToApply)
             .catch(error => {
                 // Handle Errors here.
@@ -414,8 +447,8 @@ class App extends Component {
         const { stories, currentStory } = this.state;
         firebase
             .database()
-            .ref("/maps/" + stories[currentStory].map)
-            .on("value", snapshot => {
+            .ref('/maps/' + stories[currentStory].map)
+            .on('value', snapshot => {
                 // console.log('snapshot', snapshot.val());
                 this.setState(state => ({
                     ...state,
@@ -427,8 +460,8 @@ class App extends Component {
     loadUsers = () => {
         firebase
             .database()
-            .ref("/users")
-            .on("value", snapshot => {
+            .ref('/users')
+            .on('value', snapshot => {
                 // console.log('snapshot', snapshot.val());
                 this.setState(state => ({
                     ...state,
@@ -440,8 +473,8 @@ class App extends Component {
     loadStories = () => {
         firebase
             .database()
-            .ref("/stories")
-            .once("value")
+            .ref('/stories')
+            .once('value')
             .then(snapshot => {
                 this.setState(state => ({
                     ...state,
@@ -458,8 +491,8 @@ class App extends Component {
         const { currentStory } = this.state;
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/music")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/music')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     ...snapshot.val(),
@@ -467,8 +500,8 @@ class App extends Component {
             });
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/noise")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/noise')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     ...snapshot.val(),
@@ -483,13 +516,13 @@ class App extends Component {
         if (stories[i].gameMaster === uid) isGM = true;
 
         if (
-            typeof stories[i].characters !== "undefined" &&
-            typeof stories[i].characters[uid] !== "undefined"
+            typeof stories[i].characters !== 'undefined' &&
+            typeof stories[i].characters[uid] !== 'undefined'
         ) {
             firebase
                 .database()
-                .ref("/stories/" + i + "/characters/" + uid + "/character")
-                .on("value", snapshot => {
+                .ref('/stories/' + i + '/characters/' + uid + '/character')
+                .on('value', snapshot => {
                     //@TODO : Activate when GM will have proper tabs
                     this.setState(
                         state => ({
@@ -504,7 +537,7 @@ class App extends Component {
                             this.createTable();
                             this.createChat();
                             this.loadMusic();
-                        },
+                        }
                     );
                 });
         } else {
@@ -520,18 +553,18 @@ class App extends Component {
                     this.createTable();
                     this.createChat();
                     this.loadMusic();
-                },
+                }
             );
         }
         firebase
             .database()
-            .ref("/stories/" + i + "/characters")
-            .on("value", snapshot => {
+            .ref('/stories/' + i + '/characters')
+            .on('value', snapshot => {
                 const charactersFromStories = [];
-                if (typeof snapshot.val() !== "undefined" && snapshot.val()) {
+                if (typeof snapshot.val() !== 'undefined' && snapshot.val()) {
                     Object.keys(snapshot.val()).map(key => {
                         charactersFromStories.push(
-                            snapshot.val()[key].character,
+                            snapshot.val()[key].character
                         );
                         return null;
                     });
@@ -549,7 +582,7 @@ class App extends Component {
             table.push(
                 <div key={`table-row-${index}`} style={styledRow}>
                     {this.createGrid(index, row)}
-                </div>,
+                </div>
             );
             return null;
         });
@@ -559,8 +592,8 @@ class App extends Component {
     createChat = () => {
         firebase
             .database()
-            .ref("/chat")
-            .on("value", snapshot => {
+            .ref('/chat')
+            .on('value', snapshot => {
                 if (snapshot.val() !== null) {
                     this.setState(state => ({
                         ...state,
@@ -585,7 +618,7 @@ class App extends Component {
             }),
             () => {
                 if (cb) cb();
-            },
+            }
         );
     };
 
@@ -599,10 +632,10 @@ class App extends Component {
                 setTimeout(() => {
                     this.setState(state => ({
                         ...state,
-                        error: "",
+                        error: '',
                     }));
                 }, 5000);
-            },
+            }
         );
     };
 
@@ -665,7 +698,7 @@ class App extends Component {
                 )}
 
                 {isAuth &&
-                    pseudo === "" && (
+                    pseudo === '' && (
                         <HasNoPseudo
                             pseudoInput={pseudoInput}
                             onChange={this.onChange}
@@ -675,7 +708,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory === -1 && (
                         <StoriesList
                             stories={stories}
@@ -685,7 +718,7 @@ class App extends Component {
 
                 {!isGameMaster &&
                     isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory > -1 &&
                     characterId === 0 && (
                         <CharacterSelection
@@ -701,7 +734,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory > -1 &&
                     (characterId > 0 || isGameMaster) && (
                         <div>
@@ -715,8 +748,8 @@ class App extends Component {
                                 toggleMusic={this.toggleMusic}
                                 chatHelpTitle={
                                     onChatHelp
-                                        ? "Return to map"
-                                        : "Access chat help"
+                                        ? 'Return to map'
+                                        : 'Access chat help'
                                 }
                                 musicMute={musicMute}
                             />
