@@ -13,6 +13,7 @@ import GMMapPanel from "./GMMapPanel";
 import StoriesList from "./StoriesList";
 import ChatCommandsPanel from "./ChatCommandsPanel";
 import Header from "./Header";
+// https://sheets.googleapis.com/v4/spreadsheets/1VgBWvm0uKuNedA3mS98NUcZNMLucYL9I64Jinly6Pvc?key=AIzaSyCrpca5keUJdvpIPUY7LXDBz0-lyU7QVeg
 
 import { gridDimension, gridLength } from "./StyleConstants";
 
