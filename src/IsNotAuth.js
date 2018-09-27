@@ -111,7 +111,10 @@ class IsNotAuth extends Component {
                 <button onClick={this.signIn}>Sign In</button>
                 <button onClick={this.signUp}>Sign Up</button>
 
-                <div>
+                <div><div className="commit"> FakeBounce, le 2018-09-27 : Get datas from spreadsheet and store it in the state </div>
+                    <div className="commit"> FakeBounce, le 2018-09-26 : Added aura images </div>
+                    <div className="commit"> FakeBounce, le 2018-09-25 : Logged values from Items spreadsheet </div>
+                    <div className="commit"> FakeBounce, le 2018-09-25 : Added logs + corrected some errors </div>
                     <div className="commit"> FakeBounce, le 2018-09-25 : Added Items spreadsheet url + key </div>
                     <div className="commit"> fakebounce, le 2018-09-24 : Modified header style and added symbol for music muting </div>
                     <div className="commit"> fakebounce, le 2018-09-24 : Added images and musics </div>
