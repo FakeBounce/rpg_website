@@ -131,8 +131,8 @@ const towns = [
     },
 ];
 
-const headerValues = [];
-const rowValues = [];
+let headerValues = [];
+let rowValues = [];
 
 class App extends Component {
     state = {
@@ -177,24 +177,38 @@ class App extends Component {
         stories: [],
         storyCharacters: [],
         textureToApply: null,
+        spreadSheet: {},
     };
 
     componentDidMount() {
+        this.doAxiosCall('Merchants!A1:J31', 'merchantsList');
+        this.doAxiosCall('Consumables!A1:E55', 'consumablesList');
+        this.doAxiosCall('Enhancements!A1:E28', 'enhancementsList');
+        this.doAxiosCall('Runes!A1:E49', 'runesList');
+        this.doAxiosCall('Stones!A1:E26', 'stonesList');
+        this.doAxiosCall('Weapons!A1:C36', 'weaponsList');
+        this.doAxiosCall('Artefacts!A1:D37', 'artefactsList');
+    }
+
+    doAxiosCall = (url, currentList) => {
+        const headerValues = [];
+        const rowValues = [];
         axios
             .get(
-                'https://sheets.googleapis.com/v4/spreadsheets/1VgBWvm0uKuNedA3mS98NUcZNMLucYL9I64Jinly6Pvc?key=AIzaSyCrpca5keUJdvpIPUY7LXDBz0-lyU7QVeg&includeGridData=true&ranges=Consumables!A1:G55'
+                `https://sheets.googleapis.com/v4/spreadsheets/1VgBWvm0uKuNedA3mS98NUcZNMLucYL9I64Jinly6Pvc?key=AIzaSyCrpca5keUJdvpIPUY7LXDBz0-lyU7QVeg&includeGridData=true&ranges=${url}`
             )
             .then(response => {
                 response.data.sheets[0].data[0].rowData.map(
                     (rowData, rowIndex) => {
                         const rowValue = {};
-                        rowData.values.map((columnData,columnIndex) => {
+                        rowData.values.map((columnData, columnIndex) => {
                             if (rowIndex === 0) {
                                 headerValues.push(
                                     columnData.effectiveValue.stringValue
                                 );
-                            } else {
-                                rowValue[headerValues[columnIndex]] = columnData.effectiveValue.stringValue;
+                            } else if (columnData.formattedValue) {
+                                rowValue[headerValues[columnIndex]] =
+                                    columnData.formattedValue;
                             }
                         });
                         if (rowIndex !== 0) {
@@ -202,11 +216,29 @@ class App extends Component {
                         }
                     }
                 );
+
+                const merchantsRow = {
+                    headers: headerValues,
+                    content: rowValues,
+                };
+
+                const spreadSheetMerchants = {
+                    ...this.state.spreadSheet,
+                };
+                spreadSheetMerchants[currentList] = merchantsRow;
+
+                this.setState(
+                    state => ({
+                        ...state,
+                        spreadSheet: spreadSheetMerchants,
+                    }),
+                    () => {
+                        console.log('state', this.state.spreadSheet);
+                    }
+                );
             })
             .catch(e => this.triggerError(e));
-
-        // 'https://sheets.googleapis.com/v4/spreadsheets/1VgBWvm0uKuNedA3mS98NUcZNMLucYL9I64Jinly6Pvc?key=AIzaSyCrpca5keUJdvpIPUY7LXDBz0-lyU7QVeg&includeGridData=true&ranges=Weapons!A1:G55'
-    }
+    };
 
     toggleMusic = () => {
         this.setState(state => ({
