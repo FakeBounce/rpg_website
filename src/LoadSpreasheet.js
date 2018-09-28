@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import firebase from "firebase";
 import axios from "axios";
-
-let headerValues = [];
-let rowValues = [];
+import PropTypes from "prop-types";
 
 class LoadSpreasheet extends Component {
+
+    state = {
+        spreadSheet: {},
+    }
+
     componentDidMount() {
         this.doAxiosCall("Merchants!A1:J31", "merchantsList");
         this.doAxiosCall("Consumables!A1:E55", "consumablesList");
@@ -13,7 +16,7 @@ class LoadSpreasheet extends Component {
         this.doAxiosCall("Runes!A1:E49", "runesList");
         this.doAxiosCall("Stones!A1:E26", "stonesList");
         this.doAxiosCall("Weapons!A1:C36", "weaponsList");
-        this.doAxiosCall("Artefacts!A1:D37", "artefactsList");
+        this.doAxiosCall("Artefacts!A1:E37", "artefactsList");
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -24,7 +27,7 @@ class LoadSpreasheet extends Component {
                 .set(this.state.spreadSheet.artefactsList.content)
                 .catch(error => {
                     // Handle Errors here.
-                    this.triggerError(error);
+                    this.props.triggerError(error);
                 });
             if (this.state.spreadSheet.weaponsList) {
                 firebase
@@ -33,7 +36,7 @@ class LoadSpreasheet extends Component {
                     .set(this.state.spreadSheet.weaponsList.content)
                     .catch(error => {
                         // Handle Errors here.
-                        this.triggerError(error);
+                        this.props.triggerError(error);
                     });
             }
             if (this.state.spreadSheet.stonesList) {
@@ -43,7 +46,7 @@ class LoadSpreasheet extends Component {
                     .set(this.state.spreadSheet.stonesList.content)
                     .catch(error => {
                         // Handle Errors here.
-                        this.triggerError(error);
+                        this.props.triggerError(error);
                     });
             }
             if (this.state.spreadSheet.runesList) {
@@ -53,7 +56,7 @@ class LoadSpreasheet extends Component {
                     .set(this.state.spreadSheet.runesList.content)
                     .catch(error => {
                         // Handle Errors here.
-                        this.triggerError(error);
+                        this.props.triggerError(error);
                     });
             }
             if (this.state.spreadSheet.enhancementsList) {
@@ -63,7 +66,7 @@ class LoadSpreasheet extends Component {
                     .set(this.state.spreadSheet.enhancementsList.content)
                     .catch(error => {
                         // Handle Errors here.
-                        this.triggerError(error);
+                        this.props.triggerError(error);
                     });
             }
             if (this.state.spreadSheet.consumablesList) {
@@ -73,7 +76,7 @@ class LoadSpreasheet extends Component {
                     .set(this.state.spreadSheet.consumablesList.content)
                     .catch(error => {
                         // Handle Errors here.
-                        this.triggerError(error);
+                        this.props.triggerError(error);
                     });
             }
             if (this.state.spreadSheet.merchantsList) {
@@ -83,7 +86,7 @@ class LoadSpreasheet extends Component {
                     .set(this.state.spreadSheet.merchantsList.content)
                     .catch(error => {
                         // Handle Errors here.
-                        this.triggerError(error);
+                        this.props.triggerError(error);
                     });
             }
         }
@@ -137,17 +140,19 @@ class LoadSpreasheet extends Component {
                     },
                 );
             })
-            .catch(e => this.triggerError(e));
+            .catch(e => this.props.triggerError(e));
     };
 
     render() {
-        const { pseudoInput, onChange } = this.props;
-
         return (
             <div />
         );
     }
 }
+
+LoadSpreasheet.propTypes = {
+    triggerError: PropTypes.func.isRequired,
+};
 
 export default LoadSpreasheet;
 // https://sheets.googleapis.com/v4/spreadsheets/1VgBWvm0uKuNedA3mS98NUcZNMLucYL9I64Jinly6Pvc?key=AIzaSyCrpca5keUJdvpIPUY7LXDBz0-lyU7QVeg
