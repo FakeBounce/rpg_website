@@ -4,19 +4,19 @@ import axios from "axios";
 import PropTypes from "prop-types";
 
 class LoadSpreasheet extends Component {
-
     state = {
         spreadSheet: {},
-    }
+    };
 
     componentDidMount() {
-        this.doAxiosCall("Merchants!A1:J31", "merchantsList");
+        this.doAxiosCall("Merchants!A1:K39", "merchantsList");
         this.doAxiosCall("Consumables!A1:E55", "consumablesList");
         this.doAxiosCall("Enhancements!A1:E28", "enhancementsList");
         this.doAxiosCall("Runes!A1:E49", "runesList");
         this.doAxiosCall("Stones!A1:E26", "stonesList");
         this.doAxiosCall("Weapons!A1:C36", "weaponsList");
         this.doAxiosCall("Artefacts!A1:E37", "artefactsList");
+        this.doAxiosCall("Spells!A1:F271", "spellsList");
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -74,6 +74,16 @@ class LoadSpreasheet extends Component {
                     .database()
                     .ref("items/consumables/")
                     .set(this.state.spreadSheet.consumablesList.content)
+                    .catch(error => {
+                        // Handle Errors here.
+                        this.props.triggerError(error);
+                    });
+            }
+            if (this.state.spreadSheet.spellsList) {
+                firebase
+                    .database()
+                    .ref("items/spells/")
+                    .set(this.state.spreadSheet.spellsList.content)
                     .catch(error => {
                         // Handle Errors here.
                         this.props.triggerError(error);
@@ -144,9 +154,7 @@ class LoadSpreasheet extends Component {
     };
 
     render() {
-        return (
-            <div />
-        );
+        return <div />;
     }
 }
 
