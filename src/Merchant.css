@@ -4,7 +4,7 @@
     position: relative;
     width: 100%;
     cursor: pointer;
-    height: 50px;
+    height: 30px;
     text-align: center;
     border-bottom: 1px solid black;
 }
@@ -15,8 +15,8 @@
 }
 
 .merchant-icon{
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     float: left;
     display: inline-block;
 }

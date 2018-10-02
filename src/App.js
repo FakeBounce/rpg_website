@@ -1,53 +1,53 @@
-import React, { Component } from "react";
-import firebase from "firebase";
-import Sound from "react-sound";
-import "./App.css";
-import Town from "./Town";
-import IsNotAuth from "./IsNotAuth";
-import HasNoPseudo from "./HasNoPseudo";
-import CharacterSelection from "./CharacterSelection";
-import BottomPanel from "./BottomPanel";
-import RightPanel from "./RightPanel";
-import PlayerMapPanel from "./PlayerMapPanel";
-import GMMapPanel from "./GMMapPanel";
-import StoriesList from "./StoriesList";
-import ChatCommandsPanel from "./ChatCommandsPanel";
-import Header from "./Header";
+import React, { Component } from 'react';
+import firebase from 'firebase';
+import Sound from 'react-sound';
+import './App.css';
+import Town from './Town';
+import IsNotAuth from './IsNotAuth';
+import HasNoPseudo from './HasNoPseudo';
+import CharacterSelection from './CharacterSelection';
+import BottomPanel from './BottomPanel';
+import RightPanel from './RightPanel';
+import PlayerMapPanel from './PlayerMapPanel';
+import GMMapPanel from './GMMapPanel';
+import StoriesList from './StoriesList';
+import ChatCommandsPanel from './ChatCommandsPanel';
+import Header from './Header';
 
-import { gridDimension, gridLength } from "./StyleConstants";
-import LoadSpreasheet from "./LoadSpreasheet";
+import { gridDimension, gridLength } from './StyleConstants';
+import LoadSpreasheet from './LoadSpreasheet';
 
 const styledGrid = {
-    border: "1px solid pink",
+    border: '1px solid pink',
     width: `${gridDimension}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledRow = {
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledMap = {
-    border: "1px solid grey",
+    border: '1px solid grey',
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension * gridLength}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const items = [
     {
         index: 0,
-        name: "Potion de soin léger",
+        name: 'Potion de soin léger',
         description:
-            "Potion de soin léger, referme les petites blessures et arrête les hémorragies.",
-        effect: "Rend 5 + 1d10 points de vie.",
-        icon: "potion_1.jpg",
+            'Potion de soin léger, referme les petites blessures et arrête les hémorragies.',
+        effect: 'Rend 5 + 1d10 points de vie.',
+        icon: 'potion_1.jpg',
         quantity: 4,
         price: 50,
     },
@@ -56,118 +56,103 @@ const items = [
 const items2 = [
     {
         index: 0,
-        name: "Lance",
-        description: "Lance classique en bois. Embout en fer. Emoussée.",
-        icon: "spear.png",
+        name: 'Lance',
+        description: 'Lance classique en bois. Embout en fer. Emoussée.',
+        icon: 'spear.png',
         quantity: 2,
         price: 150,
     },
     {
         index: 1,
-        name: "Epée à deux mains",
+        name: 'Epée à deux mains',
         description:
-            "Une belle épée à deux mains. La lame scintille à la lumière.",
-        icon: "two_hand_sword.png",
+            'Une belle épée à deux mains. La lame scintille à la lumière.',
+        icon: 'two_hand_sword.png',
         quantity: 1,
         price: 250,
     },
 ];
 
-const merchantList = [
-    {
-        name: "Alchimiste Debron",
-        description: "Homme sénil",
-        shop_description: "Vieux bâtiment",
-        icon: "alchimist.jpg",
-        items,
-    },
-    {
-        name: "Forgeron Passim",
-        description: "Cornu boursouflé",
-        shop_description: "Forge en lein air",
-        icon: "blacksmith.jpg",
-        items: items2,
-    },
-];
+const merchantList = [5, 8,12,25,34,1,2,4];
 
 const questList = [
     {
         name: "Recherche d'ingrédients",
-        icon: "notice_6.jpg",
+        icon: 'notice_6.jpg',
         description:
-            "Cherche des ingrédients de qualité rare. Venez me voir pour en savoir plus " +
-            "(Demandez Gi Tan, 3 Baraque à gauche après le poste de garde)",
+            'Cherche des ingrédients de qualité rare. Venez me voir pour en savoir plus ' +
+            '(Demandez Gi Tan, 3 Baraque à gauche après le poste de garde)',
         position: 2,
         randomStyle: [2, 10],
         dangerosity: 0,
-        monsterId: "0",
+        monsterId: '0',
         reward: 800,
     },
     {
         name: "Extermination d'autochtone",
-        icon: "notice_4.jpg",
+        icon: 'notice_4.jpg',
         description:
-            "Des autochtones attaquent les convois entre les bourgades de Imédétongs et de SotMouton." +
-            " Les villageois ont du mal à se ravitailler et doivent faire un détour. " +
-            "Nombreuses pertes économiques. " +
+            'Des autochtones attaquent les convois entre les bourgades de Imédétongs et de SotMouton.' +
+            ' Les villageois ont du mal à se ravitailler et doivent faire un détour. ' +
+            'Nombreuses pertes économiques. ' +
             "Les autochtones sont peu nombreux et n'ont spécialement de force d'attaque.",
         position: 5,
         randomStyle: [1, 7],
         dangerosity: 3,
-        monsterId: "1",
+        monsterId: '1',
         reward: 1550,
     },
 ];
 
 const towns = [
     {
-        name: "Hameau de mes fesses",
+        name: 'Hameau de mes fesses',
         positionX: 6,
         positionY: 6,
-        icon: "big_town",
+        icon: 'big_town',
         merchants: merchantList,
         quests: questList,
     },
 ];
 
 const ranges = {
-    "1": {
+    '1': {
         minValue: 30,
         maxValue: 80,
     },
-    "2": {
+    '2': {
         minValue: 60,
         maxValue: 150,
     },
-    "3": {
+    '3': {
         minValue: 100,
         maxValue: 300,
     },
-    "4": {
+    '4': {
         minValue: 150,
         maxValue: 400,
     },
-    "5": {
+    '5': {
         minValue: 225,
         maxValue: 550,
     },
-    "6": {
+    '6': {
         minValue: 325,
         maxValue: 775,
     },
-    "7": {
+    '7': {
         minValue: 500,
         maxValue: 1250,
     },
-    "8": {
+    '8': {
         minValue: 750,
         maxValue: 1800,
     },
-    "9": {
+    '9': {
         minValue: 1000,
         maxValue: 3000,
     },
-    "10": {
+    '10': {
         minValue: 1500,
         maxValue: 5000,
     },
@@ -189,13 +174,14 @@ class App extends Component {
         character: {},
         characters: {},
         characterCreation: false,
-        chatInput: "",
+        chatInput: '',
         chatHistory: [],
         currentStory: -1,
+        currentMerchant: -1,
         currentQuest: {},
-        errorMessage: "",
-        email: "",
-        gameMaster: "",
+        errorMessage: '',
+        email: '',
+        gameMaster: '',
         isAuth: false,
         isItemShowed: false,
         itemsList: [],
@@ -210,20 +196,20 @@ class App extends Component {
         merchants: [],
         map: [],
         merchantsList: [],
-        musicStatus: "PAUSED",
-        musicName: "",
+        musicStatus: 'PAUSED',
+        musicName: '',
         musicMute: false,
         musicVolume: 100,
-        noiseName: "",
-        noiseStatus: "PAUSED",
+        noiseName: '',
+        noiseStatus: 'PAUSED',
         noiseMute: false,
         noiseVolume: 100,
         onChatHelp: false,
-        password: "",
-        pseudo: "",
-        pseudoInput: "",
+        password: '',
+        pseudo: '',
+        pseudoInput: '',
         questsList: [],
-        uid: "",
+        uid: '',
         users: null,
         stories: [],
         storyCharacters: [],
@@ -234,8 +220,8 @@ class App extends Component {
     componentDidMount() {
         firebase
             .database()
-            .ref("stories/0/merchants")
-            .once("value")
+            .ref('stories/0/merchants')
+            .once('value')
             .then(snapshot => {
                 this.setState(state => ({
                     ...state,
@@ -243,8 +229,8 @@ class App extends Component {
                 }));
                 firebase
                     .database()
-                    .ref("/items")
-                    .once("value")
+                    .ref('/items')
+                    .once('value')
                     .then(snapshot => {
                         this.setState(
                             state => ({
@@ -254,8 +240,8 @@ class App extends Component {
                             () => {
                                 firebase
                                     .database()
-                                    .ref("/stories/0/artefacts")
-                                    .once("value")
+                                    .ref('/stories/0/artefacts')
+                                    .once('value')
                                     .then(snapshot => {
                                         this.setState(
                                             state => ({
@@ -267,15 +253,15 @@ class App extends Component {
                                             }),
                                             () => {
                                                 // this.generateStoryMerchants();
-                                                this.hydrateAllMerchants();
-                                            },
+                                                // this.hydrateAllMerchants();
+                                            }
                                         );
                                     })
                                     .catch(error => {
                                         // An error happened.
                                         this.triggerError(error);
                                     });
-                            },
+                            }
                         );
                     })
                     .catch(error => {
@@ -292,7 +278,7 @@ class App extends Component {
     hydrateStoryArtefacts = () => {
         firebase
             .database()
-            .ref("stories/0/artefacts")
+            .ref('stories/0/artefacts')
             // .ref("stories/"+currentStory+"/merchants")
             .set(this.state.items.artefacts)
             .catch(error => {
@@ -306,8 +292,8 @@ class App extends Component {
 
         firebase
             .database()
-            .ref("merchants")
-            .once("value")
+            .ref('merchants')
+            .once('value')
             .then(snapshot => {
                 const newMerchants = [];
                 snapshot.val().map(m => {
@@ -321,8 +307,8 @@ class App extends Component {
 
                 firebase
                     .database()
-                    .ref("stories/0/merchants")
-                    .ref("stories/" + currentStory + "/merchants")
+                    .ref('stories/0/merchants')
+                    .ref('stories/' + currentStory + '/merchants')
                     .set(newMerchants)
                     .then(() => {
                         this.hydrateStoryArtefacts();
@@ -352,7 +338,7 @@ class App extends Component {
 
         firebase
             .database()
-            .ref("stories/0/merchants")
+            .ref('stories/0/merchants')
             // .ref("stories/"+currentStory+"/merchants")
             .set(newMerchants)
             .then(() => {
@@ -368,26 +354,26 @@ class App extends Component {
         if (totalHydrate) {
             merchant.items &&
                 merchant.items.map(i => {
-                    if (i.itemType === "artefacts") {
+                    if (i.itemType === 'artefacts') {
                         this.state.items.artefacts.push(i);
                     }
                 });
             merchant.items = [];
             const consumableList = this.getItemsFromCategory(
-                "consumables",
-                merchant,
+                'consumables',
+                merchant
             );
             const enhancementList = this.getItemsFromCategory(
-                "enhancements",
-                merchant,
+                'enhancements',
+                merchant
             );
-            const stoneList = this.getItemsFromCategory("stones", merchant);
-            const runeList = this.getItemsFromCategory("runes", merchant);
-            const weaponList = this.getItemsFromCategory("weapons", merchant);
-            const spellList = this.getItemsFromCategory("spells", merchant);
+            const stoneList = this.getItemsFromCategory('stones', merchant);
+            const runeList = this.getItemsFromCategory('runes', merchant);
+            const weaponList = this.getItemsFromCategory('weapons', merchant);
+            const spellList = this.getItemsFromCategory('spells', merchant);
             const artefactList = this.getItemsFromCategory(
-                "artefacts",
-                merchant,
+                'artefacts',
+                merchant
             );
 
             merchant.items = consumableList
@@ -399,7 +385,7 @@ class App extends Component {
                 .concat(artefactList);
         } else {
             merchant.items.map((i, index) => {
-                if (i.itemType === "artefacts") {
+                if (i.itemType === 'artefacts') {
                     this.state.items.artefacts.push(i);
                 }
                 if (i.rarity < 7) {
@@ -408,27 +394,27 @@ class App extends Component {
             });
 
             const consumableList = this.getItemsFromCategory(
-                "consumables",
+                'consumables',
                 merchant,
-                0,
+                0
             );
             const enhancementList = this.getItemsFromCategory(
-                "enhancements",
+                'enhancements',
                 merchant,
-                0,
+                0
             );
-            const stoneList = this.getItemsFromCategory("stones", merchant, 0);
-            const runeList = this.getItemsFromCategory("runes", merchant, 0);
+            const stoneList = this.getItemsFromCategory('stones', merchant, 0);
+            const runeList = this.getItemsFromCategory('runes', merchant, 0);
             const weaponList = this.getItemsFromCategory(
-                "weapons",
+                'weapons',
                 merchant,
-                0,
+                0
             );
-            const spellList = this.getItemsFromCategory("spells", merchant, 0);
+            const spellList = this.getItemsFromCategory('spells', merchant, 0);
             const artefactList = this.getItemsFromCategory(
-                "artefacts",
+                'artefacts',
                 merchant,
-                0,
+                0
             );
             merchant.items = consumableList
                 .concat(enhancementList)
@@ -455,7 +441,7 @@ class App extends Component {
         }
 
         let randomItem = 0;
-        if (list === "artefacts") {
+        if (list === 'artefacts') {
             itemsToGet = parseInt(merchant[list], 10);
         }
         while (itemsToGet > 0 && itemsListLeft.length > 0) {
@@ -464,19 +450,19 @@ class App extends Component {
                 parseInt(itemsListLeft[randomItem].rarity, 10) <=
                 parseInt(merchant[list], 10) * 2
             ) {
-                const newItem = itemsListLeft[randomItem];
+                const newItem = {...itemsListLeft[randomItem]};
                 newItem.rarity = parseInt(newItem.rarity, 10);
                 newItem.quantity =
                     Math.floor(Math.random() * quantities[list] + 1) *
                         (parseInt(merchant[list], 10) -
                             Math.ceil(newItem.rarity / 2)) +
                     1;
-                if (list !== "artefacts") {
+                if (list === 'artefacts') {
                     newItem.quantity = 1;
                 }
                 newItem.itemType = list;
 
-                if (list !== "artefacts") {
+                if (list !== 'artefacts') {
                     const priceRange =
                         (ranges[newItem.rarity].maxValue -
                             ranges[newItem.rarity].minValue) /
@@ -494,47 +480,47 @@ class App extends Component {
                         priceRange +
                         Math.ceil(Math.random() * priceRange + 1);
                 }
-                if (list === "spells") {
+                if (list === 'spells') {
                     const randomScroll = Math.floor(Math.random() * 10 + 1);
                     if (randomScroll === 1) {
                         newItem.name =
-                            "Livre de sort (" +
+                            'Livre de sort (' +
                             newItem.type +
-                            ") : " +
+                            ') : ' +
                             newItem.name;
-                        newItem.image = "spell_book.png";
+                        newItem.image = 'spell_book.png';
                         newItem.isBook = true;
                         newItem.price =
                             newItem.price * Math.floor(Math.random() * 3 + 2);
                     } else {
                         newItem.name =
-                            "Parchemin (" +
+                            'Parchemin (' +
                             newItem.type +
-                            ") : " +
+                            ') : ' +
                             newItem.name;
                         newItem.isBook = false;
                     }
                 }
-                if (list !== "artefacts" || !newItem.isAcquired)
+                if (list !== 'artefacts' || !newItem.isAcquired)
                     if (newItem.rarity >= 7) {
                         if (itemsHL > 0) {
                             itemList.push(newItem);
                             itemsToGet--;
                             itemsHL--;
-                            if (list === "artefacts") {
+                            if (list === 'artefacts') {
                                 this.state.items[list.toLowerCase()].splice(
                                     randomItem,
-                                    1,
+                                    1
                                 );
                             }
                         }
                     } else {
                         itemList.push(newItem);
                         itemsToGet--;
-                        if (list === "artefacts") {
+                        if (list === 'artefacts') {
                             this.state.items[list.toLowerCase()].splice(
                                 randomItem,
-                                1,
+                                1
                             );
                         }
                     }
@@ -572,6 +558,8 @@ class App extends Component {
     buyItem = (item, price) => {
         const {
             currentStory,
+            currentMerchant,
+            merchants,
             uid,
             character,
             itemsList,
@@ -589,8 +577,7 @@ class App extends Component {
             return null;
         });
         if (!hasAlready) {
-            item.quantity = 1;
-            newItemsTab.push(item);
+            newItemsTab.push({...item, quantity : 1});
         }
 
         const newMerchantList = itemsList;
@@ -602,6 +589,10 @@ class App extends Component {
         } else {
             newMerchantList.splice(itemDescribed, 1);
         }
+
+        const newMerchants = [...merchants];
+        newMerchants[currentMerchant].items = newMerchantList;
+
         this.setState(
             state => ({
                 ...state,
@@ -610,16 +601,17 @@ class App extends Component {
                     : {},
                 isItemDescriptionShowed: isQuantityLeft,
                 itemsList: newMerchantList,
+                merchants: newMerchants,
             }),
             () => {
                 firebase
                     .database()
                     .ref(
-                        "stories/" +
+                        'stories/' +
                             currentStory +
-                            "/characters/" +
+                            '/characters/' +
                             uid +
-                            "/character",
+                            '/character'
                     )
                     .set({
                         ...character,
@@ -627,17 +619,27 @@ class App extends Component {
                         items: newItemsTab,
                     })
                     .then(() => {
-                        if (item.itemType === "artefacts") {
+                        if (item.itemType === 'artefacts') {
                             item.isAcquired = true;
                             artefacts.push(item);
                             this.hydrateStoryArtefacts();
                         }
+
+                        firebase
+                            .database()
+                            .ref(
+                                'stories/' +
+                                    currentStory +
+                                    '/merchants/' +
+                                    currentMerchant
+                            )
+                            .set(newMerchants[currentMerchant]);
                     })
                     .catch(error => {
                         // Handle Errors here.
                         this.triggerError(error);
                     });
-            },
+            }
         );
     };
 
@@ -652,13 +654,14 @@ class App extends Component {
                     character: {},
                     characters: {},
                     characterCreation: false,
-                    chatInput: "",
+                    chatInput: '',
                     chatHistory: [],
                     currentStory: -1,
                     currentQuest: {},
-                    errorMessage: "",
-                    email: "",
-                    gameMaster: "",
+                    currentMerchant: -1,
+                    errorMessage: '',
+                    email: '',
+                    gameMaster: '',
                     isAuth: false,
                     isItemShowed: false,
                     itemsList: [],
@@ -671,16 +674,16 @@ class App extends Component {
                     isGameMaster: false,
                     map: [],
                     merchantsList: [],
-                    musicStatus: "PAUSED",
-                    musicName: "",
-                    noiseName: "",
-                    noiseStatus: "PAUSED",
+                    musicStatus: 'PAUSED',
+                    musicName: '',
+                    noiseName: '',
+                    noiseStatus: 'PAUSED',
                     onChatHelp: false,
-                    password: "",
-                    pseudo: "",
-                    pseudoInput: "",
+                    password: '',
+                    pseudo: '',
+                    pseudoInput: '',
                     questsList: [],
-                    uid: "",
+                    uid: '',
                     users: null,
                     stories: [],
                     storyCharacters: [],
@@ -714,7 +717,7 @@ class App extends Component {
                 : row.icon
                     ? {
                           backgroundImage: `url(${row.icon})`,
-                          backgroundSize: "cover",
+                          backgroundSize: 'cover',
                       }
                     : {};
             table.push(
@@ -768,7 +771,7 @@ class App extends Component {
                             return null;
                         })}
                     </div>
-                ),
+                )
             );
             return null;
         });
@@ -779,7 +782,7 @@ class App extends Component {
         const { stories, currentStory, textureToApply } = this.state;
         firebase
             .database()
-            .ref("maps/" + stories[currentStory].map + "/" + x + "/" + y)
+            .ref('maps/' + stories[currentStory].map + '/' + x + '/' + y)
             .set(textureToApply)
             .catch(error => {
                 // Handle Errors here.
@@ -791,8 +794,8 @@ class App extends Component {
         const { stories, currentStory } = this.state;
         firebase
             .database()
-            .ref("/maps/" + stories[currentStory].map)
-            .on("value", snapshot => {
+            .ref('/maps/' + stories[currentStory].map)
+            .on('value', snapshot => {
                 // console.log('snapshot', snapshot.val());
                 this.setState(state => ({
                     ...state,
@@ -804,8 +807,8 @@ class App extends Component {
     loadUsers = () => {
         firebase
             .database()
-            .ref("/users")
-            .on("value", snapshot => {
+            .ref('/users')
+            .on('value', snapshot => {
                 // console.log('snapshot', snapshot.val());
                 this.setState(state => ({
                     ...state,
@@ -817,8 +820,8 @@ class App extends Component {
     loadStories = () => {
         firebase
             .database()
-            .ref("/stories")
-            .once("value")
+            .ref('/stories')
+            .once('value')
             .then(snapshot => {
                 this.setState(state => ({
                     ...state,
@@ -835,8 +838,8 @@ class App extends Component {
         const { currentStory } = this.state;
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/music")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/music')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     ...snapshot.val(),
@@ -844,8 +847,8 @@ class App extends Component {
             });
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/noise")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/noise')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     ...snapshot.val(),
@@ -860,13 +863,13 @@ class App extends Component {
         if (stories[i].gameMaster === uid) isGM = true;
 
         if (
-            typeof stories[i].characters !== "undefined" &&
-            typeof stories[i].characters[uid] !== "undefined"
+            typeof stories[i].characters !== 'undefined' &&
+            typeof stories[i].characters[uid] !== 'undefined'
         ) {
             firebase
                 .database()
-                .ref("/stories/" + i + "/characters/" + uid + "/character")
-                .on("value", snapshot => {
+                .ref('/stories/' + i + '/characters/' + uid + '/character')
+                .on('value', snapshot => {
                     //@TODO : Activate when GM will have proper tabs
                     this.setState(
                         state => ({
@@ -881,7 +884,7 @@ class App extends Component {
                             this.createTable();
                             this.createChat();
                             this.loadMusic();
-                        },
+                        }
                     );
                 });
         } else {
@@ -897,18 +900,18 @@ class App extends Component {
                     this.createTable();
                     this.createChat();
                     this.loadMusic();
-                },
+                }
             );
         }
         firebase
             .database()
-            .ref("/stories/" + i + "/characters")
-            .on("value", snapshot => {
+            .ref('/stories/' + i + '/characters')
+            .on('value', snapshot => {
                 const charactersFromStories = [];
-                if (typeof snapshot.val() !== "undefined" && snapshot.val()) {
+                if (typeof snapshot.val() !== 'undefined' && snapshot.val()) {
                     Object.keys(snapshot.val()).map(key => {
                         charactersFromStories.push(
-                            snapshot.val()[key].character,
+                            snapshot.val()[key].character
                         );
                         return null;
                     });
@@ -926,7 +929,7 @@ class App extends Component {
             table.push(
                 <div key={`table-row-${index}`} style={styledRow}>
                     {this.createGrid(index, row)}
-                </div>,
+                </div>
             );
             return null;
         });
@@ -936,8 +939,8 @@ class App extends Component {
     createChat = () => {
         firebase
             .database()
-            .ref("/chat")
-            .on("value", snapshot => {
+            .ref('/chat')
+            .on('value', snapshot => {
                 if (snapshot.val() !== null) {
                     this.setState(state => ({
                         ...state,
@@ -962,7 +965,7 @@ class App extends Component {
             }),
             () => {
                 if (cb) cb();
-            },
+            }
         );
     };
 
@@ -976,10 +979,10 @@ class App extends Component {
                 setTimeout(() => {
                     this.setState(state => ({
                         ...state,
-                        error: "",
+                        error: '',
                     }));
                 }, 5000);
-            },
+            }
         );
     };
 
@@ -1025,6 +1028,8 @@ class App extends Component {
             noiseStatus,
             noiseMute,
             noiseVolume,
+            merchants,
+            currentMerchant,
         } = this.state;
 
         return (
@@ -1042,7 +1047,7 @@ class App extends Component {
                 )}
 
                 {isAuth &&
-                    pseudo === "" && (
+                    pseudo === '' && (
                         <HasNoPseudo
                             pseudoInput={pseudoInput}
                             onChange={this.onChange}
@@ -1052,7 +1057,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory === -1 && (
                         <StoriesList
                             stories={stories}
@@ -1062,7 +1067,7 @@ class App extends Component {
 
                 {!isGameMaster &&
                     isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory > -1 &&
                     characterId === 0 && (
                         <CharacterSelection
@@ -1078,7 +1083,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory > -1 &&
                     (characterId > 0 || isGameMaster) && (
                         <div>
@@ -1092,8 +1097,8 @@ class App extends Component {
                                 toggleMusic={this.toggleMusic}
                                 chatHelpTitle={
                                     onChatHelp
-                                        ? "Return to map"
-                                        : "Access chat help"
+                                        ? 'Return to map'
+                                        : 'Access chat help'
                                 }
                                 musicMute={musicMute}
                             />
@@ -1118,6 +1123,8 @@ class App extends Component {
                                             character={character}
                                             isItemShowed={isItemShowed}
                                             itemsList={itemsList}
+                                            merchants={merchants}
+                                            currentMerchant={currentMerchant}
                                             isItemDescriptionShowed={
                                                 isItemDescriptionShowed
                                             }

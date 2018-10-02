@@ -10,17 +10,13 @@ class Item extends Component {
             name,
             description,
             price,
-            quantity,
             showItemDescription,
         } = this.props;
         return (
             <div
                 className="item"
                 onClick={() =>
-                    showItemDescription({
-                        ...this.props,
-                        showItemDescription: null,
-                    }, index)
+                    showItemDescription(index)
                 }
             >
                 <img
@@ -29,7 +25,6 @@ class Item extends Component {
                     className="item-icon"
                 />
                 <div className="item-text">{name}</div>
-                <div className="item-quantity">x{quantity}</div>
                 <div className="item-price">{price}g</div>
             </div>
         );
@@ -42,7 +37,6 @@ Item.propTypes = {
     description: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    quantity: PropTypes.number.isRequired,
     showItemDescription: PropTypes.func.isRequired,
 };
 

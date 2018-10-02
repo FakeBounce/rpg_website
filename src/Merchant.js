@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 
 class Merchant extends Component {
     render() {
-        const { name, items, icon, description, showItems } = this.props;
+        const { index, name, items, icon, description, showItems } = this.props;
         return (
-            <div className="merchant" onClick={() => showItems(items)}>
+            <div className="merchant" onClick={() => showItems(items, index)}>
                 <img
                     src={"./" + icon}
                     alt={description}
@@ -20,6 +20,7 @@ class Merchant extends Component {
 }
 
 Merchant.propTypes = {
+    index: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,

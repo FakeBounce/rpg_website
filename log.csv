@@ -1,3 +1,4 @@
+<div className="commit"> FakeBounce, le 2018-10-02 : Saved merchants items and corrected quantities when buying </div>
 <div className="commit"> fakebounce, le 2018-10-01 : Merchants generation for a story </div>
 <div className="commit"> FakeBounce, le 2018-09-28 : Finalized random merchant items+artefacts and added limitations on rare items </div>
 <div className="commit"> fakebounce, le 2018-09-28 : Loading random items for merchants </div>

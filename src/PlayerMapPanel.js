@@ -1,28 +1,38 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import Quest from "./Quest";
-import Merchant from "./Merchant";
-import Item from "./Item";
-import ItemDescription from "./ItemDescription";
-import PropTypes from "prop-types";
-import { widthLeft, heightLeft } from "./StyleConstants";
-import QuestFullscreen from "./QuestFullscreen";
+import Quest from './Quest';
+import Merchant from './Merchant';
+import Item from './Item';
+import ItemDescription from './ItemDescription';
+import PropTypes from 'prop-types';
+import { widthLeft, heightLeft } from './StyleConstants';
+import QuestFullscreen from './QuestFullscreen';
 
 const styledBoxHeader = {
-    width: "100%",
-    height: "20px",
-    marginBottom: "5px",
-    textAlign: "center",
+    width: '100%',
+    height: '20px',
+    marginBottom: '5px',
+    textAlign: 'center',
 };
 
 const styledMapSide = {
-    border: "1px solid brown",
+    border: '1px solid brown',
     width: `${widthLeft / 2 - 11}px`,
     height: `${heightLeft / 2 - 1}px`,
-    display: "inline-block",
-    float: "left",
-    textAlign: "left",
-    position: "relative",
+    display: 'inline-block',
+    float: 'left',
+    textAlign: 'left',
+    position: 'relative',
+};
+
+const styledItemContainer = {
+    display: 'inline-block',
+    float: 'left',
+    position: 'absolute',
+    top: '25px',
+    overflowY: 'auto',
+    height: '90%',
+    width: '100%',
 };
 
 class PlayerMapPanel extends Component {
@@ -34,26 +44,31 @@ class PlayerMapPanel extends Component {
                 <Item
                     key={`item-${itemFromMerchant.name}-${index}`}
                     {...itemFromMerchant}
+                    index={index}
                     showItemDescription={this.showItemDescription}
                 />
             );
         });
     };
 
-    showItemDescription = (itemToDescribe, i) => {
+    showItemDescription = i => {
+        const { merchants, currentMerchant } = this.props;
+        console.log("merchants[currentMerchant].items[i]",merchants[currentMerchant].items[i]);
         this.props.doSetState({
             isItemDescriptionShowed: true,
-            itemToDescribe: itemToDescribe,
+            itemToDescribe: merchants[currentMerchant].items[i],
             itemDescribed: i,
         });
     };
 
-    getMerchantsFromTown = merchants => {
-        return merchants.map(item => {
+    getMerchantsFromTown = merchantsFromTown => {
+        const { merchants } = this.props;
+        return merchantsFromTown.map(index => {
             return (
                 <Merchant
-                    key={`merchant-${item.name}`}
-                    {...item}
+                    key={`merchant-${merchants[index].name}`}
+                    {...merchants[index]}
+                    index={index}
                     showItems={this.showItems}
                 />
             );
@@ -89,10 +104,11 @@ class PlayerMapPanel extends Component {
         });
     };
 
-    showItems = list => {
+    showItems = (list, index) => {
         this.props.doSetState({
             isItemShowed: true,
             itemsList: list,
+            currentMerchant: index,
         });
     };
 
@@ -128,18 +144,19 @@ class PlayerMapPanel extends Component {
         return (
             <div
                 style={{
-                    float: "left",
+                    float: 'left',
                     width: `${widthLeft}px`,
-                    display: "inline-block",
-                    position: "relative",
+                    display: 'inline-block',
+                    position: 'relative',
                 }}
             >
-                {isTownShowed && !isQuestShowed && (
+                {isTownShowed &&
+                    !isQuestShowed && (
                         <div
                             style={{
                                 ...styledMapSide,
                                 backgroundImage: `url(quest_panel.jpg)`,
-                                backgroundSize: "cover",
+                                backgroundSize: 'cover',
                             }}
                         >
                             <div style={styledBoxHeader}>Liste des quêtes</div>
@@ -151,7 +168,7 @@ class PlayerMapPanel extends Component {
                         style={{
                             ...styledMapSide,
                             backgroundImage: `url(quest_panel.jpg)`,
-                            backgroundSize: "cover",
+                            backgroundSize: 'cover',
                         }}
                     >
                         <QuestFullscreen
@@ -163,13 +180,17 @@ class PlayerMapPanel extends Component {
                 {isTownShowed && (
                     <div style={styledMapSide}>
                         <div style={styledBoxHeader}>Liste des marchands</div>
-                        {this.getMerchantsFromTown(merchantsList)}
+                        <div style={styledItemContainer}>
+                            {this.getMerchantsFromTown(merchantsList)}
+                        </div>
                     </div>
                 )}
                 {isItemShowed && (
                     <div style={styledMapSide}>
                         <div style={styledBoxHeader}>Liste des objets</div>
-                        {this.getItemsFromMerchant(itemsList)}
+                        <div style={styledItemContainer}>
+                            {this.getItemsFromMerchant(itemsList)}
+                        </div>
                     </div>
                 )}
                 {isItemDescriptionShowed && (
@@ -189,6 +210,7 @@ class PlayerMapPanel extends Component {
 PlayerMapPanel.propTypes = {
     isQuestShowed: PropTypes.bool.isRequired,
     currentQuest: PropTypes.object.isRequired,
+    currentMerchant: PropTypes.object.isRequired,
     character: PropTypes.object.isRequired,
     isItemShowed: PropTypes.bool.isRequired,
     itemsList: PropTypes.array.isRequired,
@@ -196,6 +218,7 @@ PlayerMapPanel.propTypes = {
     itemToDescribe: PropTypes.object.isRequired,
     isTownShowed: PropTypes.bool.isRequired,
     merchantsList: PropTypes.array.isRequired,
+    merchants: PropTypes.array.isRequired,
     buyItem: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
