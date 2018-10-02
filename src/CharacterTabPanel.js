@@ -18,28 +18,30 @@ const styles = {
     },
     tabPanelItem: {
         width: `${widthRightPanelLeft - 20}px`,
-        height: 25,
+        height: 40,
         paddingHorizontal: 5,
         position: "relative",
         float: "left",
         display: "inline-block",
+        borderBottom: '1px solid black',
     },
     itemName: {
         width: `${widthRightPanelLeft - 70}px`,
-        height: 25,
+        height: 40,
         position: "relative",
         float: "left",
         display: "inline-block",
     },
     itemQuantity: {
         width: 30,
-        height: 15,
+        height: 30,
         position: "relative",
         float: "left",
         display: "inline-block",
         padding: 0,
         margin: 0,
         textAlign: "center",
+        marginTop: 5,
     },
 };
 

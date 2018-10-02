@@ -87,7 +87,7 @@ class IsNotAuth extends Component {
         const { email, password, onChange } = this.props;
 
         return (
-            <div>
+            <div style={{height: "100%"}}>
                 <input
                     type="text"
                     name="email"
@@ -111,7 +111,8 @@ class IsNotAuth extends Component {
                 <button onClick={this.signIn}>Sign In</button>
                 <button onClick={this.signUp}>Sign Up</button>
 
-                <div style={{overflowY:'auto'}}><div className="commit"> FakeBounce, le 2018-10-02 : Saved merchants items and corrected quantities when buying </div>
+                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> fakebounce, le 2018-10-02 : Artefacts are now genereted separately; no more duplicates on artefacts generation for merchants. Reviewed merchant hydration to remove potentially duplicates items. Did some css to add overflow on some critical views </div>
+                    <div className="commit"> FakeBounce, le 2018-10-02 : Saved merchants items and corrected quantities when buying </div>
                     <div className="commit"> fakebounce, le 2018-10-01 : Merchants generation for a story </div>
                     <div className="commit"> FakeBounce, le 2018-09-28 : Finalized random merchant items+artefacts and added limitations on rare items </div>
                     <div className="commit"> fakebounce, le 2018-09-28 : Loading random items for merchants </div>
