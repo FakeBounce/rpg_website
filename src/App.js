@@ -258,7 +258,7 @@ class App extends Component {
                                                 },
                                             }),
                                             () => {
-                                                this.hydrateAllMerchants();
+                                                // this.hydrateAllMerchants();
                                             },
                                         );
                                     })
