@@ -14,6 +14,11 @@
     border-top: 1px solid red;
 }
 
+.merchant-is-selected{
+    border-bottom: 1px solid red;
+    border-top: 1px solid red;
+}
+
 .merchant-icon{
     width: 30px;
     height: 30px;

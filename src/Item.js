@@ -11,6 +11,7 @@ class Item extends Component {
             description,
             price,
             showItemDescription,
+            isHidden,
         } = this.props;
         return (
             <div
@@ -20,11 +21,11 @@ class Item extends Component {
                 }
             >
                 <img
-                    src={"./" + icon}
-                    alt={description}
+                    src={"./" + isHidden ? "unknown_image.png" : icon }
+                    alt={isHidden ? "Can't be described" : description}
                     className="item-icon"
                 />
-                <div className="item-text">{name}</div>
+                <div className="item-text">{isHidden ? "???" : name}</div>
                 <div className="item-price">{price}g</div>
             </div>
         );
@@ -38,6 +39,7 @@ Item.propTypes = {
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     showItemDescription: PropTypes.func.isRequired,
+    isHidden: PropTypes.bool.isRequired,
 };
 
 export default Item;

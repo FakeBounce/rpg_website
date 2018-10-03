@@ -40,11 +40,13 @@ class PlayerMapPanel extends Component {
 
     getItemsFromMerchant = itemsFormMerchant => {
         return itemsFormMerchant.map((itemFromMerchant, index) => {
+            const isHidden = this.props.character.education < itemFromMerchant.rarity * 9;
             return (
                 <Item
                     key={`item-${itemFromMerchant.name}-${index}`}
                     {...itemFromMerchant}
                     index={index}
+                    isHidden={isHidden}
                     showItemDescription={this.showItemDescription}
                 />
             );
@@ -53,7 +55,6 @@ class PlayerMapPanel extends Component {
 
     showItemDescription = i => {
         const { merchants, currentMerchant } = this.props;
-        console.log("merchants[currentMerchant].items[i]",merchants[currentMerchant].items[i]);
         this.props.doSetState({
             isItemDescriptionShowed: true,
             itemToDescribe: merchants[currentMerchant].items[i],
@@ -62,7 +63,7 @@ class PlayerMapPanel extends Component {
     };
 
     getMerchantsFromTown = merchantsFromTown => {
-        const { merchants } = this.props;
+        const { merchants, currentMerchant } = this.props;
         return merchantsFromTown.map(index => {
             return (
                 <Merchant
@@ -70,6 +71,7 @@ class PlayerMapPanel extends Component {
                     {...merchants[index]}
                     index={index}
                     showItems={this.showItems}
+                    currentMerchant={currentMerchant}
                 />
             );
         });
@@ -200,6 +202,7 @@ class PlayerMapPanel extends Component {
                             buyItem(itemToDescribe, itemToDescribe.price)
                         }
                         gold={character.gold}
+                        isHidden={character.education < itemToDescribe.rarity * 9}
                     />
                 )}
             </div>

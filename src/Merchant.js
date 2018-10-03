@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 
 class Merchant extends Component {
     render() {
-        const { index, name, items, icon, description, showItems } = this.props;
+        const { index, name, items, icon, description, showItems, currentMerchant } = this.props;
         return (
-            <div className="merchant" onClick={() => showItems(items, index)}>
+            <div className={`merchant ${currentMerchant === index ? "merchant-is-selected" : ""}`} onClick={() => showItems(items, index)}>
                 <img
                     src={"./" + icon}
                     alt={description}
@@ -25,6 +25,7 @@ Merchant.propTypes = {
     icon: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     showItems: PropTypes.func.isRequired,
+    currentMerchant: PropTypes.number.isRequired,
     items: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string.isRequired,

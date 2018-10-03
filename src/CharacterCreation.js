@@ -82,7 +82,7 @@ class CharacterCreation extends Component {
         } = this.state;
         const obj = {};
         let pointsLeft = 0;
-        obj[name] = value;
+        obj[name] = parseInt(value,10);
         switch (name) {
             case "strength":
                 pointsLeft =
@@ -192,7 +192,7 @@ class CharacterCreation extends Component {
     };
 
     onChangeSkills = (index, value) => {
-        const obj = this.state.skills;
+        const obj = [...this.state.skills];
         obj[index] = value;
         this.setState(state => ({
             ...state,
@@ -206,7 +206,7 @@ class CharacterCreation extends Component {
                 message: "Can't have more than 6 skills",
             });
         } else {
-            const obj = this.state.skills;
+            const obj = [...this.state.skills];
             obj.push("");
             this.setState(state => ({
                 ...state,
@@ -238,7 +238,7 @@ class CharacterCreation extends Component {
     };
 
     onChangeAbilities = (index, value) => {
-        const obj = this.state.abilities;
+        const obj = [...this.state.abilities];
         obj[index] = value;
         this.setState(state => ({
             ...state,
@@ -247,7 +247,7 @@ class CharacterCreation extends Component {
     };
 
     addAbility = () => {
-        const obj = this.state.abilities;
+        const obj = [...this.state.abilities];
         obj.push("");
         this.setState(state => ({
             ...state,
@@ -278,7 +278,7 @@ class CharacterCreation extends Component {
     };
 
     onChangeItems = (index, value) => {
-        const obj = this.state.items;
+        const obj = [...this.state.items];
         obj[index] = {
             ...obj[index],
             name: value,
@@ -290,10 +290,10 @@ class CharacterCreation extends Component {
     };
 
     onChangeItemsQuantity = (index, value) => {
-        const obj = this.state.items;
+        const obj = [...this.state.items];
         obj[index] = {
             ...obj[index],
-            quantity: value,
+            quantity: parseInt(value,10),
         };
         this.setState(state => ({
             ...state,
@@ -307,7 +307,7 @@ class CharacterCreation extends Component {
                 message: "Can't have more than 10 items",
             });
         } else {
-            const obj = this.state.items;
+            const obj = [...this.state.items];
             obj.push({
                 name: "",
                 quantity: 1,
@@ -342,7 +342,7 @@ class CharacterCreation extends Component {
     };
 
     onChangeWeapons = (index, value) => {
-        const obj = this.state.weapons;
+        const obj = [...this.state.weapons];
         obj[index] = value;
         this.setState(state => ({
             ...state,
@@ -356,7 +356,7 @@ class CharacterCreation extends Component {
                 message: "Can't have more than 2 weapons equipped",
             });
         } else {
-            const obj = this.state.weapons;
+            const obj = [...this.state.weapons];
             obj.push("");
             this.setState(state => ({
                 ...state,
@@ -388,7 +388,7 @@ class CharacterCreation extends Component {
     };
 
     onDrop = picture => {
-        const { uid, id } = this.props;
+        const { uid, id, triggerError } = this.props;
         let storageRef = firebase.storage().ref();
         const path =
             "images/" +
@@ -412,7 +412,7 @@ class CharacterCreation extends Component {
                     })
                     .catch(error => {
                         // Handle any errors
-                        this.props.triggerError(error);
+                        triggerError(error);
                     });
             });
     };

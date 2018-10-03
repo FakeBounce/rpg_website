@@ -87,7 +87,7 @@ class CharacterTabPanel extends Component {
                                         }}
                                     />
                                     <div style={styles.itemName}>
-                                        {item.name}
+                                        {character.education < item.rarity*9 ? "???" : item.name}
                                     </div>
                                 </div>
                             );
