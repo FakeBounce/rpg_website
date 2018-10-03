@@ -73,12 +73,13 @@ class RightPanel extends Component {
         const { damageTaken } = this.state;
 
         const healthLeft =
-            health + damageTaken < 0
+            parseInt(health,10) + parseInt(damageTaken,10) < 0
                 ? 0
-                : health + damageTaken > maxHealth
+                : parseInt(health,10) + parseInt(damageTaken,10) > maxHealth
                     ? maxHealth
-                    : health + damageTaken;
+                    : parseInt(health,10) + parseInt(damageTaken,10);
 
+        console.log("healthLeft",healthLeft, parseInt(damageTaken,10));
         firebase
             .database()
             .ref(
@@ -88,7 +89,7 @@ class RightPanel extends Component {
                     uid +
                     "/character/health",
             )
-            .set(healthLeft)
+            .set(parseInt(healthLeft,10))
             .catch(error => {
                 // Handle Errors here.
                 this.triggerError(error);

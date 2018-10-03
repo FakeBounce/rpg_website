@@ -60,7 +60,7 @@ class CharacterSelection extends Component {
 
         const charToRegister = characters[id];
         charToRegister.gold =
-            Math.floor(Math.random() * characters[id].luck + 1) * 5;
+            Math.floor(Math.random() * characters[id].luck * 5 + 5);
         charToRegister.status = "OK";
 
         firebase
