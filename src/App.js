@@ -14,7 +14,8 @@ import StoriesList from "./StoriesList";
 import ChatCommandsPanel from "./ChatCommandsPanel";
 import Header from "./Header";
 
-import { gridDimension, gridLength, priceRanges, itemQuantities } from "./StyleConstants";
+import { gridDimension, gridLength } from "./StyleConstants";
+import { priceRanges, itemQuantities, towns } from "./Constants";
 import LoadSpreasheet from "./LoadSpreasheet";
 
 const styledGrid = {
@@ -39,48 +40,6 @@ const styledMap = {
     display: "inline-block",
     float: "left",
 };
-
-const merchantList = [5, 8, 12, 25, 34, 1, 2, 4, 6, 7, 9, 11, 15, 16, 18];
-
-const questList = [
-    {
-        name: "Recherche d'ingrédients",
-        icon: "notice_6.jpg",
-        description:
-            "Cherche des ingrédients de qualité rare. Venez me voir pour en savoir plus " +
-            "(Demandez Gi Tan, 3 Baraque à gauche après le poste de garde)",
-        position: 2,
-        randomStyle: [2, 10],
-        dangerosity: 0,
-        monsterId: "0",
-        reward: 800,
-    },
-    {
-        name: "Extermination d'autochtone",
-        icon: "notice_4.jpg",
-        description:
-            "Des autochtones attaquent les convois entre les bourgades de Imédétongs et de SotMouton." +
-            " Les villageois ont du mal à se ravitailler et doivent faire un détour. " +
-            "Nombreuses pertes économiques. " +
-            "Les autochtones sont peu nombreux et n'ont spécialement de force d'attaque.",
-        position: 5,
-        randomStyle: [1, 7],
-        dangerosity: 3,
-        monsterId: "1",
-        reward: 1550,
-    },
-];
-
-const towns = [
-    {
-        name: "Hameau de mes fesses",
-        positionX: 6,
-        positionY: 6,
-        icon: "big_town",
-        merchants: merchantList,
-        quests: questList,
-    },
-];
 
 class App extends Component {
     state = {
