@@ -167,6 +167,7 @@ class CharacterSelection extends Component {
             Math.floor(Math.random() * character.luck + 1) * 5;
         charToRegister.status = "OK";
         charToRegister.userPseudo = pseudo;
+        charToRegister.userUid = uid;
 
         charTab[character.id] = charToRegister;
         doSetState(

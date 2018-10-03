@@ -80,11 +80,11 @@ class Chat extends Component {
     };
 
     isAViewer = viewersTab => {
-        const { pseudo, gameMaster, uid } = this.props;
+        const { pseudo, isGameMaster } = this.props;
         let canSeeMessage = false;
 
         viewersTab.map(viewer => {
-            if (viewer === "gm" && uid === gameMaster) canSeeMessage = true;
+            if (viewer === "gm" && isGameMaster) canSeeMessage = true;
             if (viewer === pseudo) canSeeMessage = true;
             return null;
         });
@@ -399,8 +399,8 @@ class Chat extends Component {
 }
 
 Chat.propTypes = {
+    isGameMaster: PropTypes.bool.isRequired,
     gameMaster: PropTypes.string.isRequired,
-    uid: PropTypes.string.isRequired,
     users: PropTypes.object.isRequired,
     character: PropTypes.object.isRequired,
     pseudo: PropTypes.string.isRequired,

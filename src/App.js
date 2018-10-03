@@ -678,7 +678,6 @@ class App extends Component {
             .database()
             .ref("/maps/" + stories[currentStory].map)
             .on("value", snapshot => {
-                // console.log('snapshot', snapshot.val());
                 this.setState(state => ({
                     ...state,
                     map: snapshot.val(),
@@ -691,7 +690,6 @@ class App extends Component {
             .database()
             .ref("/users")
             .on("value", snapshot => {
-                // console.log('snapshot', snapshot.val());
                 this.setState(state => ({
                     ...state,
                     users: snapshot.val(),
@@ -759,7 +757,7 @@ class App extends Component {
                             character: snapshot.val(),
                             currentStory: i,
                             gameMaster: stories[i].gameMaster,
-                            // isGameMaster: isGM,
+                            isGameMaster: isGM,
                             characterId: stories[i].characters[uid].characterId,
                         }),
                         () => {
@@ -777,12 +775,13 @@ class App extends Component {
                     ...state,
                     currentStory: i,
                     gameMaster: stories[i].gameMaster,
-                    // isGameMaster: isGM,
+                    isGameMaster: isGM,
                 }),
                 () => {
                     this.createTable();
                     this.createChat();
                     this.loadMusic();
+                    this.loadMerchantsAndItems();
                 },
             );
         }
@@ -1028,8 +1027,8 @@ class App extends Component {
                                         uid={uid}
                                         users={users}
                                         character={character}
-                                        isAdmin={isAdmin}
                                         pseudo={pseudo}
+                                        isGameMaster={isGameMaster}
                                         chatInput={chatInput}
                                         chatHistory={chatHistory}
                                         onChange={this.onChange}

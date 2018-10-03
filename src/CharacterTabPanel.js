@@ -23,7 +23,7 @@ const styles = {
         position: "relative",
         float: "left",
         display: "inline-block",
-        borderBottom: '1px solid black',
+        borderBottom: "1px solid black",
     },
     itemName: {
         width: `${widthRightPanelLeft - 70}px`,
@@ -53,45 +53,52 @@ class CharacterTabPanel extends Component {
             <div style={styles.tabPanel}>
                 {infoTab === "Weapons" && (
                     <CharacterTabPanelContent
-                        tab={character.weapons}
+                        tab={character.weapons || []}
                         title="Weapons :"
                     />
                 )}
                 {infoTab === "Abilities" && (
                     <CharacterTabPanelContent
-                        tab={character.abilities}
+                        tab={character.abilities || []}
                         title="Abilities :"
                     />
                 )}
                 {infoTab === "Skills" && (
                     <CharacterTabPanelContent
-                        tab={character.skills}
+                        tab={character.skills || []}
                         title="Skills :"
                     />
                 )}
                 {infoTab === "Items" && (
                     <div>
                         <div style={styles.BoxHeader}>Items :</div>
-                        {character.items.map((item, index) => {
-                            return (
-                                <div
-                                    key={`${item.name}-${index}`}
-                                    style={styles.tabPanelItem}
-                                >
-                                    <input
-                                        type="number"
-                                        value={item.quantity}
-                                        style={styles.itemQuantity}
-                                        onChange={e => {
-                                            onItemUse(index, e.target.value);
-                                        }}
-                                    />
-                                    <div style={styles.itemName}>
-                                        {character.education < item.rarity*9 ? "???" : item.name}
+                        {character.items &&
+                            character.items.map((item, index) => {
+                                return (
+                                    <div
+                                        key={`${item.name}-${index}`}
+                                        style={styles.tabPanelItem}
+                                    >
+                                        <input
+                                            type="number"
+                                            value={item.quantity}
+                                            style={styles.itemQuantity}
+                                            onChange={e => {
+                                                onItemUse(
+                                                    index,
+                                                    e.target.value,
+                                                );
+                                            }}
+                                        />
+                                        <div style={styles.itemName}>
+                                            {character.education <
+                                            item.rarity * 9
+                                                ? "???"
+                                                : item.name}
+                                        </div>
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
                     </div>
                 )}
             </div>

@@ -27,6 +27,7 @@ class CharacterOtherInfos extends Component {
             onStatusChange,
             onItemUse,
             damageTaken,
+            isGameMaster,
         } = this.props;
 
         return (
@@ -42,6 +43,7 @@ class CharacterOtherInfos extends Component {
                     status={status}
                     infoTab={infoTab}
                     damageTaken={damageTaken}
+                    isGameMaster={isGameMaster}
                     onChange={onChange}
                     onChangeTab={onChangeTab}
                     onLifeChange={onLifeChange}
@@ -57,6 +59,7 @@ CharacterOtherInfos.propTypes = {
     status: PropTypes.string.isRequired,
     infoTab: PropTypes.string.isRequired,
     damageTaken: PropTypes.number.isRequired,
+    isGameMaster: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
     onChangeTab: PropTypes.func.isRequired,
     onLifeChange: PropTypes.func.isRequired,

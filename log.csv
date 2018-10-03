@@ -1,3 +1,8 @@
+<div className="commit"> fakebounce, le 2018-10-03 : Game master is now Up ! He can modify a character directly by clicking on a team portrait. Can also add gold. Fixed some number inputs which sends strings and character Tabs if array was empty </div>
+<div className="commit"> fakebounce, le 2018-10-03 : Moved some values to constants </div>
+<div className="commit"> fakebounce, le 2018-10-03 : Transformed high value item to unknown if the character has not enough education </div>
+<div className="commit"> fakebounce, le 2018-10-03 : Added function to modify items in inventory </div>
+<div className="commit"> FakeBounce, le 2018-10-03 : Corrected life input and changed gold algo on character creation </div>
 <div className="commit"> fakebounce, le 2018-10-02 : Removed hydratation on start </div>
 <div className="commit"> fakebounce, le 2018-10-02 : Artefacts are now genereted separately; no more duplicates on artefacts generation for merchants. Reviewed merchant hydration to remove potentially duplicates items. Did some css to add overflow on some critical views </div>
 <div className="commit"> FakeBounce, le 2018-10-02 : Saved merchants items and corrected quantities when buying </div>
