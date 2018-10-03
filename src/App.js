@@ -14,7 +14,7 @@ import StoriesList from "./StoriesList";
 import ChatCommandsPanel from "./ChatCommandsPanel";
 import Header from "./Header";
 
-import { gridDimension, gridLength } from "./StyleConstants";
+import { gridDimension, gridLength, priceRanges, itemQuantities } from "./StyleConstants";
 import LoadSpreasheet from "./LoadSpreasheet";
 
 const styledGrid = {
@@ -39,39 +39,6 @@ const styledMap = {
     display: "inline-block",
     float: "left",
 };
-
-const items = [
-    {
-        index: 0,
-        name: "Potion de soin léger",
-        description:
-            "Potion de soin léger, referme les petites blessures et arrête les hémorragies.",
-        effect: "Rend 5 + 1d10 points de vie.",
-        icon: "potion_1.jpg",
-        quantity: 4,
-        price: 50,
-    },
-];
-
-const items2 = [
-    {
-        index: 0,
-        name: "Lance",
-        description: "Lance classique en bois. Embout en fer. Emoussée.",
-        icon: "spear.png",
-        quantity: 2,
-        price: 150,
-    },
-    {
-        index: 1,
-        name: "Epée à deux mains",
-        description:
-            "Une belle épée à deux mains. La lame scintille à la lumière.",
-        icon: "two_hand_sword.png",
-        quantity: 1,
-        price: 250,
-    },
-];
 
 const merchantList = [5, 8, 12, 25, 34, 1, 2, 4, 6, 7, 9, 11, 15, 16, 18];
 
@@ -114,59 +81,6 @@ const towns = [
         quests: questList,
     },
 ];
-
-const ranges = {
-    "1": {
-        minValue: 30,
-        maxValue: 80,
-    },
-    "2": {
-        minValue: 60,
-        maxValue: 150,
-    },
-    "3": {
-        minValue: 100,
-        maxValue: 300,
-    },
-    "4": {
-        minValue: 150,
-        maxValue: 400,
-    },
-    "5": {
-        minValue: 225,
-        maxValue: 550,
-    },
-    "6": {
-        minValue: 325,
-        maxValue: 775,
-    },
-    "7": {
-        minValue: 500,
-        maxValue: 1250,
-    },
-    "8": {
-        minValue: 750,
-        maxValue: 1800,
-    },
-    "9": {
-        minValue: 1000,
-        maxValue: 3000,
-    },
-    "10": {
-        minValue: 1500,
-        maxValue: 5000,
-    },
-};
-
-const quantities = {
-    consumables: 3,
-    weapons: 3,
-    artefacts: 1,
-    runes: 0,
-    enhancements: 2,
-    stones: 2,
-    spells: 4,
-};
 
 class App extends Component {
     state = {
@@ -451,10 +365,10 @@ class App extends Component {
                 newItem.rarity = parseInt(newItem.rarity, 10);
                 newItem.quantity = 1;
                 newItem.itemType = "artefacts";
-                const priceRange = ranges[newItem.rarity].maxValue * 0.2;
+                const priceRange = priceRanges[newItem.rarity].maxValue * 0.2;
 
                 newItem.price =
-                    ranges[newItem.rarity].maxValue -
+                    priceRanges[newItem.rarity].maxValue -
                     priceRange +
                     Math.ceil(Math.random() * priceRange + 1);
                 itemList.push(newItem);
@@ -486,19 +400,19 @@ class App extends Component {
                 const newItem = { ...itemsListLeft[randomItem] };
                 newItem.rarity = parseInt(newItem.rarity, 10);
                 newItem.quantity =
-                    Math.floor(Math.random() * quantities[list] + 1) *
+                    Math.floor(Math.random() * itemQuantities[list] + 1) *
                         (parseInt(merchant[list], 10) -
                             Math.ceil(newItem.rarity / 2)) +
                     1;
                 newItem.itemType = list;
 
                 const priceRange =
-                    (ranges[newItem.rarity].maxValue -
-                        ranges[newItem.rarity].minValue) /
+                    (priceRanges[newItem.rarity].maxValue -
+                        priceRanges[newItem.rarity].minValue) /
                     6;
 
                 newItem.price =
-                    ranges[newItem.rarity].minValue +
+                    priceRanges[newItem.rarity].minValue +
                     parseInt(merchant[list], 10) *
                         Math.floor(Math.random() * priceRange + 1);
 

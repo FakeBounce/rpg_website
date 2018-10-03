@@ -73,13 +73,12 @@ class RightPanel extends Component {
         const { damageTaken } = this.state;
 
         const healthLeft =
-            parseInt(health,10) + parseInt(damageTaken,10) < 0
+            parseInt(health, 10) + parseInt(damageTaken, 10) < 0
                 ? 0
-                : parseInt(health,10) + parseInt(damageTaken,10) > maxHealth
+                : parseInt(health, 10) + parseInt(damageTaken, 10) > maxHealth
                     ? maxHealth
-                    : parseInt(health,10) + parseInt(damageTaken,10);
+                    : parseInt(health, 10) + parseInt(damageTaken, 10);
 
-        console.log("healthLeft",healthLeft, parseInt(damageTaken,10));
         firebase
             .database()
             .ref(
@@ -89,7 +88,7 @@ class RightPanel extends Component {
                     uid +
                     "/character/health",
             )
-            .set(parseInt(healthLeft,10))
+            .set(parseInt(healthLeft, 10))
             .catch(error => {
                 // Handle Errors here.
                 this.triggerError(error);
@@ -114,6 +113,39 @@ class RightPanel extends Component {
                 // Handle Errors here.
                 this.triggerError(error);
             });
+    };
+
+    onItemUse = (i, value) => {
+        const { character, currentStory, uid, doSetState } = this.props;
+
+        if (value > -1) {
+            const newCharacterItems = [...character.items];
+            newCharacterItems[i].quantity = value;
+
+            const newCharacter = {
+                ...character,
+                items: newCharacterItems,
+            };
+
+            doSetState({
+                character: newCharacter,
+            });
+
+            firebase
+                .database()
+                .ref(
+                    "stories/" +
+                        currentStory +
+                        "/characters/" +
+                        uid +
+                        "/character",
+                )
+                .set(newCharacter)
+                .catch(error => {
+                    // Handle Errors here.
+                    this.triggerError(error);
+                });
+        }
     };
 
     // for GM only
@@ -156,6 +188,7 @@ class RightPanel extends Component {
                     onChangeTab={this.onChangeTab}
                     onLifeChange={this.onLifeChange}
                     onStatusChange={this.onStatusChange}
+                    onItemUse={this.onItemUse}
                 />
             </div>
         );

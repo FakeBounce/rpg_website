@@ -47,7 +47,7 @@ const styles = {
 
 class CharacterTabPanel extends Component {
     render() {
-        const { character, infoTab } = this.props;
+        const { character, infoTab, onItemUse } = this.props;
 
         return (
             <div style={styles.tabPanel}>
@@ -82,9 +82,8 @@ class CharacterTabPanel extends Component {
                                         type="number"
                                         value={item.quantity}
                                         style={styles.itemQuantity}
-                                        onChange={() => {
-                                            // @TODO: modify item quantity
-                                            console.log('Modified item !');
+                                        onChange={e => {
+                                            onItemUse(index, e.target.value);
                                         }}
                                     />
                                     <div style={styles.itemName}>
@@ -103,6 +102,7 @@ class CharacterTabPanel extends Component {
 CharacterTabPanel.propTypes = {
     character: PropTypes.object.isRequired,
     infoTab: PropTypes.string.isRequired,
+    onItemUse: PropTypes.func.isRequired,
 };
 
 export default CharacterTabPanel;

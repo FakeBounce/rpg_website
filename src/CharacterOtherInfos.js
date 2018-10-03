@@ -25,13 +25,18 @@ class CharacterOtherInfos extends Component {
             onChange,
             onLifeChange,
             onStatusChange,
+            onItemUse,
             damageTaken,
         } = this.props;
 
         return (
             <div style={styles.characterOtherInfos}>
                 <CharacterTabButtons onChangeTab={onChangeTab} />
-                <CharacterTabPanel character={character} infoTab={infoTab} />
+                <CharacterTabPanel
+                    character={character}
+                    infoTab={infoTab}
+                    onItemUse={onItemUse}
+                />
                 <CharacterInputs
                     character={character}
                     status={status}
@@ -56,6 +61,7 @@ CharacterOtherInfos.propTypes = {
     onChangeTab: PropTypes.func.isRequired,
     onLifeChange: PropTypes.func.isRequired,
     onStatusChange: PropTypes.func.isRequired,
+    onItemUse: PropTypes.func.isRequired,
 };
 
 export default CharacterOtherInfos;
