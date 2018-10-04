@@ -1,44 +1,44 @@
-import React, { Component } from "react";
-import firebase from "firebase";
-import Sound from "react-sound";
-import "./App.css";
-import Town from "./Town";
-import IsNotAuth from "./IsNotAuth";
-import HasNoPseudo from "./HasNoPseudo";
-import CharacterSelection from "./CharacterSelection";
-import BottomPanel from "./BottomPanel";
-import RightPanel from "./RightPanel";
-import PlayerMapPanel from "./PlayerMapPanel";
-import GMMapPanel from "./GMMapPanel";
-import StoriesList from "./StoriesList";
-import ChatCommandsPanel from "./ChatCommandsPanel";
-import Header from "./Header";
+import React, { Component } from 'react';
+import firebase from 'firebase';
+import Sound from 'react-sound';
+import './App.css';
+import Town from './Town';
+import IsNotAuth from './IsNotAuth';
+import HasNoPseudo from './HasNoPseudo';
+import CharacterSelection from './CharacterSelection';
+import BottomPanel from './BottomPanel';
+import RightPanel from './RightPanel';
+import PlayerMapPanel from './PlayerMapPanel';
+import GMMapPanel from './GMMapPanel';
+import StoriesList from './StoriesList';
+import ChatCommandsPanel from './ChatCommandsPanel';
+import Header from './Header';
 
-import { gridDimension, gridLength } from "./StyleConstants";
-import { priceRanges, itemQuantities, towns } from "./Constants";
-import LoadSpreasheet from "./LoadSpreasheet";
+import { gridDimension, gridLength } from './StyleConstants';
+import { priceRanges, itemQuantities, towns } from './Constants';
+import LoadSpreasheet from './LoadSpreasheet';
 
 const styledGrid = {
-    border: "1px solid pink",
+    border: '1px solid pink',
     width: `${gridDimension}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledRow = {
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledMap = {
-    border: "1px solid grey",
+    border: '1px solid grey',
     width: `${gridDimension * gridLength + gridLength * 2}px`,
     height: `${gridDimension * gridLength}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 class App extends Component {
@@ -47,14 +47,14 @@ class App extends Component {
         character: {},
         characters: {},
         characterCreation: false,
-        chatInput: "",
+        chatInput: '',
         chatHistory: [],
         currentStory: -1,
         currentMerchant: -1,
         currentQuest: {},
-        errorMessage: "",
-        email: "",
-        gameMaster: "",
+        errorMessage: '',
+        email: '',
+        gameMaster: '',
         isAuth: false,
         isItemShowed: false,
         itemsList: [],
@@ -69,20 +69,20 @@ class App extends Component {
         merchants: [],
         map: [],
         merchantsList: [],
-        musicStatus: "PAUSED",
-        musicName: "",
+        musicStatus: 'PAUSED',
+        musicName: '',
         musicMute: false,
         musicVolume: 100,
-        noiseName: "",
-        noiseStatus: "PAUSED",
+        noiseName: '',
+        noiseStatus: 'PAUSED',
         noiseMute: false,
         noiseVolume: 100,
         onChatHelp: false,
-        password: "",
-        pseudo: "",
-        pseudoInput: "",
+        password: '',
+        pseudo: '',
+        pseudoInput: '',
         questsList: [],
-        uid: "",
+        uid: '',
         users: null,
         stories: [],
         storyCharacters: [],
@@ -94,8 +94,8 @@ class App extends Component {
         const { currentStory } = this.state;
         firebase
             .database()
-            .ref("stories/" + currentStory + "/merchants")
-            .once("value")
+            .ref('stories/' + currentStory + '/merchants')
+            .once('value')
             .then(snapshot => {
                 this.setState(state => ({
                     ...state,
@@ -103,8 +103,8 @@ class App extends Component {
                 }));
                 firebase
                     .database()
-                    .ref("/items")
-                    .once("value")
+                    .ref('/items')
+                    .once('value')
                     .then(snapshot => {
                         this.setState(
                             state => ({
@@ -116,11 +116,11 @@ class App extends Component {
                                 firebase
                                     .database()
                                     .ref(
-                                        "/stories/" +
+                                        '/stories/' +
                                             currentStory +
-                                            "/artefacts",
+                                            '/artefacts'
                                     )
-                                    .once("value")
+                                    .once('value')
                                     .then(snapshot => {
                                         this.setState(
                                             state => ({
@@ -132,14 +132,14 @@ class App extends Component {
                                             }),
                                             () => {
                                                 // this.hydrateAllMerchants();
-                                            },
+                                            }
                                         );
                                     })
                                     .catch(error => {
                                         // An error happened.
                                         this.triggerError(error);
                                     });
-                            },
+                            }
                         );
                     })
                     .catch(error => {
@@ -154,31 +154,31 @@ class App extends Component {
     };
 
     hydrateStoryArtefacts = () => {
-        const { currentStory } = this.state;
+        const { currentStory, items } = this.state;
         firebase
             .database()
             // .ref('stories/0/artefacts')
-            .ref("stories/" + currentStory + "/artefacts")
-            .set(this.state.items.artefacts)
+            .ref('stories/' + currentStory + '/artefacts')
+            .set(items.artefacts)
             .catch(error => {
                 // Handle Errors here.
-                this.props.triggerError(error);
+                this.triggerError(error);
             });
     };
 
     generateStoryMerchants = () => {
-        const { currentStory } = this.state;
+        const { currentStory, items } = this.state;
 
         firebase
             .database()
-            .ref("merchants")
-            .once("value")
+            .ref('merchants')
+            .once('value')
             .then(snapshot => {
                 const newMerchants = [];
-                const artefactsLeft = [...this.state.items.artefacts];
+                const artefactsLeft = [...items.artefacts];
                 snapshot.val().map(m => {
                     newMerchants.push(
-                        this.hydrateMerchant(artefactsLeft, m, true),
+                        this.hydrateMerchant(artefactsLeft, m, true)
                     );
                 });
 
@@ -194,26 +194,26 @@ class App extends Component {
                 firebase
                     .database()
                     // .ref('stories/0/merchants')
-                    .ref("stories/" + currentStory + "/merchants")
+                    .ref('stories/' + currentStory + '/merchants')
                     .set(newMerchants)
                     .then(() => {
                         this.hydrateStoryArtefacts();
                     })
                     .catch(error => {
                         // Handle Errors here.
-                        this.props.triggerError(error);
+                        this.triggerError(error);
                     });
             })
             .catch(error => {
                 // Handle Errors here.
-                this.props.triggerError(error);
+                this.triggerError(error);
             });
     };
 
     hydrateAllMerchants = (hard = false) => {
-        const { merchants, currentStory } = this.state;
+        const { merchants, currentStory, items } = this.state;
         const newMerchants = [];
-        const artefactsLeft = [...this.state.items.artefacts];
+        const artefactsLeft = [...items.artefacts];
         merchants.map(m => {
             newMerchants.push(this.hydrateMerchant(artefactsLeft, m, hard));
         });
@@ -230,14 +230,14 @@ class App extends Component {
         firebase
             .database()
             // .ref('stories/0/merchants')
-            .ref("stories/" + currentStory + "/merchants")
+            .ref('stories/' + currentStory + '/merchants')
             .set(newMerchants)
             .then(() => {
                 this.hydrateStoryArtefacts();
             })
             .catch(error => {
                 // Handle Errors here.
-                this.props.triggerError(error);
+                this.triggerError(error);
             });
     };
 
@@ -245,26 +245,26 @@ class App extends Component {
         if (totalHydrate) {
             merchant.items &&
                 merchant.items.map(i => {
-                    if (i.itemType === "artefacts") {
+                    if (i.itemType === 'artefacts') {
                         artefactsLeft.push(i);
                     }
                 });
             merchant.items = [];
             const consumableList = this.getItemsFromCategory(
-                "consumables",
-                merchant,
+                'consumables',
+                merchant
             );
             const enhancementList = this.getItemsFromCategory(
-                "enhancements",
-                merchant,
+                'enhancements',
+                merchant
             );
-            const stoneList = this.getItemsFromCategory("stones", merchant);
-            const runeList = this.getItemsFromCategory("runes", merchant);
-            const weaponList = this.getItemsFromCategory("weapons", merchant);
-            const spellList = this.getItemsFromCategory("spells", merchant);
+            const stoneList = this.getItemsFromCategory('stones', merchant);
+            const runeList = this.getItemsFromCategory('runes', merchant);
+            const weaponList = this.getItemsFromCategory('weapons', merchant);
+            const spellList = this.getItemsFromCategory('spells', merchant);
             const artefactList = this.getArtefactsForMerchant(
                 artefactsLeft,
-                merchant,
+                merchant
             );
 
             merchant.items = consumableList
@@ -277,29 +277,29 @@ class App extends Component {
         } else {
             const itemsStaying = [];
             merchant.items.map((i, index) => {
-                if (i.rarity >= 7 || i.itemType === "artefacts") {
+                if (i.rarity >= 7 || i.itemType === 'artefacts') {
                     itemsStaying.push(i);
                 }
             });
 
             const consumableList = this.getItemsFromCategory(
-                "consumables",
+                'consumables',
                 merchant,
-                0,
+                0
             );
             const enhancementList = this.getItemsFromCategory(
-                "enhancements",
+                'enhancements',
                 merchant,
-                0,
+                0
             );
-            const stoneList = this.getItemsFromCategory("stones", merchant, 0);
-            const runeList = this.getItemsFromCategory("runes", merchant, 0);
+            const stoneList = this.getItemsFromCategory('stones', merchant, 0);
+            const runeList = this.getItemsFromCategory('runes', merchant, 0);
             const weaponList = this.getItemsFromCategory(
-                "weapons",
+                'weapons',
                 merchant,
-                0,
+                0
             );
-            const spellList = this.getItemsFromCategory("spells", merchant, 0);
+            const spellList = this.getItemsFromCategory('spells', merchant, 0);
 
             merchant.items = consumableList
                 .concat(enhancementList)
@@ -314,16 +314,16 @@ class App extends Component {
     getArtefactsForMerchant = (artefactsCurrentList, merchant) => {
         let itemList = [];
         let randomItem = 0;
-        let itemsToGet = parseInt(merchant["artefacts"], 10);
+        let itemsToGet = parseInt(merchant['artefacts'], 10);
         for (let i = 0; i < itemsToGet; i++) {
             randomItem = Math.floor(
-                Math.random() * artefactsCurrentList.length,
+                Math.random() * artefactsCurrentList.length
             );
             if (!artefactsCurrentList[randomItem].isAcquired) {
                 const newItem = { ...artefactsCurrentList[randomItem] };
                 newItem.rarity = parseInt(newItem.rarity, 10);
                 newItem.quantity = 1;
-                newItem.itemType = "artefacts";
+                newItem.itemType = 'artefacts';
                 const priceRange = priceRanges[newItem.rarity].maxValue * 0.2;
 
                 newItem.price =
@@ -375,23 +375,23 @@ class App extends Component {
                     parseInt(merchant[list], 10) *
                         Math.floor(Math.random() * priceRange + 1);
 
-                if (list === "spells") {
+                if (list === 'spells') {
                     const randomScroll = Math.floor(Math.random() * 10 + 1);
                     if (randomScroll === 1) {
                         newItem.name =
-                            "Livre de sort (" +
+                            'Livre de sort (' +
                             newItem.type +
-                            ") : " +
+                            ') : ' +
                             newItem.name;
-                        newItem.image = "spell_book.png";
+                        newItem.image = 'spell_book.png';
                         newItem.isBook = true;
                         newItem.price =
                             newItem.price * Math.floor(Math.random() * 3 + 2);
                     } else {
                         newItem.name =
-                            "Parchemin (" +
+                            'Parchemin (' +
                             newItem.type +
-                            ") : " +
+                            ') : ' +
                             newItem.name;
                         newItem.isBook = false;
                     }
@@ -489,11 +489,11 @@ class App extends Component {
                 firebase
                     .database()
                     .ref(
-                        "stories/" +
+                        'stories/' +
                             currentStory +
-                            "/characters/" +
+                            '/characters/' +
                             uid +
-                            "/character",
+                            '/character'
                     )
                     .set({
                         ...character,
@@ -501,7 +501,7 @@ class App extends Component {
                         items: newItemsTab,
                     })
                     .then(() => {
-                        if (item.itemType === "artefacts") {
+                        if (item.itemType === 'artefacts') {
                             item.isAcquired = true;
                             artefacts.push(item);
                             this.hydrateStoryArtefacts();
@@ -510,10 +510,10 @@ class App extends Component {
                         firebase
                             .database()
                             .ref(
-                                "stories/" +
+                                'stories/' +
                                     currentStory +
-                                    "/merchants/" +
-                                    currentMerchant,
+                                    '/merchants/' +
+                                    currentMerchant
                             )
                             .set(newMerchants[currentMerchant]);
                     })
@@ -521,7 +521,7 @@ class App extends Component {
                         // Handle Errors here.
                         this.triggerError(error);
                     });
-            },
+            }
         );
     };
 
@@ -536,14 +536,14 @@ class App extends Component {
                     character: {},
                     characters: {},
                     characterCreation: false,
-                    chatInput: "",
+                    chatInput: '',
                     chatHistory: [],
                     currentStory: -1,
                     currentQuest: {},
                     currentMerchant: -1,
-                    errorMessage: "",
-                    email: "",
-                    gameMaster: "",
+                    errorMessage: '',
+                    email: '',
+                    gameMaster: '',
                     isAuth: false,
                     isItemShowed: false,
                     itemsList: [],
@@ -556,16 +556,16 @@ class App extends Component {
                     isGameMaster: false,
                     map: [],
                     merchantsList: [],
-                    musicStatus: "PAUSED",
-                    musicName: "",
-                    noiseName: "",
-                    noiseStatus: "PAUSED",
+                    musicStatus: 'PAUSED',
+                    musicName: '',
+                    noiseName: '',
+                    noiseStatus: 'PAUSED',
                     onChatHelp: false,
-                    password: "",
-                    pseudo: "",
-                    pseudoInput: "",
+                    password: '',
+                    pseudo: '',
+                    pseudoInput: '',
                     questsList: [],
-                    uid: "",
+                    uid: '',
                     users: null,
                     stories: [],
                     storyCharacters: [],
@@ -599,7 +599,7 @@ class App extends Component {
                 : row.icon
                     ? {
                           backgroundImage: `url(${row.icon})`,
-                          backgroundSize: "cover",
+                          backgroundSize: 'cover',
                       }
                     : {};
             table.push(
@@ -653,7 +653,7 @@ class App extends Component {
                             return null;
                         })}
                     </div>
-                ),
+                )
             );
             return null;
         });
@@ -664,7 +664,7 @@ class App extends Component {
         const { stories, currentStory, textureToApply } = this.state;
         firebase
             .database()
-            .ref("maps/" + stories[currentStory].map + "/" + x + "/" + y)
+            .ref('maps/' + stories[currentStory].map + '/' + x + '/' + y)
             .set(textureToApply)
             .catch(error => {
                 // Handle Errors here.
@@ -676,8 +676,8 @@ class App extends Component {
         const { stories, currentStory } = this.state;
         firebase
             .database()
-            .ref("/maps/" + stories[currentStory].map)
-            .on("value", snapshot => {
+            .ref('/maps/' + stories[currentStory].map)
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     map: snapshot.val(),
@@ -688,8 +688,8 @@ class App extends Component {
     loadUsers = () => {
         firebase
             .database()
-            .ref("/users")
-            .on("value", snapshot => {
+            .ref('/users')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     users: snapshot.val(),
@@ -700,8 +700,8 @@ class App extends Component {
     loadStories = () => {
         firebase
             .database()
-            .ref("/stories")
-            .once("value")
+            .ref('/stories')
+            .once('value')
             .then(snapshot => {
                 this.setState(state => ({
                     ...state,
@@ -718,8 +718,8 @@ class App extends Component {
         const { currentStory } = this.state;
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/music")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/music')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     ...snapshot.val(),
@@ -727,13 +727,70 @@ class App extends Component {
             });
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/noise")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/noise')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     ...snapshot.val(),
                 }));
             });
+    };
+
+    stopNoise = () => {
+        const { currentStory } = this.state;
+        this.setState(
+            state => ({
+                ...state,
+                noiseStatus: 'STOPPPED',
+            }),
+            () => {
+                firebase
+                    .database()
+                    .ref('/stories/' + currentStory + '/noise')
+                    .set({
+                        noiseStatus: this.state.noiseStatus,
+                    })
+                    .catch(error => {
+                        this.triggerError(error);
+                    });
+            }
+        );
+    };
+
+    onChangeMusics = (name, value) => {
+        const { currentStory } = this.state;
+        const obj = {};
+        obj[name] = value;
+        this.setState(
+            state => ({
+                ...state,
+                ...obj,
+            }),
+            () => {
+                firebase
+                    .database()
+                    .ref('/stories/' + currentStory + '/noise')
+                    .set({
+                        noiseStatus: this.state.noiseStatus,
+                        noiseName: this.state.noiseName,
+                        noiseVolume: this.state.noiseVolume,
+                    })
+                    .catch(error => {
+                        this.triggerError(error);
+                    });
+                firebase
+                    .database()
+                    .ref('/stories/' + currentStory + '/music')
+                    .set({
+                        musicName: this.state.musicName,
+                        musicStatus: this.state.musicStatus,
+                        musicVolume: this.state.musicVolume,
+                    })
+                    .catch(error => {
+                        this.triggerError(error);
+                    });
+            }
+        );
     };
 
     chooseStory = i => {
@@ -743,13 +800,13 @@ class App extends Component {
         if (stories[i].gameMaster === uid) isGM = true;
 
         if (
-            typeof stories[i].characters !== "undefined" &&
-            typeof stories[i].characters[uid] !== "undefined"
+            typeof stories[i].characters !== 'undefined' &&
+            typeof stories[i].characters[uid] !== 'undefined'
         ) {
             firebase
                 .database()
-                .ref("/stories/" + i + "/characters/" + uid + "/character")
-                .on("value", snapshot => {
+                .ref('/stories/' + i + '/characters/' + uid + '/character')
+                .on('value', snapshot => {
                     //@TODO : Activate when GM will have proper tabs
                     this.setState(
                         state => ({
@@ -765,7 +822,7 @@ class App extends Component {
                             this.createChat();
                             this.loadMusic();
                             this.loadMerchantsAndItems();
-                        },
+                        }
                     );
                 });
         } else {
@@ -782,18 +839,18 @@ class App extends Component {
                     this.createChat();
                     this.loadMusic();
                     this.loadMerchantsAndItems();
-                },
+                }
             );
         }
         firebase
             .database()
-            .ref("/stories/" + i + "/characters")
-            .on("value", snapshot => {
+            .ref('/stories/' + i + '/characters')
+            .on('value', snapshot => {
                 const charactersFromStories = [];
-                if (typeof snapshot.val() !== "undefined" && snapshot.val()) {
+                if (typeof snapshot.val() !== 'undefined' && snapshot.val()) {
                     Object.keys(snapshot.val()).map(key => {
                         charactersFromStories.push(
-                            snapshot.val()[key].character,
+                            snapshot.val()[key].character
                         );
                         return null;
                     });
@@ -811,7 +868,7 @@ class App extends Component {
             table.push(
                 <div key={`table-row-${index}`} style={styledRow}>
                     {this.createGrid(index, row)}
-                </div>,
+                </div>
             );
             return null;
         });
@@ -821,8 +878,8 @@ class App extends Component {
     createChat = () => {
         firebase
             .database()
-            .ref("/chat")
-            .on("value", snapshot => {
+            .ref('/chat')
+            .on('value', snapshot => {
                 if (snapshot.val() !== null) {
                     this.setState(state => ({
                         ...state,
@@ -847,7 +904,7 @@ class App extends Component {
             }),
             () => {
                 if (cb) cb();
-            },
+            }
         );
     };
 
@@ -861,10 +918,10 @@ class App extends Component {
                 setTimeout(() => {
                     this.setState(state => ({
                         ...state,
-                        error: "",
+                        error: '',
                     }));
                 }, 5000);
-            },
+            }
         );
     };
 
@@ -929,7 +986,7 @@ class App extends Component {
                 )}
 
                 {isAuth &&
-                    pseudo === "" && (
+                    pseudo === '' && (
                         <HasNoPseudo
                             pseudoInput={pseudoInput}
                             onChange={this.onChange}
@@ -939,7 +996,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory === -1 && (
                         <StoriesList
                             stories={stories}
@@ -949,7 +1006,7 @@ class App extends Component {
 
                 {!isGameMaster &&
                     isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory > -1 &&
                     characterId === 0 && (
                         <CharacterSelection
@@ -965,7 +1022,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory > -1 &&
                     (characterId > 0 || isGameMaster) && (
                         <div>
@@ -979,8 +1036,8 @@ class App extends Component {
                                 toggleMusic={this.toggleMusic}
                                 chatHelpTitle={
                                     onChatHelp
-                                        ? "Return to map"
-                                        : "Access chat help"
+                                        ? 'Return to map'
+                                        : 'Access chat help'
                                 }
                                 musicMute={musicMute}
                             />
@@ -994,6 +1051,9 @@ class App extends Component {
                                     {isGameMaster && (
                                         <GMMapPanel
                                             textureToApply={textureToApply}
+                                            musicVolume={musicVolume}
+                                            noiseVolume={noiseVolume}
+                                            onChange={this.onChangeMusics}
                                             doSetState={this.doSetState}
                                             triggerError={this.triggerError}
                                         />
@@ -1051,6 +1111,7 @@ class App extends Component {
                     url={`./noise/${noiseName}.mp3`}
                     playStatus={noiseStatus}
                     volume={noiseMute ? 0 : noiseVolume}
+                    onFinishedPlaying={this.stopNoise}
                     autoLoad
                 />
                 {error}
