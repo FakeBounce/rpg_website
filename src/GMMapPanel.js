@@ -3,6 +3,7 @@ import { gridDimension, heightLeft, widthLeft } from './StyleConstants';
 import { musics, noises } from './Constants';
 
 import PropTypes from 'prop-types';
+import SoundPanel from './SoundPanel';
 
 const styledBoxHeader = {
     width: '100%',
@@ -36,6 +37,28 @@ const styledMapSide = {
     textAlign: 'left',
 };
 
+const styledMusicContainer = {
+    width: '100%',
+    position: 'absolute',
+    height: '45%',
+    top: '50px',
+    overflowY: 'auto',
+};
+
+const styledNoiseContainer = {
+    width: '100%',
+    position: 'absolute',
+    height: '45%',
+    top: '55%',
+    overflowY: 'auto',
+};
+
+const styledAudioFile = {
+    width: '100%',
+    height: '30px',
+    cursor: 'pointer',
+};
+
 const gridTypes = [
     {
         name: 'Fog',
@@ -52,7 +75,6 @@ const gridTypes = [
 ];
 
 class GMMapPanel extends Component {
-
     getGridTypes = grids => {
         return grids.map(gridType => {
             if (gridType.background) {
@@ -131,14 +153,14 @@ class GMMapPanel extends Component {
 
     changeCurrentMusic = m => {
         const { onChangeMusics } = this.props;
-        onChangeMusics("musicName",m);
-        onChangeMusics("musicStatus",'PLAYING');
+        onChangeMusics('musicName', m);
+        onChangeMusics('musicStatus', 'PLAYING');
     };
 
     changeCurrentNoise = n => {
         const { onChangeMusics } = this.props;
-        onChangeMusics("noiseName",n);
-        onChangeMusics("noiseStatus",'PLAYING');
+        onChangeMusics('noiseName', n);
+        onChangeMusics('noiseStatus', 'PLAYING');
     };
 
     render() {
@@ -160,50 +182,13 @@ class GMMapPanel extends Component {
                         {textureToApply && this.getGridSelected(textureToApply)}
                     </div>
                 </div>
-                <div style={styledMapSide}>
-                    <div style={styledBoxHeader}>Modifier la musique</div>
-                    <div>
-                        Volume :
-                        <input
-                            type="range"
-                            onChange={e =>
-                                onChange(e.target.name, e.target.value)
-                            }
-                            min="0"
-                            max="100"
-                            name="musicVolume"
-                            value={musicVolume}
-                        />
-                    </div>
-                    {musics.map(m => {
-                        return (
-                            <div onClick={() => this.changeCurrentMusic(m)}>
-                                {m}
-                            </div>
-                        );
-                    })}
-                    <div style={styledBoxHeader}>Modifier les bruits</div>
-                    <div>
-                        Volume :
-                        <input
-                            type="range"
-                            onChange={e =>
-                                onChange(e.target.name, e.target.value)
-                            }
-                            min="0"
-                            max="100"
-                            name="noiseVolume"
-                            value={noiseVolume}
-                        />
-                    </div>
-                    {noises.map(n => {
-                        return (
-                            <div onClick={() => this.changeCurrentNoise(n)}>
-                                {n}
-                            </div>
-                        );
-                    })}
-                </div>
+                <SoundPanel
+                    musicVolume={musicVolume}
+                    noiseVolume={noiseVolume}
+                    onChange={onChange}
+                    changeCurrentMusic={this.changeCurrentMusic}
+                    changeCurrentNoise={this.changeCurrentNoise}
+                />
             </div>
         );
     }

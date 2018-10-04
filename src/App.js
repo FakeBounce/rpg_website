@@ -6,89 +6,14 @@ import Town from './Town';
 import IsNotAuth from './IsNotAuth';
 import HasNoPseudo from './HasNoPseudo';
 import CharacterSelection from './CharacterSelection';
-import BottomPanel from './BottomPanel';
-import RightPanel from './RightPanel';
-import PlayerMapPanel from './PlayerMapPanel';
-import GMMapPanel from './GMMapPanel';
 import StoriesList from './StoriesList';
-import ChatCommandsPanel from './ChatCommandsPanel';
-import Header from './Header';
 
-import { gridDimension, gridLength } from './StyleConstants';
-import { priceRanges, itemQuantities, towns } from './Constants';
+import { priceRanges, itemQuantities, defaultState } from './Constants';
 import LoadSpreasheet from './LoadSpreasheet';
-
-const styledGrid = {
-    border: '1px solid pink',
-    width: `${gridDimension}px`,
-    height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
-};
-
-const styledRow = {
-    width: `${gridDimension * gridLength + gridLength * 2}px`,
-    height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
-};
-
-const styledMap = {
-    border: '1px solid grey',
-    width: `${gridDimension * gridLength + gridLength * 2}px`,
-    height: `${gridDimension * gridLength}px`,
-    display: 'inline-block',
-    float: 'left',
-};
+import GameScreen from './GameScreen';
 
 class App extends Component {
-    state = {
-        characterId: 0,
-        character: {},
-        characters: {},
-        characterCreation: false,
-        chatInput: '',
-        chatHistory: [],
-        currentStory: -1,
-        currentMerchant: -1,
-        currentQuest: {},
-        errorMessage: '',
-        email: '',
-        gameMaster: '',
-        isAuth: false,
-        isItemShowed: false,
-        itemsList: [],
-        isItemDescriptionShowed: false,
-        itemToDescribe: {},
-        itemDescribed: 0,
-        isTownShowed: false,
-        isQuestShowed: false,
-        isAdmin: false,
-        isGameMaster: false,
-        items: {},
-        merchants: [],
-        map: [],
-        merchantsList: [],
-        musicStatus: 'PAUSED',
-        musicName: '',
-        musicMute: false,
-        musicVolume: 100,
-        noiseName: '',
-        noiseStatus: 'PAUSED',
-        noiseMute: false,
-        noiseVolume: 100,
-        onChatHelp: false,
-        password: '',
-        pseudo: '',
-        pseudoInput: '',
-        questsList: [],
-        uid: '',
-        users: null,
-        stories: [],
-        storyCharacters: [],
-        textureToApply: null,
-        spreadSheet: {},
-    };
+    state = { ...defaultState };
 
     loadMerchantsAndItems = () => {
         const { currentStory } = this.state;
@@ -531,143 +456,10 @@ class App extends Component {
             .signOut()
             .then(() => {
                 // Sign-out successful.
-                this.setState(state => ({
-                    characterId: 0,
-                    character: {},
-                    characters: {},
-                    characterCreation: false,
-                    chatInput: '',
-                    chatHistory: [],
-                    currentStory: -1,
-                    currentQuest: {},
-                    currentMerchant: -1,
-                    errorMessage: '',
-                    email: '',
-                    gameMaster: '',
-                    isAuth: false,
-                    isItemShowed: false,
-                    itemsList: [],
-                    isItemDescriptionShowed: false,
-                    itemToDescribe: {},
-                    itemDescribed: 0,
-                    isTownShowed: false,
-                    isQuestShowed: false,
-                    isAdmin: false,
-                    isGameMaster: false,
-                    map: [],
-                    merchantsList: [],
-                    musicStatus: 'PAUSED',
-                    musicName: '',
-                    noiseName: '',
-                    noiseStatus: 'PAUSED',
-                    onChatHelp: false,
-                    password: '',
-                    pseudo: '',
-                    pseudoInput: '',
-                    questsList: [],
-                    uid: '',
-                    users: null,
-                    stories: [],
-                    storyCharacters: [],
-                    textureToApply: null,
-                }));
+                this.setState(state => ({ ...defaultState }));
             })
             .catch(error => {
                 // An error happened.
-                this.triggerError(error);
-            });
-    };
-
-    showTownList = town => {
-        this.setState(state => ({
-            ...state,
-            isTownShowed: true,
-            merchantsList: town.merchants,
-            questsList: town.quests,
-        }));
-    };
-
-    createGrid = (positionX, rowToRender) => {
-        const { isAdmin, textureToApply } = this.state;
-        const table = [];
-
-        rowToRender.map((row, index) => {
-            const tileStyle = row.background
-                ? {
-                      backgroundColor: row.background,
-                  }
-                : row.icon
-                    ? {
-                          backgroundImage: `url(${row.icon})`,
-                          backgroundSize: 'cover',
-                      }
-                    : {};
-            table.push(
-                isAdmin ? (
-                    <div
-                        key={`row-${index}`}
-                        style={{ ...styledGrid, ...tileStyle }}
-                        onClick={() => {
-                            if (textureToApply)
-                                this.setTexture(positionX, index);
-                        }}
-                    >
-                        {towns.map(town => {
-                            if (
-                                positionX === town.positionX &&
-                                index === town.positionY
-                            ) {
-                                return (
-                                    <Town
-                                        key={`town-${town.positionX}-${
-                                            town.positionY
-                                        }`}
-                                        town={town}
-                                        showTownList={this.showTownList}
-                                    />
-                                );
-                            }
-                            return null;
-                        })}
-                    </div>
-                ) : (
-                    <div
-                        key={`row-${index}`}
-                        style={{ ...styledGrid, ...tileStyle }}
-                    >
-                        {towns.map(town => {
-                            if (
-                                positionX === town.positionX &&
-                                index === town.positionY
-                            ) {
-                                return (
-                                    <Town
-                                        key={`town-${town.positionX}-${
-                                            town.positionY
-                                        }`}
-                                        {...town}
-                                        showMerchantList={this.showMerchantList}
-                                    />
-                                );
-                            }
-                            return null;
-                        })}
-                    </div>
-                )
-            );
-            return null;
-        });
-        return table;
-    };
-
-    setTexture = (x, y) => {
-        const { stories, currentStory, textureToApply } = this.state;
-        firebase
-            .database()
-            .ref('maps/' + stories[currentStory].map + '/' + x + '/' + y)
-            .set(textureToApply)
-            .catch(error => {
-                // Handle Errors here.
                 this.triggerError(error);
             });
     };
@@ -862,19 +654,6 @@ class App extends Component {
             });
     };
 
-    generateTable = mapToRender => {
-        const table = [];
-        mapToRender.map((row, index) => {
-            table.push(
-                <div key={`table-row-${index}`} style={styledRow}>
-                    {this.createGrid(index, row)}
-                </div>
-            );
-            return null;
-        });
-        return table;
-    };
-
     createChat = () => {
         firebase
             .database()
@@ -936,7 +715,6 @@ class App extends Component {
             isAuth,
             email,
             password,
-            isAdmin,
             pseudo,
             pseudoInput,
             characterId,
@@ -1025,80 +803,46 @@ class App extends Component {
                     pseudo !== '' &&
                     currentStory > -1 &&
                     (characterId > 0 || isGameMaster) && (
-                        <div>
-                            <Header
-                                title={stories[currentStory].name}
-                                selectAnotherCharacter={
-                                    this.selectAnotherCharacter
-                                }
-                                signOut={this.signOut}
-                                accessChatHelp={this.accessChatHelp}
-                                toggleMusic={this.toggleMusic}
-                                chatHelpTitle={
-                                    onChatHelp
-                                        ? 'Return to map'
-                                        : 'Access chat help'
-                                }
-                                musicMute={musicMute}
-                            />
-                            {onChatHelp ? (
-                                <ChatCommandsPanel />
-                            ) : (
-                                <div>
-                                    <div style={styledMap}>
-                                        {this.generateTable(map)}
-                                    </div>
-                                    {isGameMaster && (
-                                        <GMMapPanel
-                                            textureToApply={textureToApply}
-                                            musicVolume={musicVolume}
-                                            noiseVolume={noiseVolume}
-                                            onChange={this.onChangeMusics}
-                                            doSetState={this.doSetState}
-                                            triggerError={this.triggerError}
-                                        />
-                                    )}
-                                    {!isGameMaster && (
-                                        <PlayerMapPanel
-                                            isQuestShowed={isQuestShowed}
-                                            currentQuest={currentQuest}
-                                            character={character}
-                                            isItemShowed={isItemShowed}
-                                            itemsList={itemsList}
-                                            merchants={merchants}
-                                            currentMerchant={currentMerchant}
-                                            isItemDescriptionShowed={
-                                                isItemDescriptionShowed
-                                            }
-                                            itemToDescribe={itemToDescribe}
-                                            isTownShowed={isTownShowed}
-                                            merchantsList={merchantsList}
-                                            questsList={questsList}
-                                            buyItem={this.buyItem}
-                                            doSetState={this.doSetState}
-                                            triggerError={this.triggerError}
-                                        />
-                                    )}
-
-                                    <RightPanel
-                                        gameMaster={gameMaster}
-                                        storyCharacters={storyCharacters}
-                                        currentStory={currentStory}
-                                        uid={uid}
-                                        users={users}
-                                        character={character}
-                                        pseudo={pseudo}
-                                        isGameMaster={isGameMaster}
-                                        chatInput={chatInput}
-                                        chatHistory={chatHistory}
-                                        onChange={this.onChange}
-                                        doSetState={this.doSetState}
-                                        triggerError={this.triggerError}
-                                    />
-                                </div>
-                            )}
-                            <BottomPanel />
-                        </div>
+                        <GameScreen
+                            musicMute={musicMute}
+                            onChatHelp={onChatHelp}
+                            stories={stories}
+                            isItemShowed={isItemShowed}
+                            itemsList={itemsList}
+                            isItemDescriptionShowed={isItemDescriptionShowed}
+                            itemToDescribe={itemToDescribe}
+                            isTownShowed={isTownShowed}
+                            merchantsList={merchantsList}
+                            pseudo={pseudo}
+                            character={character}
+                            map={map}
+                            chatInput={chatInput}
+                            chatHistory={chatHistory}
+                            textureToApply={textureToApply}
+                            users={users}
+                            uid={uid}
+                            isGameMaster={isGameMaster}
+                            currentStory={currentStory}
+                            storyCharacters={storyCharacters}
+                            gameMaster={gameMaster}
+                            currentQuest={currentQuest}
+                            isQuestShowed={isQuestShowed}
+                            questsList={questsList}
+                            musicVolume={musicVolume}
+                            noiseVolume={noiseVolume}
+                            merchants={merchants}
+                            currentMerchant={currentMerchant}
+                            generateTable={this.generateTable}
+                            onChangeMusics={this.onChangeMusics}
+                            doSetState={this.doSetState}
+                            triggerError={this.triggerError}
+                            buyItem={this.buyItem}
+                            onChange={this.onChange}
+                            toggleMusic={this.toggleMusic}
+                            accessChatHelp={this.accessChatHelp}
+                            signOut={this.signOut}
+                            selectAnotherCharacter={this.selectAnotherCharacter}
+                        />
                     )}
                 <Sound
                     url={`./music/${musicName}.mp3`}
