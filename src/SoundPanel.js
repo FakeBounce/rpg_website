@@ -1,14 +1,26 @@
 import React, { Component } from 'react';
-import { gridDimension, heightLeft, widthLeft } from './StyleConstants';
+import { heightLeft, widthLeft } from './StyleConstants';
 import { musics, noises } from './Constants';
 
 import PropTypes from 'prop-types';
 
-const styledBoxHeader = {
+const styledBoxHeaderMusic = {
     width: '100%',
     height: '20px',
     marginBottom: '5px',
     textAlign: 'center',
+    position:'absolute',
+    display:'block',
+};
+
+const styledBoxHeaderNoise = {
+    width: '100%',
+    height: '20px',
+    marginBottom: '5px',
+    textAlign: 'center',
+    position:'absolute',
+    display:'block',
+    top: `${((heightLeft / 2 - 1) - 45*2)/2 + 45 }px`,
 };
 
 const styledMapSide = {
@@ -18,21 +30,36 @@ const styledMapSide = {
     display: 'inline-block',
     float: 'left',
     textAlign: 'left',
+    position: 'relative',
+};
+
+const styledMusicVolume = {
+    width: '100%',
+    position: 'absolute',
+    height: '25px',
+    top: '20px',
+};
+
+const styledNoiseVolume = {
+    width: '100%',
+    position: 'absolute',
+    height: '25px',
+    top: `${((heightLeft / 2 - 1) - 45*2)/2 + 45 + 20 }px`,
 };
 
 const styledMusicContainer = {
     width: '100%',
     position: 'absolute',
-    height: '45%',
-    top: '50px',
+    height: `${((heightLeft / 2 - 1) - 45*2)/2 }px`,
+    top: '45px',
     overflowY: 'auto',
 };
 
 const styledNoiseContainer = {
     width: '100%',
     position: 'absolute',
-    height: '45%',
-    top: '55%',
+    height: `${((heightLeft / 2 - 1) - 45*2)/2 }px`,
+    top: `${((heightLeft / 2 - 1) - 45*2)/2 + 45+45 }px`,
     overflowY: 'auto',
 };
 
@@ -54,12 +81,12 @@ class SoundPanel extends Component {
 
         return (
             <div style={styledMapSide}>
-                <div style={styledBoxHeader}>Modifier la musique</div>
-                <div>
+                <div style={styledBoxHeaderMusic}>Modifier la musique</div>
+                <div style={styledMusicVolume}>
                     Volume :
                     <input
                         type="range"
-                        onChange={e => onChange(e.target.name, e.target.value)}
+                        onChange={e => onChange(e.target.name, parseInt(e.target.value,10))}
                         min="0"
                         max="100"
                         name="musicVolume"
@@ -78,12 +105,12 @@ class SoundPanel extends Component {
                         );
                     })}
                 </div>
-                <div style={styledBoxHeader}>Modifier les bruits</div>
-                <div>
+                <div style={styledBoxHeaderNoise}>Modifier les bruits</div>
+                <div style={styledNoiseVolume}>
                     Volume :
                     <input
                         type="range"
-                        onChange={e => onChange(e.target.name, e.target.value)}
+                        onChange={e => onChange(e.target.name, parseInt(e.target.value,10))}
                         min="0"
                         max="100"
                         name="noiseVolume"

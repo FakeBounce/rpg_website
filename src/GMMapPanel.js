@@ -166,7 +166,7 @@ class GMMapPanel extends Component {
     render() {
         const {
             textureToApply,
-            onChange,
+            onChangeMusics,
             musicVolume,
             noiseVolume,
         } = this.props;
@@ -185,7 +185,7 @@ class GMMapPanel extends Component {
                 <SoundPanel
                     musicVolume={musicVolume}
                     noiseVolume={noiseVolume}
-                    onChange={onChange}
+                    onChange={onChangeMusics}
                     changeCurrentMusic={this.changeCurrentMusic}
                     changeCurrentNoise={this.changeCurrentNoise}
                 />
@@ -198,7 +198,7 @@ GMMapPanel.propTypes = {
     textureToApply: PropTypes.object.isRequired,
     musicVolume: PropTypes.number.isRequired,
     noiseVolume: PropTypes.number.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChangeMusics: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
 };

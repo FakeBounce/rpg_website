@@ -172,7 +172,6 @@ class MiddlePanel extends Component {
             noiseVolume,
             merchants,
             currentMerchant,
-            generateTable,
             onChangeMusics,
             doSetState,
             triggerError,
@@ -188,7 +187,7 @@ class MiddlePanel extends Component {
                         textureToApply={textureToApply}
                         musicVolume={musicVolume}
                         noiseVolume={noiseVolume}
-                        onChange={onChangeMusics}
+                        onChangeMusics={onChangeMusics}
                         doSetState={doSetState}
                         triggerError={triggerError}
                     />
@@ -259,7 +258,6 @@ MiddlePanel.propTypes = {
     noiseVolume: PropTypes.number.isRequired,
     merchants: PropTypes.array.isRequired,
     currentMerchant: PropTypes.number.isRequired,
-    generateTable: PropTypes.func.isRequired,
     onChangeMusics: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
