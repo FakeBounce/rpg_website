@@ -550,18 +550,182 @@ class App extends Component {
         );
     };
 
+    resetSounds = () => {
+        const { currentStory } = this.state;
+        firebase
+            .database()
+            .ref("/stories/" + currentStory + "/music")
+            .set({
+                musicVolume: 100,
+                musicNameFirst: "",
+                musicVolumeFirst: 0,
+                musicNameSecond: "",
+                musicVolumeSecond: 0,
+                musicStatusFirst: "STOPPED",
+                musicStatusSecond: "STOPPED",
+            })
+            .catch(error => {
+                this.triggerError(error);
+            });
+        firebase
+            .database()
+            .ref("/stories/" + currentStory + "/noise")
+            .set({
+                noiseName: "",
+                noiseVolume: 100,
+                noiseStatus: "STOPPED",
+            })
+            .catch(error => {
+                this.triggerError(error);
+            });
+    };
+
     onChangeMusics = (name, value) => {
+        const { isMusicFirst, isMusicTransition, currentStory } = this.state;
         const obj = {};
         obj[name] = value;
-        this.setState(
-            state => ({
-                ...state,
-                ...obj,
-            }),
-            () => {
-                this.debouncedSavingMusic();
-            },
-        );
+        if (name === "musicName") {
+            if (!isMusicTransition) {
+                if (isMusicFirst) {
+                    this.setState(
+                        state => ({
+                            ...state,
+                            musicNameSecond: value,
+                            isMusicTransition: true,
+                            isMusicFirst: false,
+                        }),
+                        () => {
+                            for (let i = 1; i < 21; i++) {
+                                setTimeout(() => {
+                                    this.setState(
+                                        state => ({
+                                            ...state,
+                                            musicVolumeFirst:
+                                                state.musicVolume *
+                                                ((100 - i * 5) / 100),
+                                            musicVolumeSecond:
+                                                state.musicVolume *
+                                                ((i * 5) / 100),
+                                            isMusicTransition: i !== 20,
+                                            musicStatusFirst:
+                                                i !== 20 &&
+                                                state.musicNameFirst !== ""
+                                                    ? "PLAYING"
+                                                    : "STOPPED",
+                                            musicStatusSecond: "PLAYING",
+                                        }),
+                                        () => {
+                                            firebase
+                                                .database()
+                                                .ref(
+                                                    "/stories/" +
+                                                        currentStory +
+                                                        "/music",
+                                                )
+                                                .set({
+                                                    musicVolume: this.state
+                                                        .musicVolume,
+                                                    musicNameFirst: this.state
+                                                        .musicNameFirst,
+                                                    musicVolumeFirst: this.state
+                                                        .musicVolumeFirst,
+                                                    musicNameSecond: this.state
+                                                        .musicNameSecond,
+                                                    musicVolumeSecond: this
+                                                        .state
+                                                        .musicVolumeSecond,
+                                                    musicStatusFirst: this.state
+                                                        .musicStatusFirst,
+                                                    musicStatusSecond: this
+                                                        .state
+                                                        .musicStatusSecond,
+                                                })
+                                                .catch(error => {
+                                                    this.triggerError(error);
+                                                });
+                                        },
+                                    );
+                                }, i * 300);
+                            }
+                        },
+                    );
+                } else {
+                    this.setState(
+                        state => ({
+                            ...state,
+                            musicNameFirst: value,
+                            isMusicTransition: true,
+                            isMusicFirst: true,
+                        }),
+                        () => {
+                            for (let i = 1; i < 21; i++) {
+                                setTimeout(() => {
+                                    this.setState(
+                                        state => ({
+                                            ...state,
+                                            musicVolumeSecond:
+                                                (state.musicVolume *
+                                                    (100 - i * 5)) /
+                                                100,
+                                            musicVolumeFirst:
+                                                state.musicVolume *
+                                                ((i * 5) / 100),
+                                            isMusicTransition: i !== 20,
+                                            musicStatusSecond:
+                                                i !== 20 &&
+                                                state.musicNameSecond !== ""
+                                                    ? "PLAYING"
+                                                    : "STOPPED",
+                                            musicStatusFirst: "PLAYING",
+                                        }),
+                                        () => {
+                                            firebase
+                                                .database()
+                                                .ref(
+                                                    "/stories/" +
+                                                        currentStory +
+                                                        "/music",
+                                                )
+                                                .set({
+                                                    musicVolume: this.state
+                                                        .musicVolume,
+                                                    musicNameFirst: this.state
+                                                        .musicNameFirst,
+                                                    musicVolumeFirst: this.state
+                                                        .musicVolumeFirst,
+                                                    musicNameSecond: this.state
+                                                        .musicNameSecond,
+                                                    musicVolumeSecond: this
+                                                        .state
+                                                        .musicVolumeSecond,
+                                                    musicStatusFirst: this.state
+                                                        .musicStatusFirst,
+                                                    musicStatusSecond: this
+                                                        .state
+                                                        .musicStatusSecond,
+                                                })
+                                                .catch(error => {
+                                                    this.triggerError(error);
+                                                });
+                                        },
+                                    );
+                                }, i * 300);
+                            }
+                        },
+                    );
+                }
+            }
+        } else {
+            this.setState(
+                state => ({
+                    ...state,
+                    ...obj,
+                }),
+                () => {
+                    this.debouncedSavingMusic();
+                },
+            );
+        }
     };
 
     debouncedSavingMusic = debounce(() => this.saveMusic(), 300, {
@@ -575,9 +739,12 @@ class App extends Component {
             noiseStatus,
             noiseName,
             noiseVolume,
-            musicName,
-            musicStatus,
             musicVolume,
+            musicNameFirst,
+            isMusicFirst,
+            musicNameSecond,
+            musicStatusFirst,
+            musicStatusSecond,
         } = this.state;
         firebase
             .database()
@@ -594,9 +761,13 @@ class App extends Component {
             .database()
             .ref("/stories/" + currentStory + "/music")
             .set({
-                musicName,
-                musicStatus,
                 musicVolume,
+                musicNameFirst,
+                musicVolumeFirst : isMusicFirst ? musicVolume : 0,
+                musicNameSecond,
+                musicVolumeSecond:isMusicFirst ? 0 : musicVolume,
+                musicStatusFirst,
+                musicStatusSecond,
             })
             .catch(error => {
                 this.triggerError(error);
@@ -756,7 +927,6 @@ class App extends Component {
             currentQuest,
             isQuestShowed,
             questsList,
-            musicName,
             musicMute,
             musicVolume,
             noiseName,
@@ -765,6 +935,13 @@ class App extends Component {
             noiseVolume,
             merchants,
             currentMerchant,
+            isMusicFirst,
+            musicVolumeFirst,
+            musicStatusFirst,
+            musicNameFirst,
+            musicVolumeSecond,
+            musicNameSecond,
+            musicStatusSecond,
         } = this.state;
 
         return (
@@ -850,8 +1027,13 @@ class App extends Component {
                             noiseVolume={noiseVolume}
                             merchants={merchants}
                             currentMerchant={currentMerchant}
+                            musicName={
+                                isMusicFirst ? musicNameFirst : musicNameSecond
+                            }
+                            noiseName={noiseName}
                             generateTable={this.generateTable}
                             onChangeMusics={this.onChangeMusics}
+                            resetSounds={this.resetSounds}
                             doSetState={this.doSetState}
                             triggerError={this.triggerError}
                             buyItem={this.buyItem}
@@ -862,27 +1044,33 @@ class App extends Component {
                             selectAnotherCharacter={this.selectAnotherCharacter}
                         />
                     )}
-                <Sound
-                    url={`./music/${musicName}.mp3`}
-                    playStatus={musicStatus}
-                    volume={musicMute ? 0 : musicVolume}
-                    autoLoad
-                    loop
-                />
-                <Sound
-                    url={`./music/${musicName}.mp3`}
-                    playStatus={musicStatus}
-                    volume={musicMute ? 0 : musicVolume}
-                    autoLoad
-                    loop
-                />
-                <Sound
-                    url={`./noise/${noiseName}.mp3`}
-                    playStatus={noiseStatus}
-                    volume={noiseMute ? 0 : noiseVolume}
-                    onFinishedPlaying={this.stopNoise}
-                    autoLoad
-                />
+                {musicNameFirst !== "" && (
+                    <Sound
+                        url={`./music/${musicNameFirst}.mp3`}
+                        playStatus={musicStatusFirst}
+                        volume={musicMute ? 0 : musicVolumeFirst}
+                        autoLoad
+                        loop
+                    />
+                )}
+                {musicNameSecond !== "" && (
+                    <Sound
+                        url={`./music/${musicNameSecond}.mp3`}
+                        playStatus={musicStatusSecond}
+                        volume={musicMute ? 0 : musicVolumeSecond}
+                        autoLoad
+                        loop
+                    />
+                )}
+                {noiseName !== "" && (
+                    <Sound
+                        url={`./noise/${noiseName}.mp3`}
+                        playStatus={noiseStatus}
+                        volume={noiseMute ? 0 : noiseVolume}
+                        onFinishedPlaying={this.stopNoise}
+                        autoLoad
+                    />
+                )}
                 {error}
             </div>
         );

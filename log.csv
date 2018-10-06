@@ -1,3 +1,7 @@
+<div className="commit"> fakebounce, le 2018-10-06 : Added transition while changing music + reset music button and display current music </div>
+<div className="commit"> fakebounce, le 2018-10-06 : Added debounce for adjusting sound volume </div>
+<div className="commit"> FakeBounce, le 2018-10-04 : Did some css for Gm music panel and cleaned some code </div>
+<div className="commit"> FakeBounce, le 2018-10-04 : GM can now play musics and noises </div>
 <div className="commit"> fakebounce, le 2018-10-03 : Game master is now Up ! He can modify a character directly by clicking on a team portrait. Can also add gold. Fixed some number inputs which sends strings and character Tabs if array was empty </div>
 <div className="commit"> fakebounce, le 2018-10-03 : Moved some values to constants </div>
 <div className="commit"> fakebounce, le 2018-10-03 : Transformed high value item to unknown if the character has not enough education </div>

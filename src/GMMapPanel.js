@@ -154,7 +154,6 @@ class GMMapPanel extends Component {
     changeCurrentMusic = m => {
         const { onChangeMusics } = this.props;
         onChangeMusics('musicName', m);
-        onChangeMusics('musicStatus', 'PLAYING');
     };
 
     changeCurrentNoise = n => {
@@ -167,7 +166,10 @@ class GMMapPanel extends Component {
         const {
             textureToApply,
             onChangeMusics,
+            resetSounds,
+            musicName,
             musicVolume,
+            noiseName,
             noiseVolume,
         } = this.props;
 
@@ -183,9 +185,12 @@ class GMMapPanel extends Component {
                     </div>
                 </div>
                 <SoundPanel
+                    musicName={musicName}
+                    noiseName={noiseName}
                     musicVolume={musicVolume}
                     noiseVolume={noiseVolume}
                     onChange={onChangeMusics}
+                    resetSounds={resetSounds}
                     changeCurrentMusic={this.changeCurrentMusic}
                     changeCurrentNoise={this.changeCurrentNoise}
                 />
@@ -196,9 +201,12 @@ class GMMapPanel extends Component {
 
 GMMapPanel.propTypes = {
     textureToApply: PropTypes.object.isRequired,
+    musicName: PropTypes.number.isRequired,
+    noiseName: PropTypes.number.isRequired,
     musicVolume: PropTypes.number.isRequired,
     noiseVolume: PropTypes.number.isRequired,
     onChangeMusics: PropTypes.func.isRequired,
+    resetSounds: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
 };

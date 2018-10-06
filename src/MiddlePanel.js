@@ -168,7 +168,9 @@ class MiddlePanel extends Component {
             currentQuest,
             isQuestShowed,
             questsList,
+            musicName,
             musicVolume,
+            noiseName,
             noiseVolume,
             merchants,
             currentMerchant,
@@ -177,6 +179,7 @@ class MiddlePanel extends Component {
             triggerError,
             buyItem,
             onChange,
+            resetSounds,
         } = this.props;
 
         return (
@@ -185,9 +188,12 @@ class MiddlePanel extends Component {
                 {isGameMaster && (
                     <GMMapPanel
                         textureToApply={textureToApply}
+                        musicName={musicName}
+                        noiseName={noiseName}
                         musicVolume={musicVolume}
                         noiseVolume={noiseVolume}
                         onChangeMusics={onChangeMusics}
+                        resetSounds={resetSounds}
                         doSetState={doSetState}
                         triggerError={triggerError}
                     />
@@ -254,11 +260,14 @@ MiddlePanel.propTypes = {
     currentQuest: PropTypes.number.isRequired,
     isQuestShowed: PropTypes.bool.isRequired,
     questsList: PropTypes.array.isRequired,
+    musicName: PropTypes.number.isRequired,
+    noiseName: PropTypes.number.isRequired,
     musicVolume: PropTypes.number.isRequired,
     noiseVolume: PropTypes.number.isRequired,
     merchants: PropTypes.array.isRequired,
     currentMerchant: PropTypes.number.isRequired,
     onChangeMusics: PropTypes.func.isRequired,
+    resetSounds: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
     buyItem: PropTypes.func.isRequired,

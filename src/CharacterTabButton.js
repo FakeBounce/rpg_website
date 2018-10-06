@@ -10,6 +10,7 @@ const styles = {
         position: "relative",
         float: "left",
         display: "inline-block",
+        cursor: "pointer",
     },
 };
 
