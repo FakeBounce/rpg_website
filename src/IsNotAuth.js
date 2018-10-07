@@ -111,7 +111,11 @@ class IsNotAuth extends Component {
                 <button onClick={this.signIn}>Sign In</button>
                 <button onClick={this.signUp}>Sign Up</button>
 
-                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> FakeBounce, le 2018-10-06 : Added transition while changing music + reset music button and display current music </div>
+                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> FakeBounce, le 2018-10-07 : Added zoom on the map </div>
+                    <div className="commit"> FakeBounce, le 2018-10-07 : Added a map navigator </div>
+                    <div className="commit"> FakeBounce, le 2018-10-07 : Added scaling on map edition </div>
+                    <div className="commit"> FakeBounce, le 2018-10-07 : Added towns, quests and tileTypes to firebase. Now loading them from db; Enlarged map and reviewed the way tiles are displayed; Working on Map edition for GM </div>
+                    <div className="commit"> FakeBounce, le 2018-10-06 : Added transition while changing music + reset music button and display current music </div>
                     <div className="commit"> FakeBounce, le 2018-10-06 : Added debounce for adjusting sound volume </div>
                     <div className="commit"> FakeBounce, le 2018-10-04 : Did some css for Gm music panel and cleaned some code </div>
                     <div className="commit"> FakeBounce, le 2018-10-04 : GM can now play musics and noises </div>

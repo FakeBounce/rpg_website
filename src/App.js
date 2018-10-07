@@ -1072,7 +1072,6 @@ class App extends Component {
             stories,
             storyCharacters,
             gameMaster,
-            musicStatus,
             currentQuest,
             isQuestShowed,
             questsList,
@@ -1099,6 +1098,7 @@ class App extends Component {
             currentScale,
             currentX,
             currentY,
+            currentZoom,
         } = this.state;
 
         return (
@@ -1208,6 +1208,7 @@ class App extends Component {
                             currentScale={currentScale}
                             currentX={currentX}
                             currentY={currentY}
+                            currentZoom={currentZoom}
                         />
                     )}
                 {musicNameFirst !== "" && (

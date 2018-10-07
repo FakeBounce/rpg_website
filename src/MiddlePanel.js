@@ -15,17 +15,6 @@ import {
     totalColumn,
 } from "./StyleConstants";
 import { towns } from "./Constants";
-import GameScreen from "./GameScreen";
-
-const styledGrid = {
-    width: `${gridDimension}px`,
-    height: `${gridDimension}px`,
-};
-
-const styledRow = {
-    width: `${totalRows * gridDimension + totalRows}px`,
-    height: `${gridDimension}px`,
-};
 
 const styledMap = {
     width: `${gridDimension * gridLength + gridLength}px`,
@@ -34,13 +23,19 @@ const styledMap = {
 
 class MiddlePanel extends Component {
     generateTable = mapToRender => {
+        const { currentZoom } = this.props;
         const table = [];
         mapToRender.map((row, index) => {
             table.push(
                 <div
                     key={`table-row-${index}`}
                     className="row"
-                    style={styledRow}
+                    style={{
+                        width: `${(totalRows * gridDimension * currentZoom) /
+                            10 +
+                            totalRows}px`,
+                        height: `${(gridDimension * currentZoom) / 10}px`,
+                    }}
                 >
                     {this.createGrid(index, row)}
                 </div>,
@@ -51,7 +46,12 @@ class MiddlePanel extends Component {
     };
 
     createGrid = (positionX, rowToRender) => {
-        const { isGameMaster, textureToApply, tilesTypes } = this.props;
+        const {
+            isGameMaster,
+            textureToApply,
+            tilesTypes,
+            currentZoom,
+        } = this.props;
         const table = [];
 
         rowToRender.map((row, index) => {
@@ -61,9 +61,10 @@ class MiddlePanel extends Component {
                         key={`row-${index}`}
                         className="grid"
                         style={{
-                            ...styledGrid,
                             backgroundColor:
                                 tilesTypes[row.environment].backgroundColor,
+                            width: `${(gridDimension * currentZoom) / 10}px`,
+                            height: `${(gridDimension * currentZoom) / 10}px`,
                         }}
                         onClick={() => {
                             if (textureToApply)
@@ -74,8 +75,10 @@ class MiddlePanel extends Component {
                             <div
                                 className="fog-gm"
                                 style={{
-                                    width: `${gridDimension}px`,
-                                    height: `${gridDimension}px`,
+                                    width: `${(gridDimension * currentZoom) /
+                                        10}px`,
+                                    height: `${(gridDimension * currentZoom) /
+                                        10}px`,
                                 }}
                             />
                         )}
@@ -101,9 +104,10 @@ class MiddlePanel extends Component {
                     <div
                         key={`row-${index}`}
                         style={{
-                            ...styledGrid,
                             backgroundColor:
                                 tilesTypes[row.environment].backgroundColor,
+                            width: `${(gridDimension * currentZoom) / 10}px`,
+                            height: `${(gridDimension * currentZoom) / 10}px`,
                         }}
                     >
                         {row.hasFog && (
@@ -111,8 +115,10 @@ class MiddlePanel extends Component {
                                 style={{
                                     backgroundColor: "black",
                                     position: "absolute",
-                                    width: `${gridDimension}px`,
-                                    height: `${gridDimension}px`,
+                                    width: `${(gridDimension * currentZoom) /
+                                        10}px`,
+                                    height: `${(gridDimension * currentZoom) /
+                                        10}px`,
                                 }}
                             />
                         )}
@@ -160,7 +166,6 @@ class MiddlePanel extends Component {
 
         let updates = {};
         let path = "";
-        console.log("textureToApply", textureToApply);
         Object.keys(textureToApply).map(key => {
             path = key;
         });
@@ -287,18 +292,42 @@ class MiddlePanel extends Component {
             currentScale,
             currentX,
             currentY,
+            currentZoom,
         } = this.props;
 
         return (
             <div>
                 <div className="map" style={styledMap}>
+                    <div className="map-zoom">
+                        <input
+                            type="range"
+                            name="currentZoom"
+                            onChange={e => {
+                                console.log(
+                                    "parseInt(e.target.value, 10)",
+                                    parseInt(e.target.value, 10),
+                                );
+                                doSetState({
+                                    currentZoom: parseInt(e.target.value, 10),
+                                });
+                            }}
+                            value={currentZoom}
+                            min="5"
+                            max="11"
+                            step="1"
+                        />
+                    </div>
                     <div
                         className="map-mover"
                         style={{
                             width: totalRows * gridDimension + totalRows,
                             height: totalColumn * gridDimension + totalColumn,
-                            left: -gridDimension * currentX - currentX,
-                            top: -gridDimension * currentY - currentY,
+                            left:
+                                (-gridDimension * currentX * currentZoom) / 10 -
+                                currentX,
+                            top:
+                                (-gridDimension * currentY * currentZoom) / 10 -
+                                currentY,
                         }}
                     >
                         {this.generateTable(map)}
@@ -407,6 +436,7 @@ MiddlePanel.propTypes = {
     currentScale: PropTypes.number.isRequired,
     currentX: PropTypes.number.isRequired,
     currentY: PropTypes.number.isRequired,
+    currentZoom: PropTypes.number.isRequired,
 };
 
 export default MiddlePanel;
