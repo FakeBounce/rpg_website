@@ -17,6 +17,8 @@ class GameScreen extends Component {
             selectAnotherCharacter,
             stories,
             currentStory,
+            togglePlayerView,
+            isGameMaster,
             ...rest
         } = this.props;
 
@@ -32,11 +34,13 @@ class GameScreen extends Component {
                         onChatHelp ? 'Return to map' : 'Access chat help'
                     }
                     musicMute={musicMute}
+                    isGameMaster={isGameMaster}
+                    togglePlayerView={togglePlayerView}
                 />
                 {onChatHelp ? (
                     <ChatCommandsPanel />
                 ) : (
-                    <MiddlePanel currentStory={currentStory} {...rest} />
+                    <MiddlePanel currentStory={currentStory} isGameMaster={isGameMaster} stories={stories} {...rest} />
                 )}
                 <BottomPanel />
             </div>
@@ -49,10 +53,12 @@ GameScreen.propTypes = {
     stories: PropTypes.array.isRequired,
     currentStory: PropTypes.number.isRequired,
     musicMute: PropTypes.bool.isRequired,
+    isGameMaster: PropTypes.bool.isRequired,
     selectAnotherCharacter: PropTypes.bool.isRequired,
     signOut: PropTypes.func.isRequired,
     accessChatHelp: PropTypes.func.isRequired,
     toggleMusic: PropTypes.func.isRequired,
+    togglePlayerView: PropTypes.func.isRequired,
 };
 
 export default GameScreen;

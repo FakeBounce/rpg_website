@@ -1,0 +1,40 @@
+.map {
+    border: 1px solid grey;
+    display: inline-block;
+    float: left;
+    overflow: hidden;
+}
+
+.row {
+    display: inline-block;
+    float: left;
+}
+
+.grid {
+    border-right: 1px solid pink;
+    border-bottom: 1px solid pink;
+    display: inline-block;
+    float: left;
+    position: relative;
+}
+
+.grid:hover {
+    opacity:0.5;
+    background-color: #039be5;
+    cursor: pointer;
+}
+
+.fog-gm {
+    background-color: black;
+    opacity:0.3;
+    position: absolute;
+}
+
+.fog-gm:hover {
+    opacity:0;
+}
+
+.fog {
+    background-color: black;
+    position: absolute;
+}

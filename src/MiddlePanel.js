@@ -1,36 +1,30 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import firebase from 'firebase';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import firebase from "firebase";
+import "./Grid.css";
 
-import GMMapPanel from './GMMapPanel';
-import RightPanel from './RightPanel';
-import PlayerMapPanel from './PlayerMapPanel';
-import Town from './Town';
+import GMMapPanel from "./GMMapPanel";
+import RightPanel from "./RightPanel";
+import PlayerMapPanel from "./PlayerMapPanel";
+import Town from "./Town";
 
-import { gridDimension, gridLength } from './StyleConstants';
-import { towns } from './Constants';
+import { gridDimension, gridLength } from "./StyleConstants";
+import { towns } from "./Constants";
+import GameScreen from "./GameScreen";
 
 const styledGrid = {
-    border: '1px solid pink',
     width: `${gridDimension}px`,
     height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
 };
 
 const styledRow = {
-    width: `${gridDimension * gridLength + gridLength * 2}px`,
+    width: `${gridDimension * gridLength + gridLength}px`,
     height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
 };
 
 const styledMap = {
-    border: '1px solid grey',
-    width: `${gridDimension * gridLength + gridLength * 2}px`,
+    width: `${gridDimension * gridLength + gridLength}px`,
     height: `${gridDimension * gridLength}px`,
-    display: 'inline-block',
-    float: 'left',
 };
 
 class MiddlePanel extends Component {
@@ -38,9 +32,13 @@ class MiddlePanel extends Component {
         const table = [];
         mapToRender.map((row, index) => {
             table.push(
-                <div key={`table-row-${index}`} style={styledRow}>
+                <div
+                    key={`table-row-${index}`}
+                    className="row"
+                    style={styledRow}
+                >
                     {this.createGrid(index, row)}
-                </div>
+                </div>,
             );
             return null;
         });
@@ -48,30 +46,34 @@ class MiddlePanel extends Component {
     };
 
     createGrid = (positionX, rowToRender) => {
-        const { isGameMaster, textureToApply } = this.props;
+        const { isGameMaster, textureToApply, tilesTypes } = this.props;
         const table = [];
 
         rowToRender.map((row, index) => {
-            const tileStyle = row.background
-                ? {
-                      backgroundColor: row.background,
-                  }
-                : row.icon
-                    ? {
-                          backgroundImage: `url(${row.icon})`,
-                          backgroundSize: 'cover',
-                      }
-                    : {};
             table.push(
                 isGameMaster ? (
                     <div
                         key={`row-${index}`}
-                        style={{ ...styledGrid, ...tileStyle }}
+                        className="grid"
+                        style={{
+                            ...styledGrid,
+                            backgroundColor:
+                                tilesTypes[row.environment].backgroundColor,
+                        }}
                         onClick={() => {
                             if (textureToApply)
                                 this.setTexture(positionX, index);
                         }}
                     >
+                        {row.hasFog && (
+                            <div
+                                className="fog-gm"
+                                style={{
+                                    width: `${gridDimension}px`,
+                                    height: `${gridDimension}px`,
+                                }}
+                            />
+                        )}
                         {towns.map(town => {
                             if (
                                 positionX === town.positionX &&
@@ -93,8 +95,22 @@ class MiddlePanel extends Component {
                 ) : (
                     <div
                         key={`row-${index}`}
-                        style={{ ...styledGrid, ...tileStyle }}
+                        style={{
+                            ...styledGrid,
+                            backgroundColor:
+                                tilesTypes[row.environment].backgroundColor,
+                        }}
                     >
+                        {row.hasFog && (
+                            <div
+                                style={{
+                                    backgroundColor: "black",
+                                    position: "absolute",
+                                    width: `${gridDimension}px`,
+                                    height: `${gridDimension}px`,
+                                }}
+                            />
+                        )}
                         {towns.map(town => {
                             if (
                                 positionX === town.positionX &&
@@ -113,7 +129,7 @@ class MiddlePanel extends Component {
                             return null;
                         })}
                     </div>
-                )
+                ),
             );
             return null;
         });
@@ -137,8 +153,8 @@ class MiddlePanel extends Component {
         } = this.props;
         firebase
             .database()
-            .ref('maps/' + stories[currentStory].map + '/' + x + '/' + y)
-            .set(textureToApply)
+            .ref("maps/" + stories[currentStory].map + "/" + x + "/" + y)
+            .update(textureToApply)
             .catch(error => {
                 // Handle Errors here.
                 triggerError(error);
@@ -180,24 +196,36 @@ class MiddlePanel extends Component {
             buyItem,
             onChange,
             resetSounds,
+            isOnPlayerView,
+            currentTown,
+            towns,
+            quests,
+            tilesTypes,
         } = this.props;
 
         return (
             <div>
-                <div style={styledMap}>{this.generateTable(map)}</div>
-                {isGameMaster && (
-                    <GMMapPanel
-                        textureToApply={textureToApply}
-                        musicName={musicName}
-                        noiseName={noiseName}
-                        musicVolume={musicVolume}
-                        noiseVolume={noiseVolume}
-                        onChangeMusics={onChangeMusics}
-                        resetSounds={resetSounds}
-                        doSetState={doSetState}
-                        triggerError={triggerError}
-                    />
-                )}
+                <div className="map" style={styledMap}>
+                    {this.generateTable(map)}
+                </div>
+                {isGameMaster &&
+                    !isOnPlayerView && (
+                        <GMMapPanel
+                            textureToApply={textureToApply}
+                            musicName={musicName}
+                            noiseName={noiseName}
+                            musicVolume={musicVolume}
+                            noiseVolume={noiseVolume}
+                            onChangeMusics={onChangeMusics}
+                            resetSounds={resetSounds}
+                            doSetState={doSetState}
+                            triggerError={triggerError}
+                            currentTown={currentTown}
+                            towns={towns}
+                            quests={quests}
+                            tilesTypes={tilesTypes}
+                        />
+                    )}
                 {!isGameMaster && (
                     <PlayerMapPanel
                         isQuestShowed={isQuestShowed}
@@ -239,6 +267,7 @@ class MiddlePanel extends Component {
 }
 
 MiddlePanel.propTypes = {
+    isOnPlayerView: PropTypes.bool.isRequired,
     isItemShowed: PropTypes.bool.isRequired,
     itemsList: PropTypes.array.isRequired,
     isItemDescriptionShowed: PropTypes.bool.isRequired,
@@ -265,13 +294,18 @@ MiddlePanel.propTypes = {
     musicVolume: PropTypes.number.isRequired,
     noiseVolume: PropTypes.number.isRequired,
     merchants: PropTypes.array.isRequired,
+    towns: PropTypes.array.isRequired,
+    quests: PropTypes.array.isRequired,
+    tilesTypes: PropTypes.array.isRequired,
     currentMerchant: PropTypes.number.isRequired,
+    currentTown: PropTypes.number.isRequired,
     onChangeMusics: PropTypes.func.isRequired,
     resetSounds: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
     buyItem: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
+    stories: PropTypes.array.isRequired,
 };
 
 export default MiddlePanel;

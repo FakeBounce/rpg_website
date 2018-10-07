@@ -1,148 +1,123 @@
-import React, { Component } from 'react';
-import { gridDimension, heightLeft, widthLeft } from './StyleConstants';
-import { musics, noises } from './Constants';
+import React, { Component } from "react";
+import { gridDimension, heightLeft, widthLeft } from "./StyleConstants";
+import { musics, noises } from "./Constants";
 
-import PropTypes from 'prop-types';
-import SoundPanel from './SoundPanel';
+import PropTypes from "prop-types";
+import SoundPanel from "./SoundPanel";
 
 const styledBoxHeader = {
-    width: '100%',
-    height: '20px',
-    marginBottom: '5px',
-    textAlign: 'center',
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
 };
 
 const styledMapButtons = {
-    border: '1px solid blue',
-    width: `${gridDimension * 3 + 3}px`,
+    border: "1px solid blue",
+    width: `${gridDimension * 9 + 3}px`,
     height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
+    display: "inline-block",
+    float: "left",
 };
 
 const styledGrid = {
-    border: '1px solid pink',
+    border: "1px solid pink",
     width: `${gridDimension}px`,
     height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
+    display: "inline-block",
+    float: "left",
 };
 
 const styledMapSide = {
-    border: '1px solid brown',
+    border: "1px solid brown",
     width: `${widthLeft / 2 - 3}px`,
     height: `${heightLeft / 2 - 1}px`,
-    display: 'inline-block',
-    float: 'left',
-    textAlign: 'left',
+    display: "inline-block",
+    float: "left",
+    textAlign: "left",
 };
-
-const styledMusicContainer = {
-    width: '100%',
-    position: 'absolute',
-    height: '45%',
-    top: '50px',
-    overflowY: 'auto',
-};
-
-const styledNoiseContainer = {
-    width: '100%',
-    position: 'absolute',
-    height: '45%',
-    top: '55%',
-    overflowY: 'auto',
-};
-
-const styledAudioFile = {
-    width: '100%',
-    height: '30px',
-    cursor: 'pointer',
-};
-
-const gridTypes = [
-    {
-        name: 'Fog',
-        background: 'black',
-    },
-    {
-        name: 'Ocean',
-        background: 'blue',
-    },
-    {
-        name: 'Forest',
-        icon: 'forest.png',
-    },
-];
 
 class GMMapPanel extends Component {
-    getGridTypes = grids => {
-        return grids.map(gridType => {
-            if (gridType.background) {
-                return (
-                    <div
-                        key={`gridType-${gridType.background}`}
-                        style={{
-                            ...styledGrid,
-                            border: 'none',
-                            borderLeft: '1px solid black',
-                            backgroundColor: gridType.background,
-                        }}
-                        onClick={() => this.loadTexture(gridType)}
-                    />
-                );
-            } else if (gridType.icon) {
-                return (
-                    <div
-                        key={`gridType-${gridType.icon}`}
-                        style={{
-                            ...styledGrid,
-                            border: 'none',
-                            borderLeft: '1px solid black',
-                            backgroundImage: `url(${gridType.icon})`,
-                            backgroundSize: 'cover',
-                        }}
-                        onClick={() => this.loadTexture(gridType)}
-                    />
-                );
-            }
+    getGridTypes = () => {
+        const { tilesTypes } = this.props;
+        return Object.keys(tilesTypes).map(key => {
+            return (
+                <div
+                    key={`gridType-${key}`}
+                    style={{
+                        ...styledGrid,
+                        border: "none",
+                        borderLeft: "1px solid black",
+                        backgroundColor: tilesTypes[key].backgroundColor,
+                    }}
+                    onClick={() => this.loadTexture(key)}
+                >
+                    {tilesTypes[key].icon && (
+                        <div
+                            style={{
+                                ...styledGrid,
+                                backgroundImage: `url(${tilesTypes[key].icon})`,
+                                backgroundSize: "cover",
+                            }}
+                        />
+                    )}
+                </div>
+            );
             return null;
         });
     };
 
     loadTexture = gridType => {
-        this.props.doSetState({
-            textureToApply: gridType,
-        });
+        if (gridType === "Fog") {
+            this.props.doSetState({
+                textureToApply: {
+                    hasFog: true,
+                },
+            });
+        } else {
+            this.props.doSetState({
+                textureToApply: {
+                    environment: gridType,
+                },
+            });
+        }
     };
 
     getGridSelected = grid => {
-        if (grid.background) {
-            return (
-                <div
-                    style={{
-                        ...styledGrid,
-                        border: 'none',
-                        borderLeft: '1px solid black',
-                        backgroundColor: grid.background,
-                    }}
-                    onClick={() => this.unloadTexture()}
-                />
-            );
-        } else if (grid.icon) {
-            return (
-                <div
-                    style={{
-                        ...styledGrid,
-                        border: 'none',
-                        borderLeft: '1px solid black',
-                        backgroundImage: `url(${grid.icon})`,
-                        backgroundSize: 'cover',
-                    }}
-                    onClick={() => this.unloadTexture()}
-                />
-            );
+        const { tilesTypes } = this.props;
+        let bg = "";
+
+        if (grid.hasFog) {
+            bg = tilesTypes["Fog"];
+        } else {
+            Object.keys(tilesTypes).map(key => {
+                if (key === grid.environment) {
+                    bg = tilesTypes[key];
+                }
+                return null;
+            });
         }
-        return null;
+        return (
+            <div
+                style={{
+                    ...styledGrid,
+                    border: "none",
+                    borderLeft: "1px solid black",
+                    backgroundColor: bg.backgroundColor,
+                }}
+                onClick={() => this.unloadTexture()}
+            >
+                {bg.icon && (
+                    <div
+                        style={{
+                            ...styledGrid,
+                            backgroundImage: `url(${bg.icon})`,
+                            backgroundSize: "cover",
+                        }}
+                    />
+                )}
+            </div>
+        );
     };
 
     unloadTexture = () => {
@@ -153,13 +128,13 @@ class GMMapPanel extends Component {
 
     changeCurrentMusic = m => {
         const { onChangeMusics } = this.props;
-        onChangeMusics('musicName', m);
+        onChangeMusics("musicName", m);
     };
 
     changeCurrentNoise = n => {
         const { onChangeMusics } = this.props;
-        onChangeMusics('noiseName', n);
-        onChangeMusics('noiseStatus', 'PLAYING');
+        onChangeMusics("noiseName", n);
+        onChangeMusics("noiseStatus", "PLAYING");
     };
 
     render() {
@@ -178,9 +153,7 @@ class GMMapPanel extends Component {
                 <div style={styledMapSide}>
                     <div style={styledBoxHeader}>Modifier la carte</div>
                     <div style={styledMapButtons}>
-                        {this.getGridTypes(gridTypes)}
-                    </div>
-                    <div style={styledMapButtons}>
+                        {this.getGridTypes()}
                         {textureToApply && this.getGridSelected(textureToApply)}
                     </div>
                 </div>
@@ -209,6 +182,7 @@ GMMapPanel.propTypes = {
     resetSounds: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
+    tilesTypes: PropTypes.array.isRequired,
 };
 
 export default GMMapPanel;

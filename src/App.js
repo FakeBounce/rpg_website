@@ -3,7 +3,6 @@ import firebase from "firebase";
 import Sound from "react-sound";
 import debounce from "lodash/debounce";
 import "./App.css";
-import Town from "./Town";
 import IsNotAuth from "./IsNotAuth";
 import HasNoPseudo from "./HasNoPseudo";
 import CharacterSelection from "./CharacterSelection";
@@ -16,6 +15,77 @@ import GameScreen from "./GameScreen";
 class App extends Component {
     state = { ...defaultState };
 
+    componentDidMount() {
+        firebase
+            .database()
+            .ref("/tilesTypes")
+            .once("value")
+            .then(snapshot => {
+                this.setState(state => ({
+                    ...state,
+                    tilesTypes: snapshot.val(),
+                }));
+            })
+            .catch(error => {
+                this.triggerError(error);
+            });
+
+        // const dravos = [];
+        // let rows = [];
+        //
+        // for (let i = 0; i < 40; i++) {
+        //     rows = [];
+        //     for (let j = 0; j < 40; j++) {
+        //         rows.push({
+        //             environment: "Sand",
+        //             hasFog: true,
+        //             hasTown: false,
+        //             isCurrent: false,
+        //             x: j,
+        //             y: i,
+        //         });
+        //     }
+        //     dravos.push(rows);
+        // }
+
+        // const tileTypes = {
+        //     Forest: {
+        //         backgroundColor: "#136313",
+        //         icon:
+        //             "https://firebasestorage.googleapis.com/v0/b/rpgwebsite-8a535.appspot.com/o/images%2Ftiles%2Fforest.png?alt=media&token=adec2c19-b40d-4c89-b52f-997495fa25ce",
+        //     },
+        //     Sand: {
+        //         backgroundColor: "#136313",
+        //     },
+        //     Ocean: {
+        //         backgroundColor: "#2999b3",
+        //     },
+        //     Lake: {
+        //         backgroundColor: "#02abd2",
+        //     },
+        //     Mountain: {
+        //         backgroundColor: "#73470f",
+        //     },
+        //     Plains: {
+        //         backgroundColor: "#e8e3a9",
+        //     },
+        //     Fog:{
+        //         hasFog: true,
+        //         backgroundColor: "black",
+        //     }
+        // };
+        //
+        // firebase
+        //     .database()
+        //     // .ref('stories/0/artefacts')
+        //     .ref("/maps/dravos")
+        //     .set(dravos)
+        //     .catch(error => {
+        //         // Handle Errors here.
+        //         this.triggerError(error);
+        //     });
+    }
+
     loadMerchantsAndItems = () => {
         const { currentStory } = this.state;
         firebase
@@ -27,6 +97,7 @@ class App extends Component {
                     ...state,
                     merchants: snapshot.val(),
                 }));
+
                 firebase
                     .database()
                     .ref("/items")
@@ -465,6 +536,13 @@ class App extends Component {
             });
     };
 
+    togglePlayerView = () => {
+        this.setState(state => ({
+            ...state,
+            isOnPlayerView: !state.isOnPlayerView,
+        }));
+    };
+
     createTable = () => {
         const { stories, currentStory } = this.state;
         firebase
@@ -474,6 +552,28 @@ class App extends Component {
                 this.setState(state => ({
                     ...state,
                     map: snapshot.val(),
+                }));
+            });
+    };
+
+    loadTownsAndQuests = () => {
+        const { currentStory } = this.state;
+        firebase
+            .database()
+            .ref("/stories/" + currentStory + "/towns")
+            .on("value", snapshot => {
+                this.setState(state => ({
+                    ...state,
+                    towns: snapshot.val(),
+                }));
+            });
+        firebase
+            .database()
+            .ref("/stories/" + currentStory + "/quests")
+            .on("value", snapshot => {
+                this.setState(state => ({
+                    ...state,
+                    quests: snapshot.val(),
                 }));
             });
     };
@@ -763,9 +863,9 @@ class App extends Component {
             .set({
                 musicVolume,
                 musicNameFirst,
-                musicVolumeFirst : isMusicFirst ? musicVolume : 0,
+                musicVolumeFirst: isMusicFirst ? musicVolume : 0,
                 musicNameSecond,
-                musicVolumeSecond:isMusicFirst ? 0 : musicVolume,
+                musicVolumeSecond: isMusicFirst ? 0 : musicVolume,
                 musicStatusFirst,
                 musicStatusSecond,
             })
@@ -803,6 +903,7 @@ class App extends Component {
                             this.createChat();
                             this.loadMusic();
                             this.loadMerchantsAndItems();
+                            this.loadTownsAndQuests();
                         },
                     );
                 });
@@ -942,6 +1043,11 @@ class App extends Component {
             musicVolumeSecond,
             musicNameSecond,
             musicStatusSecond,
+            isOnPlayerView,
+            currentTown,
+            towns,
+            quests,
+            tilesTypes,
         } = this.state;
 
         return (
@@ -1031,6 +1137,7 @@ class App extends Component {
                                 isMusicFirst ? musicNameFirst : musicNameSecond
                             }
                             noiseName={noiseName}
+                            isOnPlayerView={isOnPlayerView}
                             generateTable={this.generateTable}
                             onChangeMusics={this.onChangeMusics}
                             resetSounds={this.resetSounds}
@@ -1042,6 +1149,11 @@ class App extends Component {
                             accessChatHelp={this.accessChatHelp}
                             signOut={this.signOut}
                             selectAnotherCharacter={this.selectAnotherCharacter}
+                            togglePlayerView={this.togglePlayerView}
+                            currentTown={currentTown}
+                            towns={towns}
+                            quests={quests}
+                            tilesTypes={tilesTypes}
                         />
                     )}
                 {musicNameFirst !== "" && (

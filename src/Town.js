@@ -22,7 +22,7 @@ class Town extends Component {
                 onClick={() => showTownList(town)}
                 data-tip={town.name}
             >
-                <img src={"./" + town.icon + ".jpg"} style={styledIcon} alt={town.name}/>
+                <img src={"./town-size-" + town.size + ".jpg"} style={styledIcon} alt={town.name}/>
                 <ReactTooltip />
             </div>
         );

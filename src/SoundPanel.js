@@ -67,6 +67,7 @@ const styledAudioFile = {
     width: "100%",
     height: "30px",
     cursor: "pointer",
+    borderBottom:'1px solid black',
 };
 
 class SoundPanel extends Component {

@@ -12,6 +12,6 @@ export const gridDimension = Math.floor((window.innerHeight - 250) / gridLength)
 export const widthLeft =
     window.innerWidth -
     gridLength * gridDimension -
-    gridLength * 2 -
+    gridLength -
     widthRightPanel;
 export const heightLeft = gridLength * gridDimension;

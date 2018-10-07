@@ -40,6 +40,8 @@ class Header extends Component {
             selectAnotherCharacter,
             toggleMusic,
             musicMute,
+            isGameMaster,
+            togglePlayerView,
         } = this.props;
 
         return (
@@ -66,6 +68,11 @@ class Header extends Component {
                         alt="sound muted or not"
                     />
                 </button>
+                {isGameMaster && (
+                    <button style={styledSignOut} onClick={togglePlayerView}>
+                        Toggle Player View
+                    </button>
+                )}
             </div>
         );
     }
@@ -78,7 +85,9 @@ Header.propTypes = {
     accessChatHelp: PropTypes.func.isRequired,
     selectAnotherCharacter: PropTypes.func.isRequired,
     toggleMusic: PropTypes.func.isRequired,
+    togglePlayerView: PropTypes.func.isRequired,
     musicMute: PropTypes.bool.isRequired,
+    isGameMaster: PropTypes.bool.isRequired,
 };
 
 export default Header;
