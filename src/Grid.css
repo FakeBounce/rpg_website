@@ -2,7 +2,14 @@
     border: 1px solid grey;
     display: inline-block;
     float: left;
+    position: relative;
     overflow: hidden;
+}
+
+.map-mover {
+    display: inline-block;
+    float: left;
+    position:absolute;
 }
 
 .row {

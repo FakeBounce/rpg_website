@@ -8,6 +8,8 @@ export const widthRightPanelLeft = widthRightPanel - imageSize;
 // export const gridWidth = 20;
 export const gridLength = 20;
 export const gridDimension = Math.floor((window.innerHeight - 250) / gridLength);
+export const totalRows = 40;
+export const totalColumn = 40;
 // export const gridDimension = 30;
 export const widthLeft =
     window.innerWidth -

@@ -529,6 +529,21 @@ class App extends Component {
             .then(() => {
                 // Sign-out successful.
                 this.setState(state => ({ ...defaultState }));
+
+                firebase
+                    .database()
+                    .ref("/tilesTypes")
+                    .once("value")
+                    .then(snapshot => {
+                        this.setState(state => ({
+                            ...state,
+                            tilesTypes: snapshot.val(),
+                        }));
+                    })
+                    .catch(error => {
+                        this.triggerError(error);
+                    });
+
             })
             .catch(error => {
                 // An error happened.
@@ -575,6 +590,38 @@ class App extends Component {
                     ...state,
                     quests: snapshot.val(),
                 }));
+            });
+    };
+
+    loadCurrentPosition = () => {
+        const { currentStory } = this.state;
+        firebase
+            .database()
+            .ref("/stories/" + currentStory + "/currentX")
+            .once("value")
+            .then(snapshot => {
+                this.setState(state => ({
+                    ...state,
+                    currentX: snapshot.val(),
+                }));
+            })
+            .catch(error => {
+                // An error happened.
+                this.triggerError(error);
+            });
+        firebase
+            .database()
+            .ref("/stories/" + currentStory + "/currentY")
+            .once("value")
+            .then(snapshot => {
+                this.setState(state => ({
+                    ...state,
+                    currentY: snapshot.val(),
+                }));
+            })
+            .catch(error => {
+                // An error happened.
+                this.triggerError(error);
             });
     };
 
@@ -904,6 +951,7 @@ class App extends Component {
                             this.loadMusic();
                             this.loadMerchantsAndItems();
                             this.loadTownsAndQuests();
+                            this.loadCurrentPosition();
                         },
                     );
                 });
@@ -1049,6 +1097,8 @@ class App extends Component {
             quests,
             tilesTypes,
             currentScale,
+            currentX,
+            currentY,
         } = this.state;
 
         return (
@@ -1156,6 +1206,8 @@ class App extends Component {
                             quests={quests}
                             tilesTypes={tilesTypes}
                             currentScale={currentScale}
+                            currentX={currentX}
+                            currentY={currentY}
                         />
                     )}
                 {musicNameFirst !== "" && (

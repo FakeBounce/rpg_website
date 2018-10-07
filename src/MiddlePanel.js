@@ -8,7 +8,12 @@ import RightPanel from "./RightPanel";
 import PlayerMapPanel from "./PlayerMapPanel";
 import Town from "./Town";
 
-import { gridDimension, gridLength } from "./StyleConstants";
+import {
+    gridDimension,
+    gridLength,
+    totalRows,
+    totalColumn,
+} from "./StyleConstants";
 import { towns } from "./Constants";
 import GameScreen from "./GameScreen";
 
@@ -18,7 +23,7 @@ const styledGrid = {
 };
 
 const styledRow = {
-    width: `${gridDimension * gridLength + gridLength}px`,
+    width: `${totalRows * gridDimension + totalRows}px`,
     height: `${gridDimension}px`,
 };
 
@@ -280,12 +285,24 @@ class MiddlePanel extends Component {
             quests,
             tilesTypes,
             currentScale,
+            currentX,
+            currentY,
         } = this.props;
 
         return (
             <div>
                 <div className="map" style={styledMap}>
-                    {this.generateTable(map)}
+                    <div
+                        className="map-mover"
+                        style={{
+                            width: totalRows * gridDimension + totalRows,
+                            height: totalColumn * gridDimension + totalColumn,
+                            left: -gridDimension * currentX - currentX,
+                            top: -gridDimension * currentY - currentY,
+                        }}
+                    >
+                        {this.generateTable(map)}
+                    </div>
                 </div>
                 {isGameMaster &&
                     !isOnPlayerView && (
@@ -388,6 +405,8 @@ MiddlePanel.propTypes = {
     onChange: PropTypes.func.isRequired,
     stories: PropTypes.array.isRequired,
     currentScale: PropTypes.number.isRequired,
+    currentX: PropTypes.number.isRequired,
+    currentY: PropTypes.number.isRequired,
 };
 
 export default MiddlePanel;
