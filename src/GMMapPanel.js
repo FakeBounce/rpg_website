@@ -146,6 +146,8 @@ class GMMapPanel extends Component {
             musicVolume,
             noiseName,
             noiseVolume,
+            changeCurrentScale,
+            currentScale,
         } = this.props;
 
         return (
@@ -156,6 +158,13 @@ class GMMapPanel extends Component {
                         {this.getGridTypes()}
                         {textureToApply && this.getGridSelected(textureToApply)}
                     </div>
+                    <input
+                        type="number"
+                        onChange={e => {
+                            changeCurrentScale(parseInt(e.target.value, 10));
+                        }}
+                        value={currentScale}
+                    />
                 </div>
                 <SoundPanel
                     musicName={musicName}
@@ -182,7 +191,9 @@ GMMapPanel.propTypes = {
     resetSounds: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
+    changeCurrentScale: PropTypes.func.isRequired,
     tilesTypes: PropTypes.array.isRequired,
+    currentScale: PropTypes.number.isRequired,
 };
 
 export default GMMapPanel;

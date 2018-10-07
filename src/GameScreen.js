@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import BottomPanel from './BottomPanel';
-import ChatCommandsPanel from './ChatCommandsPanel';
-import Header from './Header';
-import MiddlePanel from './MiddlePanel';
+import BottomPanel from "./BottomPanel";
+import ChatCommandsPanel from "./ChatCommandsPanel";
+import Header from "./Header";
+import MiddlePanel from "./MiddlePanel";
 
 class GameScreen extends Component {
     render() {
@@ -31,7 +31,7 @@ class GameScreen extends Component {
                     accessChatHelp={accessChatHelp}
                     toggleMusic={toggleMusic}
                     chatHelpTitle={
-                        onChatHelp ? 'Return to map' : 'Access chat help'
+                        onChatHelp ? "Return to map" : "Access chat help"
                     }
                     musicMute={musicMute}
                     isGameMaster={isGameMaster}
@@ -40,7 +40,12 @@ class GameScreen extends Component {
                 {onChatHelp ? (
                     <ChatCommandsPanel />
                 ) : (
-                    <MiddlePanel currentStory={currentStory} isGameMaster={isGameMaster} stories={stories} {...rest} />
+                    <MiddlePanel
+                        currentStory={currentStory}
+                        isGameMaster={isGameMaster}
+                        stories={stories}
+                        {...rest}
+                    />
                 )}
                 <BottomPanel />
             </div>

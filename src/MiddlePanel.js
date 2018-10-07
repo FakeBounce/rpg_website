@@ -150,15 +150,93 @@ class MiddlePanel extends Component {
             currentStory,
             textureToApply,
             triggerError,
+            currentScale,
         } = this.props;
+
+        let updates = {};
+        let path = "";
+        console.log("textureToApply", textureToApply);
+        Object.keys(textureToApply).map(key => {
+            path = key;
+        });
+        updates["/" + parseInt(x, 10) + "/" + parseInt(y, 10) + "/" + path] =
+            textureToApply[path];
+        for (let i = 0; i < currentScale - 1; i++) {
+            if (i === 0) {
+                for (let j = 0; j < currentScale - 1; j++) {
+                    if (y - j >= 0) {
+                        updates[
+                            "/" + x + "/" + parseInt(y - j, 10) + "/" + path
+                        ] = textureToApply[path];
+                    }
+                    if (y + j <= 39) {
+                        updates[
+                            "/" + x + "/" + parseInt(y + j, 10) + "/" + path
+                        ] = textureToApply[path];
+                    }
+                }
+            } else {
+                for (let j = 0; j < currentScale - 1; j++) {
+                    if (x - i >= 0 && y - j >= 0) {
+                        updates[
+                            "/" +
+                                parseInt(x - i, 10) +
+                                "/" +
+                                parseInt(y - j, 10) +
+                                "/" +
+                                path
+                        ] = textureToApply[path];
+                    }
+                    if (x - i >= 0 && y + j <= 39) {
+                        updates[
+                            "/" +
+                                parseInt(x - i, 10) +
+                                "/" +
+                                parseInt(y + j, 10) +
+                                "/" +
+                                path
+                        ] = textureToApply[path];
+                    }
+                }
+                for (let j = 0; j < currentScale - 1; j++) {
+                    if (x - i >= 0 && y - j >= 0) {
+                        updates[
+                            "/" +
+                                parseInt(x + i, 10) +
+                                "/" +
+                                parseInt(y - j, 10) +
+                                "/" +
+                                path
+                        ] = textureToApply[path];
+                    }
+                    if (x + i <= 39 && y + j <= 39) {
+                        updates[
+                            "/" +
+                                parseInt(x + i, 10) +
+                                "/" +
+                                parseInt(y + j, 10) +
+                                "/" +
+                                path
+                        ] = textureToApply[path];
+                    }
+                }
+            }
+        }
+
         firebase
             .database()
-            .ref("maps/" + stories[currentStory].map + "/" + x + "/" + y)
-            .update(textureToApply)
+            .ref("maps/" + stories[currentStory].map)
+            .update(updates)
             .catch(error => {
                 // Handle Errors here.
                 triggerError(error);
             });
+    };
+
+    changeCurrentScale = value => {
+        this.props.doSetState({
+            currentScale: value,
+        });
     };
 
     render() {
@@ -201,6 +279,7 @@ class MiddlePanel extends Component {
             towns,
             quests,
             tilesTypes,
+            currentScale,
         } = this.props;
 
         return (
@@ -224,6 +303,8 @@ class MiddlePanel extends Component {
                             towns={towns}
                             quests={quests}
                             tilesTypes={tilesTypes}
+                            currentScale={currentScale}
+                            changeCurrentScale={this.changeCurrentScale}
                         />
                     )}
                 {!isGameMaster && (
@@ -306,6 +387,7 @@ MiddlePanel.propTypes = {
     buyItem: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     stories: PropTypes.array.isRequired,
+    currentScale: PropTypes.number.isRequired,
 };
 
 export default MiddlePanel;

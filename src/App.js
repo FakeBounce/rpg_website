@@ -1048,6 +1048,7 @@ class App extends Component {
             towns,
             quests,
             tilesTypes,
+            currentScale,
         } = this.state;
 
         return (
@@ -1154,6 +1155,7 @@ class App extends Component {
                             towns={towns}
                             quests={quests}
                             tilesTypes={tilesTypes}
+                            currentScale={currentScale}
                         />
                     )}
                 {musicNameFirst !== "" && (

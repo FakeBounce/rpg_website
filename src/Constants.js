@@ -304,6 +304,7 @@ export const defaultState = {
     currentMerchant: -1,
     currentQuest: {},
     currentTown: -1,
+    currentScale: 1,
     errorMessage: "",
     email: "",
     gameMaster: "",
