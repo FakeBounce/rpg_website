@@ -1,23 +1,23 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import "./Grid.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import './Grid.css';
 
-import GMMapPanel from "./GMMapPanel";
-import RightPanel from "./RightPanel";
-import PlayerMapPanel from "./PlayerMapPanel";
-import Town from "./Town";
+import GMMapPanel from './GMMapPanel';
+import RightPanel from './RightPanel';
+import PlayerMapPanel from './PlayerMapPanel';
+import Town from './Town';
 
 import {
     gridDimension,
     gridLength,
     totalRows,
     totalColumn,
-} from "./StyleConstants";
-import { towns } from "./Constants";
+} from './StyleConstants';
+import { towns } from './Constants';
 
 const styledMap = {
-    width: `${gridDimension * gridLength + gridLength}px`,
+    width: `${gridDimension * gridLength}px`,
     height: `${gridDimension * gridLength}px`,
 };
 
@@ -38,7 +38,7 @@ class MiddlePanel extends Component {
                     }}
                 >
                     {this.createGrid(index, row)}
-                </div>,
+                </div>
             );
             return null;
         });
@@ -113,8 +113,8 @@ class MiddlePanel extends Component {
                         {row.hasFog && (
                             <div
                                 style={{
-                                    backgroundColor: "black",
-                                    position: "absolute",
+                                    backgroundColor: 'black',
+                                    position: 'absolute',
                                     width: `${(gridDimension * currentZoom) /
                                         10}px`,
                                     height: `${(gridDimension * currentZoom) /
@@ -140,7 +140,7 @@ class MiddlePanel extends Component {
                             return null;
                         })}
                     </div>
-                ),
+                )
             );
             return null;
         });
@@ -165,23 +165,23 @@ class MiddlePanel extends Component {
         } = this.props;
 
         let updates = {};
-        let path = "";
+        let path = '';
         Object.keys(textureToApply).map(key => {
             path = key;
         });
-        updates["/" + parseInt(x, 10) + "/" + parseInt(y, 10) + "/" + path] =
+        updates['/' + parseInt(x, 10) + '/' + parseInt(y, 10) + '/' + path] =
             textureToApply[path];
         for (let i = 0; i < currentScale - 1; i++) {
             if (i === 0) {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (y - j >= 0) {
                         updates[
-                            "/" + x + "/" + parseInt(y - j, 10) + "/" + path
+                            '/' + x + '/' + parseInt(y - j, 10) + '/' + path
                         ] = textureToApply[path];
                     }
                     if (y + j <= 39) {
                         updates[
-                            "/" + x + "/" + parseInt(y + j, 10) + "/" + path
+                            '/' + x + '/' + parseInt(y + j, 10) + '/' + path
                         ] = textureToApply[path];
                     }
                 }
@@ -189,21 +189,21 @@ class MiddlePanel extends Component {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (x - i >= 0 && y - j >= 0) {
                         updates[
-                            "/" +
+                            '/' +
                                 parseInt(x - i, 10) +
-                                "/" +
+                                '/' +
                                 parseInt(y - j, 10) +
-                                "/" +
+                                '/' +
                                 path
                         ] = textureToApply[path];
                     }
                     if (x - i >= 0 && y + j <= 39) {
                         updates[
-                            "/" +
+                            '/' +
                                 parseInt(x - i, 10) +
-                                "/" +
+                                '/' +
                                 parseInt(y + j, 10) +
-                                "/" +
+                                '/' +
                                 path
                         ] = textureToApply[path];
                     }
@@ -211,21 +211,21 @@ class MiddlePanel extends Component {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (x - i >= 0 && y - j >= 0) {
                         updates[
-                            "/" +
+                            '/' +
                                 parseInt(x + i, 10) +
-                                "/" +
+                                '/' +
                                 parseInt(y - j, 10) +
-                                "/" +
+                                '/' +
                                 path
                         ] = textureToApply[path];
                     }
                     if (x + i <= 39 && y + j <= 39) {
                         updates[
-                            "/" +
+                            '/' +
                                 parseInt(x + i, 10) +
-                                "/" +
+                                '/' +
                                 parseInt(y + j, 10) +
-                                "/" +
+                                '/' +
                                 path
                         ] = textureToApply[path];
                     }
@@ -235,7 +235,7 @@ class MiddlePanel extends Component {
 
         firebase
             .database()
-            .ref("maps/" + stories[currentStory].map)
+            .ref('maps/' + stories[currentStory].map)
             .update(updates)
             .catch(error => {
                 // Handle Errors here.
@@ -303,31 +303,72 @@ class MiddlePanel extends Component {
                             type="range"
                             name="currentZoom"
                             onChange={e => {
-                                console.log(
-                                    "parseInt(e.target.value, 10)",
-                                    parseInt(e.target.value, 10),
-                                );
                                 doSetState({
                                     currentZoom: parseInt(e.target.value, 10),
                                 });
                             }}
                             value={currentZoom}
                             min="5"
-                            max="11"
+                            max="12"
                             step="1"
+                        />
+                    </div>
+                    <div
+                        className="map-move map-move-left"
+                        onClick={() => {
+                            doSetState({ currentX: currentX - 1 });
+                        }}
+                    >
+                        <img
+                            src={'./arrow-left.png'}
+                            className="map-arrow"
+                            alt="arrow-left"
+                        />
+                    </div>
+                    <div
+                        className="map-move map-move-right"
+                        onClick={() => {
+                            doSetState({ currentX: currentX + 1 });
+                        }}
+                    >
+                        <img
+                            src={'./arrow-right.png'}
+                            className="map-arrow"
+                            alt="arrow-right"
+                        />
+                    </div>
+                    <div
+                        className="map-move map-move-up"
+                        onClick={() => {
+                            doSetState({ currentY: currentY - 1 });
+                        }}
+                    >
+                        <img
+                            src={'./arrow-up.png'}
+                            className="map-arrow"
+                            alt="arrow-up"
+                        />
+                    </div>
+                    <div
+                        className="map-move map-move-down"
+                        onClick={() => {
+                            doSetState({ currentY: currentY + 1 });
+                        }}
+                    >
+                        <img
+                            src={'./arrow-down.png'}
+                            className="map-arrow"
+                            alt="arrow-down"
                         />
                     </div>
                     <div
                         className="map-mover"
                         style={{
-                            width: totalRows * gridDimension + totalRows,
-                            height: totalColumn * gridDimension + totalColumn,
+                            width: totalRows * gridDimension,
+                            height: totalColumn * gridDimension,
                             left:
-                                (-gridDimension * currentX * currentZoom) / 10 -
-                                currentX,
-                            top:
-                                (-gridDimension * currentY * currentZoom) / 10 -
-                                currentY,
+                                (-gridDimension * currentX * currentZoom) / 10,
+                            top: (-gridDimension * currentY * currentZoom) / 10,
                         }}
                     >
                         {this.generateTable(map)}

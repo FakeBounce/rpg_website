@@ -1,40 +1,40 @@
-import React, { Component } from "react";
-import { gridDimension, heightLeft, widthLeft } from "./StyleConstants";
-import { musics, noises } from "./Constants";
+import React, { Component } from 'react';
+import { gridDimension, heightLeft, widthLeft } from './StyleConstants';
+import { musics, noises } from './Constants';
 
-import PropTypes from "prop-types";
-import SoundPanel from "./SoundPanel";
+import PropTypes from 'prop-types';
+import SoundPanel from './SoundPanel';
 
 const styledBoxHeader = {
-    width: "100%",
-    height: "20px",
-    marginBottom: "5px",
-    textAlign: "center",
+    width: '100%',
+    height: '20px',
+    marginBottom: '5px',
+    textAlign: 'center',
 };
 
 const styledMapButtons = {
-    border: "1px solid blue",
-    width: `${gridDimension * 9 + 3}px`,
+    border: '1px solid blue',
+    width: `${gridDimension * 11 + 3}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledGrid = {
-    border: "1px solid pink",
+    border: '1px solid pink',
     width: `${gridDimension}px`,
     height: `${gridDimension}px`,
-    display: "inline-block",
-    float: "left",
+    display: 'inline-block',
+    float: 'left',
 };
 
 const styledMapSide = {
-    border: "1px solid brown",
+    border: '1px solid brown',
     width: `${widthLeft / 2 - 3}px`,
     height: `${heightLeft / 2 - 1}px`,
-    display: "inline-block",
-    float: "left",
-    textAlign: "left",
+    display: 'inline-block',
+    float: 'left',
+    textAlign: 'left',
 };
 
 class GMMapPanel extends Component {
@@ -46,9 +46,14 @@ class GMMapPanel extends Component {
                     key={`gridType-${key}`}
                     style={{
                         ...styledGrid,
-                        border: "none",
-                        borderLeft: "1px solid black",
-                        backgroundColor: tilesTypes[key].backgroundColor,
+                        border: 'none',
+                        borderLeft: '1px solid black',
+                        backgroundColor:
+                            key === 'Fog'
+                                ? 'black'
+                                : key === 'NoFog'
+                                    ? 'white'
+                                    : tilesTypes[key].backgroundColor,
                     }}
                     onClick={() => this.loadTexture(key)}
                 >
@@ -57,7 +62,7 @@ class GMMapPanel extends Component {
                             style={{
                                 ...styledGrid,
                                 backgroundImage: `url(${tilesTypes[key].icon})`,
-                                backgroundSize: "cover",
+                                backgroundSize: 'cover',
                             }}
                         />
                     )}
@@ -68,10 +73,16 @@ class GMMapPanel extends Component {
     };
 
     loadTexture = gridType => {
-        if (gridType === "Fog") {
+        if (gridType === 'Fog') {
             this.props.doSetState({
                 textureToApply: {
                     hasFog: true,
+                },
+            });
+        } else if (gridType === 'NoFog') {
+            this.props.doSetState({
+                textureToApply: {
+                    hasFog: false,
                 },
             });
         } else {
@@ -85,10 +96,10 @@ class GMMapPanel extends Component {
 
     getGridSelected = grid => {
         const { tilesTypes } = this.props;
-        let bg = "";
+        let bg = '';
 
         if (grid.hasFog) {
-            bg = tilesTypes["Fog"];
+            bg = tilesTypes['Fog'];
         } else {
             Object.keys(tilesTypes).map(key => {
                 if (key === grid.environment) {
@@ -101,8 +112,8 @@ class GMMapPanel extends Component {
             <div
                 style={{
                     ...styledGrid,
-                    border: "none",
-                    borderLeft: "1px solid black",
+                    border: 'none',
+                    borderLeft: '1px solid black',
                     backgroundColor: bg.backgroundColor,
                 }}
                 onClick={() => this.unloadTexture()}
@@ -112,7 +123,7 @@ class GMMapPanel extends Component {
                         style={{
                             ...styledGrid,
                             backgroundImage: `url(${bg.icon})`,
-                            backgroundSize: "cover",
+                            backgroundSize: 'cover',
                         }}
                     />
                 )}
@@ -128,13 +139,13 @@ class GMMapPanel extends Component {
 
     changeCurrentMusic = m => {
         const { onChangeMusics } = this.props;
-        onChangeMusics("musicName", m);
+        onChangeMusics('musicName', m);
     };
 
     changeCurrentNoise = n => {
         const { onChangeMusics } = this.props;
-        onChangeMusics("noiseName", n);
-        onChangeMusics("noiseStatus", "PLAYING");
+        onChangeMusics('noiseName', n);
+        onChangeMusics('noiseStatus', 'PLAYING');
     };
 
     render() {

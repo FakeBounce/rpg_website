@@ -55,7 +55,7 @@ class App extends Component {
         //             "https://firebasestorage.googleapis.com/v0/b/rpgwebsite-8a535.appspot.com/o/images%2Ftiles%2Fforest.png?alt=media&token=adec2c19-b40d-4c89-b52f-997495fa25ce",
         //     },
         //     Sand: {
-        //         backgroundColor: "#136313",
+        //         backgroundColor: "#b79c68",
         //     },
         //     Ocean: {
         //         backgroundColor: "#2999b3",
@@ -71,15 +71,17 @@ class App extends Component {
         //     },
         //     Fog:{
         //         hasFog: true,
-        //         backgroundColor: "black",
+        //     },
+        //     NoFog:{
+        //         hasFog: false,
         //     }
         // };
         //
         // firebase
         //     .database()
         //     // .ref('stories/0/artefacts')
-        //     .ref("/maps/dravos")
-        //     .set(dravos)
+        //     .ref("/tilesTypes")
+        //     .set(tileTypes)
         //     .catch(error => {
         //         // Handle Errors here.
         //         this.triggerError(error);

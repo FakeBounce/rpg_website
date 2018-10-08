@@ -14,6 +14,5 @@ export const totalColumn = 40;
 export const widthLeft =
     window.innerWidth -
     gridLength * gridDimension -
-    gridLength -
     widthRightPanel;
 export const heightLeft = gridLength * gridDimension;

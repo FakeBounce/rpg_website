@@ -20,14 +20,41 @@
     z-index: 5;
 }
 
+.map-move {
+    position:absolute;
+    width:30px;
+    height:30px;
+    top: 13px;
+    z-index: 5;
+}
+
+.map-arrow {
+    width:30px;
+    height:30px;
+}
+
+.map-move-left {
+    right: 100px;
+}
+
+.map-move-right {
+    right: 70px;
+}
+
+.map-move-up {
+    right: 40px;
+}
+
+.map-move-down {
+    right: 10px;
+}
+
 .row {
     display: inline-block;
     float: left;
 }
 
 .grid {
-    border-right: 1px solid pink;
-    border-bottom: 1px solid pink;
     display: inline-block;
     float: left;
     position: relative;
@@ -41,7 +68,7 @@
 
 .fog-gm {
     background-color: black;
-    opacity:0.3;
+    opacity:0.6;
     position: absolute;
 }
 
