@@ -1,43 +1,48 @@
-import React, { Component } from 'react';
-import { gridDimension, heightLeft, widthLeft } from './StyleConstants';
-import { musics, noises } from './Constants';
+import React, { Component } from "react";
+import { gridDimension, heightLeft, widthLeft } from "./StyleConstants";
+import { musics, noises } from "./Constants";
 
-import PropTypes from 'prop-types';
-import SoundPanel from './SoundPanel';
+import PropTypes from "prop-types";
+import SoundPanel from "./SoundPanel";
+import firebase from "firebase";
 
 const styledBoxHeader = {
-    width: '100%',
-    height: '20px',
-    marginBottom: '5px',
-    textAlign: 'center',
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
 };
 
 const styledMapButtons = {
-    border: '1px solid blue',
+    border: "1px solid blue",
     width: `${gridDimension * 11 + 3}px`,
     height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
+    display: "inline-block",
+    float: "left",
 };
 
 const styledGrid = {
-    border: '1px solid pink',
+    border: "1px solid pink",
     width: `${gridDimension}px`,
     height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
+    display: "inline-block",
+    float: "left",
 };
 
 const styledMapSide = {
-    border: '1px solid brown',
+    border: "1px solid brown",
     width: `${widthLeft / 2 - 3}px`,
     height: `${heightLeft / 2 - 1}px`,
-    display: 'inline-block',
-    float: 'left',
-    textAlign: 'left',
+    display: "inline-block",
+    float: "left",
+    textAlign: "left",
 };
 
 class GMMapPanel extends Component {
+    state = {
+        isOnQuest: true,
+    };
+
     getGridTypes = () => {
         const { tilesTypes } = this.props;
         return Object.keys(tilesTypes).map(key => {
@@ -46,13 +51,13 @@ class GMMapPanel extends Component {
                     key={`gridType-${key}`}
                     style={{
                         ...styledGrid,
-                        border: 'none',
-                        borderLeft: '1px solid black',
+                        border: "none",
+                        borderLeft: "1px solid black",
                         backgroundColor:
-                            key === 'Fog'
-                                ? 'black'
-                                : key === 'NoFog'
-                                    ? 'white'
+                            key === "Fog"
+                                ? "black"
+                                : key === "NoFog"
+                                    ? "white"
                                     : tilesTypes[key].backgroundColor,
                     }}
                     onClick={() => this.loadTexture(key)}
@@ -62,7 +67,7 @@ class GMMapPanel extends Component {
                             style={{
                                 ...styledGrid,
                                 backgroundImage: `url(${tilesTypes[key].icon})`,
-                                backgroundSize: 'cover',
+                                backgroundSize: "cover",
                             }}
                         />
                     )}
@@ -73,13 +78,13 @@ class GMMapPanel extends Component {
     };
 
     loadTexture = gridType => {
-        if (gridType === 'Fog') {
+        if (gridType === "Fog") {
             this.props.doSetState({
                 textureToApply: {
                     hasFog: true,
                 },
             });
-        } else if (gridType === 'NoFog') {
+        } else if (gridType === "NoFog") {
             this.props.doSetState({
                 textureToApply: {
                     hasFog: false,
@@ -96,10 +101,10 @@ class GMMapPanel extends Component {
 
     getGridSelected = grid => {
         const { tilesTypes } = this.props;
-        let bg = '';
+        let bg = "";
 
         if (grid.hasFog) {
-            bg = tilesTypes['Fog'];
+            bg = tilesTypes["Fog"];
         } else {
             Object.keys(tilesTypes).map(key => {
                 if (key === grid.environment) {
@@ -112,8 +117,8 @@ class GMMapPanel extends Component {
             <div
                 style={{
                     ...styledGrid,
-                    border: 'none',
-                    borderLeft: '1px solid black',
+                    border: "none",
+                    borderLeft: "1px solid black",
                     backgroundColor: bg.backgroundColor,
                 }}
                 onClick={() => this.unloadTexture()}
@@ -123,7 +128,7 @@ class GMMapPanel extends Component {
                         style={{
                             ...styledGrid,
                             backgroundImage: `url(${bg.icon})`,
-                            backgroundSize: 'cover',
+                            backgroundSize: "cover",
                         }}
                     />
                 )}
@@ -139,13 +144,134 @@ class GMMapPanel extends Component {
 
     changeCurrentMusic = m => {
         const { onChangeMusics } = this.props;
-        onChangeMusics('musicName', m);
+        onChangeMusics("musicName", m);
     };
 
     changeCurrentNoise = n => {
         const { onChangeMusics } = this.props;
-        onChangeMusics('noiseName', n);
-        onChangeMusics('noiseStatus', 'PLAYING');
+        onChangeMusics("noiseName", n);
+        onChangeMusics("noiseStatus", "PLAYING");
+    };
+
+    addQuestToTown = i => {
+        const { currentStory, currentTown, towns, quests } = this.props;
+        const newTown = { ...towns[currentTown] };
+        newTown.questsList
+            ? newTown.questsList.push(i)
+            : (newTown.questsList = [i]);
+        firebase
+            .database()
+            .ref("stories/" + currentStory + "/towns/" + currentTown)
+            .set(newTown)
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+
+        const newQuest = { ...quests[i] };
+        newQuest.town = currentTown;
+        firebase
+            .database()
+            .ref("stories/" + currentStory + "/quests/" + i)
+            .set(newQuest)
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+    };
+
+    addMerchantToTown = i => {
+        const { currentStory, currentTown, towns, merchants } = this.props;
+        const newTown = { ...towns[currentTown] };
+        newTown.merchantsList
+            ? newTown.merchantsList.push(i)
+            : (newTown.merchantsList = [i]);
+        firebase
+            .database()
+            .ref("stories/" + currentStory + "/towns/" + currentTown)
+            .set(newTown)
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+
+        const newMerchant = { ...merchants[i] };
+        newMerchant.town = currentTown;
+        firebase
+            .database()
+            .ref("stories/" + currentStory + "/merchants/" + i)
+            .set(newMerchant)
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+    };
+
+    removeQuestFromTown = i => {
+        const { currentStory, currentTown, towns, quests } = this.props;
+        const newTown = { ...towns[currentTown] };
+        newTown.questsList.map((ql, index) => {
+            if (ql === i) {
+                newTown.questsList.splice(index, 1);
+            }
+        });
+
+        firebase
+            .database()
+            .ref("stories/" + currentStory + "/towns/" + currentTown)
+            .set(newTown)
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+
+        const newQuest = { ...quests[i] };
+        newQuest.town = null;
+        firebase
+            .database()
+            .ref("stories/" + currentStory + "/quests/" + i)
+            .set(newQuest)
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+    };
+
+    removeMerchantFromTown = i => {
+        const { currentStory, currentTown, towns, merchants } = this.props;
+        const newTown = { ...towns[currentTown] };
+        newTown.merchantsList.map((ql, index) => {
+            if (ql === i) {
+                newTown.merchantsList.splice(index, 1);
+            }
+        });
+
+        firebase
+            .database()
+            .ref("stories/" + currentStory + "/towns/" + currentTown)
+            .set(newTown)
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+
+        const newMerchant = { ...merchants[i] };
+        newMerchant.town = null;
+        firebase
+            .database()
+            .ref("stories/" + currentStory + "/merchants/" + i)
+            .set(newMerchant)
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+    };
+
+    toggleRightPanel = bool => {
+        this.setState(state => ({
+            ...state,
+            isOnQuest: bool,
+        }));
     };
 
     render() {
@@ -159,7 +285,12 @@ class GMMapPanel extends Component {
             noiseVolume,
             changeCurrentScale,
             currentScale,
+            currentTown,
+            towns,
+            quests,
+            merchants,
         } = this.props;
+        const { isOnQuest } = this.state;
 
         return (
             <div>
@@ -187,6 +318,99 @@ class GMMapPanel extends Component {
                     changeCurrentMusic={this.changeCurrentMusic}
                     changeCurrentNoise={this.changeCurrentNoise}
                 />
+                {currentTown > -1 && (
+                    <div>
+                        <div style={styledMapSide}>
+                            <div style={styledBoxHeader}>
+                                {towns[currentTown].name}
+                            </div>
+                            <div
+                                onClick={() => this.toggleRightPanel(true)}
+                                style={styledBoxHeader}
+                            >
+                                Quests
+                            </div>
+                            {quests.map((q, i) => {
+                                if (q.town === currentTown) {
+                                    return (
+                                        <div
+                                            onClick={() =>
+                                                this.removeQuestFromTown(i)
+                                            }
+                                            style={styledBoxHeader}
+                                        >
+                                            {q.name}
+                                        </div>
+                                    );
+                                }
+                            })}
+                            <div
+                                onClick={() => this.toggleRightPanel(false)}
+                                style={styledBoxHeader}
+                            >
+                                Merchants
+                            </div>
+                            {merchants.map((m, i) => {
+                                if (m.town === currentTown) {
+                                    return (
+                                        <div
+                                            onClick={() =>
+                                                this.removeMerchantFromTown(i)
+                                            }
+                                            style={styledBoxHeader}
+                                        >
+                                            {m.name}({m.job})
+                                        </div>
+                                    );
+                                }
+                            })}
+                        </div>
+                        {isOnQuest ? (
+                            <div style={styledMapSide}>
+                                {quests.map((q, i) => {
+                                    return (
+                                        <div
+                                            onClick={() =>
+                                                this.addQuestToTown(i)
+                                            }
+                                            style={styledBoxHeader}
+                                        >
+                                            {q.name}
+                                            {typeof q.town !== "undefined" &&
+                                                q.town > -1 && (
+                                                    <div>
+                                                        ({towns[q.town].name})
+                                                    </div>
+                                                )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div style={styledMapSide}>
+                                {merchants.map((m, i) => {
+                                    return (
+                                        <div
+                                            onClick={() =>
+                                                this.addMerchantToTown(i)
+                                            }
+                                            style={styledBoxHeader}
+                                        >
+                                            {m.name}
+                                            <div>({m.job})</div>
+                                            {typeof m.town !== "undefined" &&
+                                                m.town > -1 && (
+                                                    <div>
+                                                        ({towns[m.town].name})
+                                                    </div>
+                                                )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         );
     }
@@ -205,6 +429,11 @@ GMMapPanel.propTypes = {
     changeCurrentScale: PropTypes.func.isRequired,
     tilesTypes: PropTypes.array.isRequired,
     currentScale: PropTypes.number.isRequired,
+    currentTown: PropTypes.number.isRequired,
+    currentStory: PropTypes.number.isRequired,
+    towns: PropTypes.array.isRequired,
+    quests: PropTypes.array.isRequired,
+    merchants: PropTypes.array.isRequired,
 };
 
 export default GMMapPanel;

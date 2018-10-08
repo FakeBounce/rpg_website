@@ -93,8 +93,7 @@ class App extends Component {
         firebase
             .database()
             .ref("stories/" + currentStory + "/merchants")
-            .once("value")
-            .then(snapshot => {
+            .on("value", snapshot => {
                 this.setState(state => ({
                     ...state,
                     merchants: snapshot.val(),
@@ -145,10 +144,6 @@ class App extends Component {
                         // An error happened.
                         this.triggerError(error);
                     });
-            })
-            .catch(error => {
-                // An error happened.
-                this.triggerError(error);
             });
     };
 
@@ -545,7 +540,6 @@ class App extends Component {
                     .catch(error => {
                         this.triggerError(error);
                     });
-
             })
             .catch(error => {
                 // An error happened.

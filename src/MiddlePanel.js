@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import firebase from 'firebase';
-import './Grid.css';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import firebase from "firebase";
+import "./Grid.css";
 
-import GMMapPanel from './GMMapPanel';
-import RightPanel from './RightPanel';
-import PlayerMapPanel from './PlayerMapPanel';
-import Town from './Town';
+import GMMapPanel from "./GMMapPanel";
+import RightPanel from "./RightPanel";
+import PlayerMapPanel from "./PlayerMapPanel";
+import Town from "./Town";
 
 import {
     gridDimension,
     gridLength,
     totalRows,
     totalColumn,
-} from './StyleConstants';
-import { towns } from './Constants';
+} from "./StyleConstants";
+import { towns } from "./Constants";
 
 const styledMap = {
     width: `${gridDimension * gridLength}px`,
@@ -38,7 +38,7 @@ class MiddlePanel extends Component {
                     }}
                 >
                     {this.createGrid(index, row)}
-                </div>
+                </div>,
             );
             return null;
         });
@@ -48,15 +48,17 @@ class MiddlePanel extends Component {
     createGrid = (positionX, rowToRender) => {
         const {
             isGameMaster,
+            isOnPlayerView,
             textureToApply,
             tilesTypes,
             currentZoom,
+            doSetState,
         } = this.props;
         const table = [];
 
         rowToRender.map((row, index) => {
             table.push(
-                isGameMaster ? (
+                isGameMaster && !isOnPlayerView ? (
                     <div
                         key={`row-${index}`}
                         className="grid"
@@ -82,10 +84,10 @@ class MiddlePanel extends Component {
                                 }}
                             />
                         )}
-                        {towns.map(town => {
+                        {towns.map((town, i) => {
                             if (
-                                positionX === town.positionX &&
-                                index === town.positionY
+                                positionX === town.positionY &&
+                                index === town.positionX
                             ) {
                                 return (
                                     <Town
@@ -93,7 +95,11 @@ class MiddlePanel extends Component {
                                             town.positionY
                                         }`}
                                         town={town}
-                                        showTownList={this.showTownList}
+                                        showTownList={() => {
+                                            doSetState({
+                                                currentTown: i,
+                                            });
+                                        }}
                                     />
                                 );
                             }
@@ -113,8 +119,8 @@ class MiddlePanel extends Component {
                         {row.hasFog && (
                             <div
                                 style={{
-                                    backgroundColor: 'black',
-                                    position: 'absolute',
+                                    backgroundColor: "black",
+                                    position: "absolute",
                                     width: `${(gridDimension * currentZoom) /
                                         10}px`,
                                     height: `${(gridDimension * currentZoom) /
@@ -124,8 +130,8 @@ class MiddlePanel extends Component {
                         )}
                         {towns.map(town => {
                             if (
-                                positionX === town.positionX &&
-                                index === town.positionY
+                                positionX === town.positionY &&
+                                index === town.positionX
                             ) {
                                 return (
                                     <Town
@@ -140,7 +146,7 @@ class MiddlePanel extends Component {
                             return null;
                         })}
                     </div>
-                )
+                ),
             );
             return null;
         });
@@ -165,23 +171,23 @@ class MiddlePanel extends Component {
         } = this.props;
 
         let updates = {};
-        let path = '';
+        let path = "";
         Object.keys(textureToApply).map(key => {
             path = key;
         });
-        updates['/' + parseInt(x, 10) + '/' + parseInt(y, 10) + '/' + path] =
+        updates["/" + parseInt(x, 10) + "/" + parseInt(y, 10) + "/" + path] =
             textureToApply[path];
         for (let i = 0; i < currentScale - 1; i++) {
             if (i === 0) {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (y - j >= 0) {
                         updates[
-                            '/' + x + '/' + parseInt(y - j, 10) + '/' + path
+                            "/" + x + "/" + parseInt(y - j, 10) + "/" + path
                         ] = textureToApply[path];
                     }
                     if (y + j <= 39) {
                         updates[
-                            '/' + x + '/' + parseInt(y + j, 10) + '/' + path
+                            "/" + x + "/" + parseInt(y + j, 10) + "/" + path
                         ] = textureToApply[path];
                     }
                 }
@@ -189,21 +195,21 @@ class MiddlePanel extends Component {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (x - i >= 0 && y - j >= 0) {
                         updates[
-                            '/' +
+                            "/" +
                                 parseInt(x - i, 10) +
-                                '/' +
+                                "/" +
                                 parseInt(y - j, 10) +
-                                '/' +
+                                "/" +
                                 path
                         ] = textureToApply[path];
                     }
                     if (x - i >= 0 && y + j <= 39) {
                         updates[
-                            '/' +
+                            "/" +
                                 parseInt(x - i, 10) +
-                                '/' +
+                                "/" +
                                 parseInt(y + j, 10) +
-                                '/' +
+                                "/" +
                                 path
                         ] = textureToApply[path];
                     }
@@ -211,21 +217,21 @@ class MiddlePanel extends Component {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (x - i >= 0 && y - j >= 0) {
                         updates[
-                            '/' +
+                            "/" +
                                 parseInt(x + i, 10) +
-                                '/' +
+                                "/" +
                                 parseInt(y - j, 10) +
-                                '/' +
+                                "/" +
                                 path
                         ] = textureToApply[path];
                     }
                     if (x + i <= 39 && y + j <= 39) {
                         updates[
-                            '/' +
+                            "/" +
                                 parseInt(x + i, 10) +
-                                '/' +
+                                "/" +
                                 parseInt(y + j, 10) +
-                                '/' +
+                                "/" +
                                 path
                         ] = textureToApply[path];
                     }
@@ -235,7 +241,7 @@ class MiddlePanel extends Component {
 
         firebase
             .database()
-            .ref('maps/' + stories[currentStory].map)
+            .ref("maps/" + stories[currentStory].map)
             .update(updates)
             .catch(error => {
                 // Handle Errors here.
@@ -320,7 +326,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={'./arrow-left.png'}
+                            src={"./arrow-left.png"}
                             className="map-arrow"
                             alt="arrow-left"
                         />
@@ -332,7 +338,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={'./arrow-right.png'}
+                            src={"./arrow-right.png"}
                             className="map-arrow"
                             alt="arrow-right"
                         />
@@ -344,7 +350,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={'./arrow-up.png'}
+                            src={"./arrow-up.png"}
                             className="map-arrow"
                             alt="arrow-up"
                         />
@@ -356,7 +362,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={'./arrow-down.png'}
+                            src={"./arrow-down.png"}
                             className="map-arrow"
                             alt="arrow-down"
                         />
@@ -387,8 +393,10 @@ class MiddlePanel extends Component {
                             doSetState={doSetState}
                             triggerError={triggerError}
                             currentTown={currentTown}
+                            currentStory={currentStory}
                             towns={towns}
                             quests={quests}
+                            merchants={merchants}
                             tilesTypes={tilesTypes}
                             currentScale={currentScale}
                             changeCurrentScale={this.changeCurrentScale}
