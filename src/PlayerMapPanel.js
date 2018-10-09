@@ -40,7 +40,8 @@ class PlayerMapPanel extends Component {
 
     getItemsFromMerchant = itemsFormMerchant => {
         return itemsFormMerchant.map((itemFromMerchant, index) => {
-            const isHidden = this.props.character.education < itemFromMerchant.rarity * 9;
+            const isHidden =
+                this.props.character.education < itemFromMerchant.rarity * 9;
             return (
                 <Item
                     key={`item-${itemFromMerchant.name}-${index}`}
@@ -93,13 +94,14 @@ class PlayerMapPanel extends Component {
         return this.getPosition();
     };
 
-    getQuestsFromTown = quests => {
-        return quests.map((quest, index) => {
+    getQuestsFromTown = qft => {
+        const { quests } = this.props;
+        return qft.map(q => {
             return (
                 <Quest
-                    key={`merchant-${quest.name}`}
-                    {...quest}
-                    index={index}
+                    key={`merchant-${quests[q].name}`}
+                    {...quests[q]}
+                    index={q}
                     showQuest={this.showQuest}
                 />
             );
@@ -114,17 +116,17 @@ class PlayerMapPanel extends Component {
         });
     };
 
-    showQuest = quest => {
+    showQuest = index => {
         this.props.doSetState({
             isQuestShowed: true,
-            currentQuest: this.props.questsList[quest],
+            currentQuest: index,
         });
     };
 
     hideQuest = () => {
         this.props.doSetState({
             isQuestShowed: false,
-            currentQuest: {},
+            currentQuest: -1,
         });
     };
 
@@ -137,6 +139,7 @@ class PlayerMapPanel extends Component {
             itemToDescribe,
             isTownShowed,
             merchantsList,
+            quests,
             questsList,
             buyItem,
             currentQuest,
@@ -174,7 +177,7 @@ class PlayerMapPanel extends Component {
                         }}
                     >
                         <QuestFullscreen
-                            {...currentQuest}
+                            {...quests[currentQuest]}
                             hideQuest={this.hideQuest}
                         />
                     </div>
@@ -202,7 +205,9 @@ class PlayerMapPanel extends Component {
                             buyItem(itemToDescribe, itemToDescribe.price)
                         }
                         gold={character.gold}
-                        isHidden={character.education < itemToDescribe.rarity * 9}
+                        isHidden={
+                            character.education < itemToDescribe.rarity * 9
+                        }
                     />
                 )}
             </div>
@@ -212,7 +217,7 @@ class PlayerMapPanel extends Component {
 
 PlayerMapPanel.propTypes = {
     isQuestShowed: PropTypes.bool.isRequired,
-    currentQuest: PropTypes.object.isRequired,
+    currentQuest: PropTypes.number.isRequired,
     currentMerchant: PropTypes.object.isRequired,
     character: PropTypes.object.isRequired,
     isItemShowed: PropTypes.bool.isRequired,
@@ -222,6 +227,8 @@ PlayerMapPanel.propTypes = {
     isTownShowed: PropTypes.bool.isRequired,
     merchantsList: PropTypes.array.isRequired,
     merchants: PropTypes.array.isRequired,
+    quests: PropTypes.array.isRequired,
+    questsList: PropTypes.array.isRequired,
     buyItem: PropTypes.func.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,

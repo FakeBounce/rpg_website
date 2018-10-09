@@ -376,7 +376,7 @@ export const defaultState = {
     chatHistory: [],
     currentStory: -1,
     currentMerchant: -1,
-    currentQuest: {},
+    currentQuest: -1,
     currentTown: -1,
     currentScale: 1,
     currentX: 0,

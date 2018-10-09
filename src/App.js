@@ -80,8 +80,9 @@ class App extends Component {
         // firebase
         //     .database()
         //     // .ref('stories/0/artefacts')
-        //     .ref("/tilesTypes")
-        //     .set(tileTypes)
+        //     .ref("/stories/0/towns")
+        //     // .ref("/tilesTypes")
+        //     .set(towns)
         //     .catch(error => {
         //         // Handle Errors here.
         //         this.triggerError(error);

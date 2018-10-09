@@ -1,20 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import "./Grid.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import './Grid.css';
 
-import GMMapPanel from "./GMMapPanel";
-import RightPanel from "./RightPanel";
-import PlayerMapPanel from "./PlayerMapPanel";
-import Town from "./Town";
+import GMMapPanel from './GMMapPanel';
+import RightPanel from './RightPanel';
+import PlayerMapPanel from './PlayerMapPanel';
+import Town from './Town';
 
 import {
     gridDimension,
     gridLength,
     totalRows,
     totalColumn,
-} from "./StyleConstants";
-import { towns } from "./Constants";
+} from './StyleConstants';
 
 const styledMap = {
     width: `${gridDimension * gridLength}px`,
@@ -38,7 +37,7 @@ class MiddlePanel extends Component {
                     }}
                 >
                     {this.createGrid(index, row)}
-                </div>,
+                </div>
             );
             return null;
         });
@@ -53,6 +52,7 @@ class MiddlePanel extends Component {
             tilesTypes,
             currentZoom,
             doSetState,
+            towns,
         } = this.props;
         const table = [];
 
@@ -109,18 +109,22 @@ class MiddlePanel extends Component {
                 ) : (
                     <div
                         key={`row-${index}`}
+                        className="grid"
                         style={{
                             backgroundColor:
                                 tilesTypes[row.environment].backgroundColor,
                             width: `${(gridDimension * currentZoom) / 10}px`,
                             height: `${(gridDimension * currentZoom) / 10}px`,
                         }}
+                        onClick={() => {
+                            if (textureToApply)
+                                this.setTexture(positionX, index);
+                        }}
                     >
                         {row.hasFog && (
                             <div
+                                className="fog"
                                 style={{
-                                    backgroundColor: "black",
-                                    position: "absolute",
                                     width: `${(gridDimension * currentZoom) /
                                         10}px`,
                                     height: `${(gridDimension * currentZoom) /
@@ -128,7 +132,7 @@ class MiddlePanel extends Component {
                                 }}
                             />
                         )}
-                        {towns.map(town => {
+                        {towns.map((town, i) => {
                             if (
                                 positionX === town.positionY &&
                                 index === town.positionX
@@ -138,7 +142,7 @@ class MiddlePanel extends Component {
                                         key={`town-${town.positionX}-${
                                             town.positionY
                                         }`}
-                                        {...town}
+                                        town={town}
                                         showTownList={this.showTownList}
                                     />
                                 );
@@ -146,7 +150,7 @@ class MiddlePanel extends Component {
                             return null;
                         })}
                     </div>
-                ),
+                )
             );
             return null;
         });
@@ -156,8 +160,8 @@ class MiddlePanel extends Component {
     showTownList = town => {
         this.props.doSetState({
             isTownShowed: true,
-            merchantsList: town.merchants,
-            questsList: town.quests,
+            merchantsList: town.merchantsList || [],
+            questsList: town.questsList || [],
         });
     };
 
@@ -171,23 +175,23 @@ class MiddlePanel extends Component {
         } = this.props;
 
         let updates = {};
-        let path = "";
+        let path = '';
         Object.keys(textureToApply).map(key => {
             path = key;
         });
-        updates["/" + parseInt(x, 10) + "/" + parseInt(y, 10) + "/" + path] =
+        updates['/' + parseInt(x, 10) + '/' + parseInt(y, 10) + '/' + path] =
             textureToApply[path];
         for (let i = 0; i < currentScale - 1; i++) {
             if (i === 0) {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (y - j >= 0) {
                         updates[
-                            "/" + x + "/" + parseInt(y - j, 10) + "/" + path
+                            '/' + x + '/' + parseInt(y - j, 10) + '/' + path
                         ] = textureToApply[path];
                     }
                     if (y + j <= 39) {
                         updates[
-                            "/" + x + "/" + parseInt(y + j, 10) + "/" + path
+                            '/' + x + '/' + parseInt(y + j, 10) + '/' + path
                         ] = textureToApply[path];
                     }
                 }
@@ -195,21 +199,21 @@ class MiddlePanel extends Component {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (x - i >= 0 && y - j >= 0) {
                         updates[
-                            "/" +
+                            '/' +
                                 parseInt(x - i, 10) +
-                                "/" +
+                                '/' +
                                 parseInt(y - j, 10) +
-                                "/" +
+                                '/' +
                                 path
                         ] = textureToApply[path];
                     }
                     if (x - i >= 0 && y + j <= 39) {
                         updates[
-                            "/" +
+                            '/' +
                                 parseInt(x - i, 10) +
-                                "/" +
+                                '/' +
                                 parseInt(y + j, 10) +
-                                "/" +
+                                '/' +
                                 path
                         ] = textureToApply[path];
                     }
@@ -217,21 +221,21 @@ class MiddlePanel extends Component {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (x - i >= 0 && y - j >= 0) {
                         updates[
-                            "/" +
+                            '/' +
                                 parseInt(x + i, 10) +
-                                "/" +
+                                '/' +
                                 parseInt(y - j, 10) +
-                                "/" +
+                                '/' +
                                 path
                         ] = textureToApply[path];
                     }
                     if (x + i <= 39 && y + j <= 39) {
                         updates[
-                            "/" +
+                            '/' +
                                 parseInt(x + i, 10) +
-                                "/" +
+                                '/' +
                                 parseInt(y + j, 10) +
-                                "/" +
+                                '/' +
                                 path
                         ] = textureToApply[path];
                     }
@@ -241,7 +245,7 @@ class MiddlePanel extends Component {
 
         firebase
             .database()
-            .ref("maps/" + stories[currentStory].map)
+            .ref('maps/' + stories[currentStory].map)
             .update(updates)
             .catch(error => {
                 // Handle Errors here.
@@ -326,7 +330,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={"./arrow-left.png"}
+                            src={'./arrow-left.png'}
                             className="map-arrow"
                             alt="arrow-left"
                         />
@@ -338,7 +342,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={"./arrow-right.png"}
+                            src={'./arrow-right.png'}
                             className="map-arrow"
                             alt="arrow-right"
                         />
@@ -350,7 +354,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={"./arrow-up.png"}
+                            src={'./arrow-up.png'}
                             className="map-arrow"
                             alt="arrow-up"
                         />
@@ -362,7 +366,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={"./arrow-down.png"}
+                            src={'./arrow-down.png'}
                             className="map-arrow"
                             alt="arrow-down"
                         />
@@ -402,7 +406,7 @@ class MiddlePanel extends Component {
                             changeCurrentScale={this.changeCurrentScale}
                         />
                     )}
-                {!isGameMaster && (
+                {(!isGameMaster || isOnPlayerView) && (
                     <PlayerMapPanel
                         isQuestShowed={isQuestShowed}
                         currentQuest={currentQuest}
@@ -410,6 +414,7 @@ class MiddlePanel extends Component {
                         isItemShowed={isItemShowed}
                         itemsList={itemsList}
                         merchants={merchants}
+                        quests={quests}
                         currentMerchant={currentMerchant}
                         isItemDescriptionShowed={isItemDescriptionShowed}
                         itemToDescribe={itemToDescribe}
