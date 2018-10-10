@@ -443,16 +443,19 @@ class App extends Component {
             itemDescribed,
             items: { artefacts },
         } = this.state;
-        const newItemsTab = [...character.items];
+        const newItemsTab = character.items ? [...character.items] : [];
         let hasAlready = false;
-        character.items.map((i, index) => {
-            if (i.name === item.name) {
-                hasAlready = true;
-                newItemsTab[index].quantity =
-                    parseInt(newItemsTab[index].quantity, 10) + 1;
-            }
-            return null;
-        });
+        if(character.items)
+        {
+            character.items.map((i, index) => {
+                if (i.name === item.name) {
+                    hasAlready = true;
+                    newItemsTab[index].quantity =
+                        parseInt(newItemsTab[index].quantity, 10) + 1;
+                }
+                return null;
+            });
+        }
         if (!hasAlready) {
             newItemsTab.push({ ...item, quantity: 1 });
         }

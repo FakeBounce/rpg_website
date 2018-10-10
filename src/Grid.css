@@ -18,14 +18,20 @@
     right: 0px;
     top: 0px;
     z-index: 5;
+    cursor:pointer;
 }
 
 .map-move {
     position:absolute;
     width:30px;
     height:30px;
-    top: 15px;
+    top: 25px;
     z-index: 5;
+    cursor:pointer;
+}
+
+.map-move:hover {
+    opacity: 0.5;
 }
 
 .map-arrow {
@@ -34,19 +40,19 @@
 }
 
 .map-move-left {
-    right: 100px;
+    right: 90px;
 }
 
 .map-move-right {
-    right: 70px;
+    right: 60px;
 }
 
 .map-move-up {
-    right: 40px;
+    right: 30px;
 }
 
 .map-move-down {
-    right: 10px;
+    right: 0px;
 }
 
 .row {

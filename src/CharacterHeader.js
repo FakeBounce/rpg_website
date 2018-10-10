@@ -35,31 +35,30 @@ const styles = {
 
 class CharacterHeader extends Component {
     render() {
-        const { character } = this.props;
+        const { icon, name, health, maxHealth, gold, status } = this.props;
+        console.log('props',this.props);
 
         return (
             <div style={styles.characterHeader}>
-                <img
-                    src={character.icon}
-                    alt={character.name}
-                    style={styles.characterHeaderIcon}
-                />
-                <div style={styles.characterHeaderName}>{character.name}</div>
+                <img src={icon} alt={name} style={styles.characterHeaderIcon} />
+                <div style={styles.characterHeaderName}>{name}</div>
                 <HealthBar
-                    width={`${(character.health / character.maxHealth) * 100}%`}
+                    width={`${(health / maxHealth) * 100}%`}
                     maxWidth={`${widthRightPanelLeft}px`}
                 />
-                <CharacterHeaderInfos
-                    status={character.status}
-                    gold={character.gold}
-                />
+                <CharacterHeaderInfos status={status} gold={gold} />
             </div>
         );
     }
 }
 
 CharacterHeader.propTypes = {
-    character: PropTypes.object.isRequired,
+    gold: PropTypes.number.isRequired,
+    health: PropTypes.number.isRequired,
+    maxHealth: PropTypes.number.isRequired,
+    icon: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
 };
 
 export default CharacterHeader;

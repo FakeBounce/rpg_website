@@ -179,7 +179,14 @@ class RightPanel extends Component {
 
         return (
             <div style={styles.CharacterBox}>
-                <CharacterHeader character={character} />
+                <CharacterHeader
+                    gold={character.gold}
+                    status={character.status}
+                    icon={character.icon}
+                    name={character.name}
+                    health={character.health}
+                    maxHealth={character.maxHealth}
+                />
                 <CharacterAttributes character={character} />
                 <CharacterOtherInfos
                     character={character}
@@ -216,16 +223,11 @@ class RightPanel extends Component {
                         uid +
                         "/character",
                 )
-                .once("value")
-                .then(snapshot => {
+                .on("value", snapshot => {
                     doSetState({
                         uid,
                         character: snapshot.val(),
                     });
-                })
-                .catch(error => {
-                    // An error happened.
-                    triggerError(error);
                 });
         }
     };
