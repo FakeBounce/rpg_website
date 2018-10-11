@@ -428,8 +428,20 @@ class App extends Component {
     selectAnotherCharacter = () => {
         this.setState(state => ({
             ...state,
+            oldCharacterId: state.characterId,
+            oldCharacterCreation: state.characterCreation,
             characterId: 0,
             characterCreation: false,
+        }));
+    };
+
+    keepCharacter = () => {
+        this.setState(state => ({
+            ...state,
+            characterId: state.oldCharacterId,
+            characterCreation: state.oldCharacterCreation,
+            oldCharacterId: 0,
+            oldCharacterCreation: false,
         }));
     };
 
@@ -1155,6 +1167,7 @@ class App extends Component {
                             doSetState={this.doSetState}
                             triggerError={this.triggerError}
                             chooseStory={this.chooseStory}
+                            keepCharacter={this.keepCharacter}
                         />
                     )}
 

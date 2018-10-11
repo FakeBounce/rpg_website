@@ -416,6 +416,8 @@ export const defaultState = {
     noiseMute: false,
     noiseVolume: 100,
     onChatHelp: false,
+    oldCharacterId: 0,
+    oldCharacterCreation: false,
     password: "",
     pseudo: "",
     pseudoInput: "",

@@ -13,6 +13,13 @@ const styledBoxHeader = {
     textAlign: "center",
 };
 
+const styledBoxBack = {
+    width: 250,
+    height: "20px",
+    marginBottom: "25px",
+    textAlign: "center",
+};
+
 class CharacterSelection extends Component {
     state = {
         isAnUpdate: false,
@@ -59,8 +66,9 @@ class CharacterSelection extends Component {
         } = this.props;
 
         const charToRegister = characters[id];
-        charToRegister.gold =
-            Math.floor(Math.random() * characters[id].luck * 5 + 5);
+        charToRegister.gold = Math.floor(
+            Math.random() * characters[id].luck * 5 + 5,
+        );
         charToRegister.status = "OK";
 
         firebase
@@ -212,11 +220,20 @@ class CharacterSelection extends Component {
 
     render() {
         const { isAnUpdate, updateCharacterId } = this.state;
-        const { uid, characters, characterCreation, triggerError } = this.props;
+        const {
+            uid,
+            characters,
+            characterCreation,
+            triggerError,
+            keepCharacter,
+        } = this.props;
 
         if (typeof characters[1] !== "undefined" && !characterCreation) {
             return (
                 <div>
+                    <button style={styledBoxBack} onClick={keepCharacter}>
+                        Retourner sur l'histoire
+                    </button>
                     <div style={styledBoxHeader}>Choisir un personnage</div>
                     <button onClick={this.goToCharacterForm}>
                         Créer un personnage
@@ -265,6 +282,7 @@ CharacterSelection.propTypes = {
     triggerError: PropTypes.func.isRequired,
     chooseStory: PropTypes.func.isRequired,
     currentStory: PropTypes.number.isRequired,
+    keepCharacter: PropTypes.func.isRequired,
 };
 
 export default CharacterSelection;

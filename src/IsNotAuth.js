@@ -113,11 +113,13 @@ class IsNotAuth extends Component {
                 <button onClick={this.signIn}>Sign In</button>
                 <button onClick={this.signUp}>Sign Up</button>
 
-                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> FakeBounce, le 2018-10-11 : Saved on firebase last current position, so we are automatically zoom on the current position </div>
+                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> FakeBounce, le 2018-10-11 : Added back button to return on story when trying to change character </div>
+                    <div className="commit"> FakeBounce, le 2018-10-11 : Saved on firebase last current position, so we are automatically zoom on the current position </div>
                     <div className="commit"> FakeBounce, le 2018-10-11 : Added center point to center the map. Now GM can select current point on map, and player can only interact with this point. Fixed some texture bugs </div>
                     <div className="commit"> FakeBounce, le 2018-10-11 : Fixed gold GM edition </div>
                     <div className="commit"> FakeBounce, le 2018-10-11 : Added quest validator </div>
                     <div className="commit"> FakeBounce, le 2018-10-11 : Added isDiscovered option for merchants </div>
+                    <div className="commit"> FakeBounce, le 2018-10-11 : Added autocomplete </div>
                     <div className="commit"> FakeBounce, le 2018-10-11 : Added autocomplete </div>
                     <div className="commit"> FakeBounce, le 2018-10-11 : Corrected some console errors and added autocomplete on sign in/up form </div>
                     <div className="commit"> FakeBounce, le 2018-10-11 : Fixed arrows - again ! </div>
