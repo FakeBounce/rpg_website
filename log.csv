@@ -1,3 +1,4 @@
+<div className="commit"> fakebounce, le 2018-10-11 : Saved on firebase last current position, so we are automatically zoom on the current position </div>
 <div className="commit"> fakebounce, le 2018-10-11 : Added center point to center the map. Now GM can select current point on map, and player can only interact with this point. Fixed some texture bugs </div>
 <div className="commit"> fakebounce, le 2018-10-11 : Fixed gold GM edition </div>
 <div className="commit"> fakebounce, le 2018-10-11 : Added quest validator </div>

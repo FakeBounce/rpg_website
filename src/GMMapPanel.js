@@ -393,6 +393,25 @@ class GMMapPanel extends Component {
                 doSetState({
                     currentTile: { ...newTile },
                 });
+                if(newTile.isCurrent)
+                {
+                    firebase
+                        .database()
+                        .ref("stories/" + currentStory + "/currentX")
+                        .set(parseInt(newTile.x, 10) - 9)
+                        .catch(error => {
+                            // Handle Errors here.
+                            this.props.triggerError(error);
+                        });
+                    firebase
+                        .database()
+                        .ref("stories/" + currentStory + "/currentY")
+                        .set(parseInt(newTile.y, 10) - 9)
+                        .catch(error => {
+                            // Handle Errors here.
+                            this.props.triggerError(error);
+                        });
+                }
             })
             .catch(error => {
                 // Handle Errors here.
