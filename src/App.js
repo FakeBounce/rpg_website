@@ -171,10 +171,11 @@ class App extends Component {
             .then(snapshot => {
                 const newMerchants = [];
                 const artefactsLeft = [...items.artefacts];
-                snapshot.val().map(m => {
+                snapshot.val().map((m,i) => {
                     newMerchants.push(
                         this.hydrateMerchant(artefactsLeft, m, true),
                     );
+                    newMerchants[i].isDiscovered = false;
                 });
 
                 this.setState(state => ({
@@ -378,7 +379,7 @@ class App extends Component {
                             newItem.type +
                             ") : " +
                             newItem.name;
-                        newItem.image = "spell_book.png";
+                        newItem.icon = "spell_book.png";
                         newItem.isBook = true;
                         newItem.price =
                             newItem.price * Math.floor(Math.random() * 3 + 2);

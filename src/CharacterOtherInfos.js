@@ -21,6 +21,7 @@ class CharacterOtherInfos extends Component {
             character,
             infoTab,
             status,
+            gold,
             onChangeTab,
             onChange,
             onLifeChange,
@@ -41,6 +42,7 @@ class CharacterOtherInfos extends Component {
                 <CharacterInputs
                     character={character}
                     status={status}
+                    gold={gold}
                     infoTab={infoTab}
                     damageTaken={damageTaken}
                     isGameMaster={isGameMaster}
@@ -57,6 +59,7 @@ class CharacterOtherInfos extends Component {
 CharacterOtherInfos.propTypes = {
     character: PropTypes.object.isRequired,
     status: PropTypes.string.isRequired,
+    gold: PropTypes.number.isRequired,
     infoTab: PropTypes.string.isRequired,
     damageTaken: PropTypes.number.isRequired,
     isGameMaster: PropTypes.bool.isRequired,

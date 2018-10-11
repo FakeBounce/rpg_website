@@ -7,6 +7,8 @@ class Item extends Component {
         const {
             index,
             icon,
+            itemType,
+            type,
             name,
             description,
             price,
@@ -14,15 +16,16 @@ class Item extends Component {
             isHidden,
         } = this.props;
         return (
-            <div
-                className="item"
-                onClick={() =>
-                    showItemDescription(index)
-                }
-            >
+            <div className="item" onClick={() => showItemDescription(index)}>
                 <img
-                    src={"./" + isHidden ? "unknown_image.png" : icon }
-                    alt={isHidden ? "Can't be described" : description}
+                    src={"./" + itemType + "/" + icon}
+                    alt={
+                        isHidden
+                            ? itemType === "spells"
+                                ? "Parchemin de " + type
+                                : "Can't be described"
+                            : description
+                    }
                     className="item-icon"
                 />
                 <div className="item-text">{isHidden ? "???" : name}</div>
@@ -32,9 +35,15 @@ class Item extends Component {
     }
 }
 
+Item.defaultProps = {
+    type: "",
+};
+
 Item.propTypes = {
     index: PropTypes.number.isRequired,
     icon: PropTypes.string.isRequired,
+    itemType: PropTypes.string.isRequired,
+    type: PropTypes.string,
     description: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,

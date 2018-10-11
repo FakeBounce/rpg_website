@@ -120,6 +120,7 @@ class SoundPanel extends Component {
                     {musics.map(m => {
                         return (
                             <div
+                                key={`music-${m}`}
                                 style={styledAudioFile}
                                 onClick={() => changeCurrentMusic(m)}
                             >
@@ -152,6 +153,7 @@ class SoundPanel extends Component {
                     {noises.map(n => {
                         return (
                             <div
+                                key={`noise-${n}`}
                                 style={styledAudioFile}
                                 onClick={() => changeCurrentNoise(n)}
                             >
@@ -166,8 +168,8 @@ class SoundPanel extends Component {
 }
 
 SoundPanel.propTypes = {
-    musicName: PropTypes.number.isRequired,
-    noiseName: PropTypes.number.isRequired,
+    musicName: PropTypes.string.isRequired,
+    noiseName: PropTypes.string.isRequired,
     musicVolume: PropTypes.number.isRequired,
     noiseVolume: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,

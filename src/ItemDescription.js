@@ -18,6 +18,7 @@ class ItemDescription extends Component {
         const {
             icon,
             name,
+            itemType,
             price,
             quantity,
             description,
@@ -31,16 +32,22 @@ class ItemDescription extends Component {
                 <div className="item-description">
                     <div className="item-description-header">Description</div>
                     <img
-                        src={"./" + isHidden ? "unknown_image.png" : icon}
+                        src={"./" + itemType + "/" + icon}
                         alt={isHidden ? "Can't be described" : description}
                         className="item-description-icon"
                     />
-                    <div className="item-description-text">{isHidden ? "???" : name}</div>
-                    <div className="item-description-description">
-                        {isHidden ? "Can't be described" :  description}
+                    <div className="item-description-text">
+                        {isHidden ? "???" : name}
                     </div>
-                    <div className="item-description-effect">{isHidden ? "" : effect}</div>
-                    <div className="item-description-quantity">Quantity left :{quantity}</div>
+                    <div className="item-description-description">
+                        {isHidden ? "Can't be described" : description}
+                    </div>
+                    <div className="item-description-effect">
+                        {isHidden ? "" : effect}
+                    </div>
+                    <div className="item-description-quantity">
+                        Quantity left :{quantity}
+                    </div>
                     <button
                         className={`item-description-price ${gold < price &&
                             "item-description-cant-buy"}`}

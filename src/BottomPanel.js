@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-
-
-const widthRightPanel = 350;
-const heightBottomPanel = 150;
+import {widthRightPanel, heightCameras} from "./StyleConstants";
 
 const styledBoxHeader = {
     width: "100%",
@@ -17,14 +14,14 @@ const styledBottomPanel = {
     left: "0px",
     borderTop: "1px solid black",
     width: `${window.innerWidth - widthRightPanel}px`,
-    height: `${heightBottomPanel}px`,
+    height: `${heightCameras}px`,
 };
 
 class BottomPanel extends Component {
     render() {
         return (
             <div style={styledBottomPanel}>
-                <div style={styledBoxHeader}>Cameras</div>
+                {/*<div style={styledBoxHeader}>Cameras</div>*/}
             </div>
         );
     }
