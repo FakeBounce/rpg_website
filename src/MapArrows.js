@@ -8,7 +8,7 @@ import { gridDimension, totalRows } from "./StyleConstants";
 
 const styledMapArrows = {
     position: "absolute",
-    width: 130,
+    width: 160,
     height: 30,
     top: 25,
     right: 0,
@@ -18,10 +18,20 @@ const styledMapArrows = {
 
 class MapArrows extends Component {
     render() {
-        const { doSetState, currentX, currentY } = this.props;
+        const { doSetState, currentX, currentY, loadCurrentPosition } = this.props;
 
         return (
             <div style={styledMapArrows}>
+                <div className="map-move map-move-center" onClick={loadCurrentPosition}>
+                    <div
+                        style={{
+                            width: 30,
+                            height: 30,
+                            backgroundColor: "grey",
+                            borderRadius: 30,
+                        }}
+                    />
+                </div>
                 <div
                     className="map-move map-move-left"
                     onClick={() => {
@@ -79,6 +89,7 @@ MapArrows.propTypes = {
     doSetState: PropTypes.func.isRequired,
     currentX: PropTypes.number.isRequired,
     currentY: PropTypes.number.isRequired,
+    loadCurrentPosition: PropTypes.func.isRequired,
 };
 
 export default MapArrows;

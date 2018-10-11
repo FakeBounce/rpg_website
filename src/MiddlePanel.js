@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import firebase from "firebase";
 import "./Grid.css";
 
 import GMMapPanel from "./GMMapPanel";
 import RightPanel from "./RightPanel";
 import PlayerMapPanel from "./PlayerMapPanel";
-import Town from "./Town";
 
 import {
     gridDimension,
@@ -73,6 +71,8 @@ class MiddlePanel extends Component {
             currentX,
             currentY,
             currentZoom,
+            loadCurrentPosition,
+            currentTile,
         } = this.props;
 
         return (
@@ -88,9 +88,12 @@ class MiddlePanel extends Component {
                     tilesTypes={tilesTypes}
                     towns={towns}
                     stories={stories}
+                    textureToApply={textureToApply}
                     currentStory={currentStory}
                     triggerError={triggerError}
                     currentScale={currentScale}
+                    loadCurrentPosition={loadCurrentPosition}
+
                 />
                 {isGameMaster &&
                     !isOnPlayerView && (
@@ -112,6 +115,8 @@ class MiddlePanel extends Component {
                             tilesTypes={tilesTypes}
                             currentScale={currentScale}
                             changeCurrentScale={this.changeCurrentScale}
+                            currentTile={currentTile}
+                            stories={stories}
                         />
                     )}
                 {(!isGameMaster || isOnPlayerView) && (
@@ -203,6 +208,8 @@ MiddlePanel.propTypes = {
     currentX: PropTypes.number.isRequired,
     currentY: PropTypes.number.isRequired,
     currentZoom: PropTypes.number.isRequired,
+    loadCurrentPosition: PropTypes.func.isRequired,
+    currentTile: PropTypes.object.isRequired,
 };
 
 export default MiddlePanel;

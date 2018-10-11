@@ -40,17 +40,18 @@ const styledTownListDiscover = {
 const styledMapButtons = {
     border: "1px solid blue",
     width: "100%",
-    height: `${gridDimension * 2 + 3}px`,
+    height: `${gridDimension * 2 + 1}px`,
     display: "inline-block",
     float: "left",
 };
 
 const styledGrid = {
     border: "1px solid pink",
-    width: `${gridDimension}px`,
+    width: `${(widthLeft / 2 - 3) / 8}px`,
     height: `${gridDimension}px`,
     display: "inline-block",
     float: "left",
+    position: "relative",
 };
 
 const styledMapSide = {
@@ -373,6 +374,32 @@ class GMMapPanel extends Component {
         }));
     };
 
+    toggleIsCurrent = () => {
+        const { stories, currentStory, currentTile, doSetState } = this.props;
+        const newTile = { ...currentTile };
+        newTile.isCurrent = !newTile.isCurrent;
+        firebase
+            .database()
+            .ref(
+                "maps/" +
+                    stories[currentStory].map +
+                    "/" +
+                    currentTile.y +
+                    "/" +
+                    currentTile.x,
+            )
+            .set(newTile)
+            .then(() => {
+                doSetState({
+                    currentTile: { ...newTile },
+                });
+            })
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+    };
+
     render() {
         const {
             textureToApply,
@@ -388,9 +415,9 @@ class GMMapPanel extends Component {
             towns,
             quests,
             merchants,
+            currentTile,
         } = this.props;
         const { isOnQuest } = this.state;
-
         return (
             <div style={styledMiddlePanel}>
                 <div style={styledMapSide}>
@@ -406,6 +433,23 @@ class GMMapPanel extends Component {
                         }}
                         value={currentScale}
                     />
+                    <div style={styledBoxHeader}>Modifier la case :</div>
+                    {Object.keys(currentTile).length > 0 && (
+                        <div>
+                            environment : {currentTile.environment}
+                            <br />
+                            hasFog : {currentTile.hasFog}
+                            <br />
+                            hasTown : {currentTile.hasTown}
+                            <br />
+                            isCurrent : {currentTile.isCurrent}
+                            <button onClick={this.toggleIsCurrent}>
+                                Toggle current
+                            </button>
+                            <br />x :{currentTile.x}
+                            <br />y : {currentTile.y}
+                        </div>
+                    )}
                 </div>
                 <SoundPanel
                     musicName={musicName}
@@ -432,7 +476,7 @@ class GMMapPanel extends Component {
                             {quests.map((q, i) => {
                                 if (q.town === currentTown) {
                                     return (
-                                        <div>
+                                        <div key={`quest-${q.name}`}>
                                             <div
                                                 onClick={() =>
                                                     this.removeQuestFromTown(i)
@@ -471,7 +515,7 @@ class GMMapPanel extends Component {
                             {merchants.map((m, i) => {
                                 if (m.town === currentTown) {
                                     return (
-                                        <div>
+                                        <div key={`town-${m.name}`}>
                                             <div
                                                 onClick={() =>
                                                     this.removeMerchantFromTown(
@@ -576,6 +620,8 @@ GMMapPanel.propTypes = {
     towns: PropTypes.array.isRequired,
     quests: PropTypes.array.isRequired,
     merchants: PropTypes.array.isRequired,
+    stories: PropTypes.array.isRequired,
+    currentTile: PropTypes.object.isRequired,
 };
 
 export default GMMapPanel;

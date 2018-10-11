@@ -1,3 +1,11 @@
+<div className="commit"> fakebounce, le 2018-10-11 : Added center point to center the map. Now GM can select current point on map, and player can only interact with this point. Fixed some texture bugs </div>
+<div className="commit"> fakebounce, le 2018-10-11 : Fixed gold GM edition </div>
+<div className="commit"> fakebounce, le 2018-10-11 : Added quest validator </div>
+<div className="commit"> fakebounce, le 2018-10-11 : Added isDiscovered option for merchants </div>
+<div className="commit"> fakebounce, le 2018-10-11 : Added autocomplete </div>
+<div className="commit"> fakebounce, le 2018-10-11 : Corrected some console errors and added autocomplete on sign in/up form </div>
+<div className="commit"> fakebounce, le 2018-10-11 : Fixed arrows - again ! </div>
+<div className="commit"> fakebounce, le 2018-10-11 : Fixed character creation strings </div>
 <div className="commit"> fakebounce, le 2018-10-11 : Added white arrows to map </div>
 <div className="commit"> fakebounce, le 2018-10-11 : Fixed some CharacterPanel bugs </div>
 <div className="commit"> fakebounce, le 2018-10-10 : Added illustrations for items </div>

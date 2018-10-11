@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
 import "./Grid.css";
-
-import GMMapPanel from "./GMMapPanel";
-import RightPanel from "./RightPanel";
-import PlayerMapPanel from "./PlayerMapPanel";
 import Town from "./Town";
 
 import {
@@ -63,16 +59,19 @@ class MapGenerator extends Component {
                 isGameMaster && !isOnPlayerView ? (
                     <div
                         key={`row-${index}`}
-                        className="grid"
+                        className={`grid ${row.isCurrent && "is-current"}`}
                         style={{
                             backgroundColor:
                                 tilesTypes[row.environment].backgroundColor,
-                            width: `${(gridDimension * currentZoom) / 10}px`,
-                            height: `${(gridDimension * currentZoom) / 10}px`,
+                            width: `${(gridDimension * currentZoom) / 10 -
+                                (row.isCurrent ? 4 : 0)}px`,
+                            height: `${(gridDimension * currentZoom) / 10 -
+                                (row.isCurrent ? 4 : 0)}px`,
                         }}
                         onClick={() => {
                             if (textureToApply)
                                 this.setTexture(positionX, index);
+                            else this.showInfos(row);
                         }}
                     >
                         {row.hasFog && (
@@ -101,7 +100,9 @@ class MapGenerator extends Component {
                                             doSetState({
                                                 currentTown: i,
                                             });
+                                            this.showInfos(row);
                                         }}
+                                        isCurrent={true}
                                     />
                                 );
                             }
@@ -111,12 +112,14 @@ class MapGenerator extends Component {
                 ) : (
                     <div
                         key={`row-${index}`}
-                        className="grid"
+                        className={`grid ${row.isCurrent && "is-current"}`}
                         style={{
                             backgroundColor:
                                 tilesTypes[row.environment].backgroundColor,
-                            width: `${(gridDimension * currentZoom) / 10}px`,
-                            height: `${(gridDimension * currentZoom) / 10}px`,
+                            width: `${(gridDimension * currentZoom) / 10 -
+                                (row.isCurrent ? 4 : 0)}px`,
+                            height: `${(gridDimension * currentZoom) / 10 -
+                                (row.isCurrent ? 4 : 0)}px`,
                         }}
                         onClick={() => {
                             if (textureToApply)
@@ -146,6 +149,8 @@ class MapGenerator extends Component {
                                         }`}
                                         town={town}
                                         showTownList={this.showTownList}
+                                        cancelTownList={this.cancelTownList}
+                                        isCurrent={row.isCurrent || false}
                                     />
                                 );
                             }
@@ -159,11 +164,26 @@ class MapGenerator extends Component {
         return table;
     };
 
+    showInfos = tileInfo => {
+        this.props.doSetState({
+            currentTile: tileInfo,
+        });
+    };
+
     showTownList = town => {
         this.props.doSetState({
             isTownShowed: true,
             merchantsList: town.merchantsList || [],
             questsList: town.questsList || [],
+        });
+    };
+
+    cancelTownList = () => {
+        console.log('!!');
+        this.props.doSetState({
+            isTownShowed: false,
+            merchantsList: [],
+            questsList: [],
         });
     };
 
@@ -183,9 +203,9 @@ class MapGenerator extends Component {
         });
         updates["/" + parseInt(x, 10) + "/" + parseInt(y, 10) + "/" + path] =
             textureToApply[path];
-        for (let i = 0; i < currentScale - 1; i++) {
+        for (let i = 0; i <= currentScale - 1; i++) {
             if (i === 0) {
-                for (let j = 0; j < currentScale - 1; j++) {
+                for (let j = 0; j <= currentScale - 1; j++) {
                     if (y - j >= 0) {
                         updates[
                             "/" + x + "/" + parseInt(y - j, 10) + "/" + path
@@ -198,7 +218,7 @@ class MapGenerator extends Component {
                     }
                 }
             } else {
-                for (let j = 0; j < currentScale - 1; j++) {
+                for (let j = 0; j <= currentScale - 1; j++) {
                     if (x - i >= 0 && y - j >= 0) {
                         updates[
                             "/" +
@@ -220,8 +240,8 @@ class MapGenerator extends Component {
                         ] = textureToApply[path];
                     }
                 }
-                for (let j = 0; j < currentScale - 1; j++) {
-                    if (x - i >= 0 && y - j >= 0) {
+                for (let j = 0; j <= currentScale - 1; j++) {
+                    if (x + i <= 39 && y - j >= 0) {
                         updates[
                             "/" +
                                 parseInt(x + i, 10) +
@@ -256,7 +276,14 @@ class MapGenerator extends Component {
     };
 
     render() {
-        const { map, doSetState, currentX, currentY, currentZoom } = this.props;
+        const {
+            map,
+            doSetState,
+            currentX,
+            currentY,
+            currentZoom,
+            loadCurrentPosition,
+        } = this.props;
 
         return (
             <div className="map" style={styledMap}>
@@ -265,6 +292,7 @@ class MapGenerator extends Component {
                     doSetState={doSetState}
                     currentX={currentX}
                     currentY={currentY}
+                    loadCurrentPosition={loadCurrentPosition}
                 />
                 <div
                     className="map-mover"
@@ -301,6 +329,7 @@ MapGenerator.propTypes = {
     textureToApply: PropTypes.object,
     triggerError: PropTypes.func.isRequired,
     currentScale: PropTypes.number.isRequired,
+    loadCurrentPosition: PropTypes.func.isRequired,
 };
 
 export default MapGenerator;

@@ -382,6 +382,7 @@ export const defaultState = {
     currentX: 0,
     currentY: 0,
     currentZoom: 10,
+    currentTile: {},
     errorMessage: "",
     email: "",
     gameMaster: "",

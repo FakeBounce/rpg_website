@@ -38,6 +38,10 @@
     height:30px;
 }
 
+.map-move-center {
+    right: 120px;
+}
+
 .map-move-left {
     right: 90px;
 }
@@ -75,6 +79,10 @@
     background-color: black;
     opacity:0.6;
     position: absolute;
+}
+
+.is-current {
+    border: 2px solid #991510;
 }
 
 .fog-gm:hover {

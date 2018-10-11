@@ -15,23 +15,34 @@ const styledIcon = {
 
 class Town extends Component {
     render() {
-        const { town, showTownList } = this.props;
+        const { town, showTownList, cancelTownList, isCurrent } = this.props;
         return (
             <div
                 style={styledItem}
-                onClick={() => showTownList(town)}
+                onClick={() =>
+                    isCurrent ? showTownList(town) : cancelTownList()
+                }
                 data-tip={town.name}
             >
-                <img src={"./town-size-" + town.size + ".jpg"} style={styledIcon} alt={town.name}/>
+                <img
+                    src={"./town-size-" + town.size + ".jpg"}
+                    style={styledIcon}
+                    alt={town.name}
+                />
                 <ReactTooltip />
             </div>
         );
     }
 }
+Town.defaultProps = {
+    cancelTownList: () => {},
+};
 
 Town.propTypes = {
     town: PropTypes.object.isRequired,
     showTownList: PropTypes.func.isRequired,
+    cancelTownList: PropTypes.func,
+    isCurrent: PropTypes.bool.isRequired,
 };
 
 export default Town;

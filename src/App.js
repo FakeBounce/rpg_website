@@ -171,7 +171,7 @@ class App extends Component {
             .then(snapshot => {
                 const newMerchants = [];
                 const artefactsLeft = [...items.artefacts];
-                snapshot.val().map((m,i) => {
+                snapshot.val().map((m, i) => {
                     newMerchants.push(
                         this.hydrateMerchant(artefactsLeft, m, true),
                     );
@@ -446,8 +446,7 @@ class App extends Component {
         } = this.state;
         const newItemsTab = character.items ? [...character.items] : [];
         let hasAlready = false;
-        if(character.items)
-        {
+        if (character.items) {
             character.items.map((i, index) => {
                 if (i.name === item.name) {
                     hasAlready = true;
@@ -545,6 +544,9 @@ class App extends Component {
                     .catch(error => {
                         this.triggerError(error);
                     });
+
+                firebase
+                    .database().ref().off()
             })
             .catch(error => {
                 // An error happened.
@@ -569,6 +571,7 @@ class App extends Component {
                     ...state,
                     map: snapshot.val(),
                 }));
+                console.log('map',this.state.map);
             });
     };
 
@@ -604,6 +607,7 @@ class App extends Component {
                 this.setState(state => ({
                     ...state,
                     currentX: snapshot.val(),
+                    currentZoom: 10,
                 }));
             })
             .catch(error => {
@@ -618,6 +622,7 @@ class App extends Component {
                 this.setState(state => ({
                     ...state,
                     currentY: snapshot.val(),
+                    currentZoom: 10,
                 }));
             })
             .catch(error => {
@@ -1100,6 +1105,7 @@ class App extends Component {
             currentX,
             currentY,
             currentZoom,
+            currentTile,
         } = this.state;
 
         return (
@@ -1210,6 +1216,8 @@ class App extends Component {
                             currentX={currentX}
                             currentY={currentY}
                             currentZoom={currentZoom}
+                            loadCurrentPosition={this.loadCurrentPosition}
+                            currentTile={currentTile}
                         />
                     )}
                 {musicNameFirst !== "" && (
