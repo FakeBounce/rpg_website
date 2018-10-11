@@ -12,6 +12,7 @@ import {
 } from "./StyleConstants";
 import MapZoom from "./MapZoom";
 import MapArrows from "./MapArrows";
+import ReactTooltip from "react-tooltip";
 
 const styledMap = {
     width: `${gridDimension * gridLength}px`,
@@ -54,7 +55,9 @@ class MapGenerator extends Component {
         } = this.props;
         const table = [];
 
+        let hasTown = -1;
         rowToRender.map((row, index) => {
+            hasTown = -1;
             table.push(
                 isGameMaster && !isOnPlayerView ? (
                     <div
@@ -74,22 +77,12 @@ class MapGenerator extends Component {
                             else this.showInfos(row);
                         }}
                     >
-                        {row.hasFog && (
-                            <div
-                                className="fog-gm"
-                                style={{
-                                    width: `${(gridDimension * currentZoom) /
-                                        10}px`,
-                                    height: `${(gridDimension * currentZoom) /
-                                        10}px`,
-                                }}
-                            />
-                        )}
                         {towns.map((town, i) => {
                             if (
                                 positionX === town.positionY &&
                                 index === town.positionX
                             ) {
+                                hasTown = i;
                                 return (
                                     <Town
                                         key={`town-${town.positionX}-${
@@ -108,6 +101,30 @@ class MapGenerator extends Component {
                             }
                             return null;
                         })}
+                        {}
+                        {row.hasFog && (
+                            <div
+                                className="fog-gm"
+                                style={{
+                                    width: `${(gridDimension * currentZoom) /
+                                        10}px`,
+                                    height: `${(gridDimension * currentZoom) /
+                                        10}px`,
+                                }}
+                                onClick={
+                                    hasTown !== -1
+                                        ? () => {
+                                              doSetState({
+                                                  currentTown: hasTown,
+                                              });
+                                              this.showInfos(row);
+                                          }
+                                        : () => {}
+                                }
+                            >
+                                <ReactTooltip />
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div
@@ -179,7 +196,6 @@ class MapGenerator extends Component {
     };
 
     cancelTownList = () => {
-        console.log('!!');
         this.props.doSetState({
             isTownShowed: false,
             merchantsList: [],

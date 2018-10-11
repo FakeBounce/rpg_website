@@ -583,7 +583,6 @@ class App extends Component {
                     ...state,
                     map: snapshot.val(),
                 }));
-                console.log('map',this.state.map);
             });
     };
 

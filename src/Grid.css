@@ -79,6 +79,9 @@
     background-color: black;
     opacity:0.6;
     position: absolute;
+    z-index: 1;
+    top:0px;
+    left:0px;
 }
 
 .is-current {
@@ -87,9 +90,11 @@
 
 .fog-gm:hover {
     opacity:0;
+    background-color: transparent;
 }
 
 .fog {
     background-color: black;
     position: absolute;
+    z-index: 1;
 }
