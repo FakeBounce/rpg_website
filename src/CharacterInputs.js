@@ -60,6 +60,7 @@ class CharacterInputs extends Component {
             onChange,
             onLifeChange,
             onStatusChange,
+            onGoldChange,
             damageTaken,
             isGameMaster,
         } = this.props;
@@ -113,7 +114,7 @@ class CharacterInputs extends Component {
                             style={styles.lifeInput}
                         />
                         <button
-                            onClick={onLifeChange}
+                            onClick={onGoldChange}
                             style={styles.goldButton}
                         >
                             Gold
@@ -134,6 +135,7 @@ CharacterInputs.propTypes = {
     onChangeTab: PropTypes.func.isRequired,
     onLifeChange: PropTypes.func.isRequired,
     onStatusChange: PropTypes.func.isRequired,
+    onGoldChange: PropTypes.func.isRequired,
 };
 
 export default CharacterInputs;

@@ -26,6 +26,7 @@ class CharacterOtherInfos extends Component {
             onChange,
             onLifeChange,
             onStatusChange,
+            onGoldChange,
             onItemUse,
             damageTaken,
             isGameMaster,
@@ -50,6 +51,7 @@ class CharacterOtherInfos extends Component {
                     onChangeTab={onChangeTab}
                     onLifeChange={onLifeChange}
                     onStatusChange={onStatusChange}
+                    onGoldChange={onGoldChange}
                 />
             </div>
         );
@@ -67,6 +69,7 @@ CharacterOtherInfos.propTypes = {
     onChangeTab: PropTypes.func.isRequired,
     onLifeChange: PropTypes.func.isRequired,
     onStatusChange: PropTypes.func.isRequired,
+    onGoldChange: PropTypes.func.isRequired,
     onItemUse: PropTypes.func.isRequired,
 };
 

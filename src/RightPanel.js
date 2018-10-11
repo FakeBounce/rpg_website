@@ -200,6 +200,7 @@ class RightPanel extends Component {
                     onLifeChange={this.onLifeChange}
                     onStatusChange={this.onStatusChange}
                     onItemUse={this.onItemUse}
+                    onGoldChange={this.onGoldChange}
                 />
             </div>
         );
