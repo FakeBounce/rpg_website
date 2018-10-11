@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
 import FileUploader from "./FileUploader";
+import { attributes } from "./Constants";
 
 const styledBoxHeader = {
     width: "100%",
@@ -82,7 +83,8 @@ class CharacterCreation extends Component {
         } = this.state;
         const obj = {};
         let pointsLeft = 0;
-        obj[name] = value;
+        obj[name] =
+            name === "name" || "description" ? value : parseInt(value, 10);
         switch (name) {
             case "strength":
                 pointsLeft =
@@ -293,7 +295,7 @@ class CharacterCreation extends Component {
         const obj = [...this.state.items];
         obj[index] = {
             ...obj[index],
-            quantity: parseInt(value,10),
+            quantity: parseInt(value, 10),
         };
         this.setState(state => ({
             ...state,
@@ -537,86 +539,27 @@ class CharacterCreation extends Component {
                 )}
                 <div>
                     <div style={styledBoxHeader}>Attributes :</div>
-                    Strength :
-                    <input
-                        type="number"
-                        name="strength"
-                        placeholder="strength"
-                        value={strength}
-                        onChange={e => {
-                            this.onChange(e.target.name, e.target.value);
-                        }}
-                    />
-                    Dexterity :
-                    <input
-                        type="number"
-                        name="dexterity"
-                        placeholder="dexterity"
-                        value={dexterity}
-                        onChange={e => {
-                            this.onChange(e.target.name, e.target.value);
-                        }}
-                    />
-                    Charisma :
-                    <input
-                        type="number"
-                        name="charisma"
-                        placeholder="charisma"
-                        value={charisma}
-                        onChange={e => {
-                            this.onChange(e.target.name, e.target.value);
-                        }}
-                    />
-                    Luck :
-                    <input
-                        type="number"
-                        name="luck"
-                        placeholder="luck"
-                        value={luck}
-                        onChange={e => {
-                            this.onChange(e.target.name, e.target.value);
-                        }}
-                    />
-                    Education :
-                    <input
-                        type="number"
-                        name="education"
-                        placeholder="education"
-                        value={education}
-                        onChange={e => {
-                            this.onChange(e.target.name, e.target.value);
-                        }}
-                    />
-                    Perception :
-                    <input
-                        type="number"
-                        name="perception"
-                        placeholder="perception"
-                        value={perception}
-                        onChange={e => {
-                            this.onChange(e.target.name, e.target.value);
-                        }}
-                    />
-                    Magic :
-                    <input
-                        type="number"
-                        name="magic"
-                        placeholder="magic"
-                        value={magic}
-                        onChange={e => {
-                            this.onChange(e.target.name, e.target.value);
-                        }}
-                    />
-                    Constitution :
-                    <input
-                        type="number"
-                        name="constitution"
-                        placeholder="constitution"
-                        value={constitution}
-                        onChange={e => {
-                            this.onChange(e.target.name, e.target.value);
-                        }}
-                    />
+                    {attributes.map(a => {
+                        return (
+                            <div key={`attribute-${a}`}>
+                                {a} :
+                                <input
+                                    type="number"
+                                    name={a}
+                                    placeholder={a}
+                                    value={this.state[a]}
+                                    onChange={e => {
+                                        this.onChange(
+                                            e.target.name,
+                                            e.target.value,
+                                        );
+                                    }}
+                                    min="1"
+                                    max="75"
+                                />
+                            </div>
+                        );
+                    })}
                 </div>
                 <div>Total points left : {totalPointsleft}</div>
                 <div>

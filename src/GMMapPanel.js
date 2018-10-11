@@ -468,8 +468,8 @@ class GMMapPanel extends Component {
 
 GMMapPanel.propTypes = {
     textureToApply: PropTypes.object.isRequired,
-    musicName: PropTypes.number.isRequired,
-    noiseName: PropTypes.number.isRequired,
+    musicName: PropTypes.string.isRequired,
+    noiseName: PropTypes.string.isRequired,
     musicVolume: PropTypes.number.isRequired,
     noiseVolume: PropTypes.number.isRequired,
     onChangeMusics: PropTypes.func.isRequired,
@@ -477,7 +477,7 @@ GMMapPanel.propTypes = {
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
     changeCurrentScale: PropTypes.func.isRequired,
-    tilesTypes: PropTypes.array.isRequired,
+    tilesTypes: PropTypes.object.isRequired,
     currentScale: PropTypes.number.isRequired,
     currentTown: PropTypes.number.isRequired,
     currentStory: PropTypes.number.isRequired,

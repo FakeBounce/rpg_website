@@ -92,6 +92,7 @@ class IsNotAuth extends Component {
                     type="text"
                     name="email"
                     placeholder="email"
+                    autoComplete={true}
                     value={email}
                     onChange={e => {
                         onChange(e.target.name, e.target.value);
@@ -102,6 +103,7 @@ class IsNotAuth extends Component {
                     type="password"
                     name="password"
                     placeholder="password"
+                    autoComplete={true}
                     value={password}
                     onChange={e => {
                         onChange(e.target.name, e.target.value);

@@ -54,12 +54,12 @@ class GameScreen extends Component {
 }
 
 GameScreen.propTypes = {
-    onChatHelp: PropTypes.array.isRequired,
+    onChatHelp: PropTypes.bool.isRequired,
     stories: PropTypes.array.isRequired,
     currentStory: PropTypes.number.isRequired,
     musicMute: PropTypes.bool.isRequired,
     isGameMaster: PropTypes.bool.isRequired,
-    selectAnotherCharacter: PropTypes.bool.isRequired,
+    selectAnotherCharacter: PropTypes.func.isRequired,
     signOut: PropTypes.func.isRequired,
     accessChatHelp: PropTypes.func.isRequired,
     toggleMusic: PropTypes.func.isRequired,

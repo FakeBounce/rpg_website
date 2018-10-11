@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import firebase from 'firebase';
-import './Grid.css';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import firebase from "firebase";
+import "./Grid.css";
 
-import GMMapPanel from './GMMapPanel';
-import RightPanel from './RightPanel';
-import PlayerMapPanel from './PlayerMapPanel';
-import Town from './Town';
+import GMMapPanel from "./GMMapPanel";
+import RightPanel from "./RightPanel";
+import PlayerMapPanel from "./PlayerMapPanel";
+import Town from "./Town";
 
 import {
     gridDimension,
     gridLength,
     totalRows,
     totalColumn,
-} from './StyleConstants';
+} from "./StyleConstants";
 
 const styledMap = {
     width: `${gridDimension * gridLength}px`,
@@ -37,7 +37,7 @@ class MiddlePanel extends Component {
                     }}
                 >
                     {this.createGrid(index, row)}
-                </div>
+                </div>,
             );
             return null;
         });
@@ -150,7 +150,7 @@ class MiddlePanel extends Component {
                             return null;
                         })}
                     </div>
-                )
+                ),
             );
             return null;
         });
@@ -175,23 +175,23 @@ class MiddlePanel extends Component {
         } = this.props;
 
         let updates = {};
-        let path = '';
+        let path = "";
         Object.keys(textureToApply).map(key => {
             path = key;
         });
-        updates['/' + parseInt(x, 10) + '/' + parseInt(y, 10) + '/' + path] =
+        updates["/" + parseInt(x, 10) + "/" + parseInt(y, 10) + "/" + path] =
             textureToApply[path];
         for (let i = 0; i < currentScale - 1; i++) {
             if (i === 0) {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (y - j >= 0) {
                         updates[
-                            '/' + x + '/' + parseInt(y - j, 10) + '/' + path
+                            "/" + x + "/" + parseInt(y - j, 10) + "/" + path
                         ] = textureToApply[path];
                     }
                     if (y + j <= 39) {
                         updates[
-                            '/' + x + '/' + parseInt(y + j, 10) + '/' + path
+                            "/" + x + "/" + parseInt(y + j, 10) + "/" + path
                         ] = textureToApply[path];
                     }
                 }
@@ -199,21 +199,21 @@ class MiddlePanel extends Component {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (x - i >= 0 && y - j >= 0) {
                         updates[
-                            '/' +
+                            "/" +
                                 parseInt(x - i, 10) +
-                                '/' +
+                                "/" +
                                 parseInt(y - j, 10) +
-                                '/' +
+                                "/" +
                                 path
                         ] = textureToApply[path];
                     }
                     if (x - i >= 0 && y + j <= 39) {
                         updates[
-                            '/' +
+                            "/" +
                                 parseInt(x - i, 10) +
-                                '/' +
+                                "/" +
                                 parseInt(y + j, 10) +
-                                '/' +
+                                "/" +
                                 path
                         ] = textureToApply[path];
                     }
@@ -221,21 +221,21 @@ class MiddlePanel extends Component {
                 for (let j = 0; j < currentScale - 1; j++) {
                     if (x - i >= 0 && y - j >= 0) {
                         updates[
-                            '/' +
+                            "/" +
                                 parseInt(x + i, 10) +
-                                '/' +
+                                "/" +
                                 parseInt(y - j, 10) +
-                                '/' +
+                                "/" +
                                 path
                         ] = textureToApply[path];
                     }
                     if (x + i <= 39 && y + j <= 39) {
                         updates[
-                            '/' +
+                            "/" +
                                 parseInt(x + i, 10) +
-                                '/' +
+                                "/" +
                                 parseInt(y + j, 10) +
-                                '/' +
+                                "/" +
                                 path
                         ] = textureToApply[path];
                     }
@@ -245,7 +245,7 @@ class MiddlePanel extends Component {
 
         firebase
             .database()
-            .ref('maps/' + stories[currentStory].map)
+            .ref("maps/" + stories[currentStory].map)
             .update(updates)
             .catch(error => {
                 // Handle Errors here.
@@ -330,7 +330,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={'./arrow-left.png'}
+                            src={"./arrow-left.png"}
                             className="map-arrow"
                             alt="arrow-left"
                         />
@@ -342,7 +342,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={'./arrow-right.png'}
+                            src={"./arrow-right.png"}
                             className="map-arrow"
                             alt="arrow-right"
                         />
@@ -354,7 +354,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={'./arrow-up.png'}
+                            src={"./arrow-up.png"}
                             className="map-arrow"
                             alt="arrow-up"
                         />
@@ -366,7 +366,7 @@ class MiddlePanel extends Component {
                         }}
                     >
                         <img
-                            src={'./arrow-down.png'}
+                            src={"./arrow-down.png"}
                             className="map-arrow"
                             alt="arrow-down"
                         />
@@ -447,6 +447,10 @@ class MiddlePanel extends Component {
     }
 }
 
+MiddlePanel.defaultProps = {
+    textureToApply: null,
+};
+
 MiddlePanel.propTypes = {
     isOnPlayerView: PropTypes.bool.isRequired,
     isItemShowed: PropTypes.bool.isRequired,
@@ -460,18 +464,18 @@ MiddlePanel.propTypes = {
     map: PropTypes.array.isRequired,
     chatInput: PropTypes.string.isRequired,
     chatHistory: PropTypes.array.isRequired,
-    textureToApply: PropTypes.object.isRequired,
-    users: PropTypes.array.isRequired,
+    textureToApply: PropTypes.object,
+    users: PropTypes.object.isRequired,
     uid: PropTypes.string.isRequired,
     isGameMaster: PropTypes.bool.isRequired,
     currentStory: PropTypes.number.isRequired,
     storyCharacters: PropTypes.array.isRequired,
-    gameMaster: PropTypes.bool.isRequired,
+    gameMaster: PropTypes.string.isRequired,
     currentQuest: PropTypes.number.isRequired,
     isQuestShowed: PropTypes.bool.isRequired,
     questsList: PropTypes.array.isRequired,
-    musicName: PropTypes.number.isRequired,
-    noiseName: PropTypes.number.isRequired,
+    musicName: PropTypes.string.isRequired,
+    noiseName: PropTypes.string.isRequired,
     musicVolume: PropTypes.number.isRequired,
     noiseVolume: PropTypes.number.isRequired,
     merchants: PropTypes.array.isRequired,

@@ -218,7 +218,7 @@ class PlayerMapPanel extends Component {
 PlayerMapPanel.propTypes = {
     isQuestShowed: PropTypes.bool.isRequired,
     currentQuest: PropTypes.number.isRequired,
-    currentMerchant: PropTypes.object.isRequired,
+    currentMerchant: PropTypes.number.isRequired,
     character: PropTypes.object.isRequired,
     isItemShowed: PropTypes.bool.isRequired,
     itemsList: PropTypes.array.isRequired,

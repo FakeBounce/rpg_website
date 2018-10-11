@@ -430,18 +430,13 @@ export const defaultState = {
     spreadSheet: {},
 };
 
-const datamark = (
-    <datalist id="tickmarks">
-        <option value="0.1" label="0.1" />
-        <option value="0.2" />
-        <option value="0.3" />
-        <option value="0.4" />
-        <option value="0.5" label="0.5" />
-        <option value="0.6" />
-        <option value="0.7" />
-        <option value="0.8" />
-        <option value="0.9" />
-        <option value="1" label="1" />
-        <option value="1.1" />
-    </datalist>
-);
+export const attributes = [
+    "strength",
+    "dexterity",
+    "luck",
+    "charisma",
+    "education",
+    "magic",
+    "perception",
+    "constitution",
+];

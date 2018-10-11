@@ -260,7 +260,7 @@ CharacterSelection.propTypes = {
     uid: PropTypes.string.isRequired,
     pseudo: PropTypes.string.isRequired,
     characterCreation: PropTypes.bool.isRequired,
-    characters: PropTypes.array.isRequired,
+    characters: PropTypes.object.isRequired,
     doSetState: PropTypes.func.isRequired,
     triggerError: PropTypes.func.isRequired,
     chooseStory: PropTypes.func.isRequired,

@@ -36,7 +36,6 @@ const styles = {
 class CharacterHeader extends Component {
     render() {
         const { icon, name, health, maxHealth, gold, status } = this.props;
-        console.log('props',this.props);
 
         return (
             <div style={styles.characterHeader}>
