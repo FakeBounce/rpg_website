@@ -97,14 +97,18 @@ class PlayerMapPanel extends Component {
     getQuestsFromTown = qft => {
         const { quests } = this.props;
         return qft.map(q => {
-            return (
-                <Quest
-                    key={`merchant-${quests[q].name}`}
-                    {...quests[q]}
-                    index={q}
-                    showQuest={this.showQuest}
-                />
-            );
+            if(!quests[q].validated)
+            {
+                return (
+                    <Quest
+                        key={`merchant-${quests[q].name}`}
+                        {...quests[q]}
+                        index={q}
+                        showQuest={this.showQuest}
+                    />
+                );
+            }
+            return null;
         });
     };
 

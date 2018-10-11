@@ -39,8 +39,8 @@ const styledTownListDiscover = {
 
 const styledMapButtons = {
     border: "1px solid blue",
-    width: '100%',
-    height: `${gridDimension*2 + 3}px`,
+    width: "100%",
+    height: `${gridDimension * 2 + 3}px`,
     display: "inline-block",
     float: "left",
 };
@@ -219,29 +219,31 @@ class GMMapPanel extends Component {
 
     addQuestToTown = i => {
         const { currentStory, currentTown, towns, quests } = this.props;
-        const newTown = { ...towns[currentTown] };
-        newTown.questsList
-            ? newTown.questsList.push(i)
-            : (newTown.questsList = [i]);
-        firebase
-            .database()
-            .ref("stories/" + currentStory + "/towns/" + currentTown)
-            .set(newTown)
-            .catch(error => {
-                // Handle Errors here.
-                this.props.triggerError(error);
-            });
+        if (!quests[i].validated) {
+            const newTown = { ...towns[currentTown] };
+            newTown.questsList
+                ? newTown.questsList.push(i)
+                : (newTown.questsList = [i]);
+            firebase
+                .database()
+                .ref("stories/" + currentStory + "/towns/" + currentTown)
+                .set(newTown)
+                .catch(error => {
+                    // Handle Errors here.
+                    this.props.triggerError(error);
+                });
 
-        const newQuest = { ...quests[i] };
-        newQuest.town = currentTown;
-        firebase
-            .database()
-            .ref("stories/" + currentStory + "/quests/" + i)
-            .set(newQuest)
-            .catch(error => {
-                // Handle Errors here.
-                this.props.triggerError(error);
-            });
+            const newQuest = { ...quests[i] };
+            newQuest.town = currentTown;
+            firebase
+                .database()
+                .ref("stories/" + currentStory + "/quests/" + i)
+                .set(newQuest)
+                .catch(error => {
+                    // Handle Errors here.
+                    this.props.triggerError(error);
+                });
+        }
     };
 
     addMerchantToTown = i => {
@@ -261,6 +263,7 @@ class GMMapPanel extends Component {
 
         const newMerchant = { ...merchants[i] };
         newMerchant.town = currentTown;
+        newMerchant.isDiscovered = false;
         firebase
             .database()
             .ref("stories/" + currentStory + "/merchants/" + i)
@@ -286,26 +289,11 @@ class GMMapPanel extends Component {
             });
     };
 
-    removeQuestFromTown = i => {
-        const { currentStory, currentTown, towns, quests } = this.props;
-        const newTown = { ...towns[currentTown] };
-        newTown.questsList.map((ql, index) => {
-            if (ql === i) {
-                newTown.questsList.splice(index, 1);
-            }
-        });
-
-        firebase
-            .database()
-            .ref("stories/" + currentStory + "/towns/" + currentTown)
-            .set(newTown)
-            .catch(error => {
-                // Handle Errors here.
-                this.props.triggerError(error);
-            });
+    validateQuest = i => {
+        const { currentStory, quests } = this.props;
 
         const newQuest = { ...quests[i] };
-        newQuest.town = null;
+        newQuest.validated = true;
         firebase
             .database()
             .ref("stories/" + currentStory + "/quests/" + i)
@@ -314,6 +302,38 @@ class GMMapPanel extends Component {
                 // Handle Errors here.
                 this.props.triggerError(error);
             });
+    };
+
+    removeQuestFromTown = i => {
+        const { currentStory, currentTown, towns, quests } = this.props;
+        const newTown = { ...towns[currentTown] };
+        if (!quests[i].validated) {
+            newTown.questsList.map((ql, index) => {
+                if (ql === i) {
+                    newTown.questsList.splice(index, 1);
+                }
+            });
+
+            firebase
+                .database()
+                .ref("stories/" + currentStory + "/towns/" + currentTown)
+                .set(newTown)
+                .catch(error => {
+                    // Handle Errors here.
+                    this.props.triggerError(error);
+                });
+
+            const newQuest = { ...quests[i] };
+            newQuest.town = null;
+            firebase
+                .database()
+                .ref("stories/" + currentStory + "/quests/" + i)
+                .set(newQuest)
+                .catch(error => {
+                    // Handle Errors here.
+                    this.props.triggerError(error);
+                });
+        }
     };
 
     removeMerchantFromTown = i => {
@@ -412,13 +432,30 @@ class GMMapPanel extends Component {
                             {quests.map((q, i) => {
                                 if (q.town === currentTown) {
                                     return (
-                                        <div
-                                            onClick={() =>
-                                                this.removeQuestFromTown(i)
-                                            }
-                                            style={styledBoxHeader}
-                                        >
-                                            {q.name}
+                                        <div>
+                                            <div
+                                                onClick={() =>
+                                                    this.removeQuestFromTown(i)
+                                                }
+                                                style={styledTownListItem}
+                                            >
+                                                {q.name}
+                                            </div>
+
+                                            {q.validated ? (
+                                                "(Validated)"
+                                            ) : (
+                                                <button
+                                                    style={
+                                                        styledTownListDiscover
+                                                    }
+                                                    onClick={() =>
+                                                        this.validateQuest(i)
+                                                    }
+                                                >
+                                                    Validate
+                                                </button>
+                                            )}
                                         </div>
                                     );
                                 }
@@ -519,7 +556,7 @@ class GMMapPanel extends Component {
 
 GMMapPanel.defaultProps = {
     textureToApply: null,
-}
+};
 
 GMMapPanel.propTypes = {
     textureToApply: PropTypes.object,
