@@ -82,7 +82,7 @@ class CharacterCreation extends Component {
         } = this.state;
         const obj = {};
         let pointsLeft = 0;
-        obj[name] = parseInt(value,10);
+        obj[name] = value;
         switch (name) {
             case "strength":
                 pointsLeft =
