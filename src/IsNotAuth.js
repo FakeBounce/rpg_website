@@ -111,7 +111,9 @@ class IsNotAuth extends Component {
                 <button onClick={this.signIn}>Sign In</button>
                 <button onClick={this.signUp}>Sign Up</button>
 
-                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> fakebounce, le 2018-10-10 : Added illustrations for items </div>
+                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> fakebounce, le 2018-10-11 : Added white arrows to map </div>
+                    <div className="commit"> fakebounce, le 2018-10-11 : Fixed some CharacterPanel bugs </div>
+                    <div className="commit"> fakebounce, le 2018-10-10 : Added illustrations for items </div>
                     <div className="commit"> FakeBounce, le 2018-10-09 : Fixed map player view. Fixed quest bugs. GM can now switch between GM view and Player view. Did some style to Town gestion </div>
                     <div className="commit"> fakebounce, le 2018-10-09 : Positionned towns. Now GM can add and remove quests/merchants from towns dynamically. Style need to be reviewed </div>
                     <div className="commit"> FakeBounce, le 2018-10-08 : Formatted map, added NoFog tile and arrows to navigate </div>
