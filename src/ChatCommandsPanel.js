@@ -28,6 +28,18 @@ const chatCommands = [
         name: '/tmw Message',
         action: "Send Message to team only (GM can't see it).",
     },
+    {
+        name: '/gold Player X',
+        action: 'Send Gold to Player only.',
+    },
+    {
+        name: '/goldgm X',
+        action: 'Send X Gold to GM only.',
+    },
+    {
+        name: '/goldtm X',
+        action: "Send X Gold to team.",
+    },
 ];
 
 class ChatCommandsPanel extends Component {

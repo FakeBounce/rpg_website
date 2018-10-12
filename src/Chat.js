@@ -118,6 +118,15 @@ class Chat extends Component {
                     noMagicWord = false;
                 }
             }
+            if (chatInput.length >= 6) {
+                if (this.sendTeamGoldAction()) {
+                    noMagicWord = false;
+                } else if (this.sendGoldGMAction()) {
+                    noMagicWord = false;
+                } else if (this.sendGoldAction()) {
+                    noMagicWord = false;
+                }
+            }
             switch (chatInput) {
                 case "/strength":
                 case "/str":
@@ -213,7 +222,6 @@ class Chat extends Component {
                     noMagicWord = false;
                     this.attributeAction("magic", true);
                     break;
-
                 default:
                     break;
             }
@@ -316,6 +324,201 @@ class Chat extends Component {
         return isnum;
     };
 
+    sendGoldGMAction = () => {
+        const { chatInput, character, pseudo, uid, currentStory } = this.props;
+        const splittedString = chatInput.toLowerCase().split(" ");
+        if (splittedString.length === 2 && splittedString[0] === "/goldgm") {
+            const isnum = /^\d+$/.test(splittedString[1]);
+            if (isnum) {
+                if (
+                    parseInt(character.gold, 10) -
+                        parseInt(splittedString[1], 10) >=
+                    0
+                ) {
+                    this.sendChatInput({
+                        message: `@${pseudo} gave ${
+                            splittedString[1]
+                        } gold to the GameMaster. He is very thankfull !`,
+                    });
+                    firebase
+                        .database()
+                        .ref(
+                            "stories/" +
+                                currentStory +
+                                "/characters/" +
+                                uid +
+                                "/character/gold",
+                        )
+                        .set(
+                            parseInt(character.gold, 10) -
+                                parseInt(splittedString[1], 10),
+                        )
+                        .catch(error => {
+                            // Handle Errors here.
+                            this.props.triggerError(error);
+                        });
+                }
+
+                return true;
+            }
+        }
+        return false;
+    };
+
+    sendGoldAction = () => {
+        const {
+            chatInput,
+            pseudo,
+            storyCharacters,
+            character,
+            uid,
+            currentStory,
+        } = this.props;
+        const splittedString = chatInput.toLowerCase().split(" ");
+        if (splittedString.length === 3 && splittedString[0] === "/gold") {
+            let playerIsInTeam = false;
+            storyCharacters.map(sc => {
+                if (
+                    sc.userPseudo.toLowerCase() ===
+                    splittedString[1].toLowerCase()
+                ) {
+                    playerIsInTeam = { ...sc };
+                }
+            });
+            if (playerIsInTeam) {
+                const isnum = /^\d+$/.test(splittedString[2]);
+                if (isnum) {
+                    if (
+                        parseInt(character.gold, 10) -
+                            parseInt(splittedString[2], 10) >=
+                        0
+                    ) {
+                        this.sendChatInput({
+                            message: `You gave ${splittedString[2]} gold to ${
+                                splittedString[1]
+                            }.`,
+                            viewers: [pseudo],
+                        });
+                        this.sendChatInput({
+                            message: `@${pseudo} gave ${
+                                splittedString[2]
+                            } gold to you.`,
+                            viewers: [splittedString[1]],
+                        });
+
+                        firebase
+                            .database()
+                            .ref(
+                                "stories/" +
+                                    currentStory +
+                                    "/characters/" +
+                                    uid +
+                                    "/character/gold",
+                            )
+                            .set(
+                                parseInt(character.gold, 10) -
+                                    parseInt(splittedString[2], 10),
+                            )
+                            .catch(error => {
+                                // Handle Errors here.
+                                this.props.triggerError(error);
+                            });
+
+                        firebase
+                            .database()
+                            .ref(
+                                "stories/" +
+                                    currentStory +
+                                    "/characters/" +
+                                    playerIsInTeam.userUid +
+                                    "/character/gold",
+                            )
+                            .set(
+                                parseInt(playerIsInTeam.gold, 10) +
+                                    parseInt(splittedString[2], 10),
+                            )
+                            .catch(error => {
+                                // Handle Errors here.
+                                this.props.triggerError(error);
+                            });
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    };
+
+    sendTeamGoldAction = () => {
+        const {
+            chatInput,
+            pseudo,
+            storyCharacters,
+            character,
+            currentStory,
+            gameMaster,
+        } = this.props;
+        const splittedString = chatInput.toLowerCase().split(" ");
+        if (
+            splittedString.length === 2 &&
+            (splittedString[0] === "/goldtm" ||
+                splittedString[0] === "/goldteam")
+        ) {
+            if (storyCharacters.length > 2) {
+                const isnum = /^\d+$/.test(splittedString[1]);
+                if (isnum) {
+                    if (
+                        parseInt(character.gold, 10) -
+                            parseInt(splittedString[1], 10) >=
+                        0
+                    ) {
+                        const goldLeft =
+                            parseInt(splittedString[1], 10) %
+                            (storyCharacters.length - 2);
+                        const goldForEach = Math.floor(
+                            parseInt(splittedString[1], 10) /
+                                (storyCharacters.length - 2),
+                        );
+
+                        this.sendChatInput({
+                            message: `@${pseudo} gave ${
+                                splittedString[1]
+                            } gold to the team (${goldForEach} each).`,
+                        });
+
+                        let updates = {};
+                        storyCharacters.map(sc => {
+                            if (
+                                sc.userUid !== gameMaster &&
+                                sc.userPseudo !== pseudo
+                            ) {
+                                updates["/" + sc.userUid + "/character/gold"] =
+                                    parseInt(sc.gold, 10) + goldForEach;
+                            }
+                            if (sc.userPseudo === pseudo) {
+                                updates["/" + sc.userUid + "/character/gold"] =
+                                    parseInt(sc.gold, 10) -
+                                    parseInt(splittedString[1], 10) +
+                                    goldLeft;
+                            }
+                        });
+
+                        firebase
+                            .database()
+                            .ref("stories/" + currentStory + "/characters")
+                            .update(updates)
+                            .catch(error => {
+                                // Handle Errors here.
+                                this.props.triggerError(error);
+                            });
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    };
+
     attributeAction = (attribute, isGm = false) => {
         const { pseudo, character } = this.props;
         const dice = Math.floor(Math.random() * parseInt(100, 10) + 1);
@@ -402,6 +605,9 @@ Chat.propTypes = {
     isGameMaster: PropTypes.bool.isRequired,
     gameMaster: PropTypes.string.isRequired,
     users: PropTypes.object.isRequired,
+    storyCharacters: PropTypes.array.isRequired,
+    uid: PropTypes.string.isRequired,
+    currentStory: PropTypes.number.isRequired,
     character: PropTypes.object.isRequired,
     pseudo: PropTypes.string.isRequired,
     chatInput: PropTypes.string.isRequired,

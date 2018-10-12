@@ -207,14 +207,19 @@ class RightPanel extends Component {
     };
 
     modifyCurrentCharacter = uid => {
-        const {
-            currentStory,
-            isGameMaster,
-            doSetState,
-            triggerError,
-        } = this.props;
+        const { currentStory, isGameMaster, doSetState } = this.props;
 
         if (isGameMaster) {
+            firebase
+                .database()
+                .ref(
+                    "stories/" +
+                        currentStory +
+                        "/characters/" +
+                        this.props.uid +
+                        "/character",
+                )
+                .off();
             firebase
                 .database()
                 .ref(
@@ -244,6 +249,8 @@ class RightPanel extends Component {
             character,
             users,
             storyCharacters,
+            uid,
+            currentStory,
             gameMaster,
             isGameMaster,
         } = this.props;
@@ -259,6 +266,9 @@ class RightPanel extends Component {
                 />
                 <Chat
                     users={users}
+                    storyCharacters={storyCharacters}
+                    uid={uid}
+                    currentStory={currentStory}
                     gameMaster={gameMaster}
                     isGameMaster={isGameMaster}
                     character={character}
