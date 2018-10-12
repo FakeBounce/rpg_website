@@ -32,7 +32,7 @@ class ItemDescription extends Component {
                 <div className="item-description">
                     <div className="item-description-header">Description</div>
                     <img
-                        src={"./" + itemType + "/" + icon}
+                        src={"./" + itemType + "/" + icon || './common/unknown_image.png'}
                         alt={isHidden ? "Can't be described" : description}
                         className="item-description-icon"
                     />

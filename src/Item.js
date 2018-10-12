@@ -19,13 +19,7 @@ class Item extends Component {
             <div className="item" onClick={() => showItemDescription(index)}>
                 <img
                     src={"./" + itemType + "/" + icon}
-                    alt={
-                        isHidden
-                            ? itemType === "spells"
-                                ? "Parchemin de " + type
-                                : "Can't be described"
-                            : description
-                    }
+                    alt={" "}
                     className="item-icon"
                 />
                 <div className="item-text">{isHidden ? "???" : name}</div>

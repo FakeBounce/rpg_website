@@ -113,7 +113,17 @@ class IsNotAuth extends Component {
                 <button onClick={this.signIn}>Sign In</button>
                 <button onClick={this.signUp}>Sign Up</button>
 
-                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> FakeBounce, le 2018-10-11 : Added back button to return on story when trying to change character </div>
+                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> FakeBounce, le 2018-10-13 : Loaded all images from spreadsheets. Fixed some paths. Now GM can see if a merchant is visible or not </div>
+                    <div className="commit"> FakeBounce, le 2018-10-12 : Can now autocomplete chat with gold regex </div>
+                    <div className="commit"> FakeBounce, le 2018-10-12 : Players can now distribute gold </div>
+                    <div className="commit"> FakeBounce, le 2018-10-12 : GM can now unvalidate quest </div>
+                    <div className="commit"> FakeBounce, le 2018-10-12 : Fixed towns apparition. Now towns.map, now display the hasTown key; Map render time divided by 40. Corrected Quest fullscreen css. Added hasTown input for maps </div>
+                    <div className="commit"> FakeBounce, le 2018-10-12 : WIP - Reworking map functions </div>
+                    <div className="commit"> FakeBounce, le 2018-10-12 : Corrected export in stylesConstant </div>
+                    <div className="commit"> FakeBounce, le 2018-10-12 : Removed useless images and filtered public folder; preparing to use </div>
+                    <div className="commit"> FakeBounce, le 2018-10-12 : Replaced empty_notice png. Some bugs due to firebase db - to check </div>
+                    <div className="commit"> FakeBounce, le 2018-10-12 : Can now select maps on Fog through GM </div>
+                    <div className="commit"> FakeBounce, le 2018-10-11 : Added back button to return on story when trying to change character </div>
                     <div className="commit"> FakeBounce, le 2018-10-11 : Saved on firebase last current position, so we are automatically zoom on the current position </div>
                     <div className="commit"> FakeBounce, le 2018-10-11 : Added center point to center the map. Now GM can select current point on map, and player can only interact with this point. Fixed some texture bugs </div>
                     <div className="commit"> FakeBounce, le 2018-10-11 : Fixed gold GM edition </div>

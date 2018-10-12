@@ -94,7 +94,9 @@ class App extends Component {
         firebase
             .database()
             .ref("stories/" + currentStory + "/merchants")
-            .on("value", snapshot => {
+            // .once("value")
+            // .then(snapshot => {
+                .on("value", snapshot => {
                 this.setState(state => ({
                     ...state,
                     merchants: snapshot.val(),
@@ -379,7 +381,7 @@ class App extends Component {
                             newItem.type +
                             ") : " +
                             newItem.name;
-                        newItem.icon = "spell_book.png";
+                        newItem.icon = "spell_book.jpg";
                         newItem.isBook = true;
                         newItem.price =
                             newItem.price * Math.floor(Math.random() * 3 + 2);
@@ -558,7 +560,9 @@ class App extends Component {
                     });
 
                 firebase
-                    .database().ref().off()
+                    .database()
+                    .ref()
+                    .off();
             })
             .catch(error => {
                 // An error happened.

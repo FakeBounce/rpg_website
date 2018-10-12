@@ -592,7 +592,7 @@ class GMMapPanel extends Component {
                                                     )
                                                 }
                                             >
-                                                ToggleDiscover
+                                                ToggleDiscover({m.isDiscovered ? 'Y' : 'N'})
                                             </button>
                                         </div>
                                     );
