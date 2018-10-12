@@ -398,7 +398,7 @@ class GMMapPanel extends Component {
                     firebase
                         .database()
                         .ref('stories/' + currentStory + '/currentX')
-                        .set(parseInt(newTile.x, 10) - 9)
+                        .set(parseInt(newTile.x, 10) - 6)
                         .catch(error => {
                             // Handle Errors here.
                             this.props.triggerError(error);
@@ -406,7 +406,7 @@ class GMMapPanel extends Component {
                     firebase
                         .database()
                         .ref('stories/' + currentStory + '/currentY')
-                        .set(parseInt(newTile.y, 10) - 9)
+                        .set(parseInt(newTile.y, 10) - 6)
                         .catch(error => {
                             // Handle Errors here.
                             this.props.triggerError(error);
@@ -501,7 +501,7 @@ class GMMapPanel extends Component {
                                     this.onChange(parseInt(e.target.value, 10))
                                 }
                             />
-                            <button onClick={this.toggleHasTown}>Validate</button>
+                            <button onClick={() => this.toggleHasTown}>Validate</button>
                             <br />
                             isCurrent : {currentTile.isCurrent}
                             <button onClick={this.toggleIsCurrent}>

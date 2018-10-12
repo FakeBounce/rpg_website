@@ -7,15 +7,15 @@ import Town from "./Town";
 import {
     gridDimension,
     gridLength,
+    mapWidth,
     totalRows,
     totalColumn,
 } from "./StyleConstants";
 import MapZoom from "./MapZoom";
 import MapArrows from "./MapArrows";
-import ReactTooltip from "react-tooltip";
 
 const styledMap = {
-    width: `${gridDimension * gridLength}px`,
+    width: `${mapWidth}px`,
     height: `${gridDimension * gridLength}px`,
 };
 
@@ -54,7 +54,6 @@ class MapGenerator extends Component {
             towns,
         } = this.props;
         const table = [];
-
         let hasTown = -1;
         rowToRender.map((row, index) => {
             hasTown = -1;
@@ -77,7 +76,7 @@ class MapGenerator extends Component {
                             else this.showInfos(row);
                         }}
                     >
-                        {row.hasTown &&
+                        {row.hasTown > -1 &&
                                     <Town
                                         town={towns[row.hasTown]}
                                         showTownList={() => {
@@ -98,18 +97,7 @@ class MapGenerator extends Component {
                                     height: `${(gridDimension * currentZoom) /
                                         10}px`,
                                 }}
-                                onClick={
-                                    row.hasTown !== -1
-                                        ? () => {
-                                              doSetState({
-                                                  currentTown: row.hasTown,
-                                              });
-                                              this.showInfos(row);
-                                          }
-                                        : () => {}
-                                }
                             >
-                                <ReactTooltip />
                             </div>
                         )}
                     </div>
@@ -141,25 +129,14 @@ class MapGenerator extends Component {
                                 }}
                             />
                         )}
-                        {towns.map((town, i) => {
-                            if (
-                                positionX === town.positionY &&
-                                index === town.positionX
-                            ) {
-                                return (
-                                    <Town
-                                        key={`town-${town.positionX}-${
-                                            town.positionY
-                                        }`}
-                                        town={town}
-                                        showTownList={this.showTownList}
-                                        cancelTownList={this.cancelTownList}
-                                        isCurrent={row.isCurrent || false}
-                                    />
-                                );
-                            }
-                            return null;
-                        })}
+                        {row.hasTown > -1 &&
+                        <Town
+                            town={towns[row.hasTown]}
+                            showTownList={this.showTownList}
+                            cancelTownList={this.cancelTownList}
+                            isCurrent={row.isCurrent || false}
+                        />
+                        }
                     </div>
                 ),
             );
@@ -281,6 +258,7 @@ class MapGenerator extends Component {
     render() {
         const {
             map,
+            towns,
             doSetState,
             currentX,
             currentY,
@@ -306,7 +284,9 @@ class MapGenerator extends Component {
                         top: (-gridDimension * currentY * currentZoom) / 10,
                     }}
                 >
-                    {this.generateTable(map)}
+                    {
+                        map.length > 0 && towns.length > 0 && this.generateTable(map)
+                    }
                 </div>
             </div>
         );

@@ -1,23 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import "./Grid.css";
 
 import GMMapPanel from "./GMMapPanel";
 import RightPanel from "./RightPanel";
 import PlayerMapPanel from "./PlayerMapPanel";
-
-import {
-    gridDimension,
-    gridLength,
-    totalRows,
-    totalColumn,
-} from "./StyleConstants";
 import MapGenerator from "./MapGenerator";
-
-const styledMap = {
-    width: `${gridDimension * gridLength}px`,
-    height: `${gridDimension * gridLength}px`,
-};
 
 class MiddlePanel extends Component {
     changeCurrentScale = value => {

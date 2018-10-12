@@ -6,15 +6,18 @@ export const widthRightPanelLeft = widthRightPanel - imageSize;
 
 // export const gridHeight = 20;
 // export const gridWidth = 20;
-export const gridLength = 20;
+export const gridLength = 15;
 export const gridDimension = Math.floor(
     (window.innerHeight - (heightHeader + heightCameras)) / gridLength,
 );
+export const maxGridWidth =  window.innerWidth/100*35;
 export const totalRows = 40;
 export const totalColumn = 40;
 // export const gridDimension = 30;
+export const gridTotal = gridDimension * gridLength;
+export const mapWidth = (maxGridWidth > gridTotal ? gridTotal : maxGridWidth);
 export const widthLeft =
-    window.innerWidth - gridLength * gridDimension - widthRightPanel;
+    window.innerWidth - mapWidth - widthRightPanel;
 export const heightLeft = gridLength * gridDimension;
 
 

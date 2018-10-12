@@ -164,7 +164,7 @@ class PlayerMapPanel extends Component {
                         <div
                             style={{
                                 ...styledMapSide,
-                                backgroundImage: `url(quest_panel.jpg)`,
+                                backgroundImage: `url(./quests/quest_panel.jpg)`,
                                 backgroundSize: 'cover',
                             }}
                         >
@@ -176,7 +176,7 @@ class PlayerMapPanel extends Component {
                     <div
                         style={{
                             ...styledMapSide,
-                            backgroundImage: `url(quest_panel.jpg)`,
+                            backgroundImage: `url(./quests/quest_panel.jpg)`,
                             backgroundSize: 'cover',
                         }}
                     >
