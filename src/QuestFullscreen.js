@@ -18,7 +18,7 @@ class QuestFullscreen extends Component {
                 onClick={hideQuest}
             >
                 <img
-                    src={"./empty_" + icon}
+                    src={"./empty_notice.png"}
                     alt='A quest'
                     className="quest-fullscreen-icon"
                 />
