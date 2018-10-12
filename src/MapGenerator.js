@@ -77,31 +77,18 @@ class MapGenerator extends Component {
                             else this.showInfos(row);
                         }}
                     >
-                        {towns.map((town, i) => {
-                            if (
-                                positionX === town.positionY &&
-                                index === town.positionX
-                            ) {
-                                hasTown = i;
-                                return (
+                        {row.hasTown &&
                                     <Town
-                                        key={`town-${town.positionX}-${
-                                            town.positionY
-                                        }`}
-                                        town={town}
+                                        town={towns[row.hasTown]}
                                         showTownList={() => {
                                             doSetState({
-                                                currentTown: i,
+                                                currentTown: row.hasTown,
                                             });
                                             this.showInfos(row);
                                         }}
                                         isCurrent={true}
                                     />
-                                );
-                            }
-                            return null;
-                        })}
-                        {}
+                        }
                         {row.hasFog && (
                             <div
                                 className="fog-gm"
@@ -112,10 +99,10 @@ class MapGenerator extends Component {
                                         10}px`,
                                 }}
                                 onClick={
-                                    hasTown !== -1
+                                    row.hasTown !== -1
                                         ? () => {
                                               doSetState({
-                                                  currentTown: hasTown,
+                                                  currentTown: row.hasTown,
                                               });
                                               this.showInfos(row);
                                           }
