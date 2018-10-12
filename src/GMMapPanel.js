@@ -1,106 +1,106 @@
-import React, { Component } from 'react';
-import { gridDimension, heightLeft, widthLeft } from './StyleConstants';
-import { musics, noises } from './Constants';
+import React, { Component } from "react";
+import { gridDimension, heightLeft, widthLeft } from "./StyleConstants";
+import { musics, noises } from "./Constants";
 
-import PropTypes from 'prop-types';
-import SoundPanel from './SoundPanel';
-import firebase from 'firebase';
+import PropTypes from "prop-types";
+import SoundPanel from "./SoundPanel";
+import firebase from "firebase";
 
 const styledBoxHeader = {
-    width: '100%',
-    height: '20px',
-    marginBottom: '5px',
-    textAlign: 'center',
-    float: 'left',
-    display: 'inline-block',
-    position: 'relative',
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
+    float: "left",
+    display: "inline-block",
+    position: "relative",
 };
 
 const styledTownListItem = {
-    width: '75%',
-    height: '20px',
-    marginBottom: '5px',
-    textAlign: 'center',
-    float: 'left',
-    display: 'inline-block',
-    position: 'relative',
-    cursor: 'pointer',
+    width: "75%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
+    float: "left",
+    display: "inline-block",
+    position: "relative",
+    cursor: "pointer",
 };
 
 const styledTownListDiscover = {
-    width: '25%',
-    height: '20px',
-    textAlign: 'center',
-    float: 'left',
-    display: 'inline-block',
-    position: 'relative',
-    cursor: 'pointer',
+    width: "25%",
+    height: "20px",
+    textAlign: "center",
+    float: "left",
+    display: "inline-block",
+    position: "relative",
+    cursor: "pointer",
 };
 
 const styledMapButtons = {
-    border: '1px solid blue',
-    width: '100%',
+    border: "1px solid blue",
+    width: "100%",
     height: `${gridDimension * 2 + 1}px`,
-    display: 'inline-block',
-    float: 'left',
+    display: "inline-block",
+    float: "left",
 };
 
 const styledGrid = {
-    border: '1px solid pink',
+    border: "1px solid pink",
     width: `${(widthLeft / 2 - 3) / 8}px`,
     height: `${gridDimension}px`,
-    display: 'inline-block',
-    float: 'left',
-    position: 'relative',
+    display: "inline-block",
+    float: "left",
+    position: "relative",
 };
 
 const styledMapSide = {
-    border: '1px solid brown',
+    border: "1px solid brown",
     width: `${widthLeft / 2 - 3}px`,
     height: `${heightLeft / 2 - 1}px`,
-    display: 'inline-block',
-    float: 'left',
-    textAlign: 'left',
-    position: 'relative',
+    display: "inline-block",
+    float: "left",
+    textAlign: "left",
+    position: "relative",
 };
 
 const styledSemiContainer = {
-    width: '100%',
+    width: "100%",
     height: `${heightLeft / 4 - 40}px`,
-    display: 'inline-block',
-    float: 'left',
-    position: 'relative',
-    overflowY: 'auto',
+    display: "inline-block",
+    float: "left",
+    position: "relative",
+    overflowY: "auto",
 };
 
 const styledMiddlePanel = {
     width: `${widthLeft - 2}px`,
     height: `${heightLeft - 1}px`,
-    display: 'inline-block',
-    float: 'left',
-    position: 'relative',
+    display: "inline-block",
+    float: "left",
+    position: "relative",
 };
 
 const styledQuestsContainer = {
-    width: '100%',
+    width: "100%",
     height: `${heightLeft / 2 - 20}px`,
-    display: 'inline-block',
-    float: 'left',
-    position: 'absolute',
+    display: "inline-block",
+    float: "left",
+    position: "absolute",
     top: 20,
     left: 0,
-    overflowY: 'auto',
+    overflowY: "auto",
 };
 
 const styledMerchantsContainer = {
-    width: '100%',
+    width: "100%",
     height: `${heightLeft / 2 - 20}px`,
-    display: 'inline-block',
-    float: 'left',
-    position: 'absolute',
+    display: "inline-block",
+    float: "left",
+    position: "absolute",
     top: 20,
     left: 0,
-    overflowY: 'auto',
+    overflowY: "auto",
 };
 
 class GMMapPanel extends Component {
@@ -117,13 +117,13 @@ class GMMapPanel extends Component {
                     key={`gridType-${key}`}
                     style={{
                         ...styledGrid,
-                        border: 'none',
-                        borderLeft: '1px solid black',
+                        border: "none",
+                        borderLeft: "1px solid black",
                         backgroundColor:
-                            key === 'Fog'
-                                ? 'black'
-                                : key === 'NoFog'
-                                    ? 'white'
+                            key === "Fog"
+                                ? "black"
+                                : key === "NoFog"
+                                    ? "white"
                                     : tilesTypes[key].backgroundColor,
                     }}
                     onClick={() => this.loadTexture(key)}
@@ -133,7 +133,7 @@ class GMMapPanel extends Component {
                             style={{
                                 ...styledGrid,
                                 backgroundImage: `url(${tilesTypes[key].icon})`,
-                                backgroundSize: 'cover',
+                                backgroundSize: "cover",
                             }}
                         />
                     )}
@@ -144,13 +144,13 @@ class GMMapPanel extends Component {
     };
 
     loadTexture = gridType => {
-        if (gridType === 'Fog') {
+        if (gridType === "Fog") {
             this.props.doSetState({
                 textureToApply: {
                     hasFog: true,
                 },
             });
-        } else if (gridType === 'NoFog') {
+        } else if (gridType === "NoFog") {
             this.props.doSetState({
                 textureToApply: {
                     hasFog: false,
@@ -167,10 +167,10 @@ class GMMapPanel extends Component {
 
     getGridSelected = grid => {
         const { tilesTypes } = this.props;
-        let bg = '';
+        let bg = "";
 
         if (grid.hasFog) {
-            bg = tilesTypes['Fog'];
+            bg = tilesTypes["Fog"];
         } else {
             Object.keys(tilesTypes).map(key => {
                 if (key === grid.environment) {
@@ -183,8 +183,8 @@ class GMMapPanel extends Component {
             <div
                 style={{
                     ...styledGrid,
-                    border: 'none',
-                    borderLeft: '1px solid black',
+                    border: "none",
+                    borderLeft: "1px solid black",
                     backgroundColor: bg.backgroundColor,
                 }}
                 onClick={() => this.unloadTexture()}
@@ -194,7 +194,7 @@ class GMMapPanel extends Component {
                         style={{
                             ...styledGrid,
                             backgroundImage: `url(${bg.icon})`,
-                            backgroundSize: 'cover',
+                            backgroundSize: "cover",
                         }}
                     />
                 )}
@@ -210,13 +210,13 @@ class GMMapPanel extends Component {
 
     changeCurrentMusic = m => {
         const { onChangeMusics } = this.props;
-        onChangeMusics('musicName', m);
+        onChangeMusics("musicName", m);
     };
 
     changeCurrentNoise = n => {
         const { onChangeMusics } = this.props;
-        onChangeMusics('noiseName', n);
-        onChangeMusics('noiseStatus', 'PLAYING');
+        onChangeMusics("noiseName", n);
+        onChangeMusics("noiseStatus", "PLAYING");
     };
 
     addQuestToTown = i => {
@@ -228,7 +228,7 @@ class GMMapPanel extends Component {
                 : (newTown.questsList = [i]);
             firebase
                 .database()
-                .ref('stories/' + currentStory + '/towns/' + currentTown)
+                .ref("stories/" + currentStory + "/towns/" + currentTown)
                 .set(newTown)
                 .catch(error => {
                     // Handle Errors here.
@@ -239,7 +239,7 @@ class GMMapPanel extends Component {
             newQuest.town = currentTown;
             firebase
                 .database()
-                .ref('stories/' + currentStory + '/quests/' + i)
+                .ref("stories/" + currentStory + "/quests/" + i)
                 .set(newQuest)
                 .catch(error => {
                     // Handle Errors here.
@@ -256,7 +256,7 @@ class GMMapPanel extends Component {
             : (newTown.merchantsList = [i]);
         firebase
             .database()
-            .ref('stories/' + currentStory + '/towns/' + currentTown)
+            .ref("stories/" + currentStory + "/towns/" + currentTown)
             .set(newTown)
             .catch(error => {
                 // Handle Errors here.
@@ -268,7 +268,7 @@ class GMMapPanel extends Component {
         newMerchant.isDiscovered = false;
         firebase
             .database()
-            .ref('stories/' + currentStory + '/merchants/' + i)
+            .ref("stories/" + currentStory + "/merchants/" + i)
             .set(newMerchant)
             .catch(error => {
                 // Handle Errors here.
@@ -283,7 +283,7 @@ class GMMapPanel extends Component {
         newMerchant.isDiscovered = !newMerchant.isDiscovered;
         firebase
             .database()
-            .ref('stories/' + currentStory + '/merchants/' + i)
+            .ref("stories/" + currentStory + "/merchants/" + i)
             .set(newMerchant)
             .catch(error => {
                 // Handle Errors here.
@@ -295,10 +295,10 @@ class GMMapPanel extends Component {
         const { currentStory, quests } = this.props;
 
         const newQuest = { ...quests[i] };
-        newQuest.validated = true;
+        newQuest.validated = !newQuest.validated;
         firebase
             .database()
-            .ref('stories/' + currentStory + '/quests/' + i)
+            .ref("stories/" + currentStory + "/quests/" + i)
             .set(newQuest)
             .catch(error => {
                 // Handle Errors here.
@@ -318,7 +318,7 @@ class GMMapPanel extends Component {
 
             firebase
                 .database()
-                .ref('stories/' + currentStory + '/towns/' + currentTown)
+                .ref("stories/" + currentStory + "/towns/" + currentTown)
                 .set(newTown)
                 .catch(error => {
                     // Handle Errors here.
@@ -329,7 +329,7 @@ class GMMapPanel extends Component {
             newQuest.town = null;
             firebase
                 .database()
-                .ref('stories/' + currentStory + '/quests/' + i)
+                .ref("stories/" + currentStory + "/quests/" + i)
                 .set(newQuest)
                 .catch(error => {
                     // Handle Errors here.
@@ -349,7 +349,7 @@ class GMMapPanel extends Component {
 
         firebase
             .database()
-            .ref('stories/' + currentStory + '/towns/' + currentTown)
+            .ref("stories/" + currentStory + "/towns/" + currentTown)
             .set(newTown)
             .catch(error => {
                 // Handle Errors here.
@@ -360,7 +360,7 @@ class GMMapPanel extends Component {
         newMerchant.town = null;
         firebase
             .database()
-            .ref('stories/' + currentStory + '/merchants/' + i)
+            .ref("stories/" + currentStory + "/merchants/" + i)
             .set(newMerchant)
             .catch(error => {
                 // Handle Errors here.
@@ -382,12 +382,12 @@ class GMMapPanel extends Component {
         firebase
             .database()
             .ref(
-                'maps/' +
+                "maps/" +
                     stories[currentStory].map +
-                    '/' +
+                    "/" +
                     currentTile.y +
-                    '/' +
-                    currentTile.x
+                    "/" +
+                    currentTile.x,
             )
             .set(newTile)
             .then(() => {
@@ -397,7 +397,7 @@ class GMMapPanel extends Component {
                 if (newTile.isCurrent) {
                     firebase
                         .database()
-                        .ref('stories/' + currentStory + '/currentX')
+                        .ref("stories/" + currentStory + "/currentX")
                         .set(parseInt(newTile.x, 10) - 6)
                         .catch(error => {
                             // Handle Errors here.
@@ -405,7 +405,7 @@ class GMMapPanel extends Component {
                         });
                     firebase
                         .database()
-                        .ref('stories/' + currentStory + '/currentY')
+                        .ref("stories/" + currentStory + "/currentY")
                         .set(parseInt(newTile.y, 10) - 6)
                         .catch(error => {
                             // Handle Errors here.
@@ -427,12 +427,12 @@ class GMMapPanel extends Component {
         firebase
             .database()
             .ref(
-                'maps/' +
+                "maps/" +
                     stories[currentStory].map +
-                    '/' +
+                    "/" +
                     currentTile.y +
-                    '/' +
-                    currentTile.x
+                    "/" +
+                    currentTile.x,
             )
             .set(newTile)
             .then(() => {
@@ -501,7 +501,9 @@ class GMMapPanel extends Component {
                                     this.onChange(parseInt(e.target.value, 10))
                                 }
                             />
-                            <button onClick={() => this.toggleHasTown}>Validate</button>
+                            <button onClick={() => this.toggleHasTown}>
+                                Validate
+                            </button>
                             <br />
                             isCurrent : {currentTile.isCurrent}
                             <button onClick={this.toggleIsCurrent}>
@@ -546,21 +548,16 @@ class GMMapPanel extends Component {
                                             >
                                                 {q.name}
                                             </div>
-
-                                            {q.validated ? (
-                                                '(Validated)'
-                                            ) : (
-                                                <button
-                                                    style={
-                                                        styledTownListDiscover
-                                                    }
-                                                    onClick={() =>
-                                                        this.validateQuest(i)
-                                                    }
-                                                >
-                                                    Validate
-                                                </button>
-                                            )}
+                                            <button
+                                                style={styledTownListDiscover}
+                                                onClick={() =>
+                                                    this.validateQuest(i)
+                                                }
+                                            >
+                                                {q.validated
+                                                    ? "Complete"
+                                                    : "Validate"}
+                                            </button>
                                         </div>
                                     );
                                 }
@@ -580,7 +577,7 @@ class GMMapPanel extends Component {
                                             <div
                                                 onClick={() =>
                                                     this.removeMerchantFromTown(
-                                                        i
+                                                        i,
                                                     )
                                                 }
                                                 style={styledTownListItem}
@@ -591,7 +588,7 @@ class GMMapPanel extends Component {
                                                 style={styledTownListDiscover}
                                                 onClick={() =>
                                                     this.toggleMerchantDiscover(
-                                                        i
+                                                        i,
                                                     )
                                                 }
                                             >
@@ -607,7 +604,7 @@ class GMMapPanel extends Component {
                 {currentTown > -1 && (
                     <div style={styledMapSide}>
                         <div style={styledBoxHeader}>
-                            {isOnQuest ? 'Quests' : 'Merchants'}
+                            {isOnQuest ? "Quests" : "Merchants"}
                         </div>
                         {isOnQuest ? (
                             <div style={styledQuestsContainer}>
@@ -620,7 +617,7 @@ class GMMapPanel extends Component {
                                             style={styledBoxHeader}
                                         >
                                             {q.name}
-                                            {typeof q.town !== 'undefined' &&
+                                            {typeof q.town !== "undefined" &&
                                                 q.town > -1 && (
                                                     <span>
                                                         ({towns[q.town].name})
@@ -641,7 +638,7 @@ class GMMapPanel extends Component {
                                             style={styledBoxHeader}
                                         >
                                             {m.name}({m.job})
-                                            {typeof m.town !== 'undefined' &&
+                                            {typeof m.town !== "undefined" &&
                                                 m.town > -1 && (
                                                     <span>
                                                         ({towns[m.town].name})
