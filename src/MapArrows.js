@@ -39,7 +39,7 @@ class MapArrows extends Component {
                     }}
                 >
                     <img
-                        src={"./arrow-left.png"}
+                        src={"./map/arrow-left.png"}
                         className="map-arrow"
                         alt="arrow-left"
                     />
@@ -51,7 +51,7 @@ class MapArrows extends Component {
                     }}
                 >
                     <img
-                        src={"./arrow-right.png"}
+                        src={"./map/arrow-right.png"}
                         className="map-arrow"
                         alt="arrow-right"
                     />
@@ -63,7 +63,7 @@ class MapArrows extends Component {
                     }}
                 >
                     <img
-                        src={"./arrow-up.png"}
+                        src={"./map/arrow-up.png"}
                         className="map-arrow"
                         alt="arrow-up"
                     />
@@ -75,7 +75,7 @@ class MapArrows extends Component {
                     }}
                 >
                     <img
-                        src={"./arrow-down.png"}
+                        src={"./map/arrow-down.png"}
                         className="map-arrow"
                         alt="arrow-down"
                     />

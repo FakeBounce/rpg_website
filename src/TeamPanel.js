@@ -42,7 +42,7 @@ class TeamPanel extends Component {
                 <div style={styles.HeaderText}>Equipe</div>
                 <div style={styles.teamCharacters}>
                     <TeamCharacter
-                        icon="./gameMaster.jpg"
+                        icon="./common/gameMaster.jpg"
                         name="Game Master"
                         status="OK"
                         gold={999999}

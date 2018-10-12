@@ -68,6 +68,7 @@ ItemDescription.defaultProps = {
 ItemDescription.propTypes = {
     icon: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    itemType: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     effect: PropTypes.string,
     quantity: PropTypes.number.isRequired,

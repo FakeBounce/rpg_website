@@ -25,7 +25,7 @@ class Town extends Component {
                 data-tip={town.name}
             >
                 <img
-                    src={"./town-size-" + town.size + ".jpg"}
+                    src={"./map/town-size-" + town.size + ".jpg"}
                     style={styledIcon}
                     alt={town.name}
                 />

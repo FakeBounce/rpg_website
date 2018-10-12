@@ -16,3 +16,56 @@ export const totalColumn = 40;
 export const widthLeft =
     window.innerWidth - gridLength * gridDimension - widthRightPanel;
 export const heightLeft = gridLength * gridDimension;
+
+
+
+const questsPosition = [
+    {
+        left: "5%",
+        top: "10%",
+    },
+    {
+        left: "25%",
+        top: "10%",
+    },
+    {
+        left: "45%",
+        top: "10%",
+    },
+    {
+        left: "65%",
+        top: "10%",
+    },
+    {
+        left: "5%",
+        top: "55%",
+    },
+    {
+        left: "25%",
+        top: "55%",
+    },
+    {
+        left: "45%",
+        top: "55%",
+    },
+    {
+        left: "65%",
+        top: "55%",
+    },
+];
+
+const questsRandom = [
+    'rotate(5deg)',
+    'rotate(-5deg)',
+    'rotate(10deg)',
+    'rotate(-10deg)',
+    'translate(0px,-20px)',
+    'translate(0px,20px)',
+    'translate(0px,20px)',
+    'translate(10px,0px)',
+    'translate(-10px,0px)',
+    'translate(10px,20px)',
+    'translate(-10px,20px)',
+    'translate(-10px,-20px)',
+    'translate(-10px,-20px)',
+];

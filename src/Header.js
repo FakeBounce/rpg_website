@@ -20,7 +20,7 @@ const styledHeader = {
     borderBottom: "1px solid black",
     width: "100%",
     height: `${heightHeader}px`,
-    backgroundImage: `url(dravos_header.jpg)`,
+    backgroundImage: `url(./common/dravos_header.jpg)`,
     backgroundSize: "cover",
 };
 
@@ -61,8 +61,8 @@ class Header extends Component {
                     <img
                         src={
                             musicMute
-                                ? "./soundMuted.png"
-                                : "./soundUnmuted.png"
+                                ? "./common/soundMuted.png"
+                                : "./common/soundUnmuted.png"
                         }
                         style={styledSound}
                         alt="sound muted or not"

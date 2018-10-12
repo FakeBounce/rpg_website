@@ -21,7 +21,7 @@ class Story extends Component {
                 style={styles.storyBox}
             >
                 {name}
-                <img src={"dravos.jpg"} style={styles.storyImage} alt="dravos"/>
+                <img src={"./common/dravos.jpg"} style={styles.storyImage} alt="dravos"/>
             </div>
         );
     }
