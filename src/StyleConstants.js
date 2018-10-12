@@ -19,7 +19,7 @@ export const heightLeft = gridLength * gridDimension;
 
 
 
-const questsPosition = [
+export const questsPosition = [
     {
         left: "5%",
         top: "10%",
@@ -54,7 +54,7 @@ const questsPosition = [
     },
 ];
 
-const questsRandom = [
+export const questsRandom = [
     'rotate(5deg)',
     'rotate(-5deg)',
     'rotate(10deg)',
