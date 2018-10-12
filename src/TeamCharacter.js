@@ -39,30 +39,36 @@ class TeamCharacter extends Component {
             health,
             maxHealth,
             chatWithTeamMember,
+            goldWithTeamMember,
             isGM,
         } = this.props;
 
         return (
-            <div
-                style={styles.characterTeamHeader}
-                onClick={chatWithTeamMember}
-            >
-                <img
-                    src={icon}
-                    alt={name}
-                    style={styles.characterTeamHeaderImage}
-                />
-                <CharacterTeamInfo title={name} />
-                <CharacterTeamInfo
-                    title="Status :"
-                    text={status ? status : "OK"}
-                />
-                <CharacterTeamInfo title="Gold :" text={gold ? gold : 0} />
-                <HealthBar
-                    isGM={isGM}
-                    width={`${(health / maxHealth) * 100}%`}
-                    maxWidth={`${widthRightPanelLeft - 20 + imageSize / 2}px`}
-                />
+            <div style={styles.characterTeamHeader}>
+                <div onClick={chatWithTeamMember}>
+                    <img
+                        src={icon}
+                        alt={name}
+                        style={styles.characterTeamHeaderImage}
+                    />
+                    <CharacterTeamInfo title={name} />
+                    <CharacterTeamInfo
+                        title="Status :"
+                        text={status ? status : "OK"}
+                    />
+                </div>
+                <div onClick={goldWithTeamMember}>
+                    <CharacterTeamInfo title="Gold :" text={gold ? gold : 0} />
+                </div>
+                <div onClick={chatWithTeamMember}>
+                    <HealthBar
+                        isGM={isGM}
+                        width={`${(health / maxHealth) * 100}%`}
+                        maxWidth={`${widthRightPanelLeft -
+                            20 +
+                            imageSize / 2}px`}
+                    />
+                </div>
             </div>
         );
     }
@@ -83,6 +89,7 @@ TeamCharacter.propTypes = {
     maxHealth: PropTypes.number,
     isGM: PropTypes.bool,
     chatWithTeamMember: PropTypes.func.isRequired,
+    goldWithTeamMember: PropTypes.func.isRequired,
 };
 
 export default TeamCharacter;

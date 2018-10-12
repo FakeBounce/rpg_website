@@ -48,6 +48,18 @@ class RightPanel extends Component {
         }
     };
 
+    goldWithTeamMember = pseudo => {
+        if (pseudo === "GM") {
+            this.props.doSetState({
+                chatInput: `/goldgm `,
+            });
+        } else {
+            this.props.doSetState({
+                chatInput: `/gold ${pseudo} `,
+            });
+        }
+    };
+
     onChange = (name, value) => {
         const obj = {};
         obj[name] = value;
@@ -261,6 +273,7 @@ class RightPanel extends Component {
                 <TeamPanel
                     storyCharacters={storyCharacters}
                     chatWithTeamMember={this.chatWithTeamMember}
+                    goldWithTeamMember={this.goldWithTeamMember}
                     modifyCurrentCharacter={this.modifyCurrentCharacter}
                     isGameMaster={isGameMaster}
                 />

@@ -33,6 +33,7 @@ class TeamPanel extends Component {
         const {
             storyCharacters,
             chatWithTeamMember,
+            goldWithTeamMember,
             modifyCurrentCharacter,
             isGameMaster,
         } = this.props;
@@ -50,6 +51,7 @@ class TeamPanel extends Component {
                         maxHealth={9999}
                         isGM
                         chatWithTeamMember={() => chatWithTeamMember("GM")}
+                        goldWithTeamMember={() => goldWithTeamMember("GM")}
                     />
 
                     {storyCharacters.map(storyCharacter => {
@@ -67,6 +69,11 @@ class TeamPanel extends Component {
                                         );
                                     }
                                 }}
+                                goldWithTeamMember={() =>
+                                    goldWithTeamMember(
+                                        storyCharacter.userPseudo,
+                                    )
+                                }
                             />
                         );
                     })}
@@ -79,6 +86,7 @@ class TeamPanel extends Component {
 TeamPanel.propTypes = {
     storyCharacters: PropTypes.array.isRequired,
     chatWithTeamMember: PropTypes.func.isRequired,
+    goldWithTeamMember: PropTypes.func.isRequired,
     modifyCurrentCharacter: PropTypes.func.isRequired,
     isGameMaster: PropTypes.bool.isRequired,
 };
