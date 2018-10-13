@@ -271,6 +271,7 @@ class RightPanel extends Component {
             <div style={styles.RightPanel}>
                 <div style={styles.CharPanel}>{this.displayCharacter()}</div>
                 <TeamPanel
+                    gameMaster={gameMaster}
                     storyCharacters={storyCharacters}
                     chatWithTeamMember={this.chatWithTeamMember}
                     goldWithTeamMember={this.goldWithTeamMember}

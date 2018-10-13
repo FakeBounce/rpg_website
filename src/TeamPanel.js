@@ -36,6 +36,7 @@ class TeamPanel extends Component {
             goldWithTeamMember,
             modifyCurrentCharacter,
             isGameMaster,
+            gameMaster,
         } = this.props;
 
         return (
@@ -55,27 +56,31 @@ class TeamPanel extends Component {
                     />
 
                     {storyCharacters.map(storyCharacter => {
-                        return (
-                            <TeamCharacter
-                                key={storyCharacter.name}
-                                {...storyCharacter}
-                                chatWithTeamMember={() => {
-                                    chatWithTeamMember(
-                                        storyCharacter.userPseudo,
-                                    );
-                                    if (isGameMaster) {
-                                        modifyCurrentCharacter(
-                                            storyCharacter.userUid,
+                        if(storyCharacter.userUid !== gameMaster)
+                        {
+                            return (
+                                <TeamCharacter
+                                    key={storyCharacter.name}
+                                    {...storyCharacter}
+                                    chatWithTeamMember={() => {
+                                        chatWithTeamMember(
+                                            storyCharacter.userPseudo,
                                         );
+                                        if (isGameMaster) {
+                                            modifyCurrentCharacter(
+                                                storyCharacter.userUid,
+                                            );
+                                        }
+                                    }}
+                                    goldWithTeamMember={() =>
+                                        goldWithTeamMember(
+                                            storyCharacter.userPseudo,
+                                        )
                                     }
-                                }}
-                                goldWithTeamMember={() =>
-                                    goldWithTeamMember(
-                                        storyCharacter.userPseudo,
-                                    )
-                                }
-                            />
-                        );
+                                />
+                            );
+                        }
+                        return null;
                     })}
                 </div>
             </div>
@@ -89,6 +94,7 @@ TeamPanel.propTypes = {
     goldWithTeamMember: PropTypes.func.isRequired,
     modifyCurrentCharacter: PropTypes.func.isRequired,
     isGameMaster: PropTypes.bool.isRequired,
+    gameMaster: PropTypes.string.isRequired,
 };
 
 export default TeamPanel;
