@@ -383,8 +383,17 @@ export const defaultState = {
     currentY: 0,
     currentZoom: 10,
     currentTile: {},
+    currentEvent:-1,
     errorMessage: "",
     email: "",
+    eventHistory:[{
+        type:'gold',
+        gold: 35,
+        goldLeft: 35,
+        description:'test',
+        isActive:false,
+        actionHistory:[],
+    }],
     gameMaster: "",
     isAuth: false,
     isItemShowed: false,
@@ -442,4 +451,10 @@ export const attributes = [
     "magic",
     "perception",
     "constitution",
+];
+
+export const eventList = [
+    "nothing",
+    "gold",
+    "item",
 ];

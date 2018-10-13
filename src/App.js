@@ -87,6 +87,26 @@ class App extends Component {
         //         // Handle Errors here.
         //         this.triggerError(error);
         //     });
+
+
+
+        // firebase
+        //     .database()
+        //     // .ref('stories/0/artefacts')
+        //     .ref("/stories/0/events")
+        //     // .ref("/tilesTypes")
+        //     .set([{
+        //         type:'gold',
+        //         gold: 35,
+        //         goldLeft: 35,
+        //         description:'test',
+        //         isActive:false,
+        //         actionHistory:[],
+        //     }])
+        //     .catch(error => {
+        //         // Handle Errors here.
+        //         this.triggerError(error);
+        //     });
     }
 
     loadMerchantsAndItems = () => {
@@ -646,6 +666,28 @@ class App extends Component {
             });
     };
 
+    loadEvents = () => {
+        const { currentStory } = this.state;
+        firebase
+            .database()
+            .ref("/stories/" + currentStory + "/currentEvent")
+            .on("value", snapshot => {
+                this.setState(state => ({
+                    ...state,
+                    currentEvent: snapshot.val(),
+                }));
+            });
+        firebase
+            .database()
+            .ref("/stories/" + currentStory + "/events")
+            .on("value", snapshot => {
+                this.setState(state => ({
+                    ...state,
+                    eventHistory: snapshot.val(),
+                }));
+            })
+    };
+
     loadUsers = () => {
         firebase
             .database()
@@ -973,6 +1015,7 @@ class App extends Component {
                             this.loadMerchantsAndItems();
                             this.loadTownsAndQuests();
                             this.loadCurrentPosition();
+                            this.loadEvents();
                         },
                     );
                 });
@@ -990,6 +1033,7 @@ class App extends Component {
                     this.createChat();
                     this.loadMusic();
                     this.loadMerchantsAndItems();
+                    this.loadEvents();
                 },
             );
         }
@@ -1121,6 +1165,8 @@ class App extends Component {
             currentY,
             currentZoom,
             currentTile,
+            currentEvent,
+            eventHistory,
         } = this.state;
 
         return (
@@ -1234,6 +1280,8 @@ class App extends Component {
                             currentZoom={currentZoom}
                             loadCurrentPosition={this.loadCurrentPosition}
                             currentTile={currentTile}
+                            eventHistory={eventHistory}
+                            currentEvent={currentEvent}
                         />
                     )}
                 {musicNameFirst !== "" && (

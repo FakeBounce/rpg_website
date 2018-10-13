@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { gridDimension, heightLeft, widthLeft } from "./StyleConstants";
-import { musics, noises } from "./Constants";
+import { eventList } from "./Constants";
 
 import PropTypes from "prop-types";
 import SoundPanel from "./SoundPanel";
@@ -118,6 +118,12 @@ class GMMapPanel extends Component {
         isOnQuest: true,
         isOnMap: true,
         townToAssign: -1,
+        eventType: "",
+        goldEvent: 0,
+        quantityEvent: 0,
+        descriptionEvent: "",
+        itemEvent: {},
+        viewers: [],
     };
 
     getGridTypes = () => {
@@ -464,6 +470,107 @@ class GMMapPanel extends Component {
         }));
     };
 
+    toggleIsOnMap = bool => {
+        this.setState(state => ({
+            ...state,
+            isOnMap: bool,
+        }));
+    };
+
+    addToViewer = uid => {
+        const { viewers } = this.state;
+        const newViewersTab = [...viewers];
+        newViewersTab.push(uid);
+        this.setState(state => ({
+            ...state,
+            viewers: newViewersTab,
+        }));
+    };
+
+    removeToViewer = uid => {
+        const { viewers } = this.state;
+        const newViewersTab = [...viewers];
+        newViewersTab.map((v, index) => {
+            if (v === uid) {
+                newViewersTab.splice(index, 1);
+            }
+        });
+        this.setState(state => ({
+            ...state,
+            viewers: newViewersTab,
+        }));
+    };
+
+    onChange = (name, value) => {
+        const obj = {};
+        obj[name] = value;
+
+        if (name === "eventType") {
+            this.setState(state => ({
+                ...state,
+                ...obj,
+                viewers: [],
+                goldEvent: 0,
+                itemEvent: {},
+            }));
+        } else {
+            this.setState(state => ({
+                ...state,
+                ...obj,
+            }));
+        }
+    };
+
+    createEvent = () => {
+        const { eventHistory, currentStory } = this.props;
+        const {
+            eventType,
+            goldEvent,
+            descriptionEvent,
+            itemEvent,
+            quantityEvent,
+            viewers,
+        } = this.state;
+        const newEventHistory = [...eventHistory];
+        if (eventType === "gold") {
+            newEventHistory.push({
+                type: eventType,
+                gold: parseInt(goldEvent, 10),
+                goldLeft: parseInt(goldEvent, 10),
+                description: descriptionEvent,
+                isActive: true,
+                viewers: viewers.length === 0 ? null : viewers,
+            });
+        } else if (eventType === "item") {
+            newEventHistory.push({
+                type: eventType,
+                item: itemEvent,
+                quantity: parseInt(quantityEvent,10),
+                quantityLeft: parseInt(quantityEvent,10),
+                description: descriptionEvent,
+                isActive: true,
+                viewers: viewers.length === 0 ? null : viewers,
+            });
+        }
+
+        firebase
+            .database()
+            .ref("stories/" + currentStory + "/events")
+            .set(newEventHistory)
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+        firebase
+            .database()
+            .ref("stories/" + currentStory + "/currentEvent")
+            .set(newEventHistory.length - 1)
+            .catch(error => {
+                // Handle Errors here.
+                this.props.triggerError(error);
+            });
+    };
+
     render() {
         const {
             textureToApply,
@@ -480,13 +587,34 @@ class GMMapPanel extends Component {
             quests,
             merchants,
             currentTile,
+            storyCharacters,
+            gameMaster,
         } = this.props;
-        const { isOnQuest, townToAssign, isOnMap } = this.state;
+        const {
+            isOnQuest,
+            townToAssign,
+            isOnMap,
+            eventType,
+            goldEvent,
+            descriptionEvent,
+            itemEvent,
+            viewers,
+        } = this.state;
         return (
             <div style={styledMiddlePanel}>
                 <div style={styledMapSide}>
-                    <div style={styledSemiBoxHeader}>Modifier la carte</div>
-                    <div style={styledSemiBoxHeader}>Ajouter un event</div>
+                    <div
+                        style={styledSemiBoxHeader}
+                        onClick={() => this.toggleIsOnMap(true)}
+                    >
+                        Modifier la carte
+                    </div>
+                    <div
+                        style={styledSemiBoxHeader}
+                        onClick={() => this.toggleIsOnMap(false)}
+                    >
+                        Ajouter un event
+                    </div>
                     {isOnMap && (
                         <div>
                             <div style={styledMapButtons}>
@@ -536,12 +664,89 @@ class GMMapPanel extends Component {
                             )}
                         </div>
                     )}
-                    {
-                        !isOnMap &&
+                    {!isOnMap && (
+                        <div>
+                            Choose event type :
+                            <select
+                                value={eventType}
+                                name="eventType"
+                                onChange={e => {
+                                    this.onChange(
+                                        e.target.name,
+                                        e.target.value,
+                                    );
+                                }}
+                            >
+                                {eventList.map(e => {
+                                    return (
+                                        <option key={e} value={e}>
+                                            {e}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                            {eventType === "gold" && (
+                                <div>
+                                    <input
+                                        type="number"
+                                        value={goldEvent}
+                                        name="goldEvent"
+                                        onChange={e => {
+                                            this.onChange(
+                                                e.target.name,
+                                                e.target.value,
+                                            );
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={descriptionEvent}
+                                        name="descriptionEvent"
+                                        onChange={e => {
+                                            this.onChange(
+                                                e.target.name,
+                                                e.target.value,
+                                            );
+                                        }}
+                                    />
+                                </div>
+                            )}
+                            <div style={styledBoxHeader}> Viewers </div>
                             <div>
-                                Choose event type :
+                                {storyCharacters.map(sc => {
+                                    if (gameMaster !== sc.userUid) {
+                                        let isAViewer = false;
+                                        viewers.map(v => {
+                                            if (v === sc.userUid) {
+                                                isAViewer = true;
+                                            }
+                                            return null;
+                                        });
+                                        return (
+                                            <div
+                                                key={`sc-viewer-${sc.userUid}`}
+                                                onClick={
+                                                    isAViewer
+                                                        ? () =>
+                                                              this.removeToViewer(
+                                                                  sc.userUid,
+                                                              )
+                                                        : () =>
+                                                              this.addToViewer(
+                                                                  sc.userUid,
+                                                              )
+                                                }
+                                            >
+                                                {sc.name}{" "}
+                                                {isAViewer ? "-" : "+"}
+                                            </div>
+                                        );
+                                    }
+                                })}
                             </div>
-                    }
+                            <button onClick={this.createEvent}>Create</button>
+                        </div>
+                    )}
                 </div>
                 <SoundPanel
                     musicName={musicName}
@@ -710,6 +915,9 @@ GMMapPanel.propTypes = {
     merchants: PropTypes.array.isRequired,
     stories: PropTypes.array.isRequired,
     currentTile: PropTypes.object.isRequired,
+    eventHistory: PropTypes.array.isRequired,
+    storyCharacters: PropTypes.array.isRequired,
+    gameMaster: PropTypes.string.isRequired,
 };
 
 export default GMMapPanel;

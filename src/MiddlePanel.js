@@ -60,6 +60,7 @@ class MiddlePanel extends Component {
             currentZoom,
             loadCurrentPosition,
             currentTile,
+            eventHistory,
         } = this.props;
 
         return (
@@ -104,6 +105,9 @@ class MiddlePanel extends Component {
                             changeCurrentScale={this.changeCurrentScale}
                             currentTile={currentTile}
                             stories={stories}
+                            eventHistory={eventHistory}
+                            storyCharacters={storyCharacters}
+                            gameMaster={gameMaster}
                         />
                     )}
                 {(!isGameMaster || isOnPlayerView) && (
@@ -197,6 +201,7 @@ MiddlePanel.propTypes = {
     currentZoom: PropTypes.number.isRequired,
     loadCurrentPosition: PropTypes.func.isRequired,
     currentTile: PropTypes.object.isRequired,
+    eventHistory: PropTypes.array.isRequired,
 };
 
 export default MiddlePanel;
