@@ -113,6 +113,33 @@ const styledMerchantsContainer = {
     overflowY: "auto",
 };
 
+const styledItemList = {
+    width: "100%",
+    height: 150,
+    display: "inline-block",
+    float: "left",
+    position: "relative",
+    overflowY: "auto",
+};
+
+const styledItem = {
+    width: "100%",
+    height: 20,
+    display: "inline-block",
+    float: "left",
+    position: "relative",
+    cursor: "pointer",
+    borderBottom: "1px solid black",
+};
+
+const styledItemIcon = {
+    width: 20,
+    height: 20,
+    display: "inline-block",
+    float: "left",
+    position: "relative",
+};
+
 class GMMapPanel extends Component {
     state = {
         isOnQuest: true,
@@ -522,7 +549,7 @@ class GMMapPanel extends Component {
     };
 
     createEvent = () => {
-        const { eventHistory, currentStory } = this.props;
+        const { eventHistory, currentStory, gameMaster } = this.props;
         const {
             eventType,
             goldEvent,
@@ -539,16 +566,18 @@ class GMMapPanel extends Component {
                 goldLeft: parseInt(goldEvent, 10),
                 description: descriptionEvent,
                 isActive: true,
+                hasViewed: [gameMaster],
                 viewers: viewers.length === 0 ? null : viewers,
             });
         } else if (eventType === "item") {
             newEventHistory.push({
                 type: eventType,
                 item: itemEvent,
-                quantity: parseInt(quantityEvent,10),
-                quantityLeft: parseInt(quantityEvent,10),
+                quantity: parseInt(quantityEvent, 10),
+                quantityLeft: parseInt(quantityEvent, 10),
                 description: descriptionEvent,
                 isActive: true,
+                hasViewed: [gameMaster],
                 viewers: viewers.length === 0 ? null : viewers,
             });
         }
@@ -589,6 +618,7 @@ class GMMapPanel extends Component {
             currentTile,
             storyCharacters,
             gameMaster,
+            items,
         } = this.props;
         const {
             isOnQuest,
@@ -597,6 +627,7 @@ class GMMapPanel extends Component {
             eventType,
             goldEvent,
             descriptionEvent,
+            quantityEvent,
             itemEvent,
             viewers,
         } = this.state;
@@ -691,6 +722,74 @@ class GMMapPanel extends Component {
                                         type="number"
                                         value={goldEvent}
                                         name="goldEvent"
+                                        onChange={e => {
+                                            this.onChange(
+                                                e.target.name,
+                                                e.target.value,
+                                            );
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={descriptionEvent}
+                                        name="descriptionEvent"
+                                        onChange={e => {
+                                            this.onChange(
+                                                e.target.name,
+                                                e.target.value,
+                                            );
+                                        }}
+                                    />
+                                </div>
+                            )}
+                            {eventType === "item" && (
+                                <div>
+                                    <div style={styledItemList}>
+                                        {Object.keys(items).map(ikey => {
+                                            return items[ikey].map(i => {
+                                                return (
+                                                    <div
+                                                        key={`event-item-${
+                                                            i.name
+                                                        }`}
+                                                        className={`${
+                                                            itemEvent.name ===
+                                                            i.name
+                                                                ? "selected"
+                                                                : ""
+                                                        }`}
+                                                        style={styledItem}
+                                                        onClick={() =>
+                                                            this.onChange(
+                                                                "itemEvent",
+                                                                {
+                                                                    ...i,
+                                                                    itemType: ikey,
+                                                                },
+                                                            )
+                                                        }
+                                                    >
+                                                        <img
+                                                            src={
+                                                                "./" +
+                                                                ikey +
+                                                                "/" +
+                                                                i.icon
+                                                            }
+                                                            style={
+                                                                styledItemIcon
+                                                            }
+                                                        />
+                                                        {i.name}
+                                                    </div>
+                                                );
+                                            });
+                                        })}
+                                    </div>
+                                    <input
+                                        type="number"
+                                        value={quantityEvent}
+                                        name="quantityEvent"
                                         onChange={e => {
                                             this.onChange(
                                                 e.target.name,
@@ -896,6 +995,7 @@ GMMapPanel.defaultProps = {
 };
 
 GMMapPanel.propTypes = {
+    items: PropTypes.object.isRequired,
     textureToApply: PropTypes.object,
     musicName: PropTypes.string.isRequired,
     noiseName: PropTypes.string.isRequired,

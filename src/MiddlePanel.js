@@ -61,6 +61,7 @@ class MiddlePanel extends Component {
             loadCurrentPosition,
             currentTile,
             eventHistory,
+            items,
         } = this.props;
 
         return (
@@ -81,7 +82,6 @@ class MiddlePanel extends Component {
                     triggerError={triggerError}
                     currentScale={currentScale}
                     loadCurrentPosition={loadCurrentPosition}
-
                 />
                 {isGameMaster &&
                     !isOnPlayerView && (
@@ -107,6 +107,7 @@ class MiddlePanel extends Component {
                             stories={stories}
                             eventHistory={eventHistory}
                             storyCharacters={storyCharacters}
+                            items={items}
                             gameMaster={gameMaster}
                         />
                     )}
@@ -159,6 +160,7 @@ MiddlePanel.propTypes = {
     isOnPlayerView: PropTypes.bool.isRequired,
     isItemShowed: PropTypes.bool.isRequired,
     itemsList: PropTypes.array.isRequired,
+    items: PropTypes.object.isRequired,
     isItemDescriptionShowed: PropTypes.bool.isRequired,
     itemToDescribe: PropTypes.object.isRequired,
     isTownShowed: PropTypes.bool.isRequired,

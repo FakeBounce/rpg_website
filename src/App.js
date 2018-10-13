@@ -1167,6 +1167,8 @@ class App extends Component {
             currentTile,
             currentEvent,
             eventHistory,
+            items,
+            isEventHidden,
         } = this.state;
 
         return (
@@ -1282,6 +1284,7 @@ class App extends Component {
                             currentTile={currentTile}
                             eventHistory={eventHistory}
                             currentEvent={currentEvent}
+                            items={items}
                         />
                     )}
                 {musicNameFirst !== "" && (
