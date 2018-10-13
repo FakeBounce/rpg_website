@@ -28,7 +28,7 @@ class HasNoPseudo extends Component {
                     placeholder="pseudo"
                     value={pseudoInput}
                     onChange={e => {
-                        onChange(e.target.name, e.target.value);
+                        onChange(e.target.name, e.target.value.replace(/\s/g, ''));
                     }}
                 />
                 <button onClick={this.choosePseudo}>Choisir un pseudo</button>

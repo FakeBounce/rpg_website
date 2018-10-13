@@ -247,10 +247,11 @@ class GameScreen extends Component {
             pseudo,
             currentStory,
             doSetState,
+            isGameMaster,
         } = this.props;
         if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
             const newEvent = { ...eventHistory[currentEvent] };
-            if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
+            if (newEvent.actionHistory && newEvent.actionHistory.length > 0 && !isGameMaster) {
                 newEvent.actionHistory.push(
                     `@${pseudo} choosed to take nothing.`,
                 );
@@ -273,6 +274,33 @@ class GameScreen extends Component {
             doSetState({
                 currentEvent: -1,
             });
+        }
+    };
+
+    closeEvent = () => {
+        const { currentEvent, eventHistory, currentStory } = this.props;
+        if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+            const newEvent = { ...eventHistory[currentEvent] };
+            newEvent.isActive = false;
+            const newEventHistory = [...eventHistory];
+            newEventHistory[currentEvent] = { ...newEvent };
+
+            firebase
+                .database()
+                .ref("stories/" + currentStory + "/events")
+                .set(newEventHistory)
+                .catch(error => {
+                    // Handle Errors here.
+                    this.props.triggerError(error);
+                });
+            firebase
+                .database()
+                .ref("stories/" + currentStory + "/currentEvent")
+                .set(-1)
+                .catch(error => {
+                    // Handle Errors here.
+                    this.props.triggerError(error);
+                });
         }
     };
 
@@ -459,6 +487,14 @@ class GameScreen extends Component {
                             >
                                 Don't take any gold
                             </button>
+                            {isGameMaster && (
+                                <button
+                                    style={styledEventAction}
+                                    onClick={this.closeEvent}
+                                >
+                                    Close Event
+                                </button>
+                            )}
                         </div>
                         <div
                             style={{
