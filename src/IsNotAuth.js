@@ -113,7 +113,10 @@ class IsNotAuth extends Component {
                 <button onClick={this.signIn}>Sign In</button>
                 <button onClick={this.signUp}>Sign Up</button>
 
-                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> FakeBounce, le 2018-10-13 : Loaded all images from spreadsheets. Fixed some paths. Now GM can see if a merchant is visible or not </div>
+                <div style={{overflowY:'auto', height: '90%'}}><div className="commit"> FakeBounce, le 2018-10-13 : Added GM actions on Event; Removed white spaced on pseudos </div>
+                    <div className="commit"> FakeBounce, le 2018-10-13 : GM can now add gold events. Players have a few option to interact. </div>
+                    <div className="commit"> FakeBounce, le 2018-10-13 : WIP - Event creation + Corrected aura wind image </div>
+                    <div className="commit"> FakeBounce, le 2018-10-13 : Loaded all images from spreadsheets. Fixed some paths. Now GM can see if a merchant is visible or not </div>
                     <div className="commit"> FakeBounce, le 2018-10-12 : Can now autocomplete chat with gold regex </div>
                     <div className="commit"> FakeBounce, le 2018-10-12 : Players can now distribute gold </div>
                     <div className="commit"> FakeBounce, le 2018-10-12 : GM can now unvalidate quest </div>
