@@ -16,6 +16,16 @@ const styledBoxHeader = {
     position: "relative",
 };
 
+const styledSemiBoxHeader = {
+    width: "50%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
+    float: "left",
+    display: "inline-block",
+    position: "relative",
+};
+
 const styledTownListItem = {
     width: "75%",
     height: "20px",
@@ -106,6 +116,7 @@ const styledMerchantsContainer = {
 class GMMapPanel extends Component {
     state = {
         isOnQuest: true,
+        isOnMap: true,
         townToAssign: -1,
     };
 
@@ -470,49 +481,67 @@ class GMMapPanel extends Component {
             merchants,
             currentTile,
         } = this.props;
-        const { isOnQuest, townToAssign } = this.state;
+        const { isOnQuest, townToAssign, isOnMap } = this.state;
         return (
             <div style={styledMiddlePanel}>
                 <div style={styledMapSide}>
-                    <div style={styledBoxHeader}>Modifier la carte</div>
-                    <div style={styledMapButtons}>
-                        {this.getGridTypes()}
-                        {textureToApply && this.getGridSelected(textureToApply)}
-                    </div>
-                    <input
-                        type="number"
-                        onChange={e => {
-                            changeCurrentScale(parseInt(e.target.value, 10));
-                        }}
-                        value={currentScale}
-                    />
-                    <div style={styledBoxHeader}>Modifier la case :</div>
-                    {Object.keys(currentTile).length > 0 && (
+                    <div style={styledSemiBoxHeader}>Modifier la carte</div>
+                    <div style={styledSemiBoxHeader}>Ajouter un event</div>
+                    {isOnMap && (
                         <div>
-                            environment : {currentTile.environment}
-                            <br />
-                            hasFog : {currentTile.hasFog}
-                            <br />
-                            hasTown : {currentTile.hasTown}
+                            <div style={styledMapButtons}>
+                                {this.getGridTypes()}
+                                {textureToApply &&
+                                    this.getGridSelected(textureToApply)}
+                            </div>
                             <input
                                 type="number"
-                                value={townToAssign}
-                                onChange={e =>
-                                    this.onChange(parseInt(e.target.value, 10))
-                                }
+                                onChange={e => {
+                                    changeCurrentScale(
+                                        parseInt(e.target.value, 10),
+                                    );
+                                }}
+                                value={currentScale}
                             />
-                            <button onClick={() => this.toggleHasTown}>
-                                Validate
-                            </button>
-                            <br />
-                            isCurrent : {currentTile.isCurrent}
-                            <button onClick={this.toggleIsCurrent}>
-                                Toggle current
-                            </button>
-                            <br />x :{currentTile.x}
-                            <br />y : {currentTile.y}
+                            <div style={styledBoxHeader}>
+                                Modifier la case :
+                            </div>
+                            {Object.keys(currentTile).length > 0 && (
+                                <div>
+                                    environment : {currentTile.environment}
+                                    <br />
+                                    hasFog : {currentTile.hasFog}
+                                    <br />
+                                    hasTown : {currentTile.hasTown}
+                                    <input
+                                        type="number"
+                                        value={townToAssign}
+                                        onChange={e =>
+                                            this.onChange(
+                                                parseInt(e.target.value, 10),
+                                            )
+                                        }
+                                    />
+                                    <button onClick={() => this.toggleHasTown}>
+                                        Validate
+                                    </button>
+                                    <br />
+                                    isCurrent : {currentTile.isCurrent}
+                                    <button onClick={this.toggleIsCurrent}>
+                                        Toggle current
+                                    </button>
+                                    <br />x :{currentTile.x}
+                                    <br />y : {currentTile.y}
+                                </div>
+                            )}
                         </div>
                     )}
+                    {
+                        !isOnMap &&
+                            <div>
+                                Choose event type :
+                            </div>
+                    }
                 </div>
                 <SoundPanel
                     musicName={musicName}
@@ -592,7 +621,8 @@ class GMMapPanel extends Component {
                                                     )
                                                 }
                                             >
-                                                ToggleDiscover({m.isDiscovered ? 'Y' : 'N'})
+                                                ToggleDiscover(
+                                                {m.isDiscovered ? "Y" : "N"})
                                             </button>
                                         </div>
                                     );
