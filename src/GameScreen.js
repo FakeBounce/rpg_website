@@ -33,6 +33,18 @@ const styledBoxHeader = {
     display: "inline-block",
 };
 
+const styledViewer = {
+    width: 100,
+    height: 20,
+    textAlign: "center",
+    position: "relative",
+    display: "inline-block",
+};
+
+const styledNoViewer = {
+    border: "1px solid red",
+};
+
 class GameScreen extends Component {
     state = {
         numberWanted: 0,
@@ -572,6 +584,71 @@ class GameScreen extends Component {
         return false;
     };
 
+    addViewerToEvent = uid => {
+        const {
+            currentEvent,
+            eventHistory,
+            currentStory,
+            doSetState,
+        } = this.props;
+        if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+            const newEvent = { ...eventHistory[currentEvent] };
+            newEvent.viewers.push(uid);
+            const newEventHistory = [...eventHistory];
+            newEventHistory[currentEvent] = { ...newEvent };
+
+            firebase
+                .database()
+                .ref("stories/" + currentStory + "/events")
+                .set(newEventHistory)
+                .catch(error => {
+                    // Handle Errors here.
+                    this.props.triggerError(error);
+                });
+        }
+    };
+
+    removeViewerFromEvent = uid => {
+        const {
+            currentEvent,
+            eventHistory,
+            currentStory,
+            doSetState,
+            storyCharacters,
+            gameMaster,
+        } = this.props;
+        if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+            const newEvent = { ...eventHistory[currentEvent] };
+
+            if (newEvent.viewers && newEvent.viewers.length > 0) {
+                newEvent.viewers.map((ql, index) => {
+                    if (ql === uid) {
+                        newEvent.viewers.splice(index, 1);
+                    }
+                });
+            } else {
+                const userIds = [];
+                storyCharacters.map(sc => {
+                    if (sc.userUid !== uid && sc.userUid !== gameMaster) {
+                        userIds.push(sc.userUid);
+                    }
+                });
+                newEvent.viewers = [...userIds];
+            }
+            const newEventHistory = [...eventHistory];
+            newEventHistory[currentEvent] = { ...newEvent };
+
+            firebase
+                .database()
+                .ref("stories/" + currentStory + "/events")
+                .set(newEventHistory)
+                .catch(error => {
+                    // Handle Errors here.
+                    this.props.triggerError(error);
+                });
+        }
+    };
+
     toggleEvent = () => {
         this.setState(state => ({
             ...state,
@@ -596,10 +673,11 @@ class GameScreen extends Component {
             doSetState,
             storyCharacters,
             character,
+            gameMaster,
             ...rest
         } = this.props;
 
-        const { numberWanted } = this.state;
+        const { numberWanted, isEventHidden } = this.state;
 
         return (
             <div>
@@ -613,7 +691,7 @@ class GameScreen extends Component {
                             zIndex: 100,
                         }}
                     >
-                        Toggle event
+                        Toggle event {isEventHidden ? "(Is hidden)" : ""}
                     </button>
                 )}
                 <Header
@@ -660,6 +738,67 @@ class GameScreen extends Component {
                             }}
                         >
                             EVENEMENT !
+                        </div>
+                        <div style={styledBoxHeader}>
+                            {`(`}
+                            {eventHistory[currentEvent].viewers
+                                ? storyCharacters.map(sc => {
+                                      let isAViewer = false;
+                                      eventHistory[currentEvent].viewers.map(
+                                          v => {
+                                              if (sc.userUid === v) {
+                                                  isAViewer = true;
+                                              }
+                                              return null;
+                                          },
+                                      );
+                                      if (isAViewer) {
+                                          return (
+                                              <div
+                                                  onClick={() =>
+                                                      this.removeViewerFromEvent(
+                                                          sc.userUid,
+                                                      )
+                                                  }
+                                                  style={styledViewer}
+                                              >
+                                                  {sc.name}
+                                              </div>
+                                          );
+                                      } else if (isGameMaster) {
+                                          return (
+                                              <div
+                                                  onClick={() =>
+                                                      this.addViewerToEvent(
+                                                          sc.userUid,
+                                                      )
+                                                  }
+                                                  style={{
+                                                      ...styledViewer,
+                                                      ...styledNoViewer,
+                                                  }}
+                                              >
+                                                  {sc.name}
+                                              </div>
+                                          );
+                                      }
+                                  })
+                                : storyCharacters.map(sc => {
+                                      return (
+                                          <div
+                                              onClick={() =>
+                                                  this.removeViewerFromEvent(
+                                                      sc.userUid,
+                                                  )
+                                              }
+                                              style={styledViewer}
+                                          >
+                                              {sc.name}
+                                          </div>
+                                      );
+                                      return null;
+                                  })}
+                            {`)`}
                         </div>
                         <div
                             style={{
@@ -929,6 +1068,7 @@ class GameScreen extends Component {
                         storyCharacters={storyCharacters}
                         doSetState={doSetState}
                         character={character}
+                        gameMaster={gameMaster}
                         {...rest}
                     />
                 )}
@@ -955,7 +1095,8 @@ GameScreen.propTypes = {
     uid: PropTypes.string.isRequired,
     pseudo: PropTypes.string.isRequired,
     doSetState: PropTypes.func.isRequired,
-    character: PropTypes.func.isRequired,
+    character: PropTypes.object.isRequired,
+    gameMaster: PropTypes.string.isRequired,
 };
 
 export default GameScreen;

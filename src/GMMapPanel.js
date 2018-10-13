@@ -115,7 +115,7 @@ const styledMerchantsContainer = {
 
 const styledItemList = {
     width: "100%",
-    height: 150,
+    height: 210,
     display: "inline-block",
     float: "left",
     position: "relative",
