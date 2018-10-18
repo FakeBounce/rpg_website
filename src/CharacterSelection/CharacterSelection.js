@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import "../App.css";
 
-import CharacterCreation from "./CharacterCreation/CharacterCreation";
+import CharacterCreation from "../CharacterCreation/CharacterCreation";
 import PropTypes from "prop-types";
 import CharacterPreview from "./CharacterPreview";
 import firebase from "firebase";

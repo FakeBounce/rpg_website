@@ -3,91 +3,91 @@ import PropTypes from "prop-types";
 import { heightHeader } from "./StyleConstants";
 
 const styledSignOut = {
-    float: "right",
+  float: "right",
 };
 
 const styledBoxHeader = {
-    width: "100%",
-    height: "20px",
-    marginBottom: "5px",
-    textAlign: "center",
-    fontSize: "36px",
-    paddingTop: "25px",
-    color: "white",
+  width: "100%",
+  height: "20px",
+  marginBottom: "5px",
+  textAlign: "center",
+  fontSize: "36px",
+  paddingTop: "25px",
+  color: "white",
 };
 
 const styledHeader = {
-    borderBottom: "1px solid black",
-    width: "100%",
-    height: `${heightHeader}px`,
-    backgroundImage: `url(./common/dravos_header.jpg)`,
-    backgroundSize: "cover",
+  borderBottom: "1px solid black",
+  width: "100%",
+  height: `${heightHeader}px`,
+  backgroundImage: `url(./common/dravos_header.jpg)`,
+  backgroundSize: "cover",
 };
 
 const styledSound = {
-    marginLeft: "5px",
-    width: "10px",
-    height: "10px",
+  marginLeft: "5px",
+  width: "10px",
+  height: "10px",
 };
 
 class Header extends Component {
-    render() {
-        const {
-            title,
-            signOut,
-            accessChatHelp,
-            chatHelpTitle,
-            selectAnotherCharacter,
-            toggleMusic,
-            musicMute,
-            isGameMaster,
-            togglePlayerView,
-        } = this.props;
+  render() {
+    const {
+      title,
+      signOut,
+      accessChatHelp,
+      chatHelpTitle,
+      selectAnotherCharacter,
+      toggleMusic,
+      musicMute,
+      isGameMaster,
+      togglePlayerView,
+    } = this.props;
 
-        return (
-            <div style={styledHeader}>
-                <div style={styledBoxHeader}>{title}</div>
-                <button style={styledSignOut} onClick={signOut}>
-                    Sign Out
-                </button>
-                <button style={styledSignOut} onClick={selectAnotherCharacter}>
-                    Select another character
-                </button>
-                <button style={styledSignOut} onClick={accessChatHelp}>
-                    {chatHelpTitle}
-                </button>
-                <button style={styledSignOut} onClick={toggleMusic}>
-                    Toggle music
-                    <img
-                        src={
-                            musicMute
-                                ? "./common/soundMuted.png"
-                                : "./common/soundUnmuted.png"
-                        }
-                        style={styledSound}
-                        alt="sound muted or not"
-                    />
-                </button>
-                {isGameMaster && (
-                    <button style={styledSignOut} onClick={togglePlayerView}>
-                        Toggle Player View
-                    </button>
-                )}
-            </div>
-        );
-    }
+    return (
+      <div style={styledHeader}>
+        <div style={styledBoxHeader}>{title}</div>
+        <button style={styledSignOut} onClick={signOut}>
+          Sign Out
+        </button>
+        <button style={styledSignOut} onClick={selectAnotherCharacter}>
+          Select another character
+        </button>
+        <button style={styledSignOut} onClick={accessChatHelp}>
+          {chatHelpTitle}
+        </button>
+        <button style={styledSignOut} onClick={toggleMusic}>
+          Toggle music
+          <img
+            src={
+              musicMute
+                ? "./common/soundMuted.png"
+                : "./common/soundUnmuted.png"
+            }
+            style={styledSound}
+            alt="sound muted or not"
+          />
+        </button>
+        {isGameMaster && (
+          <button style={styledSignOut} onClick={togglePlayerView}>
+            Toggle Player View
+          </button>
+        )}
+      </div>
+    );
+  }
 }
 
 Header.propTypes = {
-    title: PropTypes.string.isRequired,
-    chatHelpTitle: PropTypes.string.isRequired,
-    signOut: PropTypes.func.isRequired,
-    accessChatHelp: PropTypes.func.isRequired,
-    selectAnotherCharacter: PropTypes.func.isRequired,
-    toggleMusic: PropTypes.func.isRequired,
-    togglePlayerView: PropTypes.func.isRequired,
-    musicMute: PropTypes.bool.isRequired,
-    isGameMaster: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  chatHelpTitle: PropTypes.string.isRequired,
+  signOut: PropTypes.func.isRequired,
+  accessChatHelp: PropTypes.func.isRequired,
+  selectAnotherCharacter: PropTypes.func.isRequired,
+  toggleMusic: PropTypes.func.isRequired,
+  togglePlayerView: PropTypes.func.isRequired,
+  musicMute: PropTypes.bool.isRequired,
+  isGameMaster: PropTypes.bool.isRequired,
 };
 
 export default Header;
