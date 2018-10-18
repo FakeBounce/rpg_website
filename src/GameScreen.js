@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import BottomPanel from "./BottomPanel";
-import ChatCommandsPanel from "./ChatCommandsPanel";
-import Header from "./Header";
+import BottomPanel from "./BottomPanel/BottomPanel";
+import ChatCommandsPanel from "./ChatCommandsPanel/ChatCommandsPanel";
+import Header from "./Utils/Header";
 import MiddlePanel from "./MiddlePanel";
 import {
     heightCameras,
@@ -12,7 +12,7 @@ import {
     widthRightPanel,
     mapWidth,
     widthLeft,
-} from "./StyleConstants";
+} from "./Utils/StyleConstants";
 import firebase from "firebase";
 
 const styledEventAction = {

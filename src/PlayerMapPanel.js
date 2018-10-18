@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-import Quest from './Quest';
-import Merchant from './Merchant';
-import Item from './Item';
-import ItemDescription from './ItemDescription';
+import Quest from './QuestPanel/Quest';
+import Merchant from './MerchantPanel/Merchant';
+import Item from './ItemPanel/Item';
+import ItemDescription from './ItemPanel/ItemDescription';
 import PropTypes from 'prop-types';
-import { widthLeft, heightLeft } from './StyleConstants';
-import QuestFullscreen from './QuestFullscreen';
+import { widthLeft, heightLeft } from './Utils/StyleConstants';
+import QuestFullscreen from './QuestPanel/QuestFullscreen';
 
 const styledBoxHeader = {
     width: '100%',

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import GMMapPanel from "./GMMapPanel";
 import RightPanel from "./RightPanel";
 import PlayerMapPanel from "./PlayerMapPanel";
-import MapGenerator from "./MapGenerator";
+import MapGenerator from "./MapGenerator/MapGenerator";
 
 class MiddlePanel extends Component {
     changeCurrentScale = value => {

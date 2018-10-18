@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import firebase from "firebase";
-import Sound from "react-sound";
-import debounce from "lodash/debounce";
-import "./App.css";
-import IsNotAuth from "./IsNotAuth";
-import HasNoPseudo from "./HasNoPseudo";
-import CharacterSelection from "./CharacterSelection";
-import StoriesList from "./StoriesList";
+import React, { Component } from 'react';
+import firebase from 'firebase';
+import debounce from 'lodash/debounce';
+import './App.css';
+import IsNotAuth from './Authentication/IsNotAuth';
+import HasNoNickname from './NicknameSelection/HasNoNickname';
+import CharacterSelection from './CharacterSelection/CharacterSelection';
+import StoriesPanel from './StoryPanel/StoriesPanel';
 
-import { priceRanges, itemQuantities, defaultState } from "./Constants";
-import LoadSpreasheet from "./LoadSpreasheet";
-import GameScreen from "./GameScreen";
+import { priceRanges, itemQuantities, defaultState } from './Utils/Constants';
+import LoadSpreasheet from './Utils/LoadSpreasheet';
+import GameScreen from './GameScreen';
+import SoundPlayer from './SoundPlayer/SoundPlayer';
 
 class App extends Component {
     state = { ...defaultState };
@@ -18,8 +18,8 @@ class App extends Component {
     componentDidMount() {
         firebase
             .database()
-            .ref("/tilesTypes")
-            .once("value")
+            .ref('/tilesTypes')
+            .once('value')
             .then(snapshot => {
                 this.setState(state => ({
                     ...state,
@@ -88,8 +88,6 @@ class App extends Component {
         //         this.triggerError(error);
         //     });
 
-
-
         // firebase
         //     .database()
         //     // .ref('stories/0/artefacts')
@@ -113,10 +111,10 @@ class App extends Component {
         const { currentStory } = this.state;
         firebase
             .database()
-            .ref("stories/" + currentStory + "/merchants")
+            .ref('stories/' + currentStory + '/merchants')
             // .once("value")
             // .then(snapshot => {
-                .on("value", snapshot => {
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     merchants: snapshot.val(),
@@ -124,8 +122,8 @@ class App extends Component {
 
                 firebase
                     .database()
-                    .ref("/items")
-                    .once("value")
+                    .ref('/items')
+                    .once('value')
                     .then(snapshot => {
                         this.setState(
                             state => ({
@@ -137,11 +135,11 @@ class App extends Component {
                                 firebase
                                     .database()
                                     .ref(
-                                        "/stories/" +
+                                        '/stories/' +
                                             currentStory +
-                                            "/artefacts",
+                                            '/artefacts'
                                     )
-                                    .once("value")
+                                    .once('value')
                                     .then(snapshot => {
                                         this.setState(
                                             state => ({
@@ -153,14 +151,14 @@ class App extends Component {
                                             }),
                                             () => {
                                                 // this.hydrateAllMerchants();
-                                            },
+                                            }
                                         );
                                     })
                                     .catch(error => {
                                         // An error happened.
                                         this.triggerError(error);
                                     });
-                            },
+                            }
                         );
                     })
                     .catch(error => {
@@ -175,7 +173,7 @@ class App extends Component {
         firebase
             .database()
             // .ref('stories/0/artefacts')
-            .ref("stories/" + currentStory + "/artefacts")
+            .ref('stories/' + currentStory + '/artefacts')
             .set(items.artefacts)
             .catch(error => {
                 // Handle Errors here.
@@ -188,14 +186,14 @@ class App extends Component {
 
         firebase
             .database()
-            .ref("merchants")
-            .once("value")
+            .ref('merchants')
+            .once('value')
             .then(snapshot => {
                 const newMerchants = [];
                 const artefactsLeft = [...items.artefacts];
                 snapshot.val().map((m, i) => {
                     newMerchants.push(
-                        this.hydrateMerchant(artefactsLeft, m, true),
+                        this.hydrateMerchant(artefactsLeft, m, true)
                     );
                     newMerchants[i].isDiscovered = false;
                 });
@@ -212,7 +210,7 @@ class App extends Component {
                 firebase
                     .database()
                     // .ref('stories/0/merchants')
-                    .ref("stories/" + currentStory + "/merchants")
+                    .ref('stories/' + currentStory + '/merchants')
                     .set(newMerchants)
                     .then(() => {
                         this.hydrateStoryArtefacts();
@@ -248,7 +246,7 @@ class App extends Component {
         firebase
             .database()
             // .ref('stories/0/merchants')
-            .ref("stories/" + currentStory + "/merchants")
+            .ref('stories/' + currentStory + '/merchants')
             .set(newMerchants)
             .then(() => {
                 this.hydrateStoryArtefacts();
@@ -263,26 +261,26 @@ class App extends Component {
         if (totalHydrate) {
             merchant.items &&
                 merchant.items.map(i => {
-                    if (i.itemType === "artefacts") {
+                    if (i.itemType === 'artefacts') {
                         artefactsLeft.push(i);
                     }
                 });
             merchant.items = [];
             const consumableList = this.getItemsFromCategory(
-                "consumables",
-                merchant,
+                'consumables',
+                merchant
             );
             const enhancementList = this.getItemsFromCategory(
-                "enhancements",
-                merchant,
+                'enhancements',
+                merchant
             );
-            const stoneList = this.getItemsFromCategory("stones", merchant);
-            const runeList = this.getItemsFromCategory("runes", merchant);
-            const weaponList = this.getItemsFromCategory("weapons", merchant);
-            const spellList = this.getItemsFromCategory("spells", merchant);
+            const stoneList = this.getItemsFromCategory('stones', merchant);
+            const runeList = this.getItemsFromCategory('runes', merchant);
+            const weaponList = this.getItemsFromCategory('weapons', merchant);
+            const spellList = this.getItemsFromCategory('spells', merchant);
             const artefactList = this.getArtefactsForMerchant(
                 artefactsLeft,
-                merchant,
+                merchant
             );
 
             merchant.items = consumableList
@@ -295,29 +293,29 @@ class App extends Component {
         } else {
             const itemsStaying = [];
             merchant.items.map((i, index) => {
-                if (i.rarity >= 7 || i.itemType === "artefacts") {
+                if (i.rarity >= 7 || i.itemType === 'artefacts') {
                     itemsStaying.push(i);
                 }
             });
 
             const consumableList = this.getItemsFromCategory(
-                "consumables",
+                'consumables',
                 merchant,
-                0,
+                0
             );
             const enhancementList = this.getItemsFromCategory(
-                "enhancements",
+                'enhancements',
                 merchant,
-                0,
+                0
             );
-            const stoneList = this.getItemsFromCategory("stones", merchant, 0);
-            const runeList = this.getItemsFromCategory("runes", merchant, 0);
+            const stoneList = this.getItemsFromCategory('stones', merchant, 0);
+            const runeList = this.getItemsFromCategory('runes', merchant, 0);
             const weaponList = this.getItemsFromCategory(
-                "weapons",
+                'weapons',
                 merchant,
-                0,
+                0
             );
-            const spellList = this.getItemsFromCategory("spells", merchant, 0);
+            const spellList = this.getItemsFromCategory('spells', merchant, 0);
 
             merchant.items = consumableList
                 .concat(enhancementList)
@@ -332,16 +330,16 @@ class App extends Component {
     getArtefactsForMerchant = (artefactsCurrentList, merchant) => {
         let itemList = [];
         let randomItem = 0;
-        let itemsToGet = parseInt(merchant["artefacts"], 10);
+        let itemsToGet = parseInt(merchant['artefacts'], 10);
         for (let i = 0; i < itemsToGet; i++) {
             randomItem = Math.floor(
-                Math.random() * artefactsCurrentList.length,
+                Math.random() * artefactsCurrentList.length
             );
             if (!artefactsCurrentList[randomItem].isAcquired) {
                 const newItem = { ...artefactsCurrentList[randomItem] };
                 newItem.rarity = parseInt(newItem.rarity, 10);
                 newItem.quantity = 1;
-                newItem.itemType = "artefacts";
+                newItem.itemType = 'artefacts';
                 const priceRange = priceRanges[newItem.rarity].maxValue * 0.2;
 
                 newItem.price =
@@ -393,23 +391,23 @@ class App extends Component {
                     parseInt(merchant[list], 10) *
                         Math.floor(Math.random() * priceRange + 1);
 
-                if (list === "spells") {
+                if (list === 'spells') {
                     const randomScroll = Math.floor(Math.random() * 10 + 1);
                     if (randomScroll === 1) {
                         newItem.name =
-                            "Livre de sort (" +
+                            'Livre de sort (' +
                             newItem.type +
-                            ") : " +
+                            ') : ' +
                             newItem.name;
-                        newItem.icon = "spell_book.jpg";
+                        newItem.icon = 'spell_book.jpg';
                         newItem.isBook = true;
                         newItem.price =
                             newItem.price * Math.floor(Math.random() * 3 + 2);
                     } else {
                         newItem.name =
-                            "Parchemin (" +
+                            'Parchemin (' +
                             newItem.type +
-                            ") : " +
+                            ') : ' +
                             newItem.name;
                         newItem.isBook = false;
                     }
@@ -521,11 +519,11 @@ class App extends Component {
                 firebase
                     .database()
                     .ref(
-                        "stories/" +
+                        'stories/' +
                             currentStory +
-                            "/characters/" +
+                            '/characters/' +
                             uid +
-                            "/character",
+                            '/character'
                     )
                     .set({
                         ...character,
@@ -533,7 +531,7 @@ class App extends Component {
                         items: newItemsTab,
                     })
                     .then(() => {
-                        if (item.itemType === "artefacts") {
+                        if (item.itemType === 'artefacts') {
                             item.isAcquired = true;
                             artefacts.push(item);
                             this.hydrateStoryArtefacts();
@@ -542,10 +540,10 @@ class App extends Component {
                         firebase
                             .database()
                             .ref(
-                                "stories/" +
+                                'stories/' +
                                     currentStory +
-                                    "/merchants/" +
-                                    currentMerchant,
+                                    '/merchants/' +
+                                    currentMerchant
                             )
                             .set(newMerchants[currentMerchant]);
                     })
@@ -553,7 +551,7 @@ class App extends Component {
                         // Handle Errors here.
                         this.triggerError(error);
                     });
-            },
+            }
         );
     };
 
@@ -567,8 +565,8 @@ class App extends Component {
 
                 firebase
                     .database()
-                    .ref("/tilesTypes")
-                    .once("value")
+                    .ref('/tilesTypes')
+                    .once('value')
                     .then(snapshot => {
                         this.setState(state => ({
                             ...state,
@@ -601,8 +599,8 @@ class App extends Component {
         const { stories, currentStory } = this.state;
         firebase
             .database()
-            .ref("/maps/" + stories[currentStory].map)
-            .on("value", snapshot => {
+            .ref('/maps/' + stories[currentStory].map)
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     map: snapshot.val(),
@@ -614,8 +612,8 @@ class App extends Component {
         const { currentStory } = this.state;
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/towns")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/towns')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     towns: snapshot.val(),
@@ -623,8 +621,8 @@ class App extends Component {
             });
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/quests")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/quests')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     quests: snapshot.val(),
@@ -636,8 +634,8 @@ class App extends Component {
         const { currentStory } = this.state;
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/currentX")
-            .once("value")
+            .ref('/stories/' + currentStory + '/currentX')
+            .once('value')
             .then(snapshot => {
                 this.setState(state => ({
                     ...state,
@@ -651,8 +649,8 @@ class App extends Component {
             });
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/currentY")
-            .once("value")
+            .ref('/stories/' + currentStory + '/currentY')
+            .once('value')
             .then(snapshot => {
                 this.setState(state => ({
                     ...state,
@@ -670,8 +668,8 @@ class App extends Component {
         const { currentStory } = this.state;
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/currentEvent")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/currentEvent')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     currentEvent: snapshot.val(),
@@ -679,20 +677,20 @@ class App extends Component {
             });
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/events")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/events')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     eventHistory: snapshot.val(),
                 }));
-            })
+            });
     };
 
     loadUsers = () => {
         firebase
             .database()
-            .ref("/users")
-            .on("value", snapshot => {
+            .ref('/users')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     users: snapshot.val(),
@@ -703,8 +701,8 @@ class App extends Component {
     loadStories = () => {
         firebase
             .database()
-            .ref("/stories")
-            .once("value")
+            .ref('/stories')
+            .once('value')
             .then(snapshot => {
                 this.setState(state => ({
                     ...state,
@@ -721,8 +719,8 @@ class App extends Component {
         const { currentStory } = this.state;
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/music")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/music')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     ...snapshot.val(),
@@ -730,8 +728,8 @@ class App extends Component {
             });
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/noise")
-            .on("value", snapshot => {
+            .ref('/stories/' + currentStory + '/noise')
+            .on('value', snapshot => {
                 this.setState(state => ({
                     ...state,
                     ...snapshot.val(),
@@ -744,19 +742,19 @@ class App extends Component {
         this.setState(
             state => ({
                 ...state,
-                noiseStatus: "STOPPPED",
+                noiseStatus: 'STOPPPED',
             }),
             () => {
                 firebase
                     .database()
-                    .ref("/stories/" + currentStory + "/noise")
+                    .ref('/stories/' + currentStory + '/noise')
                     .set({
                         noiseStatus: this.state.noiseStatus,
                     })
                     .catch(error => {
                         this.triggerError(error);
                     });
-            },
+            }
         );
     };
 
@@ -764,26 +762,26 @@ class App extends Component {
         const { currentStory } = this.state;
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/music")
+            .ref('/stories/' + currentStory + '/music')
             .set({
                 musicVolume: 100,
-                musicNameFirst: "",
+                musicNameFirst: '',
                 musicVolumeFirst: 0,
-                musicNameSecond: "",
+                musicNameSecond: '',
                 musicVolumeSecond: 0,
-                musicStatusFirst: "STOPPED",
-                musicStatusSecond: "STOPPED",
+                musicStatusFirst: 'STOPPED',
+                musicStatusSecond: 'STOPPED',
             })
             .catch(error => {
                 this.triggerError(error);
             });
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/noise")
+            .ref('/stories/' + currentStory + '/noise')
             .set({
-                noiseName: "",
+                noiseName: '',
                 noiseVolume: 100,
-                noiseStatus: "STOPPED",
+                noiseStatus: 'STOPPED',
             })
             .catch(error => {
                 this.triggerError(error);
@@ -794,7 +792,7 @@ class App extends Component {
         const { isMusicFirst, isMusicTransition, currentStory } = this.state;
         const obj = {};
         obj[name] = value;
-        if (name === "musicName") {
+        if (name === 'musicName') {
             if (!isMusicTransition) {
                 if (isMusicFirst) {
                     this.setState(
@@ -819,18 +817,18 @@ class App extends Component {
                                             isMusicTransition: i !== 20,
                                             musicStatusFirst:
                                                 i !== 20 &&
-                                                state.musicNameFirst !== ""
-                                                    ? "PLAYING"
-                                                    : "STOPPED",
-                                            musicStatusSecond: "PLAYING",
+                                                state.musicNameFirst !== ''
+                                                    ? 'PLAYING'
+                                                    : 'STOPPED',
+                                            musicStatusSecond: 'PLAYING',
                                         }),
                                         () => {
                                             firebase
                                                 .database()
                                                 .ref(
-                                                    "/stories/" +
+                                                    '/stories/' +
                                                         currentStory +
-                                                        "/music",
+                                                        '/music'
                                                 )
                                                 .set({
                                                     musicVolume: this.state
@@ -853,11 +851,11 @@ class App extends Component {
                                                 .catch(error => {
                                                     this.triggerError(error);
                                                 });
-                                        },
+                                        }
                                     );
                                 }, i * 300);
                             }
-                        },
+                        }
                     );
                 } else {
                     this.setState(
@@ -883,18 +881,18 @@ class App extends Component {
                                             isMusicTransition: i !== 20,
                                             musicStatusSecond:
                                                 i !== 20 &&
-                                                state.musicNameSecond !== ""
-                                                    ? "PLAYING"
-                                                    : "STOPPED",
-                                            musicStatusFirst: "PLAYING",
+                                                state.musicNameSecond !== ''
+                                                    ? 'PLAYING'
+                                                    : 'STOPPED',
+                                            musicStatusFirst: 'PLAYING',
                                         }),
                                         () => {
                                             firebase
                                                 .database()
                                                 .ref(
-                                                    "/stories/" +
+                                                    '/stories/' +
                                                         currentStory +
-                                                        "/music",
+                                                        '/music'
                                                 )
                                                 .set({
                                                     musicVolume: this.state
@@ -917,11 +915,11 @@ class App extends Component {
                                                 .catch(error => {
                                                     this.triggerError(error);
                                                 });
-                                        },
+                                        }
                                     );
                                 }, i * 300);
                             }
-                        },
+                        }
                     );
                 }
             }
@@ -933,7 +931,7 @@ class App extends Component {
                 }),
                 () => {
                     this.debouncedSavingMusic();
-                },
+                }
             );
         }
     };
@@ -958,7 +956,7 @@ class App extends Component {
         } = this.state;
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/noise")
+            .ref('/stories/' + currentStory + '/noise')
             .set({
                 noiseStatus,
                 noiseName,
@@ -969,7 +967,7 @@ class App extends Component {
             });
         firebase
             .database()
-            .ref("/stories/" + currentStory + "/music")
+            .ref('/stories/' + currentStory + '/music')
             .set({
                 musicVolume,
                 musicNameFirst,
@@ -991,13 +989,13 @@ class App extends Component {
         if (stories[i].gameMaster === uid) isGM = true;
 
         if (
-            typeof stories[i].characters !== "undefined" &&
-            typeof stories[i].characters[uid] !== "undefined"
+            typeof stories[i].characters !== 'undefined' &&
+            typeof stories[i].characters[uid] !== 'undefined'
         ) {
             firebase
                 .database()
-                .ref("/stories/" + i + "/characters/" + uid + "/character")
-                .on("value", snapshot => {
+                .ref('/stories/' + i + '/characters/' + uid + '/character')
+                .on('value', snapshot => {
                     //@TODO : Activate when GM will have proper tabs
                     this.setState(
                         state => ({
@@ -1016,7 +1014,7 @@ class App extends Component {
                             this.loadTownsAndQuests();
                             this.loadCurrentPosition();
                             this.loadEvents();
-                        },
+                        }
                     );
                 });
         } else {
@@ -1034,18 +1032,18 @@ class App extends Component {
                     this.loadMusic();
                     this.loadMerchantsAndItems();
                     this.loadEvents();
-                },
+                }
             );
         }
         firebase
             .database()
-            .ref("/stories/" + i + "/characters")
-            .on("value", snapshot => {
+            .ref('/stories/' + i + '/characters')
+            .on('value', snapshot => {
                 const charactersFromStories = [];
-                if (typeof snapshot.val() !== "undefined" && snapshot.val()) {
+                if (typeof snapshot.val() !== 'undefined' && snapshot.val()) {
                     Object.keys(snapshot.val()).map(key => {
                         charactersFromStories.push(
-                            snapshot.val()[key].character,
+                            snapshot.val()[key].character
                         );
                         return null;
                     });
@@ -1060,8 +1058,8 @@ class App extends Component {
     createChat = () => {
         firebase
             .database()
-            .ref("/chat")
-            .on("value", snapshot => {
+            .ref('/chat')
+            .on('value', snapshot => {
                 if (snapshot.val() !== null) {
                     this.setState(state => ({
                         ...state,
@@ -1086,7 +1084,7 @@ class App extends Component {
             }),
             () => {
                 if (cb) cb();
-            },
+            }
         );
     };
 
@@ -1100,10 +1098,10 @@ class App extends Component {
                 setTimeout(() => {
                     this.setState(state => ({
                         ...state,
-                        error: "",
+                        error: '',
                     }));
                 }, 5000);
-            },
+            }
         );
     };
 
@@ -1186,8 +1184,8 @@ class App extends Component {
                 )}
 
                 {isAuth &&
-                    pseudo === "" && (
-                        <HasNoPseudo
+                    pseudo === '' && (
+                        <HasNoNickname
                             pseudoInput={pseudoInput}
                             onChange={this.onChange}
                             doSetState={this.doSetState}
@@ -1196,9 +1194,9 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory === -1 && (
-                        <StoriesList
+                        <StoriesPanel
                             stories={stories}
                             chooseStory={this.chooseStory}
                         />
@@ -1206,7 +1204,7 @@ class App extends Component {
 
                 {!isGameMaster &&
                     isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory > -1 &&
                     characterId === 0 && (
                         <CharacterSelection
@@ -1223,7 +1221,7 @@ class App extends Component {
                     )}
 
                 {isAuth &&
-                    pseudo !== "" &&
+                    pseudo !== '' &&
                     currentStory > -1 &&
                     (characterId > 0 || isGameMaster) && (
                         <GameScreen
@@ -1287,33 +1285,19 @@ class App extends Component {
                             items={items}
                         />
                     )}
-                {musicNameFirst !== "" && (
-                    <Sound
-                        url={`./music/${musicNameFirst}.mp3`}
-                        playStatus={musicStatusFirst}
-                        volume={musicMute ? 0 : musicVolumeFirst}
-                        autoLoad
-                        loop
-                    />
-                )}
-                {musicNameSecond !== "" && (
-                    <Sound
-                        url={`./music/${musicNameSecond}.mp3`}
-                        playStatus={musicStatusSecond}
-                        volume={musicMute ? 0 : musicVolumeSecond}
-                        autoLoad
-                        loop
-                    />
-                )}
-                {noiseName !== "" && (
-                    <Sound
-                        url={`./noise/${noiseName}.mp3`}
-                        playStatus={noiseStatus}
-                        volume={noiseMute ? 0 : noiseVolume}
-                        onFinishedPlaying={this.stopNoise}
-                        autoLoad
-                    />
-                )}
+                <SoundPlayer
+                    musicMute={musicMute}
+                    musicVolumeFirst={musicVolumeFirst}
+                    musicStatusFirst={musicStatusFirst}
+                    musicNameFirst={musicNameFirst}
+                    musicVolumeSecond={musicVolumeSecond}
+                    musicNameSecond={musicNameSecond}
+                    musicStatusSecond={musicStatusSecond}
+                    noiseMute={noiseMute}
+                    noiseName={noiseName}
+                    noiseStatus={noiseStatus}
+                    noiseVolume={noiseVolume}
+                />
                 {error}
             </div>
         );

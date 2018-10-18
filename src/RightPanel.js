@@ -1,43 +1,35 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import PropTypes from "prop-types";
-import Chat from "./Chat";
-import firebase from "firebase";
-import TeamPanel from "./TeamPanel";
-import CharacterAttributes from "./CharacterAttributes";
-import CharacterOtherInfos from "./CharacterOtherInfos";
-import CharacterHeader from "./CharacterHeader";
-import { widthRightPanel, heightHeader } from "./StyleConstants";
+import PropTypes from 'prop-types';
+import ChatPanel from './ChatPanel/ChatPanel';
+import firebase from 'firebase';
+import TeamPanel from './TeamCharacters/TeamPanel';
+import { widthRightPanel, heightHeader } from './Utils/StyleConstants';
+import CharacterPanel from './CharacterPanel/CharacterPanel';
 
 const styles = {
     RightPanel: {
-        position: "absolute",
+        position: 'absolute',
         top: `${heightHeader}px`,
         right: 0,
-        borderLeft: "1px solid black",
+        borderLeft: '1px solid black',
         width: `${widthRightPanel}px`,
         height: `${window.innerHeight - heightHeader}px`,
     },
-    CharPanel: {
-        borderBottom: "1px solid black",
-        width: "100%",
-        height: "33%",
-    },
-    CharacterBox: { position: "relative", height: "100%" },
 };
 
 class RightPanel extends Component {
     state = {
         status: this.props.character.status
             ? this.props.character.status
-            : "OK",
-        infoTab: "Weapons",
+            : 'OK',
+        infoTab: 'Weapons',
         damageTaken: 0,
         gold: 0,
     };
 
     chatWithTeamMember = pseudo => {
-        if (pseudo === "GM") {
+        if (pseudo === 'GM') {
             this.props.doSetState({
                 chatInput: `/gmw `,
             });
@@ -49,7 +41,7 @@ class RightPanel extends Component {
     };
 
     goldWithTeamMember = pseudo => {
-        if (pseudo === "GM") {
+        if (pseudo === 'GM') {
             this.props.doSetState({
                 chatInput: `/goldgm `,
             });
@@ -93,11 +85,11 @@ class RightPanel extends Component {
         firebase
             .database()
             .ref(
-                "stories/" +
+                'stories/' +
                     currentStory +
-                    "/characters/" +
+                    '/characters/' +
                     uid +
-                    "/character/health",
+                    '/character/health'
             )
             .set(parseInt(healthLeft, 10))
             .catch(error => {
@@ -113,11 +105,11 @@ class RightPanel extends Component {
         firebase
             .database()
             .ref(
-                "stories/" +
+                'stories/' +
                     currentStory +
-                    "/characters/" +
+                    '/characters/' +
                     uid +
-                    "/character/status",
+                    '/character/status'
             )
             .set(status)
             .catch(error => {
@@ -145,11 +137,11 @@ class RightPanel extends Component {
             firebase
                 .database()
                 .ref(
-                    "stories/" +
+                    'stories/' +
                         currentStory +
-                        "/characters/" +
+                        '/characters/' +
                         uid +
-                        "/character",
+                        '/character'
                 )
                 .set(newCharacter)
                 .catch(error => {
@@ -171,11 +163,11 @@ class RightPanel extends Component {
             firebase
                 .database()
                 .ref(
-                    "stories/" +
+                    'stories/' +
                         currentStory +
-                        "/characters/" +
+                        '/characters/' +
                         uid +
-                        "/character/gold",
+                        '/character/gold'
                 )
                 .set(goldToSet)
                 .catch(error => {
@@ -185,39 +177,6 @@ class RightPanel extends Component {
         }
     };
 
-    displayCharacter = () => {
-        const { character, isGameMaster } = this.props;
-        const { infoTab, status, damageTaken, gold } = this.state;
-
-        return (
-            <div style={styles.CharacterBox}>
-                <CharacterHeader
-                    gold={character.gold}
-                    status={character.status}
-                    icon={character.icon}
-                    name={character.name}
-                    health={character.health}
-                    maxHealth={character.maxHealth}
-                />
-                <CharacterAttributes character={character} />
-                <CharacterOtherInfos
-                    character={character}
-                    status={status}
-                    infoTab={infoTab}
-                    damageTaken={damageTaken}
-                    gold={gold}
-                    isGameMaster={isGameMaster}
-                    onChange={this.onChange}
-                    onChangeTab={this.onChangeTab}
-                    onLifeChange={this.onLifeChange}
-                    onStatusChange={this.onStatusChange}
-                    onItemUse={this.onItemUse}
-                    onGoldChange={this.onGoldChange}
-                />
-            </div>
-        );
-    };
-
     modifyCurrentCharacter = uid => {
         const { currentStory, isGameMaster, doSetState } = this.props;
 
@@ -225,23 +184,23 @@ class RightPanel extends Component {
             firebase
                 .database()
                 .ref(
-                    "stories/" +
+                    'stories/' +
                         currentStory +
-                        "/characters/" +
+                        '/characters/' +
                         this.props.uid +
-                        "/character",
+                        '/character'
                 )
                 .off();
             firebase
                 .database()
                 .ref(
-                    "stories/" +
+                    'stories/' +
                         currentStory +
-                        "/characters/" +
+                        '/characters/' +
                         uid +
-                        "/character",
+                        '/character'
                 )
-                .on("value", snapshot => {
+                .on('value', snapshot => {
                     doSetState({
                         uid,
                         character: snapshot.val(),
@@ -267,9 +226,24 @@ class RightPanel extends Component {
             isGameMaster,
         } = this.props;
 
+        const { status, infoTab, damageTaken, gold } = this.state;
+
         return (
             <div style={styles.RightPanel}>
-                <div style={styles.CharPanel}>{this.displayCharacter()}</div>
+                <CharacterPanel
+                    character={character}
+                    status={status}
+                    infoTab={infoTab}
+                    damageTaken={damageTaken}
+                    gold={gold}
+                    isGameMaster={isGameMaster}
+                    onChange={this.onChange}
+                    onChangeTab={this.onChangeTab}
+                    onLifeChange={this.onLifeChange}
+                    onStatusChange={this.onStatusChange}
+                    onItemUse={this.onItemUse}
+                    onGoldChange={this.onGoldChange}
+                />
                 <TeamPanel
                     gameMaster={gameMaster}
                     storyCharacters={storyCharacters}
@@ -278,7 +252,7 @@ class RightPanel extends Component {
                     modifyCurrentCharacter={this.modifyCurrentCharacter}
                     isGameMaster={isGameMaster}
                 />
-                <Chat
+                <ChatPanel
                     users={users}
                     storyCharacters={storyCharacters}
                     uid={uid}

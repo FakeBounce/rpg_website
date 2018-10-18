@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { gridDimension, heightLeft, widthLeft } from "./StyleConstants";
-import { eventList } from "./Constants";
+import { gridDimension, heightLeft, widthLeft } from "./Utils/StyleConstants";
+import { eventList } from "./Utils/Constants";
 
 import PropTypes from "prop-types";
-import SoundPanel from "./SoundPanel";
+import SoundPanel from "./SoundPanel/SoundPanel";
 import firebase from "firebase";
 
 const styledBoxHeader = {
