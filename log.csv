@@ -1,3 +1,6 @@
+<div className="commit"> FakeBounce, le 2018-10-19 : WIP Refactoring... MapGenerator </div>
+<div className="commit"> fakebounce, le 2018-10-18 : WIP Refactoring... (Event panel) </div>
+<div className="commit"> FakeBounce, le 2018-10-18 : Reworked project structure </div>
 <div className="commit"> fakebounce, le 2018-10-13 : Last minute fixes </div>
 <div className="commit"> fakebounce, le 2018-10-13 : Last fixes on events; ready to go. </div>
 <div className="commit"> fakebounce, le 2018-10-13 : GM can now pop item events. Events disappear when all viewers have closed the event. </div>

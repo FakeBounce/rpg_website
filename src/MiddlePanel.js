@@ -15,137 +15,137 @@ class MiddlePanel extends Component {
 
     render() {
         const {
-            isItemShowed,
-            itemsList,
-            isItemDescriptionShowed,
-            itemToDescribe,
-            isTownShowed,
-            merchantsList,
-            pseudo,
+            buyItem,
             character,
-            map,
-            chatInput,
             chatHistory,
-            textureToApply,
-            users,
-            uid,
-            isGameMaster,
-            currentStory,
-            storyCharacters,
-            gameMaster,
+            chatInput,
+            currentMerchant,
             currentQuest,
+            currentScale,
+            currentStory,
+            currentTile,
+            currentTown,
+            currentX,
+            currentY,
+            currentZoom,
+            doSetState,
+            eventHistory,
+            gameMaster,
+            isGameMaster,
+            isItemDescriptionShowed,
+            isItemShowed,
+            isOnPlayerView,
             isQuestShowed,
-            questsList,
+            isTownShowed,
+            items,
+            itemsList,
+            itemToDescribe,
+            loadCurrentPosition,
+            map,
+            merchants,
+            merchantsList,
             musicName,
             musicVolume,
             noiseName,
             noiseVolume,
-            merchants,
-            currentMerchant,
-            onChangeMusics,
-            doSetState,
-            triggerError,
-            buyItem,
             onChange,
-            resetSounds,
-            isOnPlayerView,
-            currentTown,
-            towns,
+            onChangeMusics,
+            pseudo,
             quests,
+            questsList,
+            resetSounds,
             stories,
+            storyCharacters,
+            textureToApply,
             tilesTypes,
-            currentScale,
-            currentX,
-            currentY,
-            currentZoom,
-            loadCurrentPosition,
-            currentTile,
-            eventHistory,
-            items,
+            towns,
+            triggerError,
+            uid,
+            users,
         } = this.props;
 
         return (
             <div>
                 <MapGenerator
-                    map={map}
-                    doSetState={doSetState}
+                    currentScale={currentScale}
+                    currentStory={currentStory}
                     currentX={currentX}
                     currentY={currentY}
                     currentZoom={currentZoom}
+                    doSetState={doSetState}
                     isGameMaster={isGameMaster}
                     isOnPlayerView={isOnPlayerView}
-                    tilesTypes={tilesTypes}
-                    towns={towns}
+                    loadCurrentPosition={loadCurrentPosition}
+                    map={map}
                     stories={stories}
                     textureToApply={textureToApply}
-                    currentStory={currentStory}
+                    tilesTypes={tilesTypes}
+                    towns={towns}
                     triggerError={triggerError}
-                    currentScale={currentScale}
-                    loadCurrentPosition={loadCurrentPosition}
                 />
                 {isGameMaster &&
                     !isOnPlayerView && (
                         <GMMapPanel
-                            textureToApply={textureToApply}
+                            changeCurrentScale={this.changeCurrentScale}
+                            currentScale={currentScale}
+                            currentStory={currentStory}
+                            currentTile={currentTile}
+                            currentTown={currentTown}
+                            doSetState={doSetState}
+                            eventHistory={eventHistory}
+                            gameMaster={gameMaster}
+                            items={items}
+                            merchants={merchants}
                             musicName={musicName}
-                            noiseName={noiseName}
                             musicVolume={musicVolume}
+                            noiseName={noiseName}
                             noiseVolume={noiseVolume}
                             onChangeMusics={onChangeMusics}
-                            resetSounds={resetSounds}
-                            doSetState={doSetState}
-                            triggerError={triggerError}
-                            currentTown={currentTown}
-                            currentStory={currentStory}
-                            towns={towns}
                             quests={quests}
-                            merchants={merchants}
-                            tilesTypes={tilesTypes}
-                            currentScale={currentScale}
-                            changeCurrentScale={this.changeCurrentScale}
-                            currentTile={currentTile}
+                            resetSounds={resetSounds}
                             stories={stories}
-                            eventHistory={eventHistory}
                             storyCharacters={storyCharacters}
-                            items={items}
-                            gameMaster={gameMaster}
+                            textureToApply={textureToApply}
+                            tilesTypes={tilesTypes}
+                            towns={towns}
+                            triggerError={triggerError}
                         />
                     )}
                 {(!isGameMaster || isOnPlayerView) && (
                     <PlayerMapPanel
-                        isQuestShowed={isQuestShowed}
-                        currentQuest={currentQuest}
-                        character={character}
-                        isItemShowed={isItemShowed}
-                        itemsList={itemsList}
-                        merchants={merchants}
-                        quests={quests}
-                        currentMerchant={currentMerchant}
-                        isItemDescriptionShowed={isItemDescriptionShowed}
-                        itemToDescribe={itemToDescribe}
-                        isTownShowed={isTownShowed}
-                        merchantsList={merchantsList}
-                        questsList={questsList}
                         buyItem={buyItem}
+                        character={character}
+                        currentMerchant={currentMerchant}
+                        currentQuest={currentQuest}
                         doSetState={doSetState}
+                        isItemDescriptionShowed={isItemDescriptionShowed}
+                        isItemShowed={isItemShowed}
+                        isQuestShowed={isQuestShowed}
+                        isTownShowed={isTownShowed}
+                        itemsList={itemsList}
+                        itemToDescribe={itemToDescribe}
+                        merchants={merchants}
+                        merchantsList={merchantsList}
+                        quests={quests}
+                        questsList={questsList}
                         triggerError={triggerError}
                     />
                 )}
 
                 <RightPanel
-                    gameMaster={gameMaster}
-                    storyCharacters={storyCharacters}
+                    character={character}
+                    chatHistory={chatHistory}
+                    chatInput={chatInput}
                     currentStory={currentStory}
+                    doSetState={doSetState}
+                    gameMaster={gameMaster}
+                    isGameMaster={isGameMaster}
+                    onChange={onChange}
+                    pseudo={pseudo}
+                    storyCharacters={storyCharacters}
+                    triggerError={triggerError}
                     uid={uid}
                     users={users}
-                    character={character}
-                    pseudo={pseudo}
-                    isGameMaster={isGameMaster}
-                    chatInput={chatInput}
-                    chatHistory={chatHistory}
-                    onChange={onChange}
-                    doSetState={doSetState}
-                    triggerError={triggerError}
                 />
             </div>
         );
@@ -157,53 +157,53 @@ MiddlePanel.defaultProps = {
 };
 
 MiddlePanel.propTypes = {
-    isOnPlayerView: PropTypes.bool.isRequired,
-    isItemShowed: PropTypes.bool.isRequired,
-    itemsList: PropTypes.array.isRequired,
-    items: PropTypes.object.isRequired,
-    isItemDescriptionShowed: PropTypes.bool.isRequired,
-    itemToDescribe: PropTypes.object.isRequired,
-    isTownShowed: PropTypes.bool.isRequired,
-    merchantsList: PropTypes.array.isRequired,
-    pseudo: PropTypes.string.isRequired,
-    character: PropTypes.object.isRequired,
-    map: PropTypes.array.isRequired,
-    chatInput: PropTypes.string.isRequired,
-    chatHistory: PropTypes.array.isRequired,
-    textureToApply: PropTypes.object,
-    users: PropTypes.object.isRequired,
-    uid: PropTypes.string.isRequired,
-    isGameMaster: PropTypes.bool.isRequired,
-    currentStory: PropTypes.number.isRequired,
-    storyCharacters: PropTypes.array.isRequired,
-    gameMaster: PropTypes.string.isRequired,
-    currentQuest: PropTypes.number.isRequired,
-    isQuestShowed: PropTypes.bool.isRequired,
-    questsList: PropTypes.array.isRequired,
-    musicName: PropTypes.string.isRequired,
-    noiseName: PropTypes.string.isRequired,
-    musicVolume: PropTypes.number.isRequired,
-    noiseVolume: PropTypes.number.isRequired,
-    merchants: PropTypes.array.isRequired,
-    towns: PropTypes.array.isRequired,
-    quests: PropTypes.array.isRequired,
-    tilesTypes: PropTypes.object.isRequired,
-    currentMerchant: PropTypes.number.isRequired,
-    currentTown: PropTypes.number.isRequired,
-    onChangeMusics: PropTypes.func.isRequired,
-    resetSounds: PropTypes.func.isRequired,
-    doSetState: PropTypes.func.isRequired,
-    triggerError: PropTypes.func.isRequired,
     buyItem: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    stories: PropTypes.array.isRequired,
+    character: PropTypes.object.isRequired,
+    chatHistory: PropTypes.array.isRequired,
+    chatInput: PropTypes.string.isRequired,
+    currentMerchant: PropTypes.number.isRequired,
+    currentQuest: PropTypes.number.isRequired,
     currentScale: PropTypes.number.isRequired,
+    currentStory: PropTypes.number.isRequired,
+    currentTile: PropTypes.object.isRequired,
+    currentTown: PropTypes.number.isRequired,
     currentX: PropTypes.number.isRequired,
     currentY: PropTypes.number.isRequired,
     currentZoom: PropTypes.number.isRequired,
-    loadCurrentPosition: PropTypes.func.isRequired,
-    currentTile: PropTypes.object.isRequired,
+    doSetState: PropTypes.func.isRequired,
     eventHistory: PropTypes.array.isRequired,
+    gameMaster: PropTypes.string.isRequired,
+    isGameMaster: PropTypes.bool.isRequired,
+    isItemDescriptionShowed: PropTypes.bool.isRequired,
+    isItemShowed: PropTypes.bool.isRequired,
+    isOnPlayerView: PropTypes.bool.isRequired,
+    isQuestShowed: PropTypes.bool.isRequired,
+    isTownShowed: PropTypes.bool.isRequired,
+    items: PropTypes.object.isRequired,
+    itemsList: PropTypes.array.isRequired,
+    itemToDescribe: PropTypes.object.isRequired,
+    loadCurrentPosition: PropTypes.func.isRequired,
+    map: PropTypes.array.isRequired,
+    merchants: PropTypes.array.isRequired,
+    merchantsList: PropTypes.array.isRequired,
+    musicName: PropTypes.string.isRequired,
+    musicVolume: PropTypes.number.isRequired,
+    noiseName: PropTypes.string.isRequired,
+    noiseVolume: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
+    onChangeMusics: PropTypes.func.isRequired,
+    pseudo: PropTypes.string.isRequired,
+    quests: PropTypes.array.isRequired,
+    questsList: PropTypes.array.isRequired,
+    resetSounds: PropTypes.func.isRequired,
+    stories: PropTypes.array.isRequired,
+    storyCharacters: PropTypes.array.isRequired,
+    textureToApply: PropTypes.object,
+    tilesTypes: PropTypes.object.isRequired,
+    towns: PropTypes.array.isRequired,
+    triggerError: PropTypes.func.isRequired,
+    uid: PropTypes.string.isRequired,
+    users: PropTypes.object.isRequired,
 };
 
 export default MiddlePanel;

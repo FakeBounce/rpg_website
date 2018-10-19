@@ -55,25 +55,25 @@ class GameScreen extends Component {
 
   render() {
     const {
+      accessChatHelp,
+      character,
+      currentEvent,
+      currentStory,
+      doSetState,
+      eventHistory,
+      gameMaster,
+      isGameMaster,
       musicMute,
       onChatHelp,
-      toggleMusic,
-      accessChatHelp,
-      signOut,
+      pseudo,
       selectAnotherCharacter,
+      signOut,
       stories,
-      currentStory,
-      togglePlayerView,
-      isGameMaster,
-      currentEvent,
-      eventHistory,
-      doSetState,
       storyCharacters,
-      character,
-      gameMaster,
+      toggleMusic,
+      togglePlayerView,
       triggerError,
       uid,
-      pseudo,
       ...rest
     } = this.props;
 
@@ -87,46 +87,46 @@ class GameScreen extends Component {
           </button>
         )}
         <Header
-          title={stories[currentStory].name}
+          accessChatHelp={accessChatHelp}
+          chatHelpTitle={onChatHelp ? "Return to map" : "Access chat help"}
+          isGameMaster={isGameMaster}
+          musicMute={musicMute}
           selectAnotherCharacter={selectAnotherCharacter}
           signOut={signOut}
-          accessChatHelp={accessChatHelp}
+          title={stories[currentStory].name}
           toggleMusic={toggleMusic}
-          chatHelpTitle={onChatHelp ? "Return to map" : "Access chat help"}
-          musicMute={musicMute}
-          isGameMaster={isGameMaster}
           togglePlayerView={togglePlayerView}
         />
         {this.canReadEvent() && (
           <EventPanel
-            currentStory={currentStory}
-            isGameMaster={isGameMaster}
-            currentEvent={currentEvent}
-            eventHistory={eventHistory}
-            storyCharacters={storyCharacters}
-            uid={uid}
-            pseudo={pseudo}
-            doSetState={doSetState}
             character={character}
+            currentEvent={currentEvent}
+            currentStory={currentStory}
+            doSetState={doSetState}
+            eventHistory={eventHistory}
             gameMaster={gameMaster}
+            isGameMaster={isGameMaster}
+            pseudo={pseudo}
+            storyCharacters={storyCharacters}
             triggerError={triggerError}
+            uid={uid}
           />
         )}
         {onChatHelp ? (
           <ChatCommandsPanel />
         ) : (
           <MiddlePanel
-            currentStory={currentStory}
-            isGameMaster={isGameMaster}
-            stories={stories}
-            eventHistory={eventHistory}
-            storyCharacters={storyCharacters}
-            doSetState={doSetState}
             character={character}
+            currentStory={currentStory}
+            doSetState={doSetState}
+            eventHistory={eventHistory}
             gameMaster={gameMaster}
+            isGameMaster={isGameMaster}
+            pseudo={pseudo}
+            stories={stories}
+            storyCharacters={storyCharacters}
             triggerError={triggerError}
             uid={uid}
-            pseudo={pseudo}
             {...rest}
           />
         )}
@@ -137,25 +137,25 @@ class GameScreen extends Component {
 }
 
 GameScreen.propTypes = {
-  onChatHelp: PropTypes.bool.isRequired,
-  stories: PropTypes.array.isRequired,
+  accessChatHelp: PropTypes.func.isRequired,
+  character: PropTypes.object.isRequired,
+  currentEvent: PropTypes.number.isRequired,
   currentStory: PropTypes.number.isRequired,
-  musicMute: PropTypes.bool.isRequired,
+  doSetState: PropTypes.func.isRequired,
+  eventHistory: PropTypes.array.isRequired,
+  gameMaster: PropTypes.string.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
+  musicMute: PropTypes.bool.isRequired,
+  onChatHelp: PropTypes.bool.isRequired,
+  pseudo: PropTypes.string.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
-  accessChatHelp: PropTypes.func.isRequired,
+  stories: PropTypes.array.isRequired,
+  storyCharacters: PropTypes.array.isRequired,
   toggleMusic: PropTypes.func.isRequired,
   togglePlayerView: PropTypes.func.isRequired,
-  currentEvent: PropTypes.number.isRequired,
-  eventHistory: PropTypes.array.isRequired,
-  storyCharacters: PropTypes.array.isRequired,
-  uid: PropTypes.string.isRequired,
-  pseudo: PropTypes.string.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  character: PropTypes.object.isRequired,
-  gameMaster: PropTypes.string.isRequired,
   triggerError: PropTypes.func.isRequired,
+  uid: PropTypes.string.isRequired,
 };
 
 export default GameScreen;

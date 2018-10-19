@@ -1,21 +1,30 @@
-import React, { Component } from "react";
-import firebase from "firebase";
-import debounce from "lodash/debounce";
-import "./App.css";
-import IsNotAuth from "./Authentication/IsNotAuth";
-import HasNoNickname from "./NicknameSelection/HasNoNickname";
-import CharacterSelection from "./CharacterSelection/CharacterSelection";
-import StoriesPanel from "./StoryPanel/StoriesPanel";
+import React, { Component } from 'react';
+import firebase from 'firebase';
+import debounce from 'lodash/debounce';
+import './App.css';
+import IsNotAuth from './Authentication/IsNotAuth';
+import HasNoNickname from './NicknameSelection/HasNoNickname';
+import CharacterSelection from './CharacterSelection/CharacterSelection';
+import StoriesPanel from './StoryPanel/StoriesPanel';
 
-import { defaultState } from "./Utils/Constants";
-import LoadSpreasheet from "./Utils/LoadSpreasheet";
-import GameScreen from "./GameScreen";
-import SoundPlayer from "./SoundPlayer/SoundPlayer";
+import { defaultState } from './Utils/Constants';
+import LoadSpreasheet from './Utils/LoadSpreasheet';
+import GameScreen from './GameScreen';
+import SoundPlayer from './SoundPlayer/SoundPlayer';
 import {
   hydrateStoryArtefacts,
-  listenArtefacts,
+  listenArtefacts, listenChat,
+  listenCurrentEvent,
+  listenEvents,
   listenMerchants,
+  listenMusic,
+  listenNoise,
+  listenQuests,
+  listenTowns,
+  listenUsers,
   loadAllItems,
+  loadCurrentPosition,
+  loadStories,
   loadTilesTypes,
   populateTilesTypes,
   resetEvents,
@@ -129,14 +138,14 @@ class App extends Component {
       () => {
         firebase
           .database()
-          .ref("stories/" + currentStory + "/characters/" + uid + "/character")
+          .ref('stories/' + currentStory + '/characters/' + uid + '/character')
           .set({
             ...character,
             gold: character.gold - price,
             items: newItemsTab,
           })
           .then(() => {
-            if (item.itemType === "artefacts") {
+            if (item.itemType === 'artefacts') {
               item.isAcquired = true;
 
               // Hydrate artefacts list
@@ -148,14 +157,14 @@ class App extends Component {
 
             firebase
               .database()
-              .ref("stories/" + currentStory + "/merchants/" + currentMerchant)
+              .ref('stories/' + currentStory + '/merchants/' + currentMerchant)
               .set(newMerchants[currentMerchant]);
           })
           .catch(error => {
             // Handle Errors here.
             this.triggerError(error);
           });
-      },
+      }
     );
   };
 
@@ -169,8 +178,8 @@ class App extends Component {
 
         firebase
           .database()
-          .ref("/tilesTypes")
-          .once("value")
+          .ref('/tilesTypes')
+          .once('value')
           .then(snapshot => {
             this.setState(state => ({
               ...state,
@@ -203,8 +212,8 @@ class App extends Component {
     const { stories, currentStory } = this.state;
     firebase
       .database()
-      .ref("/maps/" + stories[currentStory].map)
-      .on("value", snapshot => {
+      .ref('/maps/' + stories[currentStory].map)
+      .on('value', snapshot => {
         this.setState(state => ({
           ...state,
           map: snapshot.val(),
@@ -214,131 +223,33 @@ class App extends Component {
 
   loadTownsAndQuests = () => {
     const { currentStory } = this.state;
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/towns")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          towns: snapshot.val(),
-        }));
-      });
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/quests")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          quests: snapshot.val(),
-        }));
-      });
+    listenTowns(currentStory, this.doSetState);
+    listenQuests(currentStory, this.doSetState);
   };
 
   loadCurrentPosition = () => {
     const { currentStory } = this.state;
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/currentX")
-      .once("value")
-      .then(snapshot => {
-        this.setState(state => ({
-          ...state,
-          currentX: snapshot.val(),
-          currentZoom: 10,
-        }));
-      })
-      .catch(error => {
-        // An error happened.
-        this.triggerError(error);
-      });
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/currentY")
-      .once("value")
-      .then(snapshot => {
-        this.setState(state => ({
-          ...state,
-          currentY: snapshot.val(),
-          currentZoom: 10,
-        }));
-      })
-      .catch(error => {
-        // An error happened.
-        this.triggerError(error);
-      });
+    loadCurrentPosition(currentStory, this.doSetState);
   };
 
   loadEvents = () => {
     const { currentStory } = this.state;
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/currentEvent")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          currentEvent: snapshot.val(),
-        }));
-      });
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/events")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          eventHistory: snapshot.val(),
-        }));
-      });
+    listenEvents(currentStory, this.doSetState);
+    listenCurrentEvent(currentStory, this.doSetState);
   };
 
   loadUsers = () => {
-    firebase
-      .database()
-      .ref("/users")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          users: snapshot.val(),
-        }));
-      });
+    listenUsers(this.doSetState);
   };
 
   loadStories = () => {
-    firebase
-      .database()
-      .ref("/stories")
-      .once("value")
-      .then(snapshot => {
-        this.setState(state => ({
-          ...state,
-          stories: snapshot.val(),
-        }));
-      })
-      .catch(error => {
-        // An error happened.
-        this.triggerError(error);
-      });
+    loadStories(this.doSetState);
   };
 
   loadMusic = () => {
     const { currentStory } = this.state;
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/music")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          ...snapshot.val(),
-        }));
-      });
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/noise")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          ...snapshot.val(),
-        }));
-      });
+    listenMusic(currentStory, this.doSetState);
+    listenNoise(currentStory, this.doSetState);
   };
 
   stopNoise = () => {
@@ -346,19 +257,19 @@ class App extends Component {
     this.setState(
       state => ({
         ...state,
-        noiseStatus: "STOPPPED",
+        noiseStatus: 'STOPPPED',
       }),
       () => {
         firebase
           .database()
-          .ref("/stories/" + currentStory + "/noise")
+          .ref('/stories/' + currentStory + '/noise')
           .set({
             noiseStatus: this.state.noiseStatus,
           })
           .catch(error => {
             this.triggerError(error);
           });
-      },
+      }
     );
   };
 
@@ -366,26 +277,26 @@ class App extends Component {
     const { currentStory } = this.state;
     firebase
       .database()
-      .ref("/stories/" + currentStory + "/music")
+      .ref('/stories/' + currentStory + '/music')
       .set({
         musicVolume: 100,
-        musicNameFirst: "",
+        musicNameFirst: '',
         musicVolumeFirst: 0,
-        musicNameSecond: "",
+        musicNameSecond: '',
         musicVolumeSecond: 0,
-        musicStatusFirst: "STOPPED",
-        musicStatusSecond: "STOPPED",
+        musicStatusFirst: 'STOPPED',
+        musicStatusSecond: 'STOPPED',
       })
       .catch(error => {
         this.triggerError(error);
       });
     firebase
       .database()
-      .ref("/stories/" + currentStory + "/noise")
+      .ref('/stories/' + currentStory + '/noise')
       .set({
-        noiseName: "",
+        noiseName: '',
         noiseVolume: 100,
-        noiseStatus: "STOPPED",
+        noiseStatus: 'STOPPED',
       })
       .catch(error => {
         this.triggerError(error);
@@ -396,7 +307,7 @@ class App extends Component {
     const { isMusicFirst, isMusicTransition, currentStory } = this.state;
     const obj = {};
     obj[name] = value;
-    if (name === "musicName") {
+    if (name === 'musicName') {
       if (!isMusicTransition) {
         if (isMusicFirst) {
           this.setState(
@@ -417,15 +328,15 @@ class App extends Component {
                       musicVolumeSecond: state.musicVolume * ((i * 5) / 100),
                       isMusicTransition: i !== 20,
                       musicStatusFirst:
-                        i !== 20 && state.musicNameFirst !== ""
-                          ? "PLAYING"
-                          : "STOPPED",
-                      musicStatusSecond: "PLAYING",
+                        i !== 20 && state.musicNameFirst !== ''
+                          ? 'PLAYING'
+                          : 'STOPPED',
+                      musicStatusSecond: 'PLAYING',
                     }),
                     () => {
                       firebase
                         .database()
-                        .ref("/stories/" + currentStory + "/music")
+                        .ref('/stories/' + currentStory + '/music')
                         .set({
                           musicVolume: this.state.musicVolume,
                           musicNameFirst: this.state.musicNameFirst,
@@ -438,11 +349,11 @@ class App extends Component {
                         .catch(error => {
                           this.triggerError(error);
                         });
-                    },
+                    }
                   );
                 }, i * 300);
               }
-            },
+            }
           );
         } else {
           this.setState(
@@ -463,15 +374,15 @@ class App extends Component {
                       musicVolumeFirst: state.musicVolume * ((i * 5) / 100),
                       isMusicTransition: i !== 20,
                       musicStatusSecond:
-                        i !== 20 && state.musicNameSecond !== ""
-                          ? "PLAYING"
-                          : "STOPPED",
-                      musicStatusFirst: "PLAYING",
+                        i !== 20 && state.musicNameSecond !== ''
+                          ? 'PLAYING'
+                          : 'STOPPED',
+                      musicStatusFirst: 'PLAYING',
                     }),
                     () => {
                       firebase
                         .database()
-                        .ref("/stories/" + currentStory + "/music")
+                        .ref('/stories/' + currentStory + '/music')
                         .set({
                           musicVolume: this.state.musicVolume,
                           musicNameFirst: this.state.musicNameFirst,
@@ -484,11 +395,11 @@ class App extends Component {
                         .catch(error => {
                           this.triggerError(error);
                         });
-                    },
+                    }
                   );
                 }, i * 300);
               }
-            },
+            }
           );
         }
       }
@@ -500,7 +411,7 @@ class App extends Component {
         }),
         () => {
           this.debouncedSavingMusic();
-        },
+        }
       );
     }
   };
@@ -513,22 +424,22 @@ class App extends Component {
   saveMusic = () => {
     const {
       currentStory,
-      noiseStatus,
-      noiseName,
-      noiseVolume,
-      musicVolume,
-      musicNameFirst,
       isMusicFirst,
+      musicNameFirst,
       musicNameSecond,
       musicStatusFirst,
       musicStatusSecond,
+      musicVolume,
+      noiseName,
+      noiseStatus,
+      noiseVolume,
     } = this.state;
     firebase
       .database()
-      .ref("/stories/" + currentStory + "/noise")
+      .ref('/stories/' + currentStory + '/noise')
       .set({
-        noiseStatus,
         noiseName,
+        noiseStatus,
         noiseVolume,
       })
       .catch(error => {
@@ -536,15 +447,15 @@ class App extends Component {
       });
     firebase
       .database()
-      .ref("/stories/" + currentStory + "/music")
+      .ref('/stories/' + currentStory + '/music')
       .set({
-        musicVolume,
         musicNameFirst,
-        musicVolumeFirst: isMusicFirst ? musicVolume : 0,
         musicNameSecond,
-        musicVolumeSecond: isMusicFirst ? 0 : musicVolume,
         musicStatusFirst,
         musicStatusSecond,
+        musicVolume,
+        musicVolumeFirst: isMusicFirst ? musicVolume : 0,
+        musicVolumeSecond: isMusicFirst ? 0 : musicVolume,
       })
       .catch(error => {
         this.triggerError(error);
@@ -558,22 +469,22 @@ class App extends Component {
     if (stories[i].gameMaster === uid) isGM = true;
 
     if (
-      typeof stories[i].characters !== "undefined" &&
-      typeof stories[i].characters[uid] !== "undefined"
+      typeof stories[i].characters !== 'undefined' &&
+      typeof stories[i].characters[uid] !== 'undefined'
     ) {
       firebase
         .database()
-        .ref("/stories/" + i + "/characters/" + uid + "/character")
-        .on("value", snapshot => {
+        .ref('/stories/' + i + '/characters/' + uid + '/character')
+        .on('value', snapshot => {
           //@TODO : Activate when GM will have proper tabs
           this.setState(
             state => ({
               ...state,
               character: snapshot.val(),
+              characterId: stories[i].characters[uid].characterId,
               currentStory: i,
               gameMaster: stories[i].gameMaster,
               isGameMaster: isGM,
-              characterId: stories[i].characters[uid].characterId,
             }),
             () => {
               this.createTable();
@@ -583,7 +494,7 @@ class App extends Component {
               this.loadTownsAndQuests();
               this.loadCurrentPosition();
               this.loadEvents();
-            },
+            }
           );
         });
     } else {
@@ -601,15 +512,15 @@ class App extends Component {
           this.loadMusic();
           this.loadMerchantsAndItems();
           this.loadEvents();
-        },
+        }
       );
     }
     firebase
       .database()
-      .ref("/stories/" + i + "/characters")
-      .on("value", snapshot => {
+      .ref('/stories/' + i + '/characters')
+      .on('value', snapshot => {
         const charactersFromStories = [];
-        if (typeof snapshot.val() !== "undefined" && snapshot.val()) {
+        if (typeof snapshot.val() !== 'undefined' && snapshot.val()) {
           Object.keys(snapshot.val()).map(key => {
             charactersFromStories.push(snapshot.val()[key].character);
             return null;
@@ -623,17 +534,7 @@ class App extends Component {
   };
 
   createChat = () => {
-    firebase
-      .database()
-      .ref("/chat")
-      .on("value", snapshot => {
-        if (snapshot.val() !== null) {
-          this.setState(state => ({
-            ...state,
-            chatHistory: snapshot.val(),
-          }));
-        }
-      });
+    listenChat(this.doSetState);
   };
 
   accessChatHelp = () => {
@@ -651,7 +552,7 @@ class App extends Component {
       }),
       () => {
         if (cb) cb();
-      },
+      }
     );
   };
 
@@ -665,196 +566,195 @@ class App extends Component {
         setTimeout(() => {
           this.setState(state => ({
             ...state,
-            error: "",
+            error: '',
           }));
         }, 5000);
-      },
+      }
     );
   };
 
   render() {
     const {
-      isItemShowed,
-      itemsList,
-      isItemDescriptionShowed,
-      itemToDescribe,
-      isTownShowed,
-      merchantsList,
-      isAuth,
-      email,
-      password,
-      pseudo,
-      pseudoInput,
-      characterId,
       character,
       characterCreation,
-      map,
-      chatInput,
-      chatHistory,
-      textureToApply,
+      characterId,
       characters,
-      error,
-      users,
-      uid,
-      onChatHelp,
-      isGameMaster,
-      currentStory,
-      stories,
-      storyCharacters,
-      gameMaster,
-      currentQuest,
-      isQuestShowed,
-      questsList,
-      musicMute,
-      musicVolume,
-      noiseName,
-      noiseStatus,
-      noiseMute,
-      noiseVolume,
-      merchants,
+      chatHistory,
+      chatInput,
+      currentEvent,
       currentMerchant,
-      isMusicFirst,
-      musicVolumeFirst,
-      musicStatusFirst,
-      musicNameFirst,
-      musicVolumeSecond,
-      musicNameSecond,
-      musicStatusSecond,
-      isOnPlayerView,
-      currentTown,
-      towns,
-      quests,
-      tilesTypes,
+      currentQuest,
       currentScale,
+      currentStory,
+      currentTile,
+      currentTown,
       currentX,
       currentY,
       currentZoom,
-      currentTile,
-      currentEvent,
+      email,
+      error,
       eventHistory,
+      gameMaster,
+      isAuth,
+      isGameMaster,
+      isItemDescriptionShowed,
+      isItemShowed,
+      isMusicFirst,
+      isOnPlayerView,
+      isQuestShowed,
+      isTownShowed,
       items,
-      isEventHidden,
+      itemsList,
+      itemToDescribe,
+      map,
+      merchants,
+      merchantsList,
+      musicMute,
+      musicNameFirst,
+      musicNameSecond,
+      musicStatusFirst,
+      musicStatusSecond,
+      musicVolume,
+      musicVolumeFirst,
+      musicVolumeSecond,
+      noiseMute,
+      noiseName,
+      noiseStatus,
+      noiseVolume,
+      onChatHelp,
+      password,
+      pseudo,
+      pseudoInput,
+      quests,
+      questsList,
+      stories,
+      storyCharacters,
+      textureToApply,
+      tilesTypes,
+      towns,
+      uid,
+      users,
     } = this.state;
 
     return (
       <div className="App">
         {!isAuth && (
           <IsNotAuth
-            email={email}
-            password={password}
-            onChange={this.onChange}
             doSetState={this.doSetState}
-            triggerError={this.triggerError}
-            loadUsers={this.loadUsers}
+            email={email}
             loadStories={this.loadStories}
+            loadUsers={this.loadUsers}
+            onChange={this.onChange}
+            password={password}
+            triggerError={this.triggerError}
           />
         )}
 
         {isAuth &&
-          pseudo === "" && (
+          pseudo === '' && (
             <HasNoNickname
-              pseudoInput={pseudoInput}
-              onChange={this.onChange}
               doSetState={this.doSetState}
+              onChange={this.onChange}
+              pseudoInput={pseudoInput}
               triggerError={this.triggerError}
             />
           )}
 
         {isAuth &&
-          pseudo !== "" &&
+          pseudo !== '' &&
           currentStory === -1 && (
             <StoriesPanel stories={stories} chooseStory={this.chooseStory} />
           )}
 
         {!isGameMaster &&
           isAuth &&
-          pseudo !== "" &&
+          pseudo !== '' &&
           currentStory > -1 &&
           characterId === 0 && (
             <CharacterSelection
-              uid={uid}
-              pseudo={pseudo}
-              currentStory={currentStory}
               characterCreation={characterCreation}
               characters={characters}
-              doSetState={this.doSetState}
-              triggerError={this.triggerError}
               chooseStory={this.chooseStory}
+              currentStory={currentStory}
+              doSetState={this.doSetState}
               keepCharacter={this.keepCharacter}
+              pseudo={pseudo}
+              triggerError={this.triggerError}
+              uid={uid}
             />
           )}
 
         {isAuth &&
-          pseudo !== "" &&
+          pseudo !== '' &&
           currentStory > -1 &&
           (characterId > 0 || isGameMaster) && (
             <GameScreen
-              musicMute={musicMute}
-              onChatHelp={onChatHelp}
-              stories={stories}
-              isItemShowed={isItemShowed}
-              itemsList={itemsList}
-              isItemDescriptionShowed={isItemDescriptionShowed}
-              itemToDescribe={itemToDescribe}
-              isTownShowed={isTownShowed}
-              merchantsList={merchantsList}
-              pseudo={pseudo}
-              character={character}
-              map={map}
-              chatInput={chatInput}
-              chatHistory={chatHistory}
-              textureToApply={textureToApply}
-              users={users}
-              uid={uid}
-              isGameMaster={isGameMaster}
-              currentStory={currentStory}
-              storyCharacters={storyCharacters}
-              gameMaster={gameMaster}
-              currentQuest={currentQuest}
-              isQuestShowed={isQuestShowed}
-              questsList={questsList}
-              musicVolume={musicVolume}
-              noiseVolume={noiseVolume}
-              merchants={merchants}
-              currentMerchant={currentMerchant}
-              musicName={isMusicFirst ? musicNameFirst : musicNameSecond}
-              noiseName={noiseName}
-              isOnPlayerView={isOnPlayerView}
-              generateTable={this.generateTable}
-              onChangeMusics={this.onChangeMusics}
-              resetSounds={this.resetSounds}
-              doSetState={this.doSetState}
-              triggerError={this.triggerError}
-              buyItem={this.buyItem}
-              onChange={this.onChange}
-              toggleMusic={this.toggleMusic}
               accessChatHelp={this.accessChatHelp}
-              signOut={this.signOut}
-              selectAnotherCharacter={this.selectAnotherCharacter}
-              togglePlayerView={this.togglePlayerView}
-              currentTown={currentTown}
-              towns={towns}
-              quests={quests}
-              tilesTypes={tilesTypes}
+              buyItem={this.buyItem}
+              character={character}
+              chatHistory={chatHistory}
+              chatInput={chatInput}
+              currentEvent={currentEvent}
+              currentMerchant={currentMerchant}
+              currentQuest={currentQuest}
               currentScale={currentScale}
+              currentStory={currentStory}
+              currentTile={currentTile}
+              currentTown={currentTown}
               currentX={currentX}
               currentY={currentY}
               currentZoom={currentZoom}
-              loadCurrentPosition={this.loadCurrentPosition}
-              currentTile={currentTile}
+              doSetState={this.doSetState}
               eventHistory={eventHistory}
-              currentEvent={currentEvent}
+              gameMaster={gameMaster}
+              generateTable={this.generateTable}
+              isGameMaster={isGameMaster}
+              isItemDescriptionShowed={isItemDescriptionShowed}
+              isItemShowed={isItemShowed}
+              isOnPlayerView={isOnPlayerView}
+              isQuestShowed={isQuestShowed}
+              isTownShowed={isTownShowed}
               items={items}
+              itemsList={itemsList}
+              itemToDescribe={itemToDescribe}
+              loadCurrentPosition={this.loadCurrentPosition}
+              map={map}
+              merchants={merchants}
+              merchantsList={merchantsList}
+              musicMute={musicMute}
+              musicName={isMusicFirst ? musicNameFirst : musicNameSecond}
+              musicVolume={musicVolume}
+              noiseName={noiseName}
+              noiseVolume={noiseVolume}
+              onChange={this.onChange}
+              onChangeMusics={this.onChangeMusics}
+              onChatHelp={onChatHelp}
+              pseudo={pseudo}
+              quests={quests}
+              questsList={questsList}
+              resetSounds={this.resetSounds}
+              selectAnotherCharacter={this.selectAnotherCharacter}
+              signOut={this.signOut}
+              stories={stories}
+              storyCharacters={storyCharacters}
+              textureToApply={textureToApply}
+              tilesTypes={tilesTypes}
+              toggleMusic={this.toggleMusic}
+              togglePlayerView={this.togglePlayerView}
+              towns={towns}
+              triggerError={this.triggerError}
+              uid={uid}
+              users={users}
             />
           )}
         <SoundPlayer
           musicMute={musicMute}
-          musicVolumeFirst={musicVolumeFirst}
-          musicStatusFirst={musicStatusFirst}
           musicNameFirst={musicNameFirst}
-          musicVolumeSecond={musicVolumeSecond}
           musicNameSecond={musicNameSecond}
+          musicStatusFirst={musicStatusFirst}
           musicStatusSecond={musicStatusSecond}
+          musicVolumeFirst={musicVolumeFirst}
+          musicVolumeSecond={musicVolumeSecond}
           noiseMute={noiseMute}
           noiseName={noiseName}
           noiseStatus={noiseStatus}

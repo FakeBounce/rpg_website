@@ -211,19 +211,19 @@ class RightPanel extends Component {
 
     render() {
         const {
-            pseudo,
-            chatInput,
-            chatHistory,
-            onChange,
-            doSetState,
-            triggerError,
             character,
-            users,
-            storyCharacters,
-            uid,
+            chatHistory,
+            chatInput,
             currentStory,
+            doSetState,
             gameMaster,
             isGameMaster,
+            onChange,
+            pseudo,
+            storyCharacters,
+            triggerError,
+            uid,
+            users,
         } = this.props;
 
         const { status, infoTab, damageTaken, gold } = this.state;
@@ -232,40 +232,40 @@ class RightPanel extends Component {
             <div style={styles.RightPanel}>
                 <CharacterPanel
                     character={character}
-                    status={status}
-                    infoTab={infoTab}
                     damageTaken={damageTaken}
                     gold={gold}
+                    infoTab={infoTab}
                     isGameMaster={isGameMaster}
                     onChange={this.onChange}
                     onChangeTab={this.onChangeTab}
+                    onGoldChange={this.onGoldChange}
+                    onItemUse={this.onItemUse}
                     onLifeChange={this.onLifeChange}
                     onStatusChange={this.onStatusChange}
-                    onItemUse={this.onItemUse}
-                    onGoldChange={this.onGoldChange}
+                    status={status}
                 />
                 <TeamPanel
-                    gameMaster={gameMaster}
-                    storyCharacters={storyCharacters}
                     chatWithTeamMember={this.chatWithTeamMember}
+                    gameMaster={gameMaster}
                     goldWithTeamMember={this.goldWithTeamMember}
-                    modifyCurrentCharacter={this.modifyCurrentCharacter}
                     isGameMaster={isGameMaster}
+                    modifyCurrentCharacter={this.modifyCurrentCharacter}
+                    storyCharacters={storyCharacters}
                 />
                 <ChatPanel
-                    users={users}
-                    storyCharacters={storyCharacters}
-                    uid={uid}
+                    character={character}
+                    chatHistory={chatHistory}
+                    chatInput={chatInput}
                     currentStory={currentStory}
+                    doSetState={doSetState}
                     gameMaster={gameMaster}
                     isGameMaster={isGameMaster}
-                    character={character}
-                    pseudo={pseudo}
-                    chatInput={chatInput}
-                    chatHistory={chatHistory}
                     onChange={onChange}
-                    doSetState={doSetState}
+                    pseudo={pseudo}
+                    storyCharacters={storyCharacters}
                     triggerError={triggerError}
+                    uid={uid}
+                    users={users}
                 />
             </div>
         );
@@ -273,19 +273,19 @@ class RightPanel extends Component {
 }
 
 RightPanel.propTypes = {
-    gameMaster: PropTypes.string.isRequired,
-    uid: PropTypes.string.isRequired,
-    currentStory: PropTypes.number.isRequired,
-    users: PropTypes.object.isRequired,
     character: PropTypes.object.isRequired,
-    isGameMaster: PropTypes.bool.isRequired,
-    pseudo: PropTypes.string.isRequired,
-    chatInput: PropTypes.string.isRequired,
     chatHistory: PropTypes.array.isRequired,
-    storyCharacters: PropTypes.array.isRequired,
-    onChange: PropTypes.func.isRequired,
+    chatInput: PropTypes.string.isRequired,
+    currentStory: PropTypes.number.isRequired,
     doSetState: PropTypes.func.isRequired,
+    gameMaster: PropTypes.string.isRequired,
+    isGameMaster: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired,
+    pseudo: PropTypes.string.isRequired,
+    storyCharacters: PropTypes.array.isRequired,
     triggerError: PropTypes.func.isRequired,
+    uid: PropTypes.string.isRequired,
+    users: PropTypes.object.isRequired,
 };
 
 export default RightPanel;
