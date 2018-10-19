@@ -24,7 +24,7 @@ const styledActionHistoryContainer = {
   overflowY: "auto",
 };
 
-class EventActionHistory extends Component {
+class EventModalActionHistory extends Component {
   render() {
     const { currentEvent, eventHistory } = this.props;
 
@@ -44,9 +44,9 @@ class EventActionHistory extends Component {
   }
 }
 
-EventActionHistory.propTypes = {
+EventModalActionHistory.propTypes = {
   currentEvent: PropTypes.number.isRequired,
   eventHistory: PropTypes.array.isRequired,
 };
 
-export default EventActionHistory;
+export default EventModalActionHistory;

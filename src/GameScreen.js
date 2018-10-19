@@ -5,7 +5,7 @@ import BottomPanel from "./BottomPanel/BottomPanel";
 import ChatCommandsPanel from "./ChatCommandsPanel/ChatCommandsPanel";
 import Header from "./Utils/Header";
 import MiddlePanel from "./MiddlePanel";
-import EventPanel from "./EventPanel/EventPanel";
+import EventModal from "./EventModal/EventModal";
 
 const styledToggleEvent = {
   position: "absolute",
@@ -98,7 +98,7 @@ class GameScreen extends Component {
           togglePlayerView={togglePlayerView}
         />
         {this.canReadEvent() && (
-          <EventPanel
+          <EventModal
             character={character}
             currentEvent={currentEvent}
             currentStory={currentStory}

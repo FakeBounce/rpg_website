@@ -22,7 +22,7 @@ const styledBoxHeader = {
   display: "inline-block",
 };
 
-class EventDescription extends Component {
+class EventModalDescription extends Component {
   render() {
     const { currentEvent, eventHistory } = this.props;
 
@@ -65,9 +65,9 @@ class EventDescription extends Component {
   }
 }
 
-EventDescription.propTypes = {
+EventModalDescription.propTypes = {
   currentEvent: PropTypes.number.isRequired,
   eventHistory: PropTypes.array.isRequired,
 };
 
-export default EventDescription;
+export default EventModalDescription;

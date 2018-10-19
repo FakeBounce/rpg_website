@@ -20,7 +20,7 @@ const styledEventAction = {
   display: "inline-block",
 };
 
-class EventGold extends Component {
+class EventModalGold extends Component {
   render() {
     const {
       isGameMaster,
@@ -81,7 +81,7 @@ class EventGold extends Component {
   }
 }
 
-EventGold.propTypes = {
+EventModalGold.propTypes = {
   isGameMaster: PropTypes.bool.isRequired,
   currentEvent: PropTypes.number.isRequired,
   numberWanted: PropTypes.number.isRequired,
@@ -94,4 +94,4 @@ EventGold.propTypes = {
   takeEquivalentGold: PropTypes.func.isRequired,
 };
 
-export default EventGold;
+export default EventModalGold;
