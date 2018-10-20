@@ -9,7 +9,6 @@ class QuestFullscreen extends Component {
       description,
       reward,
       dangerosity,
-      icon,
       hideQuest,
     } = this.props;
     return (

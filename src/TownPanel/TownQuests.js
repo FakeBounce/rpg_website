@@ -42,6 +42,7 @@ class TownQuests extends Component {
             if (q.town === currentTown) {
               return (
                 <TownQuest
+                  key={`quests-list-${q.name}`}
                   q={q}
                   i={i}
                   validateQuest={validateQuest}
@@ -49,6 +50,7 @@ class TownQuests extends Component {
                 />
               );
             }
+            return null;
           })}
         </div>
       </div>

@@ -1,4 +1,10 @@
-<div className="commit"> FakeBounce, le 2018-10-19 : WIP Refactoring... MapGenerator </div>
+<div className="commit"> fakebounce, le 2018-10-20 : REfactoring... Done. Fixed warnings and logs </div>
+<div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (Prettier) </div>
+<div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (PlayerMapPanel) </div>
+<div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (MerchantPanel) </div>
+<div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (TownPanel and PanelToggle) </div>
+<div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (Event and MapEdition) </div>
+<div className="commit"> FakeBounce, le 2018-10-19 : WIP Refactoring... (MapGenerator) </div>
 <div className="commit"> fakebounce, le 2018-10-18 : WIP Refactoring... (Event panel) </div>
 <div className="commit"> FakeBounce, le 2018-10-18 : Reworked project structure </div>
 <div className="commit"> fakebounce, le 2018-10-13 : Last minute fixes </div>

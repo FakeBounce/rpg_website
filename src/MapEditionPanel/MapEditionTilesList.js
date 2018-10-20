@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { gridDimension, widthLeft } from "../Utils/StyleConstants";
+import { gridDimension } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import MapEditionTile from "./MapEditionTile";

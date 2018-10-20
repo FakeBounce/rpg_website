@@ -1,38 +1,10 @@
 import React, { Component } from "react";
-import { gridDimension, widthLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import firebase from "firebase";
 import MapEditionTileInfos from "./MapEditionTileInfos";
 import MapEditionTilesList from "./MapEditionTilesList";
 import MapEditionScale from "./MapEditionScale";
-
-const styledBoxHeader = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-  float: "left",
-  display: "inline-block",
-  position: "relative",
-};
-
-const styledMapButtons = {
-  border: "1px solid blue",
-  width: "100%",
-  height: `${gridDimension * 2 + 1}px`,
-  display: "inline-block",
-  float: "left",
-};
-
-const styledGrid = {
-  border: "1px solid pink",
-  width: `${(widthLeft / 2 - 3) / 8}px`,
-  height: `${gridDimension}px`,
-  display: "inline-block",
-  float: "left",
-  position: "relative",
-};
 
 class MapEditionPanel extends Component {
   state = {
@@ -157,6 +129,8 @@ MapEditionPanel.defaultProps = {
 };
 
 MapEditionPanel.propTypes = {
+  stories: PropTypes.array.isRequired,
+  currentStory: PropTypes.number.isRequired,
   textureToApply: PropTypes.object,
   changeCurrentScale: PropTypes.func.isRequired,
   currentScale: PropTypes.number.isRequired,

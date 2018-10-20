@@ -9,6 +9,7 @@ class TileGM extends Component {
   render() {
     const {
       row,
+      index,
       currentZoom,
       doSetState,
       positionX,
@@ -74,6 +75,7 @@ TileGM.propTypes = {
   textureToApply: PropTypes.object,
   tilesTypes: PropTypes.object.isRequired,
   towns: PropTypes.array.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default TileGM;

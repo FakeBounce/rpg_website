@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { eventList } from "../Utils/Constants";
 
 import PropTypes from "prop-types";
 

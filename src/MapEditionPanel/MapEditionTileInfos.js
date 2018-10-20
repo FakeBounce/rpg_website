@@ -1,6 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+const styledBoxHeader = {
+  width: "100%",
+  height: "20px",
+  marginBottom: "5px",
+  textAlign: "center",
+  float: "left",
+  display: "inline-block",
+  position: "relative",
+};
+
 class MapEditionTileInfos extends Component {
   render() {
     const {

@@ -31,7 +31,11 @@ class StoryQuestList extends Component {
       <div style={styledQuestsContainer}>
         {quests.map((q, i) => {
           return (
-            <div onClick={() => addQuestToTown(i)} style={styledBoxHeader}>
+            <div
+              key={`quests-list-${q.name}`}
+              onClick={() => addQuestToTown(i)}
+              style={styledBoxHeader}
+            >
               {q.name}
               {typeof q.town !== "undefined" &&
                 q.town > -1 && <span>({towns[q.town].name})</span>}

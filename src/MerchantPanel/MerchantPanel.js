@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Merchant from "../MerchantPanel/Merchant";
 import PropTypes from "prop-types";
 import { widthLeft, heightLeft } from "../Utils/StyleConstants";
 import MerchantList from "./MerchantList";
@@ -19,16 +18,6 @@ const styledMapSide = {
   float: "left",
   textAlign: "left",
   position: "relative",
-};
-
-const styledItemContainer = {
-  display: "inline-block",
-  float: "left",
-  position: "absolute",
-  top: "25px",
-  overflowY: "auto",
-  height: "90%",
-  width: "100%",
 };
 
 class MerchantPanel extends Component {

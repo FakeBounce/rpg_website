@@ -119,10 +119,12 @@ class LoadSpreasheet extends Component {
               rowValue[headerValues[columnIndex].toLowerCase()] =
                 columnData.formattedValue;
             }
+            return null;
           });
           if (rowIndex !== 0) {
             rowValues.push(rowValue);
           }
+          return null;
         });
 
         const merchantsRow = {

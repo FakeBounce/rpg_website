@@ -37,6 +37,7 @@ class Merchant extends Component {
 
 Merchant.defaultProps = {
   isDiscovered: false,
+  description: "",
 };
 
 Merchant.propTypes = {
@@ -44,7 +45,7 @@ Merchant.propTypes = {
   isDiscovered: PropTypes.bool,
   name: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   showItems: PropTypes.func.isRequired,
   currentMerchant: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(

@@ -33,6 +33,7 @@ class EventPanel extends Component {
       if (v === uid) {
         newViewersTab.splice(index, 1);
       }
+      return null;
     });
     this.setState(state => ({
       ...state,

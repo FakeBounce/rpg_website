@@ -68,6 +68,7 @@ class EventModalViewers extends Component {
                   </div>
                 );
               }
+              return null;
             })
           : storyCharacters.map(sc => {
               return (
@@ -78,7 +79,6 @@ class EventModalViewers extends Component {
                   {sc.name}
                 </div>
               );
-              return null;
             })}
         {`)`}
       </div>

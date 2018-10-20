@@ -373,6 +373,7 @@ class ChatPanel extends Component {
         if (sc.userPseudo.toLowerCase() === splittedString[1].toLowerCase()) {
           playerIsInTeam = { ...sc };
         }
+        return null;
       });
       if (playerIsInTeam) {
         const isnum = /^\d+$/.test(splittedString[2]);
@@ -479,6 +480,7 @@ class ChatPanel extends Component {
                   parseInt(splittedString[1], 10) +
                   goldLeft;
               }
+              return null;
             });
 
             firebase

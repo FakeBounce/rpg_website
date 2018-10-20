@@ -58,6 +58,7 @@ class MapGenerator extends Component {
       table.push(
         isGameMaster && !isOnPlayerView ? (
           <TileGM
+            key={`row-${index}`}
             currentZoom={currentZoom}
             doSetState={doSetState}
             positionX={positionX}
@@ -67,6 +68,7 @@ class MapGenerator extends Component {
             textureToApply={textureToApply}
             tilesTypes={tilesTypes}
             towns={towns}
+            index={index}
           />
         ) : (
           <Tile
@@ -120,6 +122,7 @@ class MapGenerator extends Component {
     let path = "";
     Object.keys(textureToApply).map(key => {
       path = key;
+      return null;
     });
     updates["/" + parseInt(x, 10) + "/" + parseInt(y, 10) + "/" + path] =
       textureToApply[path];

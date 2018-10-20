@@ -35,7 +35,7 @@ class EventItem extends Component {
           })
         }
       >
-        <img src={"./" + ikey + "/" + i.icon} style={styledItemIcon} />
+        <img src={"./" + ikey + "/" + i.icon} style={styledItemIcon} alt={i.name}/>
         {i.name}
       </div>
     );

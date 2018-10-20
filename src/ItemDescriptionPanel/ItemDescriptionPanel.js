@@ -61,13 +61,14 @@ class ItemDescriptionPanel extends Component {
 }
 ItemDescriptionPanel.defaultProps = {
   effect: "",
+  description: "",
 };
 
 ItemDescriptionPanel.propTypes = {
   icon: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   itemType: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   effect: PropTypes.string,
   quantity: PropTypes.number.isRequired,
   price: PropTypes.number.isRequired,

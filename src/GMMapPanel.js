@@ -81,6 +81,7 @@ class GMMapPanel extends Component {
       doSetState,
       tilesTypes,
       triggerError,
+      stories,
     } = this.props;
     const { isOnQuest, isOnMap } = this.state;
     return (
@@ -95,6 +96,8 @@ class GMMapPanel extends Component {
               doSetState={doSetState}
               tilesTypes={tilesTypes}
               textureToApply={textureToApply}
+              currentStory={currentStory}
+              stories={stories}
             />
           )}
           {!isOnMap && (

@@ -3,8 +3,6 @@ import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import firebase from "firebase";
-import TownMerchant from "./TownMerchant";
-import TownQuest from "./TownQuest";
 import TownMerchants from "./TownMerchants";
 import TownQuests from "./TownQuests";
 
@@ -25,15 +23,6 @@ const styledMapSide = {
   float: "left",
   textAlign: "left",
   position: "relative",
-};
-
-const styledSemiContainer = {
-  width: "100%",
-  height: `${heightLeft / 4 - 40}px`,
-  display: "inline-block",
-  float: "left",
-  position: "relative",
-  overflowY: "auto",
 };
 
 class TownPanel extends Component {
@@ -75,6 +64,7 @@ class TownPanel extends Component {
         if (ql === i) {
           newTown.questsList.splice(index, 1);
         }
+        return null;
       });
 
       firebase
@@ -106,6 +96,7 @@ class TownPanel extends Component {
       if (ql === i) {
         newTown.merchantsList.splice(index, 1);
       }
+      return null;
     });
 
     firebase

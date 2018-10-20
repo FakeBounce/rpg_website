@@ -42,6 +42,7 @@ class EventModalDescription extends Component {
               width: 350,
               height: 350,
             }}
+            alt="Gold bag"
           />
         </div>
         {eventHistory[currentEvent].type === "gold" && (

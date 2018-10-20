@@ -8,9 +8,7 @@ class Item extends Component {
       index,
       icon,
       itemType,
-      type,
       name,
-      description,
       price,
       showItemDescription,
       isHidden,
@@ -31,6 +29,7 @@ class Item extends Component {
 
 Item.defaultProps = {
   type: "",
+  description: "",
 };
 
 Item.propTypes = {
@@ -38,7 +37,7 @@ Item.propTypes = {
   icon: PropTypes.string.isRequired,
   itemType: PropTypes.string.isRequired,
   type: PropTypes.string,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   showItemDescription: PropTypes.func.isRequired,

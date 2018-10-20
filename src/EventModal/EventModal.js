@@ -412,6 +412,7 @@ class EventModal extends Component {
           if (ql === uid) {
             newEvent.viewers.splice(index, 1);
           }
+          return null;
         });
       } else {
         const userIds = [];
@@ -419,6 +420,7 @@ class EventModal extends Component {
           if (sc.userUid !== uid && sc.userUid !== gameMaster) {
             userIds.push(sc.userUid);
           }
+          return null;
         });
         newEvent.viewers = [...userIds];
       }
