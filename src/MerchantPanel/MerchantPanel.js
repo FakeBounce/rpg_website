@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Merchant from "../MerchantPanel/Merchant";
 import PropTypes from "prop-types";
 import { widthLeft, heightLeft } from "../Utils/StyleConstants";
-import MerchantsList from "./MerchantsList";
+import MerchantList from "./MerchantList";
 
 const styledBoxHeader = {
   width: "100%",
@@ -46,7 +46,7 @@ class MerchantPanel extends Component {
     return (
       <div style={styledMapSide}>
         <div style={styledBoxHeader}>Liste des marchands</div>
-        <MerchantsList
+        <MerchantList
           currentMerchant={currentMerchant}
           merchantsList={merchantsList}
           merchants={merchants}

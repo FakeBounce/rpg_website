@@ -12,7 +12,7 @@ const styledItemContainer = {
   width: "100%",
 };
 
-class MerchantsList extends Component {
+class MerchantList extends Component {
   render() {
     const { merchantsList, merchants, currentMerchant, showItems } = this.props;
 
@@ -34,11 +34,11 @@ class MerchantsList extends Component {
   }
 }
 
-MerchantsList.propTypes = {
+MerchantList.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   merchantsList: PropTypes.array.isRequired,
   merchants: PropTypes.array.isRequired,
   showItems: PropTypes.func.isRequired,
 };
 
-export default MerchantsList;
+export default MerchantList;
