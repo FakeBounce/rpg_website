@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { widthRightPanelLeft } from '../Utils/StyleConstants';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { widthRightPanelLeft } from "../Utils/StyleConstants";
 
 const styles = {
   tabButton: {
     width: `${widthRightPanelLeft / 4}px`,
     height: 25,
     padding: 0,
-    position: 'relative',
-    float: 'left',
-    display: 'inline-block',
-    cursor: 'pointer',
+    position: "relative",
+    float: "left",
+    display: "inline-block",
+    cursor: "pointer",
   },
 };
 

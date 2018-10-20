@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import PropTypes from 'prop-types';
-import CharacterAttributes from './CharacterAttributes';
-import CharacterOtherInfos from './CharacterOtherInfos';
-import CharacterHeader from './CharacterHeader';
+import PropTypes from "prop-types";
+import CharacterAttributes from "./CharacterAttributes";
+import CharacterOtherInfos from "./CharacterOtherInfos";
+import CharacterHeader from "./CharacterHeader";
 
 const styles = {
   CharPanel: {
-    borderBottom: '1px solid black',
-    width: '100%',
-    height: '33%',
+    borderBottom: "1px solid black",
+    width: "100%",
+    height: "33%",
   },
-  CharacterBox: { position: 'relative', height: '100%' },
+  CharacterBox: { position: "relative", height: "100%" },
 };
 
 class CharacterPanel extends Component {

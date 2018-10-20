@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import './Grid.css';
-import Town from './Town';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import "./Grid.css";
+import Town from "./Town";
 
-import { gridDimension } from '../Utils/StyleConstants';
+import { gridDimension } from "../Utils/StyleConstants";
 
 class TileGM extends Component {
   render() {
@@ -21,7 +21,7 @@ class TileGM extends Component {
 
     return (
       <div
-        className={`grid ${row.isCurrent && 'is-current'}`}
+        className={`grid ${row.isCurrent && "is-current"}`}
         style={{
           backgroundColor: tilesTypes[row.environment].backgroundColor,
           width: `${(gridDimension * currentZoom) / 10 -
