@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { heightLeft, widthLeft } from "./Utils/StyleConstants";
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import firebase from "firebase";
-import MerchantList from "./MerchantList";
-import QuestList from "./QuestList";
+import StoryMerchantList from "./StoryMerchantList";
+import StoryQuestList from "./StoryQuestList";
 
 const styledBoxHeader = {
   width: "100%",
@@ -96,13 +96,13 @@ class StoryQuestsAndMerchantsPanel extends Component {
       <div style={styledMapSide}>
         <div style={styledBoxHeader}>{isOnQuest ? "Quests" : "Merchants"}</div>
         {isOnQuest ? (
-          <QuestList
+          <StoryQuestList
             addQuestToTown={this.addQuestToTown}
             towns={towns}
             quests={quests}
           />
         ) : (
-          <MerchantList
+          <StoryMerchantList
             addMerchantToTown={this.addMerchantToTown}
             towns={towns}
             merchants={merchants}

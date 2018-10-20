@@ -3,34 +3,11 @@ import { heightLeft, widthLeft } from "./Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import SoundPanel from "./SoundPanel/SoundPanel";
-import firebase from "firebase";
-import TownMerchant from "./TownMerchant";
-import TownQuest from "./TownQuest";
 import EventPanel from "./EventPanel/EventPanel";
 import MapEditionPanel from "./MapEditionPanel/MapEditionPanel";
-import StoryQuestsAndMerchantsPanel from "./StoryQuestsAndMerchantsPanel";
-import TownPanel from "./TownPanel";
+import StoryQuestsAndMerchantsPanel from "./StoryQuestsAndMerchantsPanel/StoryQuestsAndMerchantsPanel";
+import TownPanel from "./TownPanel/TownPanel";
 import PanelToggle from "./PanelToggle";
-
-const styledBoxHeader = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-  float: "left",
-  display: "inline-block",
-  position: "relative",
-};
-
-const styledSemiBoxHeader = {
-  width: "50%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-  float: "left",
-  display: "inline-block",
-  position: "relative",
-};
 
 const styledMapSide = {
   border: "1px solid brown",
@@ -40,15 +17,6 @@ const styledMapSide = {
   float: "left",
   textAlign: "left",
   position: "relative",
-};
-
-const styledSemiContainer = {
-  width: "100%",
-  height: `${heightLeft / 4 - 40}px`,
-  display: "inline-block",
-  float: "left",
-  position: "relative",
-  overflowY: "auto",
 };
 
 const styledMiddlePanel = {

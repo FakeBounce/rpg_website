@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { heightLeft } from "./Utils/StyleConstants";
+import { heightLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 
@@ -24,7 +24,7 @@ const styledQuestsContainer = {
   overflowY: "auto",
 };
 
-class QuestList extends Component {
+class StoryQuestList extends Component {
   render() {
     const { towns, quests, addQuestToTown } = this.props;
     return (
@@ -43,10 +43,10 @@ class QuestList extends Component {
   }
 }
 
-QuestList.propTypes = {
+StoryQuestList.propTypes = {
   addQuestToTown: PropTypes.func.isRequired,
   towns: PropTypes.array.isRequired,
   quests: PropTypes.array.isRequired,
 };
 
-export default QuestList;
+export default StoryQuestList;

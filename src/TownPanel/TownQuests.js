@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { heightLeft } from "./Utils/StyleConstants";
+import { heightLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
-import TownMerchant from "./TownMerchant";
-
+import TownQuest from "./TownQuest";
 
 const styledBoxHeader = {
   width: "100%",
@@ -24,34 +23,32 @@ const styledSemiContainer = {
   overflowY: "auto",
 };
 
-class TownMerchants extends Component {
+class TownQuests extends Component {
   render() {
     const {
       currentTown,
-      merchants,
-      removeMerchantFromTown,
-      toggleMerchantDiscover,
+      quests,
       toggleRightPanel,
+      validateQuest,
+      removeQuestFromTown,
     } = this.props;
     return (
       <div>
-        <div onClick={() => toggleRightPanel(false)} style={styledBoxHeader}>
-          Merchants
+        <div onClick={() => toggleRightPanel(true)} style={styledBoxHeader}>
+          Quests
         </div>
         <div style={styledSemiContainer}>
-          {merchants.map((m, i) => {
-            if (m.town === currentTown) {
+          {quests.map((q, i) => {
+            if (q.town === currentTown) {
               return (
-                <TownMerchant
-                  key={`town-${m.name}`}
-                  m={m}
+                <TownQuest
+                  q={q}
                   i={i}
-                  removeMerchantFromTown={removeMerchantFromTown}
-                  toggleMerchantDiscover={toggleMerchantDiscover}
+                  validateQuest={validateQuest}
+                  removeQuestFromTown={removeQuestFromTown}
                 />
               );
             }
-            return null;
           })}
         </div>
       </div>
@@ -59,12 +56,12 @@ class TownMerchants extends Component {
   }
 }
 
-TownMerchants.propTypes = {
+TownQuests.propTypes = {
   currentTown: PropTypes.number.isRequired,
-  merchants: PropTypes.array.isRequired,
-  toggleMerchantDiscover: PropTypes.func.isRequired,
-  removeMerchantFromTown: PropTypes.func.isRequired,
+  quests: PropTypes.array.isRequired,
   toggleRightPanel: PropTypes.func.isRequired,
+  removeQuestFromTown: PropTypes.func.isRequired,
+  validateQuest: PropTypes.func.isRequired,
 };
 
-export default TownMerchants;
+export default TownQuests;

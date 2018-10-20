@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { heightLeft, widthLeft } from "./Utils/StyleConstants";
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import firebase from "firebase";

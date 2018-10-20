@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { heightLeft } from "./Utils/StyleConstants";
+import { heightLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 
@@ -24,7 +24,7 @@ const styledMerchantsContainer = {
   overflowY: "auto",
 };
 
-class MerchantList extends Component {
+class StoryMerchantList extends Component {
   render() {
     const { towns, merchants, addMerchantToTown } = this.props;
     return (
@@ -43,10 +43,10 @@ class MerchantList extends Component {
   }
 }
 
-MerchantList.propTypes = {
+StoryMerchantList.propTypes = {
   addMerchantToTown: PropTypes.func.isRequired,
   towns: PropTypes.array.isRequired,
   merchants: PropTypes.array.isRequired,
 };
 
-export default MerchantList;
+export default StoryMerchantList;
