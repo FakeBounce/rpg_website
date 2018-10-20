@@ -9,6 +9,8 @@ import TownQuest from "./TownQuest";
 import EventPanel from "./EventPanel/EventPanel";
 import MapEditionPanel from "./MapEditionPanel/MapEditionPanel";
 import StoryQuestsAndMerchantsPanel from "./StoryQuestsAndMerchantsPanel";
+import TownPanel from "./TownPanel";
+import PanelToggle from "./PanelToggle";
 
 const styledBoxHeader = {
   width: "100%",
@@ -64,109 +66,6 @@ class GMMapPanel extends Component {
     townToAssign: -1,
   };
 
-  changeCurrentMusic = m => {
-    const { onChangeMusics } = this.props;
-    onChangeMusics("musicName", m);
-  };
-
-  changeCurrentNoise = n => {
-    const { onChangeMusics } = this.props;
-    onChangeMusics("noiseName", n);
-    onChangeMusics("noiseStatus", "PLAYING");
-  };
-
-  toggleMerchantDiscover = i => {
-    const { currentStory, currentTown, merchants } = this.props;
-
-    const newMerchant = { ...merchants[i] };
-    newMerchant.isDiscovered = !newMerchant.isDiscovered;
-    firebase
-      .database()
-      .ref("stories/" + currentStory + "/merchants/" + i)
-      .set(newMerchant)
-      .catch(error => {
-        // Handle Errors here.
-        this.props.triggerError(error);
-      });
-  };
-
-  validateQuest = i => {
-    const { currentStory, quests } = this.props;
-
-    const newQuest = { ...quests[i] };
-    newQuest.validated = !newQuest.validated;
-    firebase
-      .database()
-      .ref("stories/" + currentStory + "/quests/" + i)
-      .set(newQuest)
-      .catch(error => {
-        // Handle Errors here.
-        this.props.triggerError(error);
-      });
-  };
-
-  removeQuestFromTown = i => {
-    const { currentStory, currentTown, towns, quests } = this.props;
-    const newTown = { ...towns[currentTown] };
-    if (!quests[i].validated) {
-      newTown.questsList.map((ql, index) => {
-        if (ql === i) {
-          newTown.questsList.splice(index, 1);
-        }
-      });
-
-      firebase
-        .database()
-        .ref("stories/" + currentStory + "/towns/" + currentTown)
-        .set(newTown)
-        .catch(error => {
-          // Handle Errors here.
-          this.props.triggerError(error);
-        });
-
-      const newQuest = { ...quests[i] };
-      newQuest.town = null;
-      firebase
-        .database()
-        .ref("stories/" + currentStory + "/quests/" + i)
-        .set(newQuest)
-        .catch(error => {
-          // Handle Errors here.
-          this.props.triggerError(error);
-        });
-    }
-  };
-
-  removeMerchantFromTown = i => {
-    const { currentStory, currentTown, towns, merchants } = this.props;
-    const newTown = { ...towns[currentTown] };
-    newTown.merchantsList.map((ql, index) => {
-      if (ql === i) {
-        newTown.merchantsList.splice(index, 1);
-      }
-    });
-
-    firebase
-      .database()
-      .ref("stories/" + currentStory + "/towns/" + currentTown)
-      .set(newTown)
-      .catch(error => {
-        // Handle Errors here.
-        this.props.triggerError(error);
-      });
-
-    const newMerchant = { ...merchants[i] };
-    newMerchant.town = null;
-    firebase
-      .database()
-      .ref("stories/" + currentStory + "/merchants/" + i)
-      .set(newMerchant)
-      .catch(error => {
-        // Handle Errors here.
-        this.props.triggerError(error);
-      });
-  };
-
   toggleRightPanel = bool => {
     this.setState(state => ({
       ...state,
@@ -219,18 +118,7 @@ class GMMapPanel extends Component {
     return (
       <div style={styledMiddlePanel}>
         <div style={styledMapSide}>
-          <div
-            style={styledSemiBoxHeader}
-            onClick={() => this.toggleIsOnMap(true)}
-          >
-            Modifier la carte
-          </div>
-          <div
-            style={styledSemiBoxHeader}
-            onClick={() => this.toggleIsOnMap(false)}
-          >
-            Ajouter un event
-          </div>
+          <PanelToggle toggleIsOnMap={this.toggleIsOnMap} />
           {isOnMap && (
             <MapEditionPanel
               changeCurrentScale={changeCurrentScale}
@@ -256,57 +144,18 @@ class GMMapPanel extends Component {
           noiseName={noiseName}
           musicVolume={musicVolume}
           noiseVolume={noiseVolume}
-          onChange={onChangeMusics}
           resetSounds={resetSounds}
-          changeCurrentMusic={this.changeCurrentMusic}
-          changeCurrentNoise={this.changeCurrentNoise}
+          onChangeMusics={onChangeMusics}
         />
         {currentTown > -1 && (
-          <div style={styledMapSide}>
-            <div style={styledBoxHeader}>{towns[currentTown].name}</div>
-            <div
-              onClick={() => this.toggleRightPanel(true)}
-              style={styledBoxHeader}
-            >
-              Quests
-            </div>
-            <div style={styledSemiContainer}>
-              {quests.map((q, i) => {
-                if (q.town === currentTown) {
-                  return (
-                    <TownQuest
-                      q={q}
-                      i={i}
-                      validateQuest={this.validateQuest}
-                      removeQuestFromTown={this.removeQuestFromTown}
-                    />
-                  );
-                }
-              })}
-            </div>
-            <div
-              onClick={() => this.toggleRightPanel(false)}
-              style={styledBoxHeader}
-            >
-              Merchants
-            </div>
-            <div style={styledSemiContainer}>
-              {merchants.map((m, i) => {
-                if (m.town === currentTown) {
-                  return (
-                    <TownMerchant
-                      key={`town-${m.name}`}
-                      m={m}
-                      i={i}
-                      removeMerchantFromTown={this.removeMerchantFromTown}
-                      toggleMerchantDiscover={this.toggleMerchantDiscover}
-                    />
-                  );
-                }
-                return null;
-              })}
-            </div>
-          </div>
+          <TownPanel
+            currentTown={currentTown}
+            towns={towns}
+            quests={quests}
+            merchants={merchants}
+            toggleRightPanel={this.toggleRightPanel}
+            currentStory={currentStory}
+          />
         )}
         {currentTown > -1 && (
           <StoryQuestsAndMerchantsPanel
