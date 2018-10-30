@@ -7,6 +7,7 @@ class Item extends Component {
     const {
       index,
       icon,
+      iconPath,
       itemType,
       name,
       price,
@@ -16,7 +17,7 @@ class Item extends Component {
     return (
       <div className="item" onClick={() => showItemDescription(index)}>
         <img
-          src={"./" + itemType + "/" + icon}
+          src={iconPath || "./" + itemType + "/" + icon}
           alt={" "}
           className="item-icon"
         />
@@ -35,6 +36,7 @@ Item.defaultProps = {
 Item.propTypes = {
   index: PropTypes.number.isRequired,
   icon: PropTypes.string.isRequired,
+  iconPath: PropTypes.string.isRequired,
   itemType: PropTypes.string.isRequired,
   type: PropTypes.string,
   description: PropTypes.string,

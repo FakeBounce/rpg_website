@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import firebase from "firebase";
 
 import BottomPanel from "./BottomPanel/BottomPanel";
 import ChatCommandsPanel from "./ChatCommandsPanel/ChatCommandsPanel";
@@ -18,6 +19,22 @@ class GameScreen extends Component {
   state = {
     isEventHidden: false,
   };
+
+  componentDidMount() {
+
+    console.log(
+      'test',
+      firebase
+        .app()
+        .storage()
+        .ref()
+        .child('images/artefacts/akila_urn.jpg')
+        .getDownloadURL()
+        .then(url => {
+          console.log('url', url);
+        })
+    );
+  }
 
   canReadEvent = () => {
     const { eventHistory, currentEvent, uid, isGameMaster } = this.props;

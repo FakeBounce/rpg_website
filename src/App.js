@@ -23,13 +23,13 @@ import {
   listenTowns,
   listenUsers,
   loadAllItems,
-  loadCurrentPosition,
+  loadCurrentPosition, loadMerchantsOnce,
   loadStories,
   loadTilesTypes,
   populateTilesTypes,
   resetEvents,
   resetMap,
-} from './Utils/DatabaseFunctions';
+} from "./Utils/DatabaseFunctions";
 import {
   hydrateStoryArtefacts,
   resetStoryMerchants,
@@ -62,7 +62,8 @@ class App extends Component {
 
   loadMerchantsAndItems = () => {
     const { currentStory } = this.state;
-    listenMerchants(currentStory, this.doSetState);
+    loadMerchantsOnce(currentStory, this.doSetState)
+    // listenMerchants(currentStory, this.doSetState);
     loadAllItems(currentStory, this.doSetState); // And listen to artefacts on callback
     // resetStoryMerchants(currentStory, this.doSetState);
     // this.hydrateAllMerchants(currentStoryn merchants, items, doSetState, false);
