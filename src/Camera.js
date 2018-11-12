@@ -39,13 +39,14 @@ class Camera extends Component {
   };
 
   sendIce = (data, id, isRemote = false) => {
+    console.log('data',data);
     firebase
       .database()
       .ref("camera/" + id)
       .push({
         type: "ice",
         isRemote,
-        message: data,
+        message: JSON.stringify(data),
         sender: this.yourId,
       });
   };
