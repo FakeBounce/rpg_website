@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import firebase from "firebase";
+import React, { Component } from 'react';
+import firebase from 'firebase';
 
 class Camera extends Component {
   constructor(props) {
     super(props);
 
-    this.database = firebase.database().ref("camera");
+    this.database = firebase.database().ref('camera');
     this.yourId = 975286682;
-    console.log("this.yourId", this.yourId);
-    const servers = {
+    console.log('this.yourId', this.yourId);
+    this.servers = {
       iceServers: [
-        { urls: "stun:stun.services.mozilla.com" },
-        { urls: "stun:stun.l.google.com:19302" },
+        { urls: 'stun:stun.services.mozilla.com' },
+        { urls: 'stun:stun.l.google.com:19302' },
         {
-          urls: "turn:numb.viagenie.ca",
-          credential: "webrtc",
-          username: "test@mail.com",
+          urls: 'turn:numb.viagenie.ca',
+          credential: 'webrtc',
+          username: 'test@mail.com',
         },
       ],
     };
 
-    this.pc = new RTCPeerConnection(servers);
+    this.pc = new RTCPeerConnection(this.servers);
     // this.pc.onicecandidate = event =>
     //   event.candidate
     //     ? this.sendMessage(
@@ -30,10 +30,10 @@ class Camera extends Component {
     //       )
     //     : console.log("Sent All Ice");
     this.pc.onaddstream = event => {
-      console.log("event", event);
-      this.friendsVideo.srcObject = event.stream;
+      console.log('event', event);
+      // this.friendsVideo.srcObject = event.stream;
     };
-    this.friendsVideo = null;
+    this.friendsVideo = [];
     this.yourVideo = null;
   }
 
@@ -44,7 +44,7 @@ class Camera extends Component {
   sendMessage = (data, type, id = this.yourId) => {
     firebase
       .database()
-      .ref("camera/" + id)
+      .ref('camera/' + id)
       .push({ message: data, type, sender: this.yourId });
   };
 
@@ -53,10 +53,10 @@ class Camera extends Component {
     var sender = data.val().sender;
     if (sender != this.yourId) {
       if (msg.ice != undefined) {
-        console.log("msg ice", msg);
+        console.log('msg ice', msg);
         this.pc.addIceCandidate(new RTCIceCandidate(msg.ice));
-      } else if (msg.sdp.type == "offer") {
-        console.log("msg offer", msg);
+      } else if (msg.sdp.type == 'offer') {
+        console.log('msg offer', msg);
         this.pc
           .setRemoteDescription(new RTCSessionDescription(msg.sdp))
           .then(() => this.pc.createAnswer())
@@ -64,21 +64,20 @@ class Camera extends Component {
           .then(() =>
             this.sendMessage(
               this.yourId,
-              JSON.stringify({ sdp: this.pc.localDescription }),
-            ),
+              JSON.stringify({ sdp: this.pc.localDescription })
+            )
           );
-      } else if (msg.sdp.type == "answer") {
-        console.log("msg answer", msg);
+      } else if (msg.sdp.type == 'answer') {
+        console.log('msg answer', msg);
         this.pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
       }
     }
   };
 
   showMyFace = () => {
-
     firebase
       .database()
-      .ref("camera/" + this.yourId + "/isConnected")
+      .ref('camera/' + this.yourId + '/isConnected')
       .set(true);
 
     navigator.mediaDevices
@@ -89,8 +88,8 @@ class Camera extends Component {
 
         firebase
           .database()
-          .ref("/camera")
-          .once("value")
+          .ref('/camera')
+          .once('value')
           .then(snapshot => {
             this.pc
               .createOffer()
@@ -100,35 +99,42 @@ class Camera extends Component {
                   if (parseInt(key) !== this.yourId) {
                     this.sendMessage(
                       JSON.stringify({ sdp: this.pc.localDescription }),
-                      "offer",
-                      key,
+                      'offer',
+                      key
                     );
                   }
                 });
               });
           })
           .catch(error => {
-            console.log("error", error);
+            console.log('error', error);
           });
 
         firebase
           .database()
-          .ref("camera/" + this.yourId)
-          .on("value", snapshot => {
+          .ref('camera/' + this.yourId)
+          .on('value', snapshot => {
             Object.keys(snapshot.val()).map(key => {
-              if (snapshot.val()[key].type === "offer") {
+              if (snapshot.val()[key].type === 'offer') {
                 const msg = JSON.parse(snapshot.val()[key].message);
-                this.pc
+                const test = [...this.friendsVideo];
+                test.push(new RTCPeerConnection(this.servers));
+                test[test.length - 1]
                   .setRemoteDescription(new RTCSessionDescription(msg.sdp))
-                  .then(() => this.pc.createAnswer())
-                  .then(answer => this.pc.setLocalDescription(answer))
-                  .then(() =>
+                  .then(() => test[test.length - 1].createAnswer())
+                  .then(answer =>
+                    test[test.length - 1].setLocalDescription(answer)
+                  )
+                  .then(() => {
                     this.sendMessage(
-                      JSON.stringify({ sdp: this.pc.localDescription }),
-                      "answer",
-                      snapshot.val()[key].sender,
-                    ),
-                  );
+                      JSON.stringify({
+                        sdp: test[test.length - 1].localDescription,
+                      }),
+                      'answer',
+                      snapshot.val()[key].sender
+                    );
+                    this.friendsVideo = [...test];
+                  });
               }
             });
           });
