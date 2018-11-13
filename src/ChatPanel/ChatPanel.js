@@ -543,6 +543,7 @@ class ChatPanel extends PureComponent {
 
   attributeAction = (attribute, isGm = false) => {
     const { pseudo, character } = this.props;
+    const { gmCommands } = this.state;
     const dice = Math.floor(Math.random() * parseInt(100, 10) + 1);
     let message = '';
 
@@ -555,7 +556,7 @@ class ChatPanel extends PureComponent {
     } else {
       message = `@${pseudo} tried a ${attribute} action. Result : ${dice} (Fail !)`;
     }
-    if (isGm) {
+    if (isGm || gmCommands) {
       this.sendChatInput({
         message,
         viewers: ['gm', pseudo],
