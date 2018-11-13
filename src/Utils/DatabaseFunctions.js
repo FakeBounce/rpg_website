@@ -125,6 +125,31 @@ export const loadAllItems = (currentStory, doSetState) => {
     });
 };
 
+export const loadUnusedArtefacts = currentStory => {
+  firebase
+    .database()
+    .ref('/stories/' + currentStory + '/artefacts')
+    .once('value')
+    .then(snapshot => {
+      addIconPathToAllArtefacts(
+        snapshot.val(),
+        '/stories/' + currentStory + '/artefacts'
+      );
+    })
+    .catch(error => {
+      // An error happened.
+      triggerError(error);
+    });
+};
+
+export const addIconPathToAllArtefacts = (items, path = '') => {
+  items.map((item, index) => {
+    addIconPathToItem(item, 'artefacts', path + '/' + index);
+    return null;
+  });
+  return null;
+};
+
 export const addIconPathToAllItems = items => {
   Object.keys(items).map(key => {
     items[key].map((item, index) => {
@@ -164,7 +189,7 @@ export const addIconPathToItem = (item, itemType, path, hardReset) => {
       .then(url => {
         const newItem = { ...item };
         newItem.iconPath = url;
-
+        console.log("path",path);
         firebase
           .database()
           .ref(path)

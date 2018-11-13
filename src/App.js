@@ -13,6 +13,7 @@ import GameScreen from './GameScreen';
 import SoundPlayer from './SoundPlayer/SoundPlayer';
 import {
   listenArtefacts,
+  // loadUnusedArtefacts,
   listenChat,
   listenCurrentEvent,
   listenEvents,
@@ -42,6 +43,7 @@ class App extends Component {
 
   componentDidMount() {
     loadTilesTypes(this.doSetState);
+    // loadUnusedArtefacts(0);
     // populateTilesTypes();
     // resetMap(0,40);
     // resetEvents(0);
@@ -62,8 +64,8 @@ class App extends Component {
 
   loadMerchantsAndItems = () => {
     const { currentStory } = this.state;
-    loadMerchantsOnce(currentStory, this.doSetState)
-    // listenMerchants(currentStory, this.doSetState);
+    // loadMerchantsOnce(currentStory, this.doSetState)
+    listenMerchants(currentStory, this.doSetState);
     loadAllItems(currentStory, this.doSetState); // And listen to artefacts on callback
     // resetStoryMerchants(currentStory, this.doSetState);
     // this.hydrateAllMerchants(currentStoryn merchants, items, doSetState, false);

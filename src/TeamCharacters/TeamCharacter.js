@@ -56,7 +56,7 @@ class TeamCharacter extends Component {
         <div onClick={chatWithTeamMember}>
           <HealthBar
             isGM={isGM}
-            width={`${(health / maxHealth) * 100}%`}
+            width={`${Math.floor((health / maxHealth) * 100)}%`}
             maxWidth={`${widthRightPanelLeft - 20 + imageSize / 2}px`}
           />
         </div>

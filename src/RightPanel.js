@@ -185,18 +185,9 @@ class RightPanel extends Component {
   render() {
     const {
       character,
-      chatHistory,
-      chatInput,
-      currentStory,
-      doSetState,
       gameMaster,
       isGameMaster,
-      onChange,
-      pseudo,
       storyCharacters,
-      triggerError,
-      uid,
-      users,
     } = this.props;
 
     const { status, infoTab, damageTaken, gold } = this.state;
@@ -225,21 +216,6 @@ class RightPanel extends Component {
           modifyCurrentCharacter={this.modifyCurrentCharacter}
           storyCharacters={storyCharacters}
         />
-        <ChatPanel
-          character={character}
-          chatHistory={chatHistory}
-          chatInput={chatInput}
-          currentStory={currentStory}
-          doSetState={doSetState}
-          gameMaster={gameMaster}
-          isGameMaster={isGameMaster}
-          onChange={onChange}
-          pseudo={pseudo}
-          storyCharacters={storyCharacters}
-          triggerError={triggerError}
-          uid={uid}
-          users={users}
-        />
       </div>
     );
   }
@@ -247,7 +223,6 @@ class RightPanel extends Component {
 
 RightPanel.propTypes = {
   character: PropTypes.object.isRequired,
-  chatHistory: PropTypes.array.isRequired,
   chatInput: PropTypes.string.isRequired,
   currentStory: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
@@ -258,7 +233,6 @@ RightPanel.propTypes = {
   storyCharacters: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
-  users: PropTypes.object.isRequired,
 };
 
 export default RightPanel;

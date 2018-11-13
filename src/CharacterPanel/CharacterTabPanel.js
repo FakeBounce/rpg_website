@@ -5,14 +5,14 @@ import CharacterTabPanelContent from "./CharacterTabPanelContent";
 import {
   heightHeader,
   widthRightPanelLeft,
-  imageSize,
+  imageSize, heightLeft,
 } from "../Utils/StyleConstants";
 import CharacterTabPanelItem from "./CharacterTabPanelItem";
 
 const styles = {
   tabPanel: {
     width: `${widthRightPanelLeft}px`,
-    height: `${(window.innerHeight - heightHeader) * 0.33 - imageSize - 50}px`,
+    height: `${heightLeft/2 - imageSize - 50}px`,
     padding: 0,
     position: "relative",
     float: "left",

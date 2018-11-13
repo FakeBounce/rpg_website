@@ -42,8 +42,10 @@ class CharacterHeader extends Component {
         <img src={icon} alt={name} style={styles.characterHeaderIcon} />
         <div style={styles.characterHeaderName}>{name}</div>
         <HealthBar
-          width={`${(health / maxHealth) * 100}%`}
+          width={`${Math.floor((health / maxHealth) * 100)}%`}
           maxWidth={`${widthRightPanelLeft}px`}
+          health={health}
+          maxHealth={maxHealth}
         />
         <CharacterHeaderInfos status={status} gold={gold} />
       </div>

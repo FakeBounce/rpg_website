@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { heightHeader, imageSize } from "../Utils/StyleConstants";
+import { heightHeader, heightLeft, imageSize } from "../Utils/StyleConstants";
 
 const styles = {
   BoxHeader: {
@@ -11,7 +11,7 @@ const styles = {
   },
   characterAttributeInfos: {
     width: `${imageSize - 1}px`,
-    height: `${(window.innerHeight - heightHeader) * 0.33 - imageSize}px`,
+    height: `${heightLeft/2 - imageSize}px`,
     position: "relative",
     float: "left",
     display: "inline-block",

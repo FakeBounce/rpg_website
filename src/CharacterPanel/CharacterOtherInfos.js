@@ -6,13 +6,13 @@ import CharacterInputs from "./CharacterInputs";
 import {
   widthRightPanelLeft,
   heightHeader,
-  imageSize,
+  imageSize, heightLeft,
 } from "../Utils/StyleConstants";
 
 const styles = {
   characterOtherInfos: {
     width: `${widthRightPanelLeft}px`,
-    height: `${(window.innerHeight - heightHeader) * 0.33 - imageSize}px`,
+    height: `${heightLeft / 2 - imageSize}px`,
     position: "relative",
     float: "left",
     display: "inline-block",

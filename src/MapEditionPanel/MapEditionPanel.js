@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import MapEditionTileInfos from "./MapEditionTileInfos";
-import MapEditionTilesList from "./MapEditionTilesList";
-import MapEditionScale from "./MapEditionScale";
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import MapEditionTileInfos from './MapEditionTileInfos';
+import MapEditionTilesList from './MapEditionTilesList';
+import MapEditionScale from './MapEditionScale';
+import { gridLength } from '../Utils/StyleConstants';
 
 class MapEditionPanel extends Component {
   state = {
@@ -18,12 +19,12 @@ class MapEditionPanel extends Component {
     firebase
       .database()
       .ref(
-        "maps/" +
+        'maps/' +
           stories[currentStory].map +
-          "/" +
+          '/' +
           currentTile.y +
-          "/" +
-          currentTile.x,
+          '/' +
+          currentTile.x
       )
       .set(newTile)
       .then(() => {
@@ -33,16 +34,16 @@ class MapEditionPanel extends Component {
         if (newTile.isCurrent) {
           firebase
             .database()
-            .ref("stories/" + currentStory + "/currentX")
-            .set(parseInt(newTile.x, 10) - 6)
+            .ref('stories/' + currentStory + '/currentX')
+            .set(parseInt(newTile.x, 10) - gridLength / 2)
             .catch(error => {
               // Handle Errors here.
               this.props.triggerError(error);
             });
           firebase
             .database()
-            .ref("stories/" + currentStory + "/currentY")
-            .set(parseInt(newTile.y, 10) - 6)
+            .ref('stories/' + currentStory + '/currentY')
+            .set(parseInt(newTile.y, 10) - gridLength / 2)
             .catch(error => {
               // Handle Errors here.
               this.props.triggerError(error);
@@ -63,12 +64,12 @@ class MapEditionPanel extends Component {
     firebase
       .database()
       .ref(
-        "maps/" +
+        'maps/' +
           stories[currentStory].map +
-          "/" +
+          '/' +
           currentTile.y +
-          "/" +
-          currentTile.x,
+          '/' +
+          currentTile.x
       )
       .set(newTile)
       .then(() => {
