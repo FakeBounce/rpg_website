@@ -119,7 +119,7 @@ class RightPanel extends Component {
       } else {
         newCharacterItems.splice(i, 1);
       }
-      
+
       const newCharacter = {
         ...character,
         items: newCharacterItems,

@@ -87,12 +87,17 @@ class ChatPanel extends PureComponent {
     gmCommands: false,
   };
   messagesEnd = null;
+  chatInputRef = null;
 
   componentDidMount() {
     this.scrollToBottom();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.chatInput === "" && this.props.chatInput !== "")
+    {
+      this.chatInputRef.focus();
+    }
     this.scrollToBottom();
   }
 
@@ -708,6 +713,7 @@ class ChatPanel extends PureComponent {
             }}
             style={styles.ChatInput}
             onKeyPress={this.handleKeyPress}
+            ref={(input) => { this.chatInputRef = input; }}
           />
           <button style={styles.ChatButton} onClick={this.talkInChat}>
             OK
