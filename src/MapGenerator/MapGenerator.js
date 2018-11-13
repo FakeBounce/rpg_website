@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import './Grid.css';
@@ -21,7 +21,7 @@ const styledMap = {
   background: 'black',
 };
 
-class MapGenerator extends Component {
+class MapGenerator extends PureComponent {
   generateTable = mapToRender => {
     const { currentZoom } = this.props;
     const table = [];

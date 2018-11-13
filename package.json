@@ -12,7 +12,8 @@
     "react-images-upload": "^1.2.3",
     "react-scripts": "1.1.5",
     "react-sound": "^1.2.0",
-    "react-tooltip": "^3.8.1"
+    "react-tooltip": "^3.8.1",
+    "recompose": "^0.30.0"
   },
   "scripts": {
     "start": "react-scripts start",
