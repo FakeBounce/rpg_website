@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
 import ChatRow from './ChatRow';
 import { heightHeader, heightLeft, widthLeft } from '../Utils/StyleConstants';
 
@@ -13,7 +14,7 @@ const styles = {
   },
   Historic: {
     width: '100%',
-    height: `${heightLeft / 2 - (25 + 20 + 5)}px`,
+    height: `${heightLeft / 2 - (25 + 20 + 5) - 25}px`,
     float: 'left',
     display: 'inline-block',
     overflowY: 'auto',
@@ -39,6 +40,40 @@ const styles = {
     textAlign: 'center',
     padding: '0px',
   },
+  ChatButtonGMActive: {
+    width: '10%',
+    height: '26px',
+    float: 'right',
+    display: 'inline-block',
+    textAlign: 'center',
+    padding: '0px',
+    backgroundColor: 'purple',
+    color: 'white',
+  },
+  ChatButtonGM: {
+    width: '10%',
+    height: '26px',
+    float: 'right',
+    display: 'inline-block',
+    textAlign: 'center',
+    padding: '0px',
+  },
+  ChatDices: {
+    width: '100%',
+    height: '25px',
+    float: 'left',
+    display: 'inline-block',
+    position: 'relative',
+  },
+  ChatDice: {
+    padding: '1px 5px',
+    width: '23px',
+    height: '23px',
+    float: 'left',
+    display: 'inline-block',
+    position: 'relative',
+    cursor: 'pointer',
+  },
   ChatPanel: {
     width: widthLeft / 2,
     position: 'absolute',
@@ -47,7 +82,10 @@ const styles = {
   },
 };
 
-class ChatPanel extends Component {
+class ChatPanel extends PureComponent {
+  state = {
+    gmCommands: false,
+  };
   messagesEnd = null;
 
   componentDidMount() {
@@ -131,20 +169,20 @@ class ChatPanel extends Component {
       }
       switch (chatInput) {
         case '/strength':
-        case '/str':
+        case '/stre':
         case '/force':
-        case '/for':
+        case '/forc':
           noMagicWord = false;
           this.attributeAction('strength');
           break;
         case '/dexterity':
-        case '/dex':
+        case '/dext':
         case '/dextérité':
+        case '/dexterite':
           noMagicWord = false;
           this.attributeAction('dexterity');
           break;
         case '/luck':
-        case '/luc':
         case '/chance':
         case '/chan':
           noMagicWord = false;
@@ -157,41 +195,42 @@ class ChatPanel extends Component {
           this.attributeAction('charisma');
           break;
         case '/education':
-        case '/edu':
+        case '/educ':
+        case '/éducation':
           noMagicWord = false;
           this.attributeAction('education');
           break;
         case '/perception':
-        case '/per':
+        case '/perc':
           noMagicWord = false;
           this.attributeAction('perception');
           break;
         case '/constitution':
-        case '/con':
+        case '/cons':
           noMagicWord = false;
           this.attributeAction('constitution');
           break;
         case '/magic':
-        case '/mag':
+        case '/magi':
         case '/magie':
           noMagicWord = false;
           this.attributeAction('magic');
           break;
         case '/gmstrength':
-        case '/gmstr':
+        case '/gmstre':
         case '/gmforce':
-        case '/gmfor':
+        case '/gmforc':
           noMagicWord = false;
           this.attributeAction('strength', true);
           break;
         case '/gmdexterity':
-        case '/gmdex':
+        case '/gmdext':
         case '/gmdextérité':
+        case '/gmdexterite':
           noMagicWord = false;
           this.attributeAction('dexterity', true);
           break;
         case '/gmluck':
-        case '/gmluc':
         case '/gmchance':
         case '/gmchan':
           noMagicWord = false;
@@ -204,22 +243,23 @@ class ChatPanel extends Component {
           this.attributeAction('charisma', true);
           break;
         case '/gmeducation':
-        case '/gmedu':
+        case '/gmeduc':
+        case '/gméducation':
           noMagicWord = false;
           this.attributeAction('education', true);
           break;
         case '/gmperception':
-        case '/gmper':
+        case '/gmperc':
           noMagicWord = false;
           this.attributeAction('perception', true);
           break;
         case '/gmconstitution':
-        case '/gmcon':
+        case '/gmcons':
           noMagicWord = false;
           this.attributeAction('constitution', true);
           break;
         case '/gmmagic':
-        case '/gmmag':
+        case '/gmmagi':
         case '/gmmagie':
           noMagicWord = false;
           this.attributeAction('magic', true);
@@ -547,8 +587,26 @@ class ChatPanel extends Component {
       });
   };
 
+  launchCommand = command => {
+    this.props.doSetState(
+      {
+        error: '',
+        chatInput: (this.state.gmCommands ? '/gm' : '/') + command,
+      },
+      () => this.talkInChat()
+    );
+  };
+
+  toggleGMCommands = () => {
+    this.setState(state => ({
+      ...state,
+      gmCommands: !state.gmCommands,
+    }));
+  };
+
   render() {
     const { chatInput, chatHistory, onChange } = this.props;
+    const { gmCommands } = this.state;
 
     return (
       <div style={styles.ChatPanel}>
@@ -561,6 +619,70 @@ class ChatPanel extends Component {
               this.messagesEnd = el;
             }}
           />
+        </div>
+        <div style={styles.ChatDices}>
+          <img
+            src={'./common/dice_red.jpg'}
+            alt="Strength dice"
+            style={styles.ChatDice}
+            onClick={() => this.launchCommand('stre')}
+            data-tip={'Strength'}
+          />
+          <img
+            src={'./common/dice_green.jpg'}
+            alt="Dexterity dice"
+            style={styles.ChatDice}
+            onClick={() => this.launchCommand('dext')}
+            data-tip={'Dexterity'}
+          />
+          <img
+            src={'./common/dice_orange.jpg'}
+            alt="Perception dice"
+            style={styles.ChatDice}
+            onClick={() => this.launchCommand('perc')}
+            data-tip={'Perception'}
+          />
+          <img
+            src={'./common/dice_purple.jpg'}
+            alt="Magic dice"
+            style={styles.ChatDice}
+            onClick={() => this.launchCommand('magi')}
+            data-tip={'Magic'}
+          />
+          <img
+            src={'./common/dice_blue.jpg'}
+            alt="Constitution dice"
+            style={styles.ChatDice}
+            onClick={() => this.launchCommand('cons')}
+            data-tip={'Constitution'}
+          />
+          <img
+            src={'./common/dice_black.jpg'}
+            alt="Charisma dice"
+            style={styles.ChatDice}
+            onClick={() => this.launchCommand('char')}
+            data-tip={'Charisma'}
+          />
+          <img
+            src={'./common/dice_yellow.jpg'}
+            alt="Luck dice"
+            style={styles.ChatDice}
+            onClick={() => this.launchCommand('luck')}
+            data-tip={'Luck'}
+          />
+          <img
+            src={'./common/dice_white.jpg'}
+            alt="Education dice"
+            style={styles.ChatDice}
+            onClick={() => this.launchCommand('educ')}
+            data-tip={'Education'}
+          />
+          <button
+            style={gmCommands ? styles.ChatButtonGMActive : styles.ChatButtonGM}
+            onClick={this.toggleGMCommands}
+          >
+            GM
+          </button>
         </div>
         <div style={styles.ChatBox}>
           <input
@@ -578,6 +700,7 @@ class ChatPanel extends Component {
             OK
           </button>
         </div>
+        <ReactTooltip />
       </div>
     );
   }
