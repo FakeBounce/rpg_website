@@ -154,6 +154,9 @@ class Camera extends Component {
                     );
               };
 
+              this.friendsVideoLocal[snapshot.val().sender]
+                .setLocalDescription(new RTCSessionDescription(msg.sdp));
+
               //Providing answer
               this.friendsVideoRemote[snapshot.val().sender]
                 .setRemoteDescription(new RTCSessionDescription(msg.sdp))
@@ -165,6 +168,7 @@ class Camera extends Component {
             if (snapshot.val().type === "answer") {
               const msg = JSON.parse(snapshot.val().message);
 
+              console.log('msg',msg.sdp);
               this.friendsVideoRemote[
                 snapshot.val().sender
               ].setLocalDescription(new RTCSessionDescription(msg.sdp));
@@ -174,6 +178,7 @@ class Camera extends Component {
             }
             if (snapshot.val().type === "ice") {
               const msg = JSON.parse(snapshot.val().message);
+              console.log('msg ice',msg);
               if (snapshot.val().isRemote) {
                 this.friendsVideoRemote[snapshot.val().sender]
                   .addIceCandidate(new RTCIceCandidate(msg))
