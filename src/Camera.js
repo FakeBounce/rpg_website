@@ -21,9 +21,8 @@ class Camera extends Component {
     };
 
     this.pc = new RTCPeerConnection(this.servers);
-    this.friendsIndex = {};
-    this.friendsVideoLocal = [];
-    this.friendsVideoRemote = [];
+    this.friendsVideoLocal = {};
+    this.friendsVideoRemote = {};
     this.yourVideo = null;
   }
 
@@ -39,7 +38,6 @@ class Camera extends Component {
   };
 
   sendIce = (data, id, isRemote = false) => {
-    console.log('data',data);
     firebase
       .database()
       .ref("camera/" + id)
@@ -70,58 +68,48 @@ class Camera extends Component {
           .then(snapshot => {
             Object.keys(snapshot.val()).map(key => {
               if (parseInt(key) !== this.yourId) {
-                const localFriend = [...this.friendsVideoLocal];
-                localFriend.push(new RTCPeerConnection(this.servers));
-                const localIndex = localFriend.length - 1;
-                this.friendsIndex[key] = localIndex;
+                this.friendsVideoLocal[key] = new RTCPeerConnection(
+                  this.servers,
+                );
 
                 //Adding ice candidates
-                localFriend[localIndex].onicecandidate = e => {
+                this.friendsVideoLocal[key].onicecandidate = e => {
                   e.candidate
                     ? this.sendIce(e.candidate, key)
                     : console.log("Sent all ice, local, offer, " + key);
                 };
 
-                const remoteFriend = [...this.friendsVideoRemote];
-                remoteFriend.push(new RTCPeerConnection(this.servers));
-                const remoteIndex = remoteFriend.length - 1;
+                this.friendsVideoRemote[key] = new RTCPeerConnection(
+                  this.servers,
+                );
 
                 //Adding ice candidates
-                remoteFriend[remoteIndex].onicecandidate = e => {
+                this.friendsVideoRemote[key].onicecandidate = e => {
                   console.log("e", e.candidate);
                   e.candidate
                     ? this.sendIce(e.candidate, key, true)
                     : console.log("Sent all ice, remote, offer, " + key);
                 };
 
-                remoteFriend[remoteIndex].ontrack = e =>
-                  this.setUpRemoteStream(e, remoteIndex, true);
+                this.friendsVideoRemote[key].ontrack = e =>
+                  this.setUpRemoteStream(e, key, true);
 
                 window.localStream
                   .getTracks()
                   .forEach(track =>
-                    localFriend[localIndex].addTrack(track, window.localStream),
+                    this.friendsVideoLocal[key].addTrack(
+                      track,
+                      window.localStream,
+                    ),
                   );
-                localFriend[localIndex]
+                this.friendsVideoLocal[key]
                   .createOffer({
                     offerToReceiveAudio: 1,
                     offerToReceiveVideo: 1,
                   })
-                  .then(offer => {
-                    localFriend[localIndex].setLocalDescription(offer);
-                    remoteFriend[remoteIndex].setRemoteDescription(offer);
-                  })
-                  .then(() => {
-                    this.sendMessage(
-                      JSON.stringify({
-                        sdp: localFriend[localIndex].localDescription,
-                      }),
-                      "offer",
-                      key,
-                    );
-                    this.friendsVideoLocal = [...localFriend];
-                    this.friendsVideoRemote = [...remoteFriend];
-                  });
+                  .then(offer => () =>
+                    this.setDescriptionsFromOffer(offer, key),
+                  );
               }
             });
           })
@@ -135,12 +123,14 @@ class Camera extends Component {
           .on("child_added", snapshot => {
             if (snapshot.val().type === "offer") {
               const msg = JSON.parse(snapshot.val().message);
-              const remoteFriend = [...this.friendsVideoRemote];
-              remoteFriend.push(new RTCPeerConnection(this.servers));
-              const remoteIndex = remoteFriend.length - 1;
-              this.friendsIndex[snapshot.val().sender] = remoteIndex;
+              this.friendsVideoRemote[
+                snapshot.val().sender
+              ] = new RTCPeerConnection(this.servers);
+
               //Adding ice candidates
-              remoteFriend[remoteIndex].onicecandidate = e => {
+              this.friendsVideoRemote[
+                snapshot.val().sender
+              ].onicecandidate = e => {
                 e.candidate
                   ? this.sendIce(e.candidate, snapshot.val().sender, true)
                   : console.log(
@@ -148,15 +138,17 @@ class Camera extends Component {
                     );
               };
 
-              remoteFriend[remoteIndex].ontrack = e =>
-                this.setUpRemoteStream(e, remoteIndex, true);
+              this.friendsVideoRemote[snapshot.val().sender].ontrack = e =>
+                this.setUpRemoteStream(e, snapshot.val().sender, true);
 
-              const localFriend = [...this.friendsVideoLocal];
-              localFriend.push(new RTCPeerConnection(this.servers));
-              const localIndex = localFriend.length - 1;
+              this.friendsVideoLocal[
+                snapshot.val().sender
+              ] = new RTCPeerConnection(this.servers);
 
               //Adding ice candidates
-              localFriend[localIndex].onicecandidate = e => {
+              this.friendsVideoLocal[
+                snapshot.val().sender
+              ].onicecandidate = e => {
                 e.candidate
                   ? this.sendIce(e.candidate, snapshot.val().sender)
                   : console.log(
@@ -165,48 +157,30 @@ class Camera extends Component {
               };
 
               //Providing answer
-              remoteFriend[remoteIndex]
+              this.friendsVideoRemote[snapshot.val().sender]
                 .setRemoteDescription(new RTCSessionDescription(msg.sdp))
-                .then(() => remoteFriend[remoteIndex].createAnswer())
-                .then(answer => {
-                  remoteFriend[remoteIndex].setLocalDescription(answer);
-                  localFriend[localIndex].setRemoteDescription(answer);
-                })
-                .then(() => {
-                  this.sendMessage(
-                    JSON.stringify({
-                      sdp: remoteFriend[remoteIndex].localDescription,
-                    }),
-                    "answer",
-                    snapshot.val().sender,
-                  );
-                  this.friendsVideoRemote = [...remoteFriend];
-                });
+                .then(() =>
+                  this.friendsVideoRemote[snapshot.val().sender].createAnswer(),
+                )
+                .then(answer => () =>
+                  this.setDescriptionsFromAnswer(answer, snapshot.val().sender),
+                );
             }
             if (snapshot.val().type === "answer") {
               const msg = JSON.parse(snapshot.val().message);
 
-              console.log(
-                "this.friendsVideoRemote",
-                this.friendsVideoRemote,
-                snapshot.val().sender,
-                this.friendsIndex[snapshot.val().sender],
-                this.friendsIndex,
-              );
               this.friendsVideoRemote[
-                this.friendsIndex[snapshot.val().sender]
+                snapshot.val().sender
               ].setLocalDescription(new RTCSessionDescription(msg.sdp));
               this.friendsVideoLocal[
-                this.friendsIndex[snapshot.val().sender]
+                snapshot.val().sender
               ].setRemoteDescription(new RTCSessionDescription(msg.sdp));
             }
             if (snapshot.val().type === "ice") {
-              const msg = JSON.parse(snapshot.val().message);
+              const msg = snapshot.val().message;
               if (snapshot.val().isRemote) {
-                this.friendsVideoRemote[
-                  this.friendsIndex[snapshot.val().sender]
-                ]
-                  .addIceCandidate(new RTCIceCandidate(msg.message))
+                this.friendsVideoRemote[snapshot.val().sender]
+                  .addIceCandidate(new RTCIceCandidate(msg))
                   .then(() => {
                     console.log(
                       "Added remote ice candidates for sender " +
@@ -214,8 +188,8 @@ class Camera extends Component {
                     );
                   });
               } else {
-                this.friendsVideoLocal[this.friendsIndex[snapshot.val().sender]]
-                  .addIceCandidate(new RTCIceCandidate(msg.message))
+                this.friendsVideoLocal[snapshot.val().sender]
+                  .addIceCandidate(new RTCIceCandidate(msg))
                   .then(() => {
                     console.log(
                       "Added local ice candidates for sender " +
@@ -226,6 +200,33 @@ class Camera extends Component {
             }
           });
       });
+  };
+
+  setDescriptionsFromOffer = (offer, sender) => {
+    this.friendsVideoRemote[sender].setRemoteDescription(offer);
+    this.friendsVideoLocal[sender].setLocalDescription(offer).then(() => {
+      this.sendMessage(
+        JSON.stringify({
+          sdp: this.friendsVideoLocal[sender].localDescription,
+        }),
+        "offer",
+        sender,
+      );
+    });
+  };
+
+  setDescriptionsFromAnswer = (answer, sender) => {
+    this.friendsVideoLocal[sender].setRemoteDescription(answer);
+
+    this.friendsVideoRemote[sender].setLocalDescription(answer).then(() => {
+      this.sendMessage(
+        JSON.stringify({
+          sdp: this.friendsVideoRemote[sender].localDescription,
+        }),
+        "answer",
+        sender,
+      );
+    });
   };
 
   setUpRemoteStream = (e, index, isRemote = false) => {
@@ -264,11 +265,11 @@ class Camera extends Component {
           autoPlay
           muted
         />
-        {this.friendsVideoRemote.map(fv => {
+        {Object.keys(this.friendsVideoRemote).map(key => {
           return (
             <video
               ref={audio => {
-                fv = audio;
+                this.friendsVideoRemote[key] = audio;
               }}
               autoPlay
               muted
