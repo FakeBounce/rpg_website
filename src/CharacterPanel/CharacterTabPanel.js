@@ -1,52 +1,58 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import CharacterTabPanelContent from "./CharacterTabPanelContent";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import CharacterTabPanelContent from './CharacterTabPanelContent';
 
 import {
   heightHeader,
   widthRightPanelLeft,
-  imageSize, heightLeft,
-} from "../Utils/StyleConstants";
-import CharacterTabPanelItem from "./CharacterTabPanelItem";
+  imageSize,
+  heightLeft,
+} from '../Utils/StyleConstants';
+import CharacterTabPanelItem from './CharacterTabPanelItem';
 
 const styles = {
   tabPanel: {
     width: `${widthRightPanelLeft}px`,
-    height: `${heightLeft/2 - imageSize - 50}px`,
+    height: `${heightLeft / 2 - imageSize - 50}px`,
     padding: 0,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-    overflowY: "auto",
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
+    overflowY: 'auto',
   },
 };
 
 class CharacterTabPanel extends Component {
   render() {
-    const { character, infoTab, onItemUse } = this.props;
+    const { character, infoTab, onItemUse, isGameMaster } = this.props;
 
     return (
       <div style={styles.tabPanel}>
-        {infoTab === "Weapons" && (
+        {infoTab === 'Weapons' && (
           <CharacterTabPanelContent
             tab={character.weapons || []}
             title="Weapons :"
+            isGameMaster="Weapons :"
           />
         )}
-        {infoTab === "Abilities" && (
+        {infoTab === 'Abilities' && (
           <CharacterTabPanelContent
             tab={character.abilities || []}
             title="Abilities :"
           />
         )}
-        {infoTab === "Skills" && (
+        {infoTab === 'Skills' && (
           <CharacterTabPanelContent
             tab={character.skills || []}
             title="Skills :"
           />
         )}
-        {infoTab === "Items" && (
-          <CharacterTabPanelItem character={character} onItemUse={onItemUse} />
+        {infoTab === 'Items' && (
+          <CharacterTabPanelItem
+            character={character}
+            onItemUse={onItemUse}
+            isGameMaster={isGameMaster}
+          />
         )}
       </div>
     );
@@ -57,6 +63,7 @@ CharacterTabPanel.propTypes = {
   character: PropTypes.object.isRequired,
   infoTab: PropTypes.string.isRequired,
   onItemUse: PropTypes.func.isRequired,
+  isGameMaster: PropTypes.bool.isRequired,
 };
 
 export default CharacterTabPanel;

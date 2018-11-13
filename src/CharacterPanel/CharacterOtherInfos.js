@@ -43,6 +43,7 @@ class CharacterOtherInfos extends Component {
           character={character}
           infoTab={infoTab}
           onItemUse={onItemUse}
+          isGameMaster={isGameMaster}
         />
         <CharacterInputs
           character={character}
