@@ -107,9 +107,7 @@ class Camera extends Component {
                     offerToReceiveAudio: 1,
                     offerToReceiveVideo: 1,
                   })
-                  .then(offer => () =>
-                    this.setDescriptionsFromOffer(offer, key),
-                  );
+                  .then(offer => this.setDescriptionsFromOffer(offer, key));
               }
             });
           })
@@ -162,9 +160,7 @@ class Camera extends Component {
                 .then(() =>
                   this.friendsVideoRemote[snapshot.val().sender].createAnswer(),
                 )
-                .then(answer => () =>
-                  this.setDescriptionsFromAnswer(answer, snapshot.val().sender),
-                );
+                .then(answer => this.setDescriptionsFromAnswer(answer, snapshot.val().sender));
             }
             if (snapshot.val().type === "answer") {
               const msg = JSON.parse(snapshot.val().message);
@@ -177,7 +173,7 @@ class Camera extends Component {
               ].setRemoteDescription(new RTCSessionDescription(msg.sdp));
             }
             if (snapshot.val().type === "ice") {
-              const msg = snapshot.val().message;
+              const msg = JSON.parse(snapshot.val().message);
               if (snapshot.val().isRemote) {
                 this.friendsVideoRemote[snapshot.val().sender]
                   .addIceCandidate(new RTCIceCandidate(msg))
