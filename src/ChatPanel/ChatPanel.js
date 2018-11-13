@@ -276,7 +276,7 @@ class ChatPanel extends PureComponent {
 
   whisperPlayerAction = () => {
     const { chatInput, pseudo, users } = this.props;
-    const splittedString = chatInput.split('/w ');
+    const splittedString = chatInput.trim().split('/w ');
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
       hasWhisperAction = true;
@@ -303,7 +303,7 @@ class ChatPanel extends PureComponent {
 
   whisperGMAction = () => {
     const { chatInput, pseudo, users, gameMaster } = this.props;
-    const splittedString = chatInput.split('/gmw ');
+    const splittedString = chatInput.trim().split('/gmw ');
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
       hasWhisperAction = true;
@@ -326,7 +326,7 @@ class ChatPanel extends PureComponent {
 
   whisperTeamAction = () => {
     const { chatInput, pseudo, users, gameMaster } = this.props;
-    const splittedString = chatInput.split('/tmw ');
+    const splittedString = chatInput.trim().split('/tmw ');
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
       hasWhisperAction = true;
@@ -349,7 +349,10 @@ class ChatPanel extends PureComponent {
 
   diceAction = (limiter, viewers = null) => {
     const { chatInput, pseudo } = this.props;
-    const splittedString = chatInput.toLowerCase().split(limiter)[1];
+    const splittedString = chatInput
+      .toLowerCase()
+      .trim()
+      .split(limiter)[1];
     const isnum = /^\d+$/.test(splittedString);
     if (isnum) {
       this.sendChatInput({
@@ -364,7 +367,10 @@ class ChatPanel extends PureComponent {
 
   sendGoldGMAction = () => {
     const { chatInput, character, pseudo, uid, currentStory } = this.props;
-    const splittedString = chatInput.toLowerCase().split(' ');
+    const splittedString = chatInput
+      .toLowerCase()
+      .trim()
+      .split(' ');
     if (splittedString.length === 2 && splittedString[0] === '/goldgm') {
       const isnum = /^\d+$/.test(splittedString[1]);
       if (isnum) {
@@ -408,7 +414,10 @@ class ChatPanel extends PureComponent {
       uid,
       currentStory,
     } = this.props;
-    const splittedString = chatInput.toLowerCase().split(' ');
+    const splittedString = chatInput
+      .toLowerCase()
+      .trim()
+      .split(' ');
     if (splittedString.length === 3 && splittedString[0] === '/gold') {
       let playerIsInTeam = false;
       storyCharacters.map(sc => {
@@ -486,7 +495,10 @@ class ChatPanel extends PureComponent {
       currentStory,
       gameMaster,
     } = this.props;
-    const splittedString = chatInput.toLowerCase().split(' ');
+    const splittedString = chatInput
+      .toLowerCase()
+      .trim()
+      .split(' ');
     if (
       splittedString.length === 2 &&
       (splittedString[0] === '/goldtm' || splittedString[0] === '/goldteam')
