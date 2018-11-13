@@ -96,7 +96,9 @@ class Camera extends Component {
                     offerToReceiveAudio: 1,
                     offerToReceiveVideo: 1,
                   })
-                  .then(offer => this.setDescriptionsFromOffer(offer, key));
+                  .then(offer =>
+                    this.setDescriptionsFromOffer(offer, key, "askingOffer"),
+                  );
               }
             });
           })
@@ -108,6 +110,71 @@ class Camera extends Component {
           .database()
           .ref("camera/" + this.yourId)
           .on("child_added", snapshot => {
+            if (snapshot.val().type === "askingOffer") {
+              const msg = JSON.parse(snapshot.val().message);
+              this.friendsVideoRemote[
+                snapshot.val().sender
+              ] = new RTCPeerConnection(this.servers);
+
+              //Adding ice candidates
+              this.friendsVideoRemote[
+                snapshot.val().sender
+              ].onicecandidate = e => {
+                e.candidate
+                  ? this.sendIce(e.candidate, snapshot.val().sender, true)
+                  : console.log(
+                      "Sent all ice, remote, answer, " + snapshot.val().sender,
+                    );
+              };
+
+              this.friendsVideoRemote[snapshot.val().sender].ontrack = e =>
+                this.setUpRemoteStream(e, snapshot.val().sender);
+
+              //Providing answer
+              this.friendsVideoRemote[snapshot.val().sender]
+                .setRemoteDescription(new RTCSessionDescription(msg.sdp))
+                .then(() =>
+                  this.friendsVideoRemote[snapshot.val().sender].createAnswer(),
+                )
+                .then(answer =>
+                  this.setDescriptionsFromAnswer(answer, snapshot.val().sender),
+                );
+              this.friendsVideoLocal[
+                snapshot.val().sender
+              ] = new RTCPeerConnection(this.servers);
+
+              //Adding ice candidates
+              this.friendsVideoLocal[
+                snapshot.val().sender
+              ].onicecandidate = e => {
+                e.candidate
+                  ? this.sendIce(e.candidate, snapshot.val().sender)
+                  : console.log(
+                      "Sent all ice, local, offer, " + snapshot.val().sender,
+                    );
+              };
+
+              window.localStream
+                .getTracks()
+                .forEach(track =>
+                  this.friendsVideoLocal[snapshot.val().sender].addTrack(
+                    track,
+                    window.localStream,
+                  ),
+                );
+              this.friendsVideoLocal[snapshot.val().sender]
+                .createOffer({
+                  offerToReceiveAudio: 1,
+                  offerToReceiveVideo: 1,
+                })
+                .then(offer =>
+                  this.setDescriptionsFromOffer(
+                    offer,
+                    snapshot.val().sender,
+                    "offer",
+                  ),
+                );
+            }
             if (snapshot.val().type === "offer") {
               const msg = JSON.parse(snapshot.val().message);
               this.friendsVideoRemote[
@@ -137,40 +204,6 @@ class Camera extends Component {
                 .then(answer =>
                   this.setDescriptionsFromAnswer(answer, snapshot.val().sender),
                 );
-
-              if (!this.friendsVideoLocal[snapshot.val().sender]) {
-                this.friendsVideoLocal[
-                  snapshot.val().sender
-                ] = new RTCPeerConnection(this.servers);
-
-                //Adding ice candidates
-                this.friendsVideoLocal[
-                  snapshot.val().sender
-                ].onicecandidate = e => {
-                  e.candidate
-                    ? this.sendIce(e.candidate, snapshot.val().sender)
-                    : console.log(
-                        "Sent all ice, local, offer, " + snapshot.val().sender,
-                      );
-                };
-
-                window.localStream
-                  .getTracks()
-                  .forEach(track =>
-                    this.friendsVideoLocal[snapshot.val().sender].addTrack(
-                      track,
-                      window.localStream,
-                    ),
-                  );
-                this.friendsVideoLocal[snapshot.val().sender]
-                  .createOffer({
-                    offerToReceiveAudio: 1,
-                    offerToReceiveVideo: 1,
-                  })
-                  .then(offer =>
-                    this.setDescriptionsFromOffer(offer, snapshot.val().sender),
-                  );
-              }
             }
             if (snapshot.val().type === "answer") {
               const msg = JSON.parse(snapshot.val().message);
@@ -204,13 +237,13 @@ class Camera extends Component {
       });
   };
 
-  setDescriptionsFromOffer = (offer, sender) => {
+  setDescriptionsFromOffer = (offer, sender, type) => {
     this.friendsVideoLocal[sender].setLocalDescription(offer).then(() => {
       this.sendMessage(
         JSON.stringify({
           sdp: this.friendsVideoLocal[sender].localDescription,
         }),
-        "offer",
+        type,
         sender,
       );
     });
