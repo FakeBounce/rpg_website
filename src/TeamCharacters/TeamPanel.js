@@ -16,19 +16,35 @@ const styles = {
   teamCharacters: {
     width: `${widthRightPanel}px`,
     height: `${heightLeft / 2 - 30}px`,
-    marginTop: 30,
+    marginTop: 25,
     position: 'relative',
     float: 'left',
     display: 'inline-block',
     overflowY: 'auto',
   },
-  HeaderText: {
+  HeaderTextContainer: {
     position: 'absolute',
     width: `${widthRightPanel}px`,
-    height: 25,
+    height: 20,
     float: 'left',
     display: 'inline-block',
     left: 0,
+    paddingTop: 2,
+  },
+  HeaderText: {
+    position: 'relative',
+    width: `${widthRightPanel/4}px`,
+    height: 25,
+    float: 'left',
+    display: 'inline-block',
+  },
+  HeaderTextLeft: {
+    position: 'relative',
+    width: `${widthRightPanel/4}px`,
+    height: 25,
+    float: 'left',
+    display: 'inline-block',
+    textAlign: 'left',
   },
 };
 
@@ -45,7 +61,12 @@ class TeamPanel extends Component {
 
     return (
       <div style={styles.TeamPanel}>
-        <div style={styles.HeaderText}>Equipe</div>
+        <div style={styles.HeaderTextContainer}>
+        <div style={styles.HeaderTextLeft}>Equipe :</div>
+        <div style={styles.HeaderText}>Name</div>
+        <div style={styles.HeaderText}>Status</div>
+        <div style={styles.HeaderText}>Gold</div>
+        </div>
         <div style={styles.teamCharacters}>
           <TeamCharacter
             icon="./common/gameMaster.jpg"

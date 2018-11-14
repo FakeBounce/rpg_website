@@ -2,12 +2,19 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Story from "./Story";
 
+const styledStoryPanel = {
+  width: '100%',
+  textAlign:'center',
+  position:'relative',
+  float:'left',
+}
+
 class StoriesPanel extends Component {
   render() {
     const { stories, chooseStory } = this.props;
 
     return (
-      <div>
+      <div style={styledStoryPanel}>
         Select a story :
         {stories.map((s, index) => {
           return (
@@ -16,6 +23,7 @@ class StoriesPanel extends Component {
               chooseStory={chooseStory}
               index={index}
               name={s.name}
+              totalStories={stories.length}
             />
           );
         })}

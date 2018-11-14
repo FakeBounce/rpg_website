@@ -47,11 +47,11 @@ class TeamCharacter extends Component {
       <div style={styles.characterTeamHeader}>
         <div onClick={chatWithTeamMember}>
           <img src={icon} alt={name} style={styles.characterTeamHeaderImage} />
-          <TeamCharacterInfo title={name} />
-          <TeamCharacterInfo title="Status :" text={status ? status : "OK"} />
+          <TeamCharacterInfo doubleSized title={name} />
+          <TeamCharacterInfo title="" text={status ? status : "OK"} />
         </div>
         <div onClick={goldWithTeamMember}>
-          <TeamCharacterInfo title="Gold :" text={gold ? gold : 0} />
+          <TeamCharacterInfo title="" text={`${gold ? gold : 0}g`} />
         </div>
         <div onClick={chatWithTeamMember}>
           <HealthBar
