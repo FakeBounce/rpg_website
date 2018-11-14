@@ -20,32 +20,31 @@ const styledEventAction = {
   display: 'inline-block',
 };
 
-class EventModalGold extends Component {
+class EventModalDebt extends Component {
   render() {
     const {
       isGameMaster,
       event,
       numberWanted,
       closeEvent,
-      takeNothing,
-      takeXGold,
-      takeAllGold,
+      giveXGold,
+      giveAllGold,
       onChange,
-      takeEquivalentGold,
+      giveEquivalentGold,
     } = this.props;
 
     return (
       <div style={styledEventActionContainer}>
-        {event.goldLeft > 0 && (
+        {event.goldLeft < event.gold && (
           <div>
-            <button style={styledEventAction} onClick={takeAllGold}>
-              Take all
+            <button style={styledEventAction} onClick={giveAllGold}>
+              Give all
             </button>
-            <button onClick={takeEquivalentGold} style={styledEventAction}>
-              Take your equal part
+            <button onClick={giveEquivalentGold} style={styledEventAction}>
+              Give your equal part
             </button>
             <div style={styledEventAction}>
-              Take
+              Give
               <input
                 type="number"
                 value={numberWanted}
@@ -57,14 +56,11 @@ class EventModalGold extends Component {
                 }}
               />
               gold
-              <button onClick={takeXGold}>Confirm</button>
+              <button onClick={giveXGold}>Confirm</button>
             </div>
-            <button style={styledEventAction} onClick={takeNothing}>
-              Don't take any gold
-            </button>
           </div>
         )}
-        {event.goldLeft === 0 &&
+        {event.goldLeft === event.gold &&
           !isGameMaster && (
             <button style={styledEventAction} onClick={closeEvent}>
               Close Event
@@ -80,16 +76,16 @@ class EventModalGold extends Component {
   }
 }
 
-EventModalGold.propTypes = {
+EventModalDebt.propTypes = {
   isGameMaster: PropTypes.bool.isRequired,
   event: PropTypes.number.isRequired,
   numberWanted: PropTypes.number.isRequired,
   closeEvent: PropTypes.func.isRequired,
   takeNothing: PropTypes.func.isRequired,
-  takeXGold: PropTypes.func.isRequired,
-  takeAllGold: PropTypes.func.isRequired,
+  giveXGold: PropTypes.func.isRequired,
+  giveAllGold: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  takeEquivalentGold: PropTypes.func.isRequired,
+  giveEquivalentGold: PropTypes.func.isRequired,
 };
 
-export default EventModalGold;
+export default EventModalDebt;

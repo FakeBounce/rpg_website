@@ -12,8 +12,9 @@ const styledBoxHeader = {
 };
 
 const styledViewer = {
-  width: 100,
   height: 20,
+  marginLeft: 20,
+  marginRight: 20,
   textAlign: "center",
   position: "relative",
   display: "inline-block",

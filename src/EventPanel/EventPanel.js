@@ -81,11 +81,11 @@ class EventPanel extends Component {
       viewers,
     } = this.state;
     const newEventHistory = [...eventHistory];
-    if (eventType === 'gold') {
+    if (eventType === 'gold' || eventType === 'debt') {
       newEventHistory.push({
         type: eventType,
         gold: parseInt(goldEvent, 10),
-        goldLeft: parseInt(goldEvent, 10),
+        goldLeft: eventType === 'gold' ? parseInt(goldEvent, 10) : 0,
         description: descriptionEvent,
         isActive: true,
         hasViewed: [gameMaster],
@@ -135,11 +135,12 @@ class EventPanel extends Component {
     return (
       <div style={styledEventContainer}>
         <EventTypeSelector eventType={eventType} onChange={this.onChange} />
-        {eventType === 'gold' && (
+        {(eventType === 'gold' || eventType === 'debt') && (
           <EventGoldForm
             goldEvent={goldEvent}
             descriptionEvent={descriptionEvent}
             onChange={this.onChange}
+            eventType={eventType}
           />
         )}
         {eventType === 'item' && (
