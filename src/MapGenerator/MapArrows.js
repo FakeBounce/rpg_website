@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { cursorPointer } from "../Utils/StyleConstants";
 
 const styledMapArrows = {
   position: "absolute",
@@ -8,7 +9,7 @@ const styledMapArrows = {
   top: 25,
   right: 0,
   zIndex: 5,
-  cursor: "pointer",
+  cursor: cursorPointer,
 };
 
 class MapArrows extends Component {

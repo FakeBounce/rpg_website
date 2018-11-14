@@ -3,7 +3,12 @@ import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import ChatRow from './ChatRow';
-import { heightHeader, heightLeft, widthLeft } from '../Utils/StyleConstants';
+import {
+  cursorPointer,
+  heightHeader,
+  heightLeft,
+  widthLeft,
+} from '../Utils/StyleConstants';
 
 const styles = {
   BoxHeader: {
@@ -72,7 +77,7 @@ const styles = {
     float: 'left',
     display: 'inline-block',
     position: 'relative',
-    cursor: 'pointer',
+    cursor: cursorPointer,
   },
   ChatPanel: {
     width: widthLeft / 2,
@@ -94,8 +99,7 @@ class ChatPanel extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.chatInput === "" && this.props.chatInput !== "")
-    {
+    if (prevProps.chatInput === '' && this.props.chatInput !== '') {
       this.chatInputRef.focus();
     }
     this.scrollToBottom();
@@ -713,7 +717,9 @@ class ChatPanel extends PureComponent {
             }}
             style={styles.ChatInput}
             onKeyPress={this.handleKeyPress}
-            ref={(input) => { this.chatInputRef = input; }}
+            ref={input => {
+              this.chatInputRef = input;
+            }}
           />
           <button style={styles.ChatButton} onClick={this.talkInChat}>
             OK

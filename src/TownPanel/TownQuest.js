@@ -1,25 +1,26 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { cursorPointer } from '../Utils/StyleConstants';
 
 const styledTownListItem = {
-  width: "75%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-  float: "left",
-  display: "inline-block",
-  position: "relative",
-  cursor: "pointer",
+  width: '75%',
+  height: '20px',
+  marginBottom: '5px',
+  textAlign: 'center',
+  float: 'left',
+  display: 'inline-block',
+  position: 'relative',
+  cursor: cursorPointer,
 };
 
 const styledTownListDiscover = {
-  width: "25%",
-  height: "20px",
-  textAlign: "center",
-  float: "left",
-  display: "inline-block",
-  position: "relative",
-  cursor: "pointer",
+  width: '25%',
+  height: '20px',
+  textAlign: 'center',
+  float: 'left',
+  display: 'inline-block',
+  position: 'relative',
+  cursor: cursorPointer,
 };
 
 class TownQuest extends Component {
@@ -31,7 +32,7 @@ class TownQuest extends Component {
           {q.name}
         </div>
         <button style={styledTownListDiscover} onClick={() => validateQuest(i)}>
-          {q.validated ? "Complete" : "Validate"}
+          {q.validated ? 'Complete' : 'Validate'}
         </button>
       </div>
     );

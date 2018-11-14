@@ -48,7 +48,7 @@
     position: absolute;
     bottom: 30px;
     right: 0px;
-    cursor: pointer;
+    cursor: url('/common/cursor_pointer.png'), pointer;
     margin-right: 5px;
     float: right;
 }
@@ -57,7 +57,7 @@
     position: absolute;
     bottom: 0px;
     right: 0px;
-    cursor: pointer;
+    cursor: url('/common/cursor_pointer.png'), pointer;
     margin-right: 5px;
     float: right;
 }

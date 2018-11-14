@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import PropTypes from "prop-types";
+import {cursorPointer} from "../Utils/StyleConstants";
 
 const styledTownListItem = {
   width: "75%",
@@ -10,7 +11,7 @@ const styledTownListItem = {
   float: "left",
   display: "inline-block",
   position: "relative",
-  cursor: "pointer",
+  cursor: cursorPointer,
 };
 
 const styledTownListDiscover = {
@@ -20,7 +21,7 @@ const styledTownListDiscover = {
   float: "left",
   display: "inline-block",
   position: "relative",
-  cursor: "pointer",
+  cursor: cursorPointer,
 };
 
 class TownMerchant extends Component {

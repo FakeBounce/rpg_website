@@ -1,31 +1,32 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import HealthBar from "../Utils/HealthBar";
-import TeamCharacterInfo from "./TeamCharacterInfo";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import HealthBar from '../Utils/HealthBar';
+import TeamCharacterInfo from './TeamCharacterInfo';
 import {
+  cursorPointer,
   widthRightPanel,
   heightHeader,
   imageSize,
   widthRightPanelLeft,
-} from "../Utils/StyleConstants";
+} from '../Utils/StyleConstants';
 
 const styles = {
   characterTeamHeader: {
     width: `${widthRightPanel - 20}px`,
     height: `${heightHeader / 2}px`,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-    borderTop: "1px solid black",
-    borderBottom: "1px solid black",
-    cursor: "pointer",
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
+    borderTop: '1px solid black',
+    borderBottom: '1px solid black',
+    cursor: cursorPointer,
   },
   characterTeamHeaderImage: {
-    position: "relative",
+    position: 'relative',
     width: `${imageSize / 2}px`,
     height: `${imageSize / 2}px`,
-    float: "left",
-    display: "inline-block",
+    float: 'left',
+    display: 'inline-block',
   },
 };
 
@@ -48,7 +49,7 @@ class TeamCharacter extends Component {
         <div onClick={chatWithTeamMember}>
           <img src={icon} alt={name} style={styles.characterTeamHeaderImage} />
           <TeamCharacterInfo doubleSized title={name} />
-          <TeamCharacterInfo title="" text={status ? status : "OK"} />
+          <TeamCharacterInfo title="" text={status ? status : 'OK'} />
         </div>
         <div onClick={goldWithTeamMember}>
           <TeamCharacterInfo title="" text={`${gold ? gold : 0}g`} />

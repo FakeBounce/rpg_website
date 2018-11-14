@@ -19,6 +19,8 @@ export const mapWidth = (window.innerWidth - widthRightPanel) / 3;
 export const widthLeft = window.innerWidth - mapWidth - widthRightPanel;
 export const heightLeft = gridLength * gridDimension * 2;
 
+export const cursorPointer = `url('/common/cursor_pointer.png'), pointer`;
+
 export const questsPosition = [
   {
     left: '5%',

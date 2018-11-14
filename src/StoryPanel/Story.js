@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { heightHeader } from '../Utils/StyleConstants';
+import { heightHeader, cursorPointer } from '../Utils/StyleConstants';
 
 const styles = {
   storyBox: {
     marginTop: 30,
-    cursor: 'pointer',
+    cursor: cursorPointer,
   },
   storyTitle: {
     fontSize: 23,
@@ -30,9 +30,11 @@ class Story extends Component {
         <div style={styles.storyTitle}>{name}</div>
         <img
           src={'./common/dravos.jpg'}
-          style={{...styles.storyImage,
+          style={{
+            ...styles.storyImage,
             width: (window.innerHeight - heightHeader - 50) / totalStories,
-            height: (window.innerHeight - heightHeader - 50) / totalStories,}}
+            height: (window.innerHeight - heightHeader - 50) / totalStories,
+          }}
           alt="dravos"
         />
       </div>

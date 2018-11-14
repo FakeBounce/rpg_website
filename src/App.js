@@ -629,7 +629,8 @@ class App extends Component {
         const targetedSpells = [];
         const rangeCount = 11 - Math.floor(roll / 10);
         const spellRange = rangeCount === 11 ? 10 : rangeCount;
-        const minimumRange = roll < 6 ? 7 : spellRange - 7 > 1 ? spellRange - 7 : 1;
+        const minimumRange =
+          roll < 6 ? 7 : spellRange - 7 > 1 ? spellRange - 7 : 1;
 
         filteredSpells.map(fs => {
           if (
@@ -637,7 +638,7 @@ class App extends Component {
             parseInt(fs.rarity, 10) <= spellRange &&
             parseInt(fs.rarity, 10) > minimumRange
           ) {
-            console.log("fs.mode",fs.mode, mode);
+            console.log('fs.mode', fs.mode, mode);
             targetedSpells.push(fs);
           }
           return null;
@@ -757,7 +758,12 @@ class App extends Component {
     } = this.state;
 
     return (
-      <div className="App">
+      <div
+        className="App"
+        style={{
+          cursor: `url('/common/cursor.png'), auto`,
+        }}
+      >
         <input
           type="number"
           placeholder="Valeur du dé"
@@ -767,7 +773,16 @@ class App extends Component {
             this.onChange(e.target.name, parseInt(e.target.value, 10));
           }}
         />
-        <button onClick={() => this.generateSpell('Offensif', rollValue)}>
+        <button
+          onClick={() => this.generateSpell('Offensif', rollValue)}
+          style={{
+            background: `url('/common/button2.png') no-repeat`,
+            backgroundSize: 'cover',
+            height: 25,
+            color: 'white',
+            padding: '5px 15px',
+          }}
+        >
           Generate offensive spell
         </button>
         <button onClick={() => this.generateSpell('Défensif', rollValue)}>
