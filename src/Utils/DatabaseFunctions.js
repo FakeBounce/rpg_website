@@ -107,7 +107,7 @@ export const resetEvents = id => {
     });
 };
 
-export const loadAllItems = (currentStory, doSetState) => {
+export const loadAllItems = (doSetState, currentStory = -1) => {
   firebase
     .database()
     .ref('/items')
@@ -117,7 +117,9 @@ export const loadAllItems = (currentStory, doSetState) => {
         items: snapshot.val(),
       });
       // addIconPathToAllItems(snapshot.val());
-      listenArtefacts(currentStory, snapshot.val(), doSetState);
+      if (currentStory > -1) {
+        listenArtefacts(currentStory, snapshot.val(), doSetState);
+      }
     })
     .catch(error => {
       // An error happened.
@@ -189,7 +191,6 @@ export const addIconPathToItem = (item, itemType, path, hardReset) => {
       .then(url => {
         const newItem = { ...item };
         newItem.iconPath = url;
-        console.log("path",path);
         firebase
           .database()
           .ref(path)

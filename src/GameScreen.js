@@ -20,22 +20,6 @@ class GameScreen extends Component {
     isEventHidden: false,
   };
 
-  componentDidMount() {
-
-    console.log(
-      'test',
-      firebase
-        .app()
-        .storage()
-        .ref()
-        .child('images/artefacts/akila_urn.jpg')
-        .getDownloadURL()
-        .then(url => {
-          console.log('url', url);
-        })
-    );
-  }
-
   canReadEvent = () => {
     const { eventHistory, currentEvent, uid, isGameMaster } = this.props;
     const { isEventHidden } = this.state;

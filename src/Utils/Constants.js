@@ -436,7 +436,7 @@ export const defaultState = {
   currentY: 0,
   currentZoom: 10,
   email: '',
-  errorMessage: '',
+  error: '',
   eventHistory: [
     {
       type: 'gold',
@@ -447,6 +447,7 @@ export const defaultState = {
       actionHistory: [],
     },
   ],
+  generatedSpell: null,
   gameMaster: '',
   isAdmin: false,
   isAuth: false,
@@ -485,6 +486,7 @@ export const defaultState = {
   pseudoInput: '',
   quests: [],
   questsList: [],
+  rollValue: 50,
   spreadSheet: {},
   stories: [],
   storyCharacters: [],
