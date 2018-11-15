@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import EventItem from "./EventItem";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import EventItem from './EventItem';
 
 const styledItemList = {
-  width: "100%",
+  width: '100%',
   height: 210,
-  display: "inline-block",
-  float: "left",
-  position: "relative",
-  overflowY: "auto",
+  display: 'inline-block',
+  float: 'left',
+  position: 'relative',
+  overflowY: 'auto',
 };
 
 class EventItemForm extends Component {
@@ -21,21 +21,38 @@ class EventItemForm extends Component {
       onChange,
     } = this.props;
 
+    const filteredItems = [];
+    Object.keys(items).map(ikey => {
+      if (ikey !== 'runes' && ikey !== 'enhancements') {
+        items[ikey].map(i => {
+          filteredItems.push({ ...i, itemType: ikey });
+        });
+      }
+    });
+
+    filteredItems.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
+
     return (
       <div>
         <div style={styledItemList}>
-          {Object.keys(items).map(ikey => {
-            return items[ikey].map(i => {
-              return (
-                <EventItem
-                  key={`event-item-${i.name}`}
-                  itemEvent={itemEvent}
-                  onChange={onChange}
-                  i={i}
-                  ikey={ikey}
-                />
-              );
-            });
+          {filteredItems.map(i => {
+            return (
+              <EventItem
+                key={`event-item-${i.itemType}-${i.name}`}
+                itemEvent={itemEvent}
+                onChange={onChange}
+                i={i}
+                ikey={i.itemType}
+              />
+            );
           })}
         </div>
         <input

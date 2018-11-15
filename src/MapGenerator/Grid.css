@@ -18,7 +18,7 @@
     right: 0px;
     top: 0px;
     z-index: 5;
-    cursor:pointer;
+    cursor: url('/common/cursor_pointer.png'), pointer;
 }
 
 .map-move {
@@ -26,7 +26,7 @@
     width:30px;
     height:30px;
     z-index: 5;
-    cursor:pointer;
+    cursor: url('/common/cursor_pointer.png'), pointer;
 }
 
 .map-move:hover {
@@ -72,7 +72,7 @@
 .grid:hover {
     opacity:0.5;
     background-color: #039be5;
-    cursor: pointer;
+    cursor: url('/common/cursor_pointer.png'), pointer;
 }
 
 .fog-gm {

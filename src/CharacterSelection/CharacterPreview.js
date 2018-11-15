@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { cursorPointer } from "../Utils/StyleConstants";
 
 const styledItem = {
   display: "inline-block",
   border: "1px solid green",
-  cursor: "pointer",
+  cursor: cursorPointer,
 };
 const styledIcon = {
   width: "30px",

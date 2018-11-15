@@ -1,9 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+const styledEventDescription = {
+  width: "50%",
+  height: 210,
+  marginTop: 10,
+  marginBottom: 10,
+  textAlign: "center",
+  float: "left",
+  position: "relative",
+  display: "inline-block",
+};
+
 const styledEventImage = {
   width: "100%",
-  height: 370,
+  height: 185,
   marginTop: 10,
   marginBottom: 10,
   textAlign: "center",
@@ -27,11 +38,11 @@ class EventModalDescription extends Component {
     const { currentEvent, eventHistory } = this.props;
 
     return (
-      <div>
+      <div style={styledEventDescription}>
         <div style={styledEventImage}>
           <img
             src={
-              eventHistory[currentEvent].type === "gold"
+              (eventHistory[currentEvent].type === "gold" || eventHistory[currentEvent].type === "debt")
                 ? "./common/gold_purse.jpg"
                 : "./" +
                   eventHistory[currentEvent].item.itemType +
@@ -39,8 +50,8 @@ class EventModalDescription extends Component {
                   eventHistory[currentEvent].item.icon
             }
             style={{
-              width: 350,
-              height: 350,
+              width: 185,
+              height: 185,
             }}
             alt="Gold bag"
           />
@@ -49,6 +60,11 @@ class EventModalDescription extends Component {
           <div style={styledBoxHeader}>
             TOTAL : {eventHistory[currentEvent].goldLeft}
             gold
+          </div>
+        )}
+        {eventHistory[currentEvent].type === "debt" && (
+          <div style={styledBoxHeader}>
+            CURRENT : {eventHistory[currentEvent].goldLeft} gold / {eventHistory[currentEvent].gold} gold
           </div>
         )}
         {eventHistory[currentEvent].type === "item" && (

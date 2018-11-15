@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import "./Grid.css";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import './Grid.css';
 
 import {
   gridDimension,
@@ -9,18 +9,19 @@ import {
   mapWidth,
   totalRows,
   totalColumn,
-} from "../Utils/StyleConstants";
-import MapZoom from "./MapZoom";
-import MapArrows from "./MapArrows";
-import Tile from "./Tile";
-import TileGM from "./TileGM";
+} from '../Utils/StyleConstants';
+import MapZoom from './MapZoom';
+import MapArrows from './MapArrows';
+import Tile from './Tile';
+import TileGM from './TileGM';
 
 const styledMap = {
   width: `${mapWidth}px`,
   height: `${gridDimension * gridLength}px`,
+  background: 'black',
 };
 
-class MapGenerator extends Component {
+class MapGenerator extends PureComponent {
   generateTable = mapToRender => {
     const { currentZoom } = this.props;
     const table = [];
@@ -36,7 +37,7 @@ class MapGenerator extends Component {
           }}
         >
           {this.createGrid(index, row)}
-        </div>,
+        </div>
       );
       return null;
     });
@@ -80,7 +81,7 @@ class MapGenerator extends Component {
             tilesTypes={tilesTypes}
             towns={towns}
           />
-        ),
+        )
       );
       return null;
     });
@@ -119,22 +120,22 @@ class MapGenerator extends Component {
     } = this.props;
 
     let updates = {};
-    let path = "";
+    let path = '';
     Object.keys(textureToApply).map(key => {
       path = key;
       return null;
     });
-    updates["/" + parseInt(x, 10) + "/" + parseInt(y, 10) + "/" + path] =
+    updates['/' + parseInt(x, 10) + '/' + parseInt(y, 10) + '/' + path] =
       textureToApply[path];
     for (let i = 0; i <= currentScale - 1; i++) {
       if (i === 0) {
         for (let j = 0; j <= currentScale - 1; j++) {
           if (y - j >= 0) {
-            updates["/" + x + "/" + parseInt(y - j, 10) + "/" + path] =
+            updates['/' + x + '/' + parseInt(y - j, 10) + '/' + path] =
               textureToApply[path];
           }
           if (y + j <= 39) {
-            updates["/" + x + "/" + parseInt(y + j, 10) + "/" + path] =
+            updates['/' + x + '/' + parseInt(y + j, 10) + '/' + path] =
               textureToApply[path];
           }
         }
@@ -142,24 +143,24 @@ class MapGenerator extends Component {
         for (let j = 0; j <= currentScale - 1; j++) {
           if (x - i >= 0 && y - j >= 0) {
             updates[
-              "/" + parseInt(x - i, 10) + "/" + parseInt(y - j, 10) + "/" + path
+              '/' + parseInt(x - i, 10) + '/' + parseInt(y - j, 10) + '/' + path
             ] = textureToApply[path];
           }
           if (x - i >= 0 && y + j <= 39) {
             updates[
-              "/" + parseInt(x - i, 10) + "/" + parseInt(y + j, 10) + "/" + path
+              '/' + parseInt(x - i, 10) + '/' + parseInt(y + j, 10) + '/' + path
             ] = textureToApply[path];
           }
         }
         for (let j = 0; j <= currentScale - 1; j++) {
           if (x + i <= 39 && y - j >= 0) {
             updates[
-              "/" + parseInt(x + i, 10) + "/" + parseInt(y - j, 10) + "/" + path
+              '/' + parseInt(x + i, 10) + '/' + parseInt(y - j, 10) + '/' + path
             ] = textureToApply[path];
           }
           if (x + i <= 39 && y + j <= 39) {
             updates[
-              "/" + parseInt(x + i, 10) + "/" + parseInt(y + j, 10) + "/" + path
+              '/' + parseInt(x + i, 10) + '/' + parseInt(y + j, 10) + '/' + path
             ] = textureToApply[path];
           }
         }
@@ -168,7 +169,7 @@ class MapGenerator extends Component {
 
     firebase
       .database()
-      .ref("maps/" + stories[currentStory].map)
+      .ref('maps/' + stories[currentStory].map)
       .update(updates)
       .catch(error => {
         // Handle Errors here.

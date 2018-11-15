@@ -1,6 +1,6 @@
 .quest{
     position: absolute;
-    cursor: pointer;
+    cursor: url('/common/cursor_pointer.png'), pointer;
     height: 50%;
     width: 25%;
     text-align: center;

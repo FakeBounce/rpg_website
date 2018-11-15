@@ -1,30 +1,50 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import TeamCharacter from "./TeamCharacter";
-import { widthRightPanel, heightHeader } from "../Utils/StyleConstants";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import TeamCharacter from './TeamCharacter';
+import {
+  widthRightPanel,
+  heightHeader,
+  heightLeft,
+} from '../Utils/StyleConstants';
 
 const styles = {
   TeamPanel: {
-    borderBottom: "1px solid black",
-    width: "100%",
-    height: "33%",
+    borderBottom: '1px solid black',
+    width: '100%',
+    height: '50%',
   },
   teamCharacters: {
     width: `${widthRightPanel}px`,
-    height: `${(window.innerHeight - heightHeader) * 0.33 - 30}px`,
-    marginTop: 30,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-    overflowY: "auto",
+    height: `${heightLeft / 2 - 30}px`,
+    marginTop: 25,
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
+    overflowY: 'auto',
+  },
+  HeaderTextContainer: {
+    position: 'absolute',
+    width: `${widthRightPanel}px`,
+    height: 20,
+    float: 'left',
+    display: 'inline-block',
+    left: 0,
+    paddingTop: 2,
   },
   HeaderText: {
-    position: "absolute",
-    width: `${widthRightPanel}px`,
+    position: 'relative',
+    width: `${widthRightPanel/4}px`,
     height: 25,
-    float: "left",
-    display: "inline-block",
-    left: 0,
+    float: 'left',
+    display: 'inline-block',
+  },
+  HeaderTextLeft: {
+    position: 'relative',
+    width: `${widthRightPanel/4}px`,
+    height: 25,
+    float: 'left',
+    display: 'inline-block',
+    textAlign: 'left',
   },
 };
 
@@ -41,7 +61,12 @@ class TeamPanel extends Component {
 
     return (
       <div style={styles.TeamPanel}>
-        <div style={styles.HeaderText}>Equipe</div>
+        <div style={styles.HeaderTextContainer}>
+        <div style={styles.HeaderTextLeft}>Equipe :</div>
+        <div style={styles.HeaderText}>Name</div>
+        <div style={styles.HeaderText}>Status</div>
+        <div style={styles.HeaderText}>Gold</div>
+        </div>
         <div style={styles.teamCharacters}>
           <TeamCharacter
             icon="./common/gameMaster.jpg"
@@ -51,8 +76,8 @@ class TeamPanel extends Component {
             health={9999}
             maxHealth={9999}
             isGM
-            chatWithTeamMember={() => chatWithTeamMember("GM")}
-            goldWithTeamMember={() => goldWithTeamMember("GM")}
+            chatWithTeamMember={() => chatWithTeamMember('GM')}
+            goldWithTeamMember={() => goldWithTeamMember('GM')}
           />
 
           {storyCharacters.map(storyCharacter => {

@@ -115,7 +115,7 @@ class IsNotAuth extends Component {
 
         <div style={{ overflowY: "auto", height: "90%" }}>
           <div className="commit">
-            FakeBounce, le 2018-10-20 : REfactoring... Done. Fixed warnings and
+            FakeBounce, le 2018-10-20 : Refactoring... Done. Fixed warnings and
             logs
           </div>
           <div className="commit">

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import firebase from "firebase";
 import FileUploader from "./FileUploader";
 import { attributes } from "../Utils/Constants";
+import { cursorPointer } from "../Utils/StyleConstants";
 
 const styledBoxHeader = {
   width: "100%",
@@ -14,7 +15,7 @@ const styledBoxHeader = {
 const styledItem = {
   display: "inline-block",
   border: "1px solid green",
-  cursor: "pointer",
+  cursor: cursorPointer,
 };
 
 class CharacterCreation extends Component {

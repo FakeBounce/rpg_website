@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { heightLeft, widthLeft } from "../Utils/StyleConstants";
+import { cursorPointer, heightLeft, widthLeft } from "../Utils/StyleConstants";
 import { musics, noises } from "../Utils/Constants";
 
 import PropTypes from "prop-types";
@@ -66,7 +66,7 @@ const styledNoiseContainer = {
 const styledAudioFile = {
   width: "100%",
   height: "30px",
-  cursor: "pointer",
+  cursor: cursorPointer,
   borderBottom: "1px solid black",
 };
 
@@ -100,7 +100,7 @@ class SoundPanel extends Component {
             position: "absolute",
             left: 0,
             top: 0,
-            cursor: "pointer",
+            cursor: cursorPointer,
             zIndex: 2,
           }}
         >

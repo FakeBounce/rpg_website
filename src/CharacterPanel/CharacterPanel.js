@@ -9,7 +9,7 @@ const styles = {
   CharPanel: {
     borderBottom: "1px solid black",
     width: "100%",
-    height: "33%",
+    height: "50%",
   },
   CharacterBox: { position: "relative", height: "100%" },
 };

@@ -3,7 +3,7 @@
     float: left;
     position: relative;
     width: 100%;
-    cursor: pointer;
+    cursor: url('/common/cursor_pointer.png'), pointer;
     height: 30px;
     text-align: center;
     border-bottom: 1px solid black;

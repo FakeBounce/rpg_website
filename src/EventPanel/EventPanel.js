@@ -1,17 +1,26 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import EventViewers from "./EventViewers";
-import EventItemForm from "./EventItemForm";
-import EventGoldForm from "./EventGoldForm";
-import EventTypeSelector from "./EventTypeSelector";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import EventViewers from './EventViewers';
+import EventItemForm from './EventItemForm';
+import EventGoldForm from './EventGoldForm';
+import EventTypeSelector from './EventTypeSelector';
+import { heightLeft } from '../Utils/StyleConstants';
+
+const styledEventContainer = {
+  height: `${heightLeft / 2 - 26}px`,
+  position: 'relative',
+  float: 'left',
+  display: 'inline-block',
+  overflowY: 'auto',
+};
 
 class EventPanel extends Component {
   state = {
-    eventType: "",
+    eventType: '',
     goldEvent: 0,
     quantityEvent: 0,
-    descriptionEvent: "",
+    descriptionEvent: '',
     itemEvent: {},
     viewers: [],
   };
@@ -45,7 +54,7 @@ class EventPanel extends Component {
     const obj = {};
     obj[name] = value;
 
-    if (name === "eventType") {
+    if (name === 'eventType') {
       this.setState(state => ({
         ...state,
         ...obj,
@@ -72,17 +81,17 @@ class EventPanel extends Component {
       viewers,
     } = this.state;
     const newEventHistory = [...eventHistory];
-    if (eventType === "gold") {
+    if (eventType === 'gold' || eventType === 'debt') {
       newEventHistory.push({
         type: eventType,
         gold: parseInt(goldEvent, 10),
-        goldLeft: parseInt(goldEvent, 10),
+        goldLeft: eventType === 'gold' ? parseInt(goldEvent, 10) : 0,
         description: descriptionEvent,
         isActive: true,
         hasViewed: [gameMaster],
         viewers: viewers.length === 0 ? null : viewers,
       });
-    } else if (eventType === "item") {
+    } else if (eventType === 'item') {
       newEventHistory.push({
         type: eventType,
         item: itemEvent,
@@ -97,7 +106,7 @@ class EventPanel extends Component {
 
     firebase
       .database()
-      .ref("stories/" + currentStory + "/events")
+      .ref('stories/' + currentStory + '/events')
       .set(newEventHistory)
       .catch(error => {
         // Handle Errors here.
@@ -105,7 +114,7 @@ class EventPanel extends Component {
       });
     firebase
       .database()
-      .ref("stories/" + currentStory + "/currentEvent")
+      .ref('stories/' + currentStory + '/currentEvent')
       .set(newEventHistory.length - 1)
       .catch(error => {
         // Handle Errors here.
@@ -124,16 +133,17 @@ class EventPanel extends Component {
       viewers,
     } = this.state;
     return (
-      <div>
+      <div style={styledEventContainer}>
         <EventTypeSelector eventType={eventType} onChange={this.onChange} />
-        {eventType === "gold" && (
+        {(eventType === 'gold' || eventType === 'debt') && (
           <EventGoldForm
             goldEvent={goldEvent}
             descriptionEvent={descriptionEvent}
             onChange={this.onChange}
+            eventType={eventType}
           />
         )}
-        {eventType === "item" && (
+        {eventType === 'item' && (
           <EventItemForm
             items={items}
             descriptionEvent={descriptionEvent}

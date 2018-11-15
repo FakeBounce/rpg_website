@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   heightCameras,
@@ -8,39 +8,40 @@ import {
   widthRightPanel,
   mapWidth,
   widthLeft,
-} from "../Utils/StyleConstants";
-import firebase from "firebase";
-import EventModalActionHistory from "./EventModalActionHistory";
-import EventModalItem from "./EventModalItem";
-import EventModalGold from "./EventModalGold";
-import EventModalDescription from "./EventModalDescription";
-import EventModalViewers from "./EventModalViewers";
+} from '../Utils/StyleConstants';
+import firebase from 'firebase';
+import EventModalActionHistory from './EventModalActionHistory';
+import EventModalItem from './EventModalItem';
+import EventModalGold from './EventModalGold';
+import EventModalDescription from './EventModalDescription';
+import EventModalViewers from './EventModalViewers';
+import EventModalDebt from "./EventModalDebt";
 
 const styledEventModal = {
-  position: "absolute",
+  position: 'absolute',
   zIndex: 99,
   top: `${heightHeader / 2}px`,
   left: `${widthRightPanel / 2}px`,
   width: `${widthLeft + mapWidth}px`,
   height: `${heightHeader / 2 + heightCameras / 2 + heightLeft - 50}px`,
-  backgroundColor: "white",
-  border: "2px solid brown",
+  backgroundColor: 'white',
+  border: '2px solid brown',
   borderRadius: 40,
 };
 
 const styledEventTitle = {
-  width: "100%",
-  height: "40px",
+  width: '100%',
+  height: '40px',
   marginTop: 15,
   marginBottom: 15,
-  textAlign: "center",
+  textAlign: 'center',
   fontSize: 25,
-  float: "left",
-  position: "relative",
-  display: "inline-block",
+  float: 'left',
+  position: 'relative',
+  display: 'inline-block',
 };
 
-class EventModal extends Component {
+class EventModal extends PureComponent {
   state = {
     numberWanted: 0,
   };
@@ -49,7 +50,7 @@ class EventModal extends Component {
     const { currentStory, triggerError } = this.props;
     firebase
       .database()
-      .ref("stories/" + currentStory + "/currentEvent")
+      .ref('stories/' + currentStory + '/currentEvent')
       .set(-1)
       .catch(error => {
         // Handle Errors here.
@@ -61,7 +62,7 @@ class EventModal extends Component {
     const { currentStory, triggerError } = this.props;
     firebase
       .database()
-      .ref("stories/" + currentStory + "/events")
+      .ref('stories/' + currentStory + '/events')
       .set(newEventHistory)
       .catch(error => {
         // Handle Errors here.
@@ -73,7 +74,7 @@ class EventModal extends Component {
     const { currentStory, uid, triggerError } = this.props;
     firebase
       .database()
-      .ref("stories/" + currentStory + "/characters/" + uid + "/character/gold")
+      .ref('stories/' + currentStory + '/characters/' + uid + '/character/gold')
       .set(goldWanted)
       .catch(error => {
         // Handle Errors here.
@@ -100,7 +101,7 @@ class EventModal extends Component {
     }
     firebase
       .database()
-      .ref("stories/" + currentStory + "/characters/" + uid + "/character")
+      .ref('stories/' + currentStory + '/characters/' + uid + '/character')
       .set({
         ...character,
         items: newItemsTab,
@@ -119,7 +120,7 @@ class EventModal extends Component {
       newEvent.quantityLeft = 0;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has taken all the items left (${quantityLeft}).`,
+          `@${pseudo} has taken all the items left (${quantityLeft}).`
         );
       } else {
         newEvent.actionHistory = [
@@ -146,7 +147,7 @@ class EventModal extends Component {
           newEvent.actionHistory.push(
             `@${pseudo} has taken ${numberWanted} items. ${
               newEvent.quantityLeft
-            } left)`,
+            } left)`
           );
         } else {
           newEvent.actionHistory = [
@@ -158,7 +159,7 @@ class EventModal extends Component {
       } else {
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has taken the last items (${numberWanted}).`,
+            `@${pseudo} has taken the last items (${numberWanted}).`
           );
         } else {
           newEvent.actionHistory = [
@@ -184,9 +185,7 @@ class EventModal extends Component {
       if (newEvent.quantityLeft > 0) {
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has taken only one item.(${
-              newEvent.quantityLeft
-            } left)`,
+            `@${pseudo} has taken only one item.(${newEvent.quantityLeft} left)`
           );
         } else {
           newEvent.actionHistory = [
@@ -229,6 +228,120 @@ class EventModal extends Component {
     }
   };
 
+  giveAllGold = () => {
+    const { currentEvent, eventHistory, pseudo, character } = this.props;
+    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+      const newEvent = { ...eventHistory[currentEvent] };
+      const goldGiven = newEvent.gold - newEvent.goldLeft;
+
+      if (parseInt(character.gold, 10) >= goldGiven) {
+        newEvent.goldLeft = newEvent.gold;
+        if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
+          newEvent.actionHistory.push(
+            `@${pseudo} has given all the gold (${goldGiven}). How generous !`
+          );
+        } else {
+          newEvent.actionHistory = [
+            `@${pseudo} has given all the gold (${goldGiven}). How generous !`,
+          ];
+        }
+        const newEventHistory = [...eventHistory];
+        newEventHistory[currentEvent] = { ...newEvent };
+
+        this.updateCharacterGold(
+          parseInt(character.gold, 10) - parseInt(goldGiven, 10)
+        );
+        this.updateCurrentEvent(newEventHistory);
+      } else {
+        newEvent.goldLeft = newEvent.goldLeft + parseInt(character.gold, 10);
+        if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
+          newEvent.actionHistory.push(
+            `@${pseudo} has given all his money (${parseInt(
+              character.gold,
+              10
+            )}). How generous !`
+          );
+        } else {
+          newEvent.actionHistory = [
+            `@${pseudo} has given all his money (${parseInt(
+              character.gold,
+              10
+            )}). How generous !`,
+          ];
+        }
+        const newEventHistory = [...eventHistory];
+        newEventHistory[currentEvent] = { ...newEvent };
+
+        this.updateCharacterGold(0);
+        this.updateCurrentEvent(newEventHistory);
+      }
+    }
+  };
+
+  giveXGold = () => {
+    const { currentEvent, eventHistory, pseudo, character } = this.props;
+    const { numberWanted } = this.state;
+    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+      if (
+        numberWanted <
+        eventHistory[currentEvent].gold - eventHistory[currentEvent].goldLeft
+      ) {
+        const newEvent = { ...eventHistory[currentEvent] };
+        newEvent.goldLeft = newEvent.goldLeft + numberWanted;
+        if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
+          newEvent.actionHistory.push(
+            `@${pseudo} has given ${numberWanted} gold.`
+          );
+        } else {
+          newEvent.actionHistory = [
+            `@${pseudo} has given ${numberWanted} gold.`,
+          ];
+        }
+        const newEventHistory = [...eventHistory];
+        newEventHistory[currentEvent] = { ...newEvent };
+
+        this.updateCurrentEvent(newEventHistory);
+        this.updateCharacterGold(
+          parseInt(character.gold, 10) - parseInt(numberWanted, 10)
+        );
+      } else {
+        this.giveAllGold();
+      }
+    }
+  };
+
+  giveEquivalentGold = () => {
+    const {
+      currentEvent,
+      eventHistory,
+      pseudo,
+      storyCharacters,
+      character,
+    } = this.props;
+    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+      const newEvent = { ...eventHistory[currentEvent] };
+      let goldGiven = Math.floor(newEvent.gold / (storyCharacters.length - 1));
+      if (newEvent.goldLeft + goldGiven > newEvent.gold) {
+        goldGiven = newEvent.gold - newEvent.goldLeft;
+      }
+      newEvent.goldLeft = newEvent.goldLeft + goldGiven;
+      if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
+        newEvent.actionHistory.push(
+          `@${pseudo} has given his part (${goldGiven}) of gold.`
+        );
+      } else {
+        newEvent.actionHistory = [
+          `@${pseudo} has given his part (${goldGiven}) of gold.`,
+        ];
+      }
+      const newEventHistory = [...eventHistory];
+      newEventHistory[currentEvent] = { ...newEvent };
+
+      this.updateCharacterGold(parseInt(character.gold, 10) - goldGiven);
+      this.updateCurrentEvent(newEventHistory);
+    }
+  };
+
   takeAllGold = () => {
     const { currentEvent, eventHistory, pseudo, character } = this.props;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
@@ -237,7 +350,7 @@ class EventModal extends Component {
       newEvent.goldLeft = 0;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has taken all the gold left (${goldTaken}).`,
+          `@${pseudo} has taken all the gold left (${goldTaken}).`
         );
       } else {
         newEvent.actionHistory = [
@@ -248,7 +361,7 @@ class EventModal extends Component {
       newEventHistory[currentEvent] = { ...newEvent };
 
       this.updateCharacterGold(
-        parseInt(character.gold, 10) + parseInt(goldTaken, 10),
+        parseInt(character.gold, 10) + parseInt(goldTaken, 10)
       );
       this.updateCurrentEvent(newEventHistory);
     }
@@ -263,7 +376,7 @@ class EventModal extends Component {
         newEvent.goldLeft = newEvent.goldLeft - numberWanted;
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has taken ${numberWanted} gold.`,
+            `@${pseudo} has taken ${numberWanted} gold.`
           );
         } else {
           newEvent.actionHistory = [
@@ -275,7 +388,7 @@ class EventModal extends Component {
 
         this.updateCurrentEvent(newEventHistory);
         this.updateCharacterGold(
-          parseInt(character.gold, 10) + parseInt(numberWanted, 10),
+          parseInt(character.gold, 10) + parseInt(numberWanted, 10)
         );
       }
     }
@@ -298,7 +411,7 @@ class EventModal extends Component {
       newEvent.goldLeft = newEvent.goldLeft - goldTaken;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has taken his part (${goldTaken}) of gold.`,
+          `@${pseudo} has taken his part (${goldTaken}) of gold.`
         );
       } else {
         newEvent.actionHistory = [
@@ -456,12 +569,15 @@ class EventModal extends Component {
           currentEvent={currentEvent}
           eventHistory={eventHistory}
         />
-        {eventHistory[currentEvent].type === "gold" && (
+        <EventModalActionHistory
+          currentEvent={currentEvent}
+          eventHistory={eventHistory}
+        />
+        {eventHistory[currentEvent].type === 'gold' && (
           <EventModalGold
             isGameMaster={isGameMaster}
-            currentEvent={currentEvent}
+            event={eventHistory[currentEvent]}
             numberWanted={numberWanted}
-            eventHistory={eventHistory}
             closeEvent={this.closeEvent}
             takeNothing={this.takeNothing}
             takeXGold={this.takeXGold}
@@ -470,7 +586,19 @@ class EventModal extends Component {
             takeEquivalentGold={this.takeEquivalentGold}
           />
         )}
-        {eventHistory[currentEvent].type === "item" && (
+        {eventHistory[currentEvent].type === 'debt' && (
+          <EventModalDebt
+            isGameMaster={isGameMaster}
+            event={eventHistory[currentEvent]}
+            numberWanted={numberWanted}
+            closeEvent={this.closeEvent}
+            onChange={this.onChange}
+            giveXGold={this.giveXGold}
+            giveAllGold={this.giveAllGold}
+            giveEquivalentGold={this.giveEquivalentGold}
+          />
+        )}
+        {eventHistory[currentEvent].type === 'item' && (
           <EventModalItem
             isGameMaster={isGameMaster}
             currentEvent={currentEvent}
@@ -485,10 +613,6 @@ class EventModal extends Component {
             onChange={this.onChange}
           />
         )}
-        <EventModalActionHistory
-          currentEvent={currentEvent}
-          eventHistory={eventHistory}
-        />
       </div>
     );
   }

@@ -12,10 +12,9 @@ const styledActionHistory = {
 };
 
 const styledActionHistoryContainer = {
-  width: "60%",
-  left: "20%",
-  height: 150,
-  marginTop: 10,
+  width: "50%",
+  height: 180,
+  marginTop: 40,
   marginBottom: 10,
   textAlign: "center",
   float: "left",

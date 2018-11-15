@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { widthRightPanelLeft } from "../Utils/StyleConstants";
+import { cursorPointer, widthRightPanelLeft } from "../Utils/StyleConstants";
 
 const styles = {
   tabButton: {
@@ -10,7 +10,7 @@ const styles = {
     position: "relative",
     float: "left",
     display: "inline-block",
-    cursor: "pointer",
+    cursor: cursorPointer,
   },
 };
 

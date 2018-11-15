@@ -11,12 +11,12 @@ class LoadSpreasheet extends Component {
   componentDidMount() {
     this.doAxiosCall("Merchants!A1:L39", "merchantsList");
     this.doAxiosCall("Consumables!A1:E74", "consumablesList");
-    this.doAxiosCall("Enhancements!A1:E28", "enhancementsList");
+    this.doAxiosCall("Enhancements!A1:E30", "enhancementsList");
     this.doAxiosCall("Runes!A1:E49", "runesList");
     this.doAxiosCall("Stones!A1:D26", "stonesList");
     this.doAxiosCall("Weapons!A1:C36", "weaponsList");
-    this.doAxiosCall("Artefacts!A1:E37", "artefactsList");
-    this.doAxiosCall("Spells!A1:F272", "spellsList");
+    this.doAxiosCall("Artefacts!A1:E38", "artefactsList");
+    this.doAxiosCall("Spells!A1:G294", "spellsList");
   }
 
   componentDidUpdate(prevProps, prevState) {

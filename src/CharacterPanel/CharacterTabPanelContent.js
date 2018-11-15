@@ -11,7 +11,6 @@ const styles = {
   },
   tabPanelItem: {
     width: `${widthRightPanelLeft - 20}px`,
-    height: 25,
     paddingHorizontal: 5,
     position: "relative",
     float: "left",

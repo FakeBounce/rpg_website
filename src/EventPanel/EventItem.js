@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { cursorPointer } from "../Utils/StyleConstants";
 
 const styledItem = {
   width: "100%",
@@ -7,7 +8,7 @@ const styledItem = {
   display: "inline-block",
   float: "left",
   position: "relative",
-  cursor: "pointer",
+  cursor: cursorPointer,
   borderBottom: "1px solid black",
 };
 

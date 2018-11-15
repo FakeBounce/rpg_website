@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import firebase from "firebase";
 
 import BottomPanel from "./BottomPanel/BottomPanel";
 import ChatCommandsPanel from "./ChatCommandsPanel/ChatCommandsPanel";

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
+import { cursorPointer } from "../Utils/StyleConstants";
 
 const styledItem = {
   display: "inline-block",
-  cursor: "pointer",
+  cursor: cursorPointer,
   width: "100%",
   height: "100%",
 };

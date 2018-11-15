@@ -1,31 +1,30 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 const styledEventActionContainer = {
-  width: "100%",
+  width: '100%',
   height: 50,
-  marginTop: 10,
+  marginTop: 40,
   marginBottom: 10,
-  textAlign: "center",
-  float: "left",
-  position: "relative",
-  display: "inline-block",
+  textAlign: 'center',
+  float: 'left',
+  position: 'relative',
+  display: 'inline-block',
 };
 
 const styledEventAction = {
-  margin: "0px 15px",
+  margin: '0px 15px',
   padding: 5,
-  textAlign: "center",
-  position: "relative",
-  display: "inline-block",
+  textAlign: 'center',
+  position: 'relative',
+  display: 'inline-block',
 };
 
 class EventModalGold extends Component {
   render() {
     const {
       isGameMaster,
-      currentEvent,
-      eventHistory,
+      event,
       numberWanted,
       closeEvent,
       takeNothing,
@@ -37,7 +36,7 @@ class EventModalGold extends Component {
 
     return (
       <div style={styledEventActionContainer}>
-        {eventHistory[currentEvent].goldLeft > 0 && (
+        {event.goldLeft > 0 && (
           <div>
             <button style={styledEventAction} onClick={takeAllGold}>
               Take all
@@ -52,7 +51,7 @@ class EventModalGold extends Component {
                 value={numberWanted}
                 name="numberWanted"
                 min={0}
-                max={eventHistory[currentEvent].gold}
+                max={event.gold}
                 onChange={e => {
                   onChange(e.target.name, parseInt(e.target.value, 10));
                 }}
@@ -65,7 +64,7 @@ class EventModalGold extends Component {
             </button>
           </div>
         )}
-        {eventHistory[currentEvent].goldLeft === 0 &&
+        {event.goldLeft === 0 &&
           !isGameMaster && (
             <button style={styledEventAction} onClick={closeEvent}>
               Close Event
@@ -83,9 +82,8 @@ class EventModalGold extends Component {
 
 EventModalGold.propTypes = {
   isGameMaster: PropTypes.bool.isRequired,
-  currentEvent: PropTypes.number.isRequired,
+  event: PropTypes.number.isRequired,
   numberWanted: PropTypes.number.isRequired,
-  eventHistory: PropTypes.array.isRequired,
   closeEvent: PropTypes.func.isRequired,
   takeNothing: PropTypes.func.isRequired,
   takeXGold: PropTypes.func.isRequired,

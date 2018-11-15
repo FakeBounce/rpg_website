@@ -5,6 +5,8 @@ import GMMapPanel from "./GMMapPanel";
 import RightPanel from "./RightPanel";
 import PlayerMapPanel from "./PlayerMapPanel";
 import MapGenerator from "./MapGenerator/MapGenerator";
+import TeamPanel from "./TeamCharacters/TeamPanel";
+import ChatPanel from "./ChatPanel/ChatPanel";
 
 class MiddlePanel extends Component {
   changeCurrentScale = value => {
@@ -82,6 +84,21 @@ class MiddlePanel extends Component {
           tilesTypes={tilesTypes}
           towns={towns}
           triggerError={triggerError}
+        />
+        <ChatPanel
+          character={character}
+          chatHistory={chatHistory}
+          chatInput={chatInput}
+          currentStory={currentStory}
+          doSetState={doSetState}
+          gameMaster={gameMaster}
+          isGameMaster={isGameMaster}
+          onChange={onChange}
+          pseudo={pseudo}
+          storyCharacters={storyCharacters}
+          triggerError={triggerError}
+          uid={uid}
+          users={users}
         />
         {isGameMaster &&
           !isOnPlayerView && (
