@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import TeamCharacter from './TeamCharacter';
 import {
   widthRightPanel,
-  heightHeader,
   heightLeft,
 } from '../Utils/StyleConstants';
 

@@ -166,7 +166,7 @@ export const getItemsFromCategory = (list, merchant, items, itemsHL = 3) => {
   for (let i = 0; i < parseInt(merchant[list], 10); i++) {
     itemsToGet += Math.floor(Math.random() * 5 + 1);
   }
-  if (parseInt(merchant[list] === 6) && itemsHL !== 0) {
+  if (parseInt(merchant[list], 10) === 6 && itemsHL !== 0) {
     itemsToGet += 2;
     itemsHL += 1;
   }

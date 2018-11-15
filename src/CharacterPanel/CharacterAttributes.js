@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { heightHeader, heightLeft, imageSize } from "../Utils/StyleConstants";
+import { heightLeft, imageSize } from "../Utils/StyleConstants";
 
 const styles = {
   BoxHeader: {

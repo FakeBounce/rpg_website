@@ -5,7 +5,6 @@ import GMMapPanel from "./GMMapPanel";
 import RightPanel from "./RightPanel";
 import PlayerMapPanel from "./PlayerMapPanel";
 import MapGenerator from "./MapGenerator/MapGenerator";
-import TeamPanel from "./TeamCharacters/TeamPanel";
 import ChatPanel from "./ChatPanel/ChatPanel";
 
 class MiddlePanel extends Component {

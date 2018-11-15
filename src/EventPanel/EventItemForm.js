@@ -25,9 +25,10 @@ class EventItemForm extends Component {
     Object.keys(items).map(ikey => {
       if (ikey !== 'runes' && ikey !== 'enhancements') {
         items[ikey].map(i => {
-          filteredItems.push({ ...i, itemType: ikey });
+          return filteredItems.push({ ...i, itemType: ikey });
         });
       }
+      return null;
     });
 
     filteredItems.sort((a, b) => {

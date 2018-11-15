@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 class EventGoldForm extends Component {
   render() {
-    const { goldEvent, descriptionEvent, onChange, eventType } = this.props;
+    const { goldEvent, descriptionEvent, onChange } = this.props;
     return (
       <div>
         <input
@@ -32,7 +32,6 @@ EventGoldForm.propTypes = {
   goldEvent: PropTypes.number.isRequired,
   descriptionEvent: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  eventType: PropTypes.string.isRequired,
 };
 
 export default EventGoldForm;

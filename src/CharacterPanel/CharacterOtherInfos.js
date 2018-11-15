@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import CharacterTabButtons from "./CharacterTabButtons";
-import CharacterTabPanel from "./CharacterTabPanel";
-import CharacterInputs from "./CharacterInputs";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import CharacterTabButtons from './CharacterTabButtons';
+import CharacterTabPanel from './CharacterTabPanel';
+import CharacterInputs from './CharacterInputs';
 import {
   widthRightPanelLeft,
-  heightHeader,
-  imageSize, heightLeft,
-} from "../Utils/StyleConstants";
+  imageSize,
+  heightLeft,
+} from '../Utils/StyleConstants';
 
 const styles = {
   characterOtherInfos: {
     width: `${widthRightPanelLeft}px`,
     height: `${heightLeft / 2 - imageSize}px`,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
   },
 };
 

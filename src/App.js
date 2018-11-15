@@ -8,11 +8,11 @@ import CharacterSelection from './CharacterSelection/CharacterSelection';
 import StoriesPanel from './StoryPanel/StoriesPanel';
 
 import { defaultState } from './Utils/Constants';
-import LoadSpreasheet from './Utils/LoadSpreasheet';
+// import LoadSpreasheet from './Utils/LoadSpreasheet';
 import GameScreen from './GameScreen';
 import SoundPlayer from './SoundPlayer/SoundPlayer';
 import {
-  listenArtefacts,
+  // listenArtefacts,
   // loadUnusedArtefacts,
   listenChat,
   listenCurrentEvent,
@@ -25,18 +25,19 @@ import {
   listenUsers,
   loadAllItems,
   loadCurrentPosition,
-  loadMerchantsOnce,
+  // loadMerchantsOnce,
   loadStories,
   loadTilesTypes,
-  populateTilesTypes,
-  resetEvents,
-  resetMap,
+  // populateTilesTypes,
+  // resetEvents,
+  // resetMap,
+  // setQuests,
 } from './Utils/DatabaseFunctions';
 import {
   hydrateStoryArtefacts,
-  resetStoryMerchants,
-  hydrateAllMerchants,
-  hydrateMerchant,
+  // resetStoryMerchants,
+  // hydrateAllMerchants,
+  // hydrateMerchant,
 } from './Utils/MerchantsFunctions';
 
 class App extends Component {
@@ -45,6 +46,7 @@ class App extends Component {
   componentDidMount() {
     loadTilesTypes(this.doSetState);
     loadAllItems(this.doSetState);
+    // setQuests(0,quests);
     // loadUnusedArtefacts(0);
     // populateTilesTypes();
     // resetMap(0,40);

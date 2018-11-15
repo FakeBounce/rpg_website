@@ -155,7 +155,7 @@ export const quests = [
     reward: 1500,
   },
   {
-    name: 'Expédition montagne',
+    name: 'Expédition en montagne',
     icon: 'notice_5.jpg',
     description:
       "Je cherche des poches de venin de Rynyx ! Un ptit tour à la montagne, on rentre dans une grotte," +

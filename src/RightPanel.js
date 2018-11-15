@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import ChatPanel from './ChatPanel/ChatPanel';
 import firebase from 'firebase';
 import TeamPanel from './TeamCharacters/TeamPanel';
 import { widthRightPanel, heightHeader } from './Utils/StyleConstants';

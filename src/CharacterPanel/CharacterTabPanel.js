@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import CharacterTabPanelContent from './CharacterTabPanelContent';
 
 import {
-  heightHeader,
   widthRightPanelLeft,
   imageSize,
   heightLeft,

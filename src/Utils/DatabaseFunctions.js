@@ -289,6 +289,17 @@ export const listenQuests = (currentStory, doSetState) => {
     });
 };
 
+export const setQuests = (currentStory, value) => {
+  firebase
+    .database()
+    .ref('/stories/' + currentStory + '/quests')
+    .set(value)
+    .catch(error => {
+      // Handle Errors here.
+      triggerError(error);
+    });
+};
+
 export const listenUsers = doSetState => {
   firebase
     .database()
