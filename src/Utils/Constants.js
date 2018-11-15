@@ -104,7 +104,7 @@ export const quests = [
       'Des autochtones attaquent les convois entre les bourgades de Imédétongs et de Garmsby.' +
       ' Les villageois ont du mal à se ravitailler et doivent faire un détour. ' +
       'Nombreuses pertes économiques. ' +
-      "Les autochtones sont peu nombreux et n'ont spécialement de force d'attaque.",
+      "Les autochtones sont peu nombreux et n'ont pas spécialement de force d'attaque.",
     position: 5,
     randomStyle: [1, 7],
     dangerosity: 3,
@@ -133,6 +133,40 @@ export const quests = [
     dangerosity: 8,
     monsterId: '2',
     reward: 8750,
+  },
+  {
+    name: 'Cherche coeur de Taton',
+    icon: 'notice_3.jpg',
+    description: 'Achète coeur de Taton bon prix.',
+    position: 1,
+    randomStyle: [3, 6],
+    dangerosity: 6,
+    monsterId: '3',
+    reward: 3550,
+  },
+  {
+    name: 'PRIME: Assassin, Mort ou vif',
+    icon: 'notice_6.jpg',
+    description: `Prime pour l'assassin au masque de Docteur Peste qui rode dans la ville. Mort ou vif. `,
+    position: 4,
+    randomStyle: [2, 9],
+    dangerosity: 4,
+    monsterId: '3',
+    reward: 1500,
+  },
+  {
+    name: 'Expédition montagne',
+    icon: 'notice_5.jpg',
+    description:
+      "Je cherche des poches de venin de Rynyx ! Un ptit tour à la montagne, on rentre dans une grotte," +
+      " vous en tuez quelques uns, je récolte, finis ! Simple non ? " +
+      "Venez vite me voir dans la plus grande boutique d'Hystrou, vous ne pourrez pas la rater !" +
+      " Sensations garanties",
+    position: 8,
+    randomStyle: [0, 7],
+    dangerosity: 5,
+    monsterId: '4',
+    reward: 2750,
   },
 ];
 
