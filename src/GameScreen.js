@@ -6,10 +6,11 @@ import ChatCommandsPanel from "./ChatCommandsPanel/ChatCommandsPanel";
 import Header from "./Utils/Header";
 import MiddlePanel from "./MiddlePanel";
 import EventModal from "./EventModal/EventModal";
+import ButtonLarge from "./Utils/ButtonLarge";
 
 const styledToggleEvent = {
   position: "absolute",
-  top: 0,
+  top: 100,
   left: 0,
   zIndex: 100,
 };
@@ -82,9 +83,9 @@ class GameScreen extends Component {
     return (
       <div>
         {isGameMaster && (
-          <button onClick={this.toggleEvent} style={styledToggleEvent}>
+          <ButtonLarge onClick={this.toggleEvent} style={styledToggleEvent}>
             Toggle event {isEventHidden ? "(Is hidden)" : ""}
-          </button>
+          </ButtonLarge>
         )}
         <Header
           accessChatHelp={accessChatHelp}

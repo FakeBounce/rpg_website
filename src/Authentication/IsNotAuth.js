@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
+import ButtonLarge from "../Utils/ButtonLarge";
 
 class IsNotAuth extends Component {
   handleKeyPress = event => {
@@ -110,8 +111,8 @@ class IsNotAuth extends Component {
           }}
           onKeyPress={this.handleKeyPress}
         />
-        <button onClick={this.signIn}>Sign In</button>
-        <button onClick={this.signUp}>Sign Up</button>
+        <ButtonLarge onClick={this.signIn}>Sign In</ButtonLarge>
+        <ButtonLarge onClick={this.signUp}>Sign Up</ButtonLarge>
 <div><div className="commit"> FakeBounce, le 2018-11-15 : Added some quests </div>
   <div className="commit"> FakeBounce, le 2018-11-14 : Added cursor styles for selects </div>
   <div className="commit"> FakeBounce, le 2018-11-14 : Reworking styles... Changed cursor to glove and trying to rework buttons </div>

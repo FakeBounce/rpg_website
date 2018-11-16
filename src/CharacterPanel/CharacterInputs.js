@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import ButtonLarge from "../Utils/ButtonLarge";
 
 const styles = {
   lifeInput: {
@@ -77,9 +78,9 @@ class CharacterInputs extends Component {
           }}
           style={styles.lifeInput}
         />
-        <button onClick={onLifeChange} style={styles.lifeButton}>
+        <ButtonLarge onClick={onLifeChange} style={styles.lifeButton}>
           HP
-        </button>
+        </ButtonLarge>
         <select
           value={status}
           onChange={e => {
@@ -95,9 +96,9 @@ class CharacterInputs extends Component {
             );
           })}
         </select>
-        <button onClick={onStatusChange} style={styles.statusButton}>
+        <ButtonLarge onClick={onStatusChange} style={styles.statusButton}>
           Status
-        </button>
+        </ButtonLarge>
         {isGameMaster && (
           <div>
             <input
@@ -110,9 +111,9 @@ class CharacterInputs extends Component {
               }}
               style={styles.lifeInput}
             />
-            <button onClick={onGoldChange} style={styles.goldButton}>
+            <ButtonLarge onClick={onGoldChange} style={styles.goldButton}>
               Gold
-            </button>
+            </ButtonLarge>
           </div>
         )}
       </div>

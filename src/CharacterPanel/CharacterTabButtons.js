@@ -1,28 +1,44 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import CharacterTabButton from "./CharacterTabButton";
-import { widthRightPanelLeft } from "../Utils/StyleConstants";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import CharacterTabButton from './CharacterTabButton';
+import { widthRightPanelLeft } from '../Utils/StyleConstants';
 
 const styles = {
   tabsButtons: {
     width: `${widthRightPanelLeft}px`,
     height: 25,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
   },
 };
 
 class CharacterTabButtons extends Component {
   render() {
-    const { onChangeTab } = this.props;
+    const { onChangeTab, infoTab } = this.props;
 
     return (
       <div style={styles.tabsButtons}>
-        <CharacterTabButton onChangeTab={onChangeTab} tabToChange="Weapons" />
-        <CharacterTabButton onChangeTab={onChangeTab} tabToChange="Abilities" />
-        <CharacterTabButton onChangeTab={onChangeTab} tabToChange="Skills" />
-        <CharacterTabButton onChangeTab={onChangeTab} tabToChange="Items" />
+        <CharacterTabButton
+          onChangeTab={onChangeTab}
+          tabToChange="Weapons"
+          isActive={infoTab === 'Weapons'}
+        />
+        <CharacterTabButton
+          onChangeTab={onChangeTab}
+          tabToChange="Abilities"
+          isActive={infoTab === 'Abilities'}
+        />
+        <CharacterTabButton
+          onChangeTab={onChangeTab}
+          tabToChange="Skills"
+          isActive={infoTab === 'Skills'}
+        />
+        <CharacterTabButton
+          onChangeTab={onChangeTab}
+          tabToChange="Items"
+          isActive={infoTab === 'Items'}
+        />
       </div>
     );
   }
@@ -30,6 +46,7 @@ class CharacterTabButtons extends Component {
 
 CharacterTabButtons.propTypes = {
   onChangeTab: PropTypes.func.isRequired,
+  infoTab: PropTypes.string.isRequired,
 };
 
 export default CharacterTabButtons;

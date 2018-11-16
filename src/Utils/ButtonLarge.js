@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './Buttons.css';
 
 class ButtonLarge extends Component {
   render() {
-    const { className, text, style, onClick, disabled } = this.props;
+    const { className, children, style, onClick, disabled } = this.props;
 
     return (
       <button
-        className={className}
+        className={'styledButtonLarge ' + className}
         style={style}
         onClick={onClick}
         disabled={disabled}
       >
-        {text}
+        {children}
       </button>
     );
   }
@@ -26,7 +27,7 @@ ButtonLarge.defaultProps = {
 
 ButtonLarge.propTypes = {
   className: PropTypes.string,
-  text: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
   style: PropTypes.object,
   onClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool,

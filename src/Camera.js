@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import firebase from 'firebase';
+import ButtonLarge from './Utils/ButtonLarge';
 
 const styledVideo = {
-  maxWidth: 100,
-  maxHeight: 100,
+  height: 100,
+};
+
+const styledCall = {
+  position: 'relative',
+  float: 'left',
 };
 
 class Camera extends Component {
@@ -296,12 +301,18 @@ class Camera extends Component {
         />
         {Object.keys(this.state.friendsVideoRemote).map(key => {
           return (
-            <video src={this.state.friendsVideoRemote[key]} autoPlay muted />
+            <video
+              src={this.state.friendsVideoRemote[key]}
+              autoPlay
+              style={styledVideo}
+            />
           );
         })}
-        <button onClick={this.showMyFace} disabled={this.state.isDisabled}>
-          Call
-        </button>
+        {!this.state.isDisabled && (
+          <ButtonLarge onClick={this.showMyFace} style={styledCall}>
+            Call
+          </ButtonLarge>
+        )}
       </div>
     );
   }

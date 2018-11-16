@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { widthRightPanelLeft } from '../Utils/StyleConstants';
+import ButtonLarge from "../Utils/ButtonLarge";
 
 const styles = {
   tabPanelItem: {
@@ -49,7 +50,6 @@ class CharacterTabPanelItem extends Component {
 
     return (
       <div>
-        <div style={styles.BoxHeader}>Items :</div>
         {character.items &&
           character.items.map((item, index) => {
             return (
@@ -67,9 +67,9 @@ class CharacterTabPanelItem extends Component {
                 <div style={styles.itemName}>
                   {character.education < item.rarity * 9 ? '???' : item.name}
                 </div>
-                <button style={styles.itemButton} onClick={() => onItemUse(index, item.quantity - 1)}>
+                <ButtonLarge style={styles.itemButton} onClick={() => onItemUse(index, item.quantity - 1)}>
                   Use ({item.quantity} left)
-                </button>
+                </ButtonLarge>
               </div>
             );
           })}

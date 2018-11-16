@@ -1,23 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { widthLeft, heightLeft } from "../Utils/StyleConstants";
-import MerchantList from "./MerchantList";
-
-const styledBoxHeader = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-};
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { widthLeft, heightLeft } from '../Utils/StyleConstants';
+import MerchantList from './MerchantList';
 
 const styledMapSide = {
-  border: "1px solid brown",
-  width: `${widthLeft / 2 - 11}px`,
-  height: `${heightLeft / 2 - 1}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
-  position: "relative",
+  width: `${widthLeft / 2 - 20}px`,
+  height: `${heightLeft / 2}px`,
+  display: 'inline-block',
+  float: 'left',
+  textAlign: 'left',
+  position: 'relative',
+  padding: 10,
 };
 
 class MerchantPanel extends Component {
@@ -34,7 +27,16 @@ class MerchantPanel extends Component {
 
     return (
       <div style={styledMapSide}>
-        <div style={styledBoxHeader}>Liste des marchands</div>
+        <img
+          src={'./common/cadreall.png'}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: `${widthLeft / 2 - 3}px`,
+            height: `${heightLeft / 2}px`,
+          }}
+        />
         <MerchantList
           currentMerchant={currentMerchant}
           merchantsList={merchantsList}

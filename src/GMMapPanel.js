@@ -10,9 +10,8 @@ import TownPanel from "./TownPanel/TownPanel";
 import PanelToggle from "./PanelToggle";
 
 const styledMapSide = {
-  border: "1px solid brown",
-  width: `${widthLeft / 2 - 3}px`,
-  height: `${heightLeft / 2 - 1}px`,
+  width: `${widthLeft / 2}px`,
+  height: `${heightLeft / 2}px`,
   display: "inline-block",
   float: "left",
   textAlign: "left",
@@ -20,8 +19,8 @@ const styledMapSide = {
 };
 
 const styledMiddlePanel = {
-  width: `${widthLeft - 2}px`,
-  height: `${heightLeft - 1}px`,
+  width: `${widthLeft}px`,
+  height: `${heightLeft}px`,
   display: "inline-block",
   float: "left",
   position: "relative",

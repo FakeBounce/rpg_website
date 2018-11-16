@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { heightHeader } from './StyleConstants';
 import Camera from '../Camera';
+import ButtonLarge from "./ButtonLarge";
 
 const styledSignOut = {
   display: 'block',
   position: 'relative',
-  width: 150,
+  width: 133,
   height: 20,
 };
 
@@ -70,16 +71,16 @@ class Header extends Component {
         </div>
         <div style={styledBoxHeader}>{title}</div>
         <div style={styledHeaderRight}>
-          <button style={styledSignOut} onClick={signOut}>
+          <ButtonLarge style={styledSignOut} onClick={signOut}>
             Sign Out
-          </button>
-          <button style={styledSignOut} onClick={selectAnotherCharacter}>
+          </ButtonLarge>
+          <ButtonLarge style={styledSignOut} onClick={selectAnotherCharacter}>
             Select another character
-          </button>
-          <button style={styledSignOut} onClick={accessChatHelp}>
+          </ButtonLarge>
+          <ButtonLarge style={styledSignOut} onClick={accessChatHelp}>
             {chatHelpTitle}
-          </button>
-          <button style={styledSignOut} onClick={toggleMusic}>
+          </ButtonLarge>
+          <ButtonLarge style={styledSignOut} onClick={toggleMusic}>
             Toggle music
             <img
               src={
@@ -90,11 +91,11 @@ class Header extends Component {
               style={styledSound}
               alt="sound muted or not"
             />
-          </button>
+          </ButtonLarge>
           {isGameMaster && (
-            <button style={styledSignOut} onClick={togglePlayerView}>
+            <ButtonLarge style={styledSignOut} onClick={togglePlayerView}>
               Toggle Player View
-            </button>
+            </ButtonLarge>
           )}
         </div>
       </div>

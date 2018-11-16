@@ -38,7 +38,7 @@ class CharacterOtherInfos extends Component {
 
     return (
       <div style={styles.characterOtherInfos}>
-        <CharacterTabButtons onChangeTab={onChangeTab} />
+        <CharacterTabButtons onChangeTab={onChangeTab} infoTab={infoTab}/>
         <CharacterTabPanel
           character={character}
           infoTab={infoTab}

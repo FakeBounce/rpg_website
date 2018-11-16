@@ -11,13 +11,14 @@ const styledBoxHeader = {
 };
 
 const styledMapSide = {
-  border: "1px solid brown",
-  width: `${widthLeft / 2 - 11}px`,
-  height: `${heightLeft / 2 - 1}px`,
+  width: `${widthLeft / 2 - 20}px`,
+  height: `${heightLeft / 2}px`,
   display: "inline-block",
   float: "left",
   textAlign: "left",
   position: "relative",
+  padding: 10,
+  top: -20,
 };
 
 class ItemPanel extends Component {
@@ -35,7 +36,16 @@ class ItemPanel extends Component {
 
     return (
       <div style={styledMapSide}>
-        <div style={styledBoxHeader}>Liste des objets</div>
+        <img
+          src={'./common/cadreall.png'}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: `${widthLeft / 2 - 3}px`,
+            height: `${heightLeft / 2}px`,
+          }}
+        />
         <ItemList
           character={character}
           itemsList={itemsList}
