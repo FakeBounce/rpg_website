@@ -481,7 +481,6 @@ export const defaultState = {
       actionHistory: [],
     },
   ],
-  generatedSpell: null,
   gameMaster: '',
   isAdmin: false,
   isAuth: false,
@@ -520,7 +519,6 @@ export const defaultState = {
   pseudoInput: '',
   quests: [],
   questsList: [],
-  rollValue: 50,
   spreadSheet: {},
   stories: [],
   storyCharacters: [],
@@ -543,3 +541,5 @@ export const attributes = [
 ];
 
 export const eventList = ['nothing', 'gold', 'item', 'debt'];
+export const spellTypeList = ['Feu', 'Glace', 'Foudre', 'Chaos'];
+export const spellModeList = ['Offensif', 'Défensif', 'Invocation', 'Neutre'];

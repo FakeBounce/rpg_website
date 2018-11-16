@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { heightHeader } from './StyleConstants';
+import Camera from '../Camera';
 
 const styledSignOut = {
   display: 'block',
@@ -23,6 +24,13 @@ const styledHeaderRight = {
   height: heightHeader,
   position: 'absolute',
   right: 0,
+  top: 0,
+};
+
+const styledHeaderLeft = {
+  height: heightHeader,
+  position: 'absolute',
+  left: 0,
   top: 0,
 };
 
@@ -52,10 +60,14 @@ class Header extends Component {
       musicMute,
       isGameMaster,
       togglePlayerView,
+      uid,
     } = this.props;
 
     return (
       <div style={styledHeader}>
+        <div style={styledHeaderLeft}>
+          <Camera uid={uid} />
+        </div>
         <div style={styledBoxHeader}>{title}</div>
         <div style={styledHeaderRight}>
           <button style={styledSignOut} onClick={signOut}>
@@ -100,6 +112,7 @@ Header.propTypes = {
   togglePlayerView: PropTypes.func.isRequired,
   musicMute: PropTypes.bool.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
+  uid: PropTypes.bool.isRequired,
 };
 
 export default Header;
