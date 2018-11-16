@@ -7,7 +7,7 @@ import HasNoNickname from './NicknameSelection/HasNoNickname';
 import CharacterSelection from './CharacterSelection/CharacterSelection';
 import StoriesPanel from './StoryPanel/StoriesPanel';
 
-import { defaultState, spellModeList, spellTypeList } from './Utils/Constants';
+import { defaultState } from './Utils/Constants';
 // import LoadSpreasheet from './Utils/LoadSpreasheet';
 import GameScreen from './GameScreen';
 import SoundPlayer from './SoundPlayer/SoundPlayer';

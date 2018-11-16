@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from "prop-types";
 import firebase from 'firebase';
 
 const styledVideo = {
@@ -78,7 +79,7 @@ class Camera extends Component {
           .once('value')
           .then(snapshot => {
             Object.keys(snapshot.val()).map(key => {
-              if (parseInt(key) !== this.yourId) {
+              if (key !== this.yourId) {
                 this.friendsVideoLocal[key] = new RTCPeerConnection(
                   this.servers
                 );
@@ -107,6 +108,7 @@ class Camera extends Component {
                     this.setDescriptionsFromOffer(offer, key, 'askingOffer')
                   );
               }
+              return null;
             });
           })
           .catch(error => {
