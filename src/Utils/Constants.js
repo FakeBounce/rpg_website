@@ -158,10 +158,10 @@ export const quests = [
     name: 'Expédition en montagne',
     icon: 'notice_5.jpg',
     description:
-      "Je cherche des poches de venin de Rynyx ! Un ptit tour à la montagne, on rentre dans une grotte," +
-      " vous en tuez quelques uns, je récolte, finis ! Simple non ? " +
+      'Je cherche des poches de venin de Rynyx ! Un ptit tour à la montagne, on rentre dans une grotte,' +
+      ' vous en tuez quelques uns, je récolte, finis ! Simple non ? ' +
       "Venez vite me voir dans la plus grande boutique d'Hystrou, vous ne pourrez pas la rater !" +
-      " Sensations garanties",
+      ' Sensations garanties',
     position: 8,
     randomStyle: [0, 7],
     dangerosity: 5,
@@ -541,5 +541,22 @@ export const attributes = [
 ];
 
 export const eventList = ['nothing', 'gold', 'item', 'debt'];
-export const spellTypeList = ['Feu', 'Glace', 'Foudre', 'Chaos'];
+export const spellTypeList = [
+  'Chaos',
+  'Eau',
+  'Esprit',
+  'Feu',
+  'Foudre',
+  'Glace',
+  'Malédiction',
+  'Nécromancie',
+  'Vent',
+  'Terre',
+  'Sable',
+  'Toxique',
+  'Neutre',
+  'Piège',
+  'Psyché',
+  'Sacré',
+];
 export const spellModeList = ['Offensif', 'Défensif', 'Invocation', 'Neutre'];
