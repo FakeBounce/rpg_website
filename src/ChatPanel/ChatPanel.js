@@ -94,7 +94,7 @@ class ChatPanel extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.chatInput === '' && this.props.chatInput !== '') {
+    if (prevProps.chatInput !== this.props.chatInput) {
       this.chatInputRef.focus();
     }
     this.scrollToBottom();
@@ -693,12 +693,12 @@ class ChatPanel extends PureComponent {
             onClick={() => this.launchCommand('educ')}
             data-tip={'Education'}
           />
-          <ButtonLarge
+          <button
             style={gmCommands ? styles.ChatButtonGMActive : styles.ChatButtonGM}
             onClick={this.toggleGMCommands}
           >
             GM
-          </ButtonLarge>
+          </button>
         </div>
         <div style={styles.ChatBox}>
           <input
