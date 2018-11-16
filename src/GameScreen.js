@@ -96,6 +96,7 @@ class GameScreen extends Component {
           title={stories[currentStory].name}
           toggleMusic={toggleMusic}
           togglePlayerView={togglePlayerView}
+          uid={uid}
         />
         {this.canReadEvent() && (
           <EventModal

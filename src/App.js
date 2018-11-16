@@ -598,102 +598,6 @@ class App extends Component {
     );
   };
 
-  generateSpell = (mode, roll) => {
-    const { items } = this.state;
-    if (items && items.spells) {
-      const filteredSpells = [];
-      items.spells.map(s => {
-        if (s['random'] === 'TRUE') {
-          filteredSpells.push(s);
-        }
-        return null;
-      });
-
-      if (mode === 'Failed') {
-        let targetedSpells = [];
-
-        //Reducing spell ranges to intensify fail roll, the higher the fail the higher the rarity of the failed spell
-        filteredSpells.map(fs => {
-          if (parseInt(fs.rarity, 10) > Math.ceil((roll - 70) / 5) + 1) {
-            targetedSpells.push(fs);
-          }
-          return null;
-        });
-        const choosedSpell = parseInt(
-          Math.random() * targetedSpells.length,
-          10
-        );
-        this.setState(state => ({
-          ...state,
-          generatedSpell: targetedSpells[choosedSpell],
-        }));
-      } else {
-        const targetedSpells = [];
-        const rangeCount = 11 - Math.floor(roll / 10);
-        const spellRange = rangeCount === 11 ? 10 : rangeCount;
-        const minimumRange =
-          roll < 6 ? 7 : spellRange - 7 > 1 ? spellRange - 7 : 1;
-
-        filteredSpells.map(fs => {
-          if (
-            fs.mode === mode &&
-            parseInt(fs.rarity, 10) <= spellRange &&
-            parseInt(fs.rarity, 10) > minimumRange
-          ) {
-            console.log('fs.mode', fs.mode, mode);
-            targetedSpells.push(fs);
-          }
-          return null;
-        });
-
-        let totalPound = 0;
-        const chances = [];
-
-        for (let i = minimumRange; i <= spellRange; i++) {
-          totalPound += 1.75 + 0.25 * i;
-        }
-
-        for (let i = minimumRange; i <= spellRange; i++) {
-          chances.push((1.75 + 0.25 * i) / totalPound);
-        }
-
-        const randomNumber = Math.random();
-        let chancesCount = 0;
-        let raritySelected = 1;
-
-        for (let i = 0; i < chances.length; i++) {
-          if (
-            randomNumber > chancesCount &&
-            randomNumber < chancesCount + chances[i]
-          ) {
-            raritySelected = i + minimumRange;
-            break;
-          } else {
-            chancesCount += chances[i];
-          }
-        }
-
-        const randomRaritySpell = [];
-        targetedSpells.map(fs => {
-          if (parseInt(fs.rarity, 10) === raritySelected) {
-            randomRaritySpell.push(fs);
-          }
-          return null;
-        });
-
-        const choosedSpell = parseInt(
-          Math.random() * randomRaritySpell.length,
-          10
-        );
-
-        this.setState(state => ({
-          ...state,
-          generatedSpell: targetedSpells[choosedSpell],
-        }));
-      }
-    }
-  };
-
   render() {
     const {
       character,
@@ -716,7 +620,6 @@ class App extends Component {
       error,
       eventHistory,
       gameMaster,
-      generatedSpell,
       isAuth,
       isGameMaster,
       isItemDescriptionShowed,
@@ -749,7 +652,6 @@ class App extends Component {
       pseudoInput,
       quests,
       questsList,
-      rollValue,
       stories,
       storyCharacters,
       textureToApply,
@@ -766,41 +668,6 @@ class App extends Component {
           cursor: `url('/common/cursor.png'), auto`,
         }}
       >
-        <input
-          type="number"
-          placeholder="Valeur du dé"
-          name="rollValue"
-          value={rollValue}
-          onChange={e => {
-            this.onChange(e.target.name, parseInt(e.target.value, 10));
-          }}
-        />
-        <button
-          onClick={() => this.generateSpell('Offensif', rollValue)}
-          style={{
-            background: `url('/common/button2.png') no-repeat`,
-            backgroundSize: 'cover',
-            height: 25,
-            color: 'white',
-            padding: '5px 15px',
-          }}
-        >
-          Generate offensive spell
-        </button>
-        <button onClick={() => this.generateSpell('Défensif', rollValue)}>
-          Generate defensive spell
-        </button>
-        <button onClick={() => this.generateSpell('Failed', rollValue)}>
-          Generate failed spell
-        </button>
-        {generatedSpell !== null && (
-          <div>
-            <div>Name : {generatedSpell.name}</div>
-            <div>Mode : {generatedSpell.mode}</div>
-            <div>Type : {generatedSpell.type}</div>
-            <div>Power : {generatedSpell.rarity}</div>
-          </div>
-        )}
         {!isAuth && (
           <IsNotAuth
             doSetState={this.doSetState}
