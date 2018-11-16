@@ -7,8 +7,12 @@ import ButtonLarge from "./ButtonLarge";
 const styledSignOut = {
   display: 'block',
   position: 'relative',
-  width: 133,
-  height: 20,
+};
+
+const styledToggling = {
+  position: 'absolute',
+  top: 0,
+  right: 200,
 };
 
 const styledBoxHeader = {
@@ -92,12 +96,12 @@ class Header extends Component {
               alt="sound muted or not"
             />
           </ButtonLarge>
-          {isGameMaster && (
-            <ButtonLarge style={styledSignOut} onClick={togglePlayerView}>
-              Toggle Player View
-            </ButtonLarge>
-          )}
         </div>
+        {isGameMaster && (
+          <ButtonLarge style={styledToggling} onClick={togglePlayerView}>
+            Toggle Player View
+          </ButtonLarge>
+        )}
       </div>
     );
   }
