@@ -8,15 +8,7 @@
   overflow: hidden;
 }
 
-button {
-  cursor: url('/common/cursor_pointer.png'), pointer;
-}
-
-input {
-  cursor: url('/common/cursor_pointer.png'), pointer;
-}
-
-select {
+button, input, select {
   cursor: url('/common/cursor_pointer.png'), pointer;
 }
 

@@ -1,33 +1,56 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { heightHeader } from "./StyleConstants";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { heightHeader } from './StyleConstants';
+import Camera from '../Camera';
+import ButtonLarge from "./ButtonLarge";
 
 const styledSignOut = {
-  float: "right",
+  display: 'block',
+  position: 'relative',
+};
+
+const styledToggling = {
+  position: 'absolute',
+  top: 0,
+  right: 200,
 };
 
 const styledBoxHeader = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-  fontSize: "36px",
-  paddingTop: "25px",
-  color: "white",
+  width: '100%',
+  height: '20px',
+  marginBottom: '5px',
+  textAlign: 'center',
+  fontSize: '36px',
+  paddingTop: '25px',
+  color: 'white',
+};
+
+const styledHeaderRight = {
+  height: heightHeader,
+  position: 'absolute',
+  right: 0,
+  top: 0,
+};
+
+const styledHeaderLeft = {
+  height: heightHeader,
+  position: 'absolute',
+  left: 0,
+  top: 0,
 };
 
 const styledHeader = {
-  borderBottom: "1px solid black",
-  width: "100%",
+  borderBottom: '1px solid black',
+  width: '100%',
   height: `${heightHeader}px`,
   backgroundImage: `url(./common/dravos_header.jpg)`,
-  backgroundSize: "cover",
+  backgroundSize: 'cover',
 };
 
 const styledSound = {
-  marginLeft: "5px",
-  width: "10px",
-  height: "10px",
+  marginLeft: '5px',
+  width: '10px',
+  height: '10px',
 };
 
 class Header extends Component {
@@ -42,36 +65,42 @@ class Header extends Component {
       musicMute,
       isGameMaster,
       togglePlayerView,
+      uid,
     } = this.props;
 
     return (
       <div style={styledHeader}>
+        <div style={styledHeaderLeft}>
+          <Camera uid={uid} />
+        </div>
         <div style={styledBoxHeader}>{title}</div>
-        <button style={styledSignOut} onClick={signOut}>
-          Sign Out
-        </button>
-        <button style={styledSignOut} onClick={selectAnotherCharacter}>
-          Select another character
-        </button>
-        <button style={styledSignOut} onClick={accessChatHelp}>
-          {chatHelpTitle}
-        </button>
-        <button style={styledSignOut} onClick={toggleMusic}>
-          Toggle music
-          <img
-            src={
-              musicMute
-                ? "./common/soundMuted.png"
-                : "./common/soundUnmuted.png"
-            }
-            style={styledSound}
-            alt="sound muted or not"
-          />
-        </button>
+        <div style={styledHeaderRight}>
+          <ButtonLarge style={styledSignOut} onClick={signOut}>
+            Sign Out
+          </ButtonLarge>
+          <ButtonLarge style={styledSignOut} onClick={selectAnotherCharacter}>
+            Select another character
+          </ButtonLarge>
+          <ButtonLarge style={styledSignOut} onClick={accessChatHelp}>
+            {chatHelpTitle}
+          </ButtonLarge>
+          <ButtonLarge style={styledSignOut} onClick={toggleMusic}>
+            Toggle music
+            <img
+              src={
+                musicMute
+                  ? './common/soundMuted.png'
+                  : './common/soundUnmuted.png'
+              }
+              style={styledSound}
+              alt="sound muted or not"
+            />
+          </ButtonLarge>
+        </div>
         {isGameMaster && (
-          <button style={styledSignOut} onClick={togglePlayerView}>
+          <ButtonLarge style={styledToggling} onClick={togglePlayerView}>
             Toggle Player View
-          </button>
+          </ButtonLarge>
         )}
       </div>
     );
@@ -88,6 +117,7 @@ Header.propTypes = {
   togglePlayerView: PropTypes.func.isRequired,
   musicMute: PropTypes.bool.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
+  uid: PropTypes.bool.isRequired,
 };
 
 export default Header;

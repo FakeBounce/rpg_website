@@ -16,9 +16,8 @@ const styledBoxHeader = {
   position: "relative",
 };
 const styledMapSide = {
-  border: "1px solid brown",
-  width: `${widthLeft / 2 - 3}px`,
-  height: `${heightLeft / 2 - 1}px`,
+  width: `${widthLeft / 2}px`,
+  height: `${heightLeft / 2}px`,
   display: "inline-block",
   float: "left",
   textAlign: "left",

@@ -1,27 +1,32 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { cursorPointer, widthRightPanelLeft } from "../Utils/StyleConstants";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { cursorPointer, widthRightPanelLeft } from '../Utils/StyleConstants';
+import ButtonLarge from '../Utils/ButtonLarge';
 
 const styles = {
   tabButton: {
     width: `${widthRightPanelLeft / 4}px`,
     height: 25,
     padding: 0,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
     cursor: cursorPointer,
   },
 };
 
 class CharacterTabButton extends Component {
   render() {
-    const { onChangeTab, tabToChange } = this.props;
+    const { onChangeTab, tabToChange, isActive } = this.props;
 
     return (
-      <button onClick={() => onChangeTab(tabToChange)} style={styles.tabButton}>
+      <ButtonLarge
+        className={isActive ? 'buttonLargeActive' : ''}
+        onClick={() => onChangeTab(tabToChange)}
+        style={styles.tabButton}
+      >
         {tabToChange}
-      </button>
+      </ButtonLarge>
     );
   }
 }
@@ -29,6 +34,7 @@ class CharacterTabButton extends Component {
 CharacterTabButton.propTypes = {
   onChangeTab: PropTypes.func.isRequired,
   tabToChange: PropTypes.string.isRequired,
+  isActive: PropTypes.bool.isRequired,
 };
 
 export default CharacterTabButton;

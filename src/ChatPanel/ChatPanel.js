@@ -9,17 +9,12 @@ import {
   heightLeft,
   widthLeft,
 } from '../Utils/StyleConstants';
+import ButtonLarge from "../Utils/ButtonLarge";
 
 const styles = {
-  BoxHeader: {
-    width: '100%',
-    height: '20px',
-    marginBottom: '5px',
-    textAlign: 'center',
-  },
   Historic: {
     width: '100%',
-    height: `${heightLeft / 2 - (25 + 20 + 5) - 25}px`,
+    height: `${heightLeft / 2 - (25 + 5) - 25}px`,
     float: 'left',
     display: 'inline-block',
     overflowY: 'auto',
@@ -83,7 +78,7 @@ const styles = {
     width: widthLeft / 2,
     position: 'absolute',
     height: heightLeft / 2,
-    top: heightLeft / 2 + heightHeader,
+    top: heightLeft / 2 + heightHeader + 5,
   },
 };
 
@@ -99,7 +94,7 @@ class ChatPanel extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.chatInput === '' && this.props.chatInput !== '') {
+    if (prevProps.chatInput !== this.props.chatInput) {
       this.chatInputRef.focus();
     }
     this.scrollToBottom();
@@ -632,7 +627,6 @@ class ChatPanel extends PureComponent {
 
     return (
       <div style={styles.ChatPanel}>
-        <div style={styles.BoxHeader}>Chat</div>
         <div style={styles.Historic}>
           {this.generateChat(chatHistory)}
           <div
@@ -721,9 +715,9 @@ class ChatPanel extends PureComponent {
               this.chatInputRef = input;
             }}
           />
-          <button style={styles.ChatButton} onClick={this.talkInChat}>
+          <ButtonLarge style={styles.ChatButton} onClick={this.talkInChat}>
             OK
-          </button>
+          </ButtonLarge>
         </div>
         <ReactTooltip />
       </div>

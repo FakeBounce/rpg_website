@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import Merchant from "../MerchantPanel/Merchant";
 import PropTypes from "prop-types";
+import { widthLeft } from "../Utils/StyleConstants";
 
 const styledItemContainer = {
   display: "inline-block",
   float: "left",
   position: "absolute",
-  top: "25px",
+  top: 20,
   overflowY: "auto",
   height: "90%",
-  width: "100%",
+  width: `${widthLeft / 2 - 20}px`,
 };
 
 class MerchantList extends Component {

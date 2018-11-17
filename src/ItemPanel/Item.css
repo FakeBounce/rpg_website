@@ -1,7 +1,6 @@
 .item{
     display: inline-block;
     width: 100%;
-    border-bottom: 1px solid black;
     cursor: url('/common/cursor_pointer.png'), pointer;
     height: 50px;
     margin-top:-4px;
