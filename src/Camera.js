@@ -5,7 +5,10 @@ import ButtonLarge from "./Utils/ButtonLarge";
 import { cursorPointer } from "./Utils/StyleConstants";
 
 const styledVideo = {
+  width: 133,
   height: 100,
+  float: "left",
+  position: "relative",
 };
 
 const styledCall = {
@@ -318,14 +321,16 @@ class Camera extends Component {
 
     return (
       <div>
-        <video
-          ref={audio => {
-            this.yourVideo = audio;
-          }}
-          style={styledVideo}
-          autoPlay
-          muted
-        />
+        <div style={styledVideo}>
+          <video
+            ref={audio => {
+              this.yourVideo = audio;
+            }}
+            style={styledVideo}
+            autoPlay
+            muted
+          />
+        </div>
         {Object.keys(friendsVideoRemote).map(key => {
           return (
             <div style={styledVideo}>
