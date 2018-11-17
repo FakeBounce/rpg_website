@@ -161,17 +161,17 @@ class GameScreen extends Component {
                         {b[uid].text3 && <div>{b.text3}</div>}
                         {b[uid].text4 && <div>{b.text4}</div>}
                         {b.monster &&
-                          b[uid].dangerosity && <div>{b.dangerosity}</div>}
-                        {!b.monster && b[uid].age && <div>{b.age} ans</div>}
+                          b[uid].dangerosity && <div>Dangerosité : {b.dangerosity}</div>}
+                        {!b.monster && b[uid].age && <div>Age : {b.age} ans</div>}
                         {b[uid].taille && (
                           <div>
-                            {b.taille}
+                            Taille : {b.taille}
                             cm
                           </div>
                         )}
                         {b[uid].poids && (
                           <div>
-                            {b.poids}
+                            Poids : {b.poids}
                             kg
                           </div>
                         )}
