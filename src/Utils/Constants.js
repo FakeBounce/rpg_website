@@ -559,4 +559,4 @@ export const spellTypeList = [
   'Psyché',
   'Sacré',
 ];
-export const spellModeList = ['Offensif', 'Défensif', 'Invocation', 'Neutre'];
+export const spellModeList = ['Offensif', 'Défensif', 'Failed'];

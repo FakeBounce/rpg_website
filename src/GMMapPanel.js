@@ -8,6 +8,7 @@ import MapEditionPanel from "./MapEditionPanel/MapEditionPanel";
 import StoryQuestsAndMerchantsPanel from "./StoryQuestsAndMerchantsPanel/StoryQuestsAndMerchantsPanel";
 import TownPanel from "./TownPanel/TownPanel";
 import PanelToggle from "./PanelToggle";
+import SpellGenerator from "./SpellGenerator";
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -30,6 +31,7 @@ class GMMapPanel extends Component {
   state = {
     isOnQuest: true,
     isOnMap: true,
+    isOnSpell: false,
     townToAssign: -1,
   };
 
@@ -44,6 +46,13 @@ class GMMapPanel extends Component {
     this.setState(state => ({
       ...state,
       isOnMap: bool,
+    }));
+  };
+
+  toggleIsOnSpell = bool => {
+    this.setState(state => ({
+      ...state,
+      isOnSpell: bool,
     }));
   };
 
@@ -82,12 +91,17 @@ class GMMapPanel extends Component {
       triggerError,
       stories,
     } = this.props;
-    const { isOnQuest, isOnMap } = this.state;
+    const { isOnQuest, isOnMap, isOnSpell } = this.state;
     return (
       <div style={styledMiddlePanel}>
         <div style={styledMapSide}>
-          <PanelToggle toggleIsOnMap={this.toggleIsOnMap} />
-          {isOnMap && (
+          <PanelToggle
+            toggleIsOnMap={this.toggleIsOnMap}
+            toggleIsOnSpell={this.toggleIsOnSpell}
+          />
+          {isOnSpell ? (
+            <SpellGenerator items={items}/>
+          ) : isOnMap ? (
             <MapEditionPanel
               changeCurrentScale={changeCurrentScale}
               currentScale={currentScale}
@@ -98,8 +112,7 @@ class GMMapPanel extends Component {
               currentStory={currentStory}
               stories={stories}
             />
-          )}
-          {!isOnMap && (
+          ) : (
             <EventPanel
               items={items}
               currentStory={currentStory}

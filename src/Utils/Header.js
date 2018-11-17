@@ -1,56 +1,57 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { heightHeader } from './StyleConstants';
-import Camera from '../Camera';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { heightHeader } from "./StyleConstants";
+import Camera from "../Camera";
 import ButtonLarge from "./ButtonLarge";
 
 const styledSignOut = {
-  display: 'block',
-  position: 'relative',
+  display: "block",
+  position: "relative",
 };
 
 const styledToggling = {
-  position: 'absolute',
+  position: "absolute",
   top: 0,
   right: 200,
 };
 
 const styledBoxHeader = {
-  width: '100%',
-  height: '20px',
-  marginBottom: '5px',
-  textAlign: 'center',
-  fontSize: '36px',
-  paddingTop: '25px',
-  color: 'white',
+  width: "75%",
+  height: "20px",
+  marginBottom: "5px",
+  textAlign: "center",
+  fontSize: "36px",
+  paddingTop: "25px",
+  color: "white",
+  marginLeft: "25%",
 };
 
 const styledHeaderRight = {
   height: heightHeader,
-  position: 'absolute',
+  position: "absolute",
   right: 0,
   top: 0,
 };
 
 const styledHeaderLeft = {
   height: heightHeader,
-  position: 'absolute',
+  position: "absolute",
   left: 0,
   top: 0,
 };
 
 const styledHeader = {
-  borderBottom: '1px solid black',
-  width: '100%',
+  borderBottom: "1px solid black",
+  width: "100%",
   height: `${heightHeader}px`,
   backgroundImage: `url(./common/dravos_header.jpg)`,
-  backgroundSize: 'cover',
+  backgroundSize: "cover",
 };
 
 const styledSound = {
-  marginLeft: '5px',
-  width: '10px',
-  height: '10px',
+  marginLeft: "5px",
+  width: "10px",
+  height: "10px",
 };
 
 class Header extends Component {
@@ -89,8 +90,8 @@ class Header extends Component {
             <img
               src={
                 musicMute
-                  ? './common/soundMuted.png'
-                  : './common/soundUnmuted.png'
+                  ? "./common/soundMuted.png"
+                  : "./common/soundUnmuted.png"
               }
               style={styledSound}
               alt="sound muted or not"

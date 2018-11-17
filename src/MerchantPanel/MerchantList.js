@@ -7,10 +7,11 @@ const styledItemContainer = {
   display: "inline-block",
   float: "left",
   position: "absolute",
-  top: 20,
+  top: 30,
+  left : 16,
   overflowY: "auto",
   height: "90%",
-  width: `${widthLeft / 2 - 20}px`,
+  width: `${widthLeft / 2 - 36}px`,
 };
 
 class MerchantList extends Component {

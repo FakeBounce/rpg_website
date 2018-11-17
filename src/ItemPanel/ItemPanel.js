@@ -12,7 +12,7 @@ const styledBoxHeader = {
 
 const styledMapSide = {
   width: `${widthLeft / 2 - 20}px`,
-  height: `${heightLeft / 2}px`,
+  height: `${heightLeft / 2 - 10}px`,
   display: "inline-block",
   float: "left",
   textAlign: "left",

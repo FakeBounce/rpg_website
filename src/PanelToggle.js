@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 const styledSemiBoxHeader = {
-  width: "50%",
+  width: "33%",
   height: "20px",
   marginBottom: "5px",
   textAlign: "center",
@@ -12,14 +12,29 @@ const styledSemiBoxHeader = {
 };
 class PanelToggle extends Component {
   render() {
-    const { toggleIsOnMap } = this.props;
+    const { toggleIsOnMap, toggleIsOnSpell } = this.props;
     return (
       <div>
-        <div style={styledSemiBoxHeader} onClick={() => toggleIsOnMap(true)}>
+        <div
+          style={styledSemiBoxHeader}
+          onClick={() => {
+            toggleIsOnMap(true);
+            toggleIsOnSpell(false);
+          }}
+        >
           Modifier la carte
         </div>
-        <div style={styledSemiBoxHeader} onClick={() => toggleIsOnMap(false)}>
+        <div
+          style={styledSemiBoxHeader}
+          onClick={() => {
+            toggleIsOnMap(false);
+            toggleIsOnSpell(false);
+          }}
+        >
           Ajouter un event
+        </div>
+        <div style={styledSemiBoxHeader} onClick={() => toggleIsOnSpell(true)}>
+          Générateur de sorts
         </div>
       </div>
     );
@@ -28,6 +43,7 @@ class PanelToggle extends Component {
 
 PanelToggle.propTypes = {
   toggleIsOnMap: PropTypes.func.isRequired,
+  toggleIsOnSpell: PropTypes.func.isRequired,
 };
 
 export default PanelToggle;

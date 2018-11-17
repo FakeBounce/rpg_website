@@ -9,9 +9,10 @@ const styledItemContainer = {
   float: "left",
   position: "absolute",
   top: "20px",
+  left: 16,
   overflowY: "auto",
   height: "82%",
-  width: `${widthLeft / 2 - 26}px`,
+  width: `${widthLeft / 2 - 42}px`,
 };
 
 class ItemList extends Component {

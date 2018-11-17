@@ -1,13 +1,29 @@
-import React, { PureComponent } from 'react';
-import './App.css';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 
-import { spellModeList, spellTypeList } from './Utils/Constants';
+import { spellModeList, spellTypeList } from "./Utils/Constants";
+import { heightLeft } from "./Utils/StyleConstants";
+
+const styledSpellContainer = {
+  height: `${heightLeft / 2 - 26}px`,
+  position: "relative",
+  float: "left",
+  display: "inline-block",
+  overflowY: "auto",
+};
+
+const noSpell = {
+  name: "No spell",
+  mode: "None",
+  rarity: "0",
+  type: "None",
+};
 
 class SpellGenerator extends PureComponent {
   state = {
     generatedSpell: null,
-    generatedSpellType: 'Feu',
-    generatedSpellMode: 'Offensif',
+    generatedSpellType: "Feu",
+    generatedSpellMode: "Offensif",
     rollValue: 50,
   };
 
@@ -26,13 +42,13 @@ class SpellGenerator extends PureComponent {
     if (items && items.spells) {
       const filteredSpells = [];
       items.spells.map(s => {
-        if (s['random'] === 'TRUE') {
+        if (s["random"] === "TRUE") {
           filteredSpells.push(s);
         }
         return null;
       });
 
-      if (mode === 'Failed') {
+      if (generatedSpellMode === "Failed") {
         let targetedSpells = [];
 
         //Reducing spell ranges to intensify fail roll, the higher the fail the higher the rarity of the failed spell
@@ -44,12 +60,19 @@ class SpellGenerator extends PureComponent {
         });
         const choosedSpell = parseInt(
           Math.random() * targetedSpells.length,
-          10
+          10,
         );
-        this.setState(state => ({
-          ...state,
-          generatedSpell: targetedSpells[choosedSpell],
-        }));
+        if (targetedSpells.length > 0) {
+          this.setState(state => ({
+            ...state,
+            generatedSpell: targetedSpells[choosedSpell],
+          }));
+        } else {
+          this.setState(state => ({
+            ...state,
+            generatedSpell: noSpell,
+          }));
+        }
       } else {
         const targetedSpells = [];
         const rangeCount = 11 - Math.floor(rollValue / 10);
@@ -106,13 +129,20 @@ class SpellGenerator extends PureComponent {
 
         const choosedSpell = parseInt(
           Math.random() * randomRaritySpell.length,
-          10
+          10,
         );
 
-        this.setState(state => ({
-          ...state,
-          generatedSpell: targetedSpells[choosedSpell],
-        }));
+        if (targetedSpells.length > 0) {
+          this.setState(state => ({
+            ...state,
+            generatedSpell: targetedSpells[choosedSpell],
+          }));
+        } else {
+          this.setState(state => ({
+            ...state,
+            generatedSpell: noSpell,
+          }));
+        }
       }
     }
   };
@@ -126,7 +156,7 @@ class SpellGenerator extends PureComponent {
     } = this.state;
 
     return (
-      <div>
+      <div style={styledSpellContainer}>
         <input
           type="number"
           placeholder="Valeur du dé"
@@ -139,7 +169,7 @@ class SpellGenerator extends PureComponent {
         <select
           value={generatedSpellType}
           onChange={e => {
-            this.onChange('generatedSpellType', e.target.value);
+            this.onChange("generatedSpellType", e.target.value);
           }}
         >
           {spellTypeList.map(stl => {
@@ -153,7 +183,7 @@ class SpellGenerator extends PureComponent {
         <select
           value={generatedSpellMode}
           onChange={e => {
-            this.onChange('generatedSpellMode', e.target.value);
+            this.onChange("generatedSpellMode", e.target.value);
           }}
         >
           {spellModeList.map(stl => {
@@ -168,10 +198,10 @@ class SpellGenerator extends PureComponent {
           onClick={this.generateSpell}
           style={{
             background: `url('/common/button2.png') no-repeat`,
-            backgroundSize: 'cover',
+            backgroundSize: "cover",
             height: 25,
-            color: 'white',
-            padding: '5px 15px',
+            color: "white",
+            padding: "5px 15px",
           }}
         >
           Generate spell

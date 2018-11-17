@@ -5,7 +5,7 @@ import ItemDescriptionPanel from "./ItemDescriptionPanel/ItemDescriptionPanel";
 import MerchantPanel from "./MerchantPanel/MerchantPanel";
 import ItemPanel from "./ItemPanel/ItemPanel";
 import QuestPanel from "./QuestPanel/QuestPanel";
-import { widthLeft } from "./Utils/StyleConstants";
+import { heightHeader, widthLeft } from "./Utils/StyleConstants";
 
 class PlayerMapPanel extends Component {
   render() {
@@ -32,6 +32,7 @@ class PlayerMapPanel extends Component {
         style={{
           float: "left",
           width: `${widthLeft}px`,
+          height: `${window.innerHeight - heightHeader}px`,
           display: "inline-block",
           position: "relative",
         }}
