@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import firebase from 'firebase';
-import debounce from 'lodash/debounce';
-import './App.css';
-import IsNotAuth from './Authentication/IsNotAuth';
-import HasNoNickname from './NicknameSelection/HasNoNickname';
-import CharacterSelection from './CharacterSelection/CharacterSelection';
-import StoriesPanel from './StoryPanel/StoriesPanel';
+import React, { Component } from "react";
+import firebase from "firebase";
+import debounce from "lodash/debounce";
+import "./App.css";
+import IsNotAuth from "./Authentication/IsNotAuth";
+import HasNoNickname from "./NicknameSelection/HasNoNickname";
+import CharacterSelection from "./CharacterSelection/CharacterSelection";
+import StoriesPanel from "./StoryPanel/StoriesPanel";
 
-import { defaultState } from './Utils/Constants';
+import { defaultState, quests, bestiary } from "./Utils/Constants";
 // import LoadSpreasheet from './Utils/LoadSpreasheet';
-import GameScreen from './GameScreen';
-import SoundPlayer from './SoundPlayer/SoundPlayer';
+import GameScreen from "./GameScreen";
+import SoundPlayer from "./SoundPlayer/SoundPlayer";
 import {
   // listenArtefacts,
-  // loadUnusedArtefacts,
+  loadUnusedArtefacts,
   listenChat,
   listenCurrentEvent,
   listenEvents,
@@ -31,14 +31,14 @@ import {
   // populateTilesTypes,
   // resetEvents,
   // resetMap,
-  // setQuests,
-} from './Utils/DatabaseFunctions';
+  setQuests,
+} from "./Utils/DatabaseFunctions";
 import {
   hydrateStoryArtefacts,
   // resetStoryMerchants,
-  // hydrateAllMerchants,
+  hydrateAllMerchants,
   // hydrateMerchant,
-} from './Utils/MerchantsFunctions';
+} from "./Utils/MerchantsFunctions";
 import LoadSpreasheet from "./Utils/LoadSpreasheet";
 
 class App extends Component {
@@ -47,8 +47,8 @@ class App extends Component {
   componentDidMount() {
     loadTilesTypes(this.doSetState);
     loadAllItems(this.doSetState);
-    // setQuests(0,quests);
-    // loadUnusedArtefacts(0);
+    setQuests(0, quests);
+    loadUnusedArtefacts(0);
     // populateTilesTypes();
     // resetMap(0,40);
     // resetEvents(0);
@@ -65,15 +65,123 @@ class App extends Component {
     //       console.log('url', url);
     //     })
     // );
+    // firebase
+    //   .database()
+    //   .ref("stories/" + 0 + "/bestiary")
+    //   .set(bestiary)
+    //   .catch(error => {
+    //     // Handle Errors here.
+    //     this.triggerError(error);
+    //   });
+
+    firebase
+      .database()
+      .ref("stories/" + 0 + "/bestiary")
+      .on("value", snapshot => {
+        this.setState(state => ({
+          ...state,
+          bestiary: snapshot.val(),
+        }));
+      });
+
+    // firebase
+    //   .database()
+    //   .ref("stories/" + 0 + "/bestiary")
+    //   .once("value")
+    //   .then(sn => {
+    //     firebase
+    //       .database()
+    //       .ref("stories/" + 0 + "/characters")
+    //       .once("value")
+    //       .then(snapshot => {
+    //         const tempBestiary = [...sn.val()];
+    //         const tempCharacters = { ...snapshot.val() };
+    //         Object.keys(tempCharacters).map(key => {
+    //           tempBestiary.map((b, i) => {
+    //             let cpt = 0;
+    //             const maxRoll =
+    //               tempCharacters[key].character.userPseudo === "Danjors" &&
+    //               b.monster
+    //                 ? parseInt(tempCharacters[key].character.education) + 10
+    //                 : b.monster || tempCharacters[key].character.userPseudo === "Danjors"
+    //                   ? parseInt(tempCharacters[key].character.education) - 10
+    //                 : parseInt(tempCharacters[key].character.education);
+    //             while (
+    //               Math.floor(Math.random() * 100 + 1) <= maxRoll &&
+    //               cpt < 7
+    //             ) {
+    //               ++cpt;
+    //             }
+    //             const statsKnown = {};
+    //             if (cpt >= 1) {
+    //               statsKnown["text1"] = true;
+    //             }
+    //             if (cpt >= 2) {
+    //               statsKnown["text2"] = true;
+    //             }
+    //             if (cpt >= 3) {
+    //               statsKnown["text3"] = true;
+    //             }
+    //             if (cpt >= 4) {
+    //               statsKnown["text4"] = true;
+    //             }
+    //             if (cpt >= 5) {
+    //               if (b.monster) {
+    //                 statsKnown["dangerosity"] = true;
+    //               } else {
+    //                 statsKnown["age"] = true;
+    //               }
+    //             }
+    //             if (cpt >= 6) {
+    //               statsKnown["taille"] = true;
+    //             }
+    //             if (cpt >= 7) {
+    //               statsKnown["poids"] = true;
+    //             }
+    //             tempBestiary[i] = {
+    //               ...tempBestiary[i],
+    //               [key]: { ...statsKnown },
+    //             };
+    //             // if(tempCharacters[key].character.userPseudo === "Danjors")
+    //           });
+    //         });
+    //         firebase
+    //           .database()
+    //           .ref("stories/" + 0 + "/bestiary")
+    //           .set(tempBestiary)
+    //           .catch(error => {
+    //             // Handle Errors here.
+    //             this.triggerError(error);
+    //           });
+    //         this.setState(state => ({
+    //           ...state,
+    //           bestiary: tempBestiary,
+    //         }));
+    //       })
+    //       .catch(error => {
+    //         this.triggerError(error);
+    //       });
+    //   })
+    //   .catch(error => {
+    //     this.triggerError(error);
+    //   });
   }
 
   loadMerchantsAndItems = () => {
     const { currentStory } = this.state;
     // loadMerchantsOnce(currentStory, this.doSetState)
     listenMerchants(currentStory, this.doSetState);
-    loadAllItems(this.doSetState, currentStory); // And listen to artefacts on callback
+    loadAllItems(this.doSetState, currentStory, () => {
+      // hydrateAllMerchants(this.state.currentStory, this.state.merchants, this.state.items, this.doSetState, false);
+    }); // And listen to artefacts on callback
     // resetStoryMerchants(currentStory, this.doSetState);
-    // this.hydrateAllMerchants(currentStoryn merchants, items, doSetState, false);
+  };
+
+  toggleBestiary = () => {
+    this.setState(state => ({
+      ...state,
+      isOnBestiary: !state.isOnBestiary,
+    }));
   };
 
   toggleMusic = () => {
@@ -164,14 +272,14 @@ class App extends Component {
       () => {
         firebase
           .database()
-          .ref('stories/' + currentStory + '/characters/' + uid + '/character')
+          .ref("stories/" + currentStory + "/characters/" + uid + "/character")
           .set({
             ...character,
             gold: character.gold - price,
             items: newItemsTab,
           })
           .then(() => {
-            if (item.itemType === 'artefacts') {
+            if (item.itemType === "artefacts") {
               item.isAcquired = true;
 
               // Hydrate artefacts list
@@ -183,14 +291,14 @@ class App extends Component {
 
             firebase
               .database()
-              .ref('stories/' + currentStory + '/merchants/' + currentMerchant)
+              .ref("stories/" + currentStory + "/merchants/" + currentMerchant)
               .set(newMerchants[currentMerchant]);
           })
           .catch(error => {
             // Handle Errors here.
             this.triggerError(error);
           });
-      }
+      },
     );
   };
 
@@ -204,8 +312,8 @@ class App extends Component {
 
         firebase
           .database()
-          .ref('/tilesTypes')
-          .once('value')
+          .ref("/tilesTypes")
+          .once("value")
           .then(snapshot => {
             this.setState(state => ({
               ...state,
@@ -238,8 +346,8 @@ class App extends Component {
     const { stories, currentStory } = this.state;
     firebase
       .database()
-      .ref('/maps/' + stories[currentStory].map)
-      .on('value', snapshot => {
+      .ref("/maps/" + stories[currentStory].map)
+      .on("value", snapshot => {
         this.setState(state => ({
           ...state,
           map: snapshot.val(),
@@ -283,19 +391,19 @@ class App extends Component {
     this.setState(
       state => ({
         ...state,
-        noiseStatus: 'STOPPPED',
+        noiseStatus: "STOPPPED",
       }),
       () => {
         firebase
           .database()
-          .ref('/stories/' + currentStory + '/noise')
+          .ref("/stories/" + currentStory + "/noise")
           .set({
             noiseStatus: this.state.noiseStatus,
           })
           .catch(error => {
             this.triggerError(error);
           });
-      }
+      },
     );
   };
 
@@ -303,26 +411,26 @@ class App extends Component {
     const { currentStory } = this.state;
     firebase
       .database()
-      .ref('/stories/' + currentStory + '/music')
+      .ref("/stories/" + currentStory + "/music")
       .set({
         musicVolume: 100,
-        musicNameFirst: '',
+        musicNameFirst: "",
         musicVolumeFirst: 0,
-        musicNameSecond: '',
+        musicNameSecond: "",
         musicVolumeSecond: 0,
-        musicStatusFirst: 'STOPPED',
-        musicStatusSecond: 'STOPPED',
+        musicStatusFirst: "STOPPED",
+        musicStatusSecond: "STOPPED",
       })
       .catch(error => {
         this.triggerError(error);
       });
     firebase
       .database()
-      .ref('/stories/' + currentStory + '/noise')
+      .ref("/stories/" + currentStory + "/noise")
       .set({
-        noiseName: '',
+        noiseName: "",
         noiseVolume: 100,
-        noiseStatus: 'STOPPED',
+        noiseStatus: "STOPPED",
       })
       .catch(error => {
         this.triggerError(error);
@@ -333,7 +441,7 @@ class App extends Component {
     const { isMusicFirst, isMusicTransition, currentStory } = this.state;
     const obj = {};
     obj[name] = value;
-    if (name === 'musicName') {
+    if (name === "musicName") {
       if (!isMusicTransition) {
         if (isMusicFirst) {
           this.setState(
@@ -354,15 +462,15 @@ class App extends Component {
                       musicVolumeSecond: state.musicVolume * ((i * 5) / 100),
                       isMusicTransition: i !== 20,
                       musicStatusFirst:
-                        i !== 20 && state.musicNameFirst !== ''
-                          ? 'PLAYING'
-                          : 'STOPPED',
-                      musicStatusSecond: 'PLAYING',
+                        i !== 20 && state.musicNameFirst !== ""
+                          ? "PLAYING"
+                          : "STOPPED",
+                      musicStatusSecond: "PLAYING",
                     }),
                     () => {
                       firebase
                         .database()
-                        .ref('/stories/' + currentStory + '/music')
+                        .ref("/stories/" + currentStory + "/music")
                         .set({
                           musicVolume: this.state.musicVolume,
                           musicNameFirst: this.state.musicNameFirst,
@@ -375,11 +483,11 @@ class App extends Component {
                         .catch(error => {
                           this.triggerError(error);
                         });
-                    }
+                    },
                   );
                 }, i * 300);
               }
-            }
+            },
           );
         } else {
           this.setState(
@@ -400,15 +508,15 @@ class App extends Component {
                       musicVolumeFirst: state.musicVolume * ((i * 5) / 100),
                       isMusicTransition: i !== 20,
                       musicStatusSecond:
-                        i !== 20 && state.musicNameSecond !== ''
-                          ? 'PLAYING'
-                          : 'STOPPED',
-                      musicStatusFirst: 'PLAYING',
+                        i !== 20 && state.musicNameSecond !== ""
+                          ? "PLAYING"
+                          : "STOPPED",
+                      musicStatusFirst: "PLAYING",
                     }),
                     () => {
                       firebase
                         .database()
-                        .ref('/stories/' + currentStory + '/music')
+                        .ref("/stories/" + currentStory + "/music")
                         .set({
                           musicVolume: this.state.musicVolume,
                           musicNameFirst: this.state.musicNameFirst,
@@ -421,11 +529,11 @@ class App extends Component {
                         .catch(error => {
                           this.triggerError(error);
                         });
-                    }
+                    },
                   );
                 }, i * 300);
               }
-            }
+            },
           );
         }
       }
@@ -437,7 +545,7 @@ class App extends Component {
         }),
         () => {
           this.debouncedSavingMusic();
-        }
+        },
       );
     }
   };
@@ -462,7 +570,7 @@ class App extends Component {
     } = this.state;
     firebase
       .database()
-      .ref('/stories/' + currentStory + '/noise')
+      .ref("/stories/" + currentStory + "/noise")
       .set({
         noiseName,
         noiseStatus,
@@ -473,7 +581,7 @@ class App extends Component {
       });
     firebase
       .database()
-      .ref('/stories/' + currentStory + '/music')
+      .ref("/stories/" + currentStory + "/music")
       .set({
         musicNameFirst,
         musicNameSecond,
@@ -495,13 +603,13 @@ class App extends Component {
     if (stories[i].gameMaster === uid) isGM = true;
 
     if (
-      typeof stories[i].characters !== 'undefined' &&
-      typeof stories[i].characters[uid] !== 'undefined'
+      typeof stories[i].characters !== "undefined" &&
+      typeof stories[i].characters[uid] !== "undefined"
     ) {
       firebase
         .database()
-        .ref('/stories/' + i + '/characters/' + uid + '/character')
-        .on('value', snapshot => {
+        .ref("/stories/" + i + "/characters/" + uid + "/character")
+        .on("value", snapshot => {
           //@TODO : Activate when GM will have proper tabs
           this.setState(
             state => ({
@@ -520,7 +628,7 @@ class App extends Component {
               this.loadTownsAndQuests();
               this.loadCurrentPosition();
               this.loadEvents();
-            }
+            },
           );
         });
     } else {
@@ -538,15 +646,15 @@ class App extends Component {
           this.loadMusic();
           this.loadMerchantsAndItems();
           this.loadEvents();
-        }
+        },
       );
     }
     firebase
       .database()
-      .ref('/stories/' + i + '/characters')
-      .on('value', snapshot => {
+      .ref("/stories/" + i + "/characters")
+      .on("value", snapshot => {
         const charactersFromStories = [];
-        if (typeof snapshot.val() !== 'undefined' && snapshot.val()) {
+        if (typeof snapshot.val() !== "undefined" && snapshot.val()) {
           Object.keys(snapshot.val()).map(key => {
             charactersFromStories.push(snapshot.val()[key].character);
             return null;
@@ -578,7 +686,7 @@ class App extends Component {
       }),
       () => {
         if (cb) cb();
-      }
+      },
     );
   };
 
@@ -592,15 +700,16 @@ class App extends Component {
         setTimeout(() => {
           this.setState(state => ({
             ...state,
-            error: '',
+            error: "",
           }));
         }, 5000);
-      }
+      },
     );
   };
 
   render() {
     const {
+      bestiary,
       character,
       characterCreation,
       characterId,
@@ -628,6 +737,7 @@ class App extends Component {
       isMusicFirst,
       isOnPlayerView,
       isQuestShowed,
+      isOnBestiary,
       isTownShowed,
       items,
       itemsList,
@@ -682,7 +792,7 @@ class App extends Component {
         )}
 
         {isAuth &&
-          pseudo === '' && (
+          pseudo === "" && (
             <HasNoNickname
               doSetState={this.doSetState}
               onChange={this.onChange}
@@ -692,14 +802,14 @@ class App extends Component {
           )}
 
         {isAuth &&
-          pseudo !== '' &&
+          pseudo !== "" &&
           currentStory === -1 && (
             <StoriesPanel stories={stories} chooseStory={this.chooseStory} />
           )}
 
         {!isGameMaster &&
           isAuth &&
-          pseudo !== '' &&
+          pseudo !== "" &&
           currentStory > -1 &&
           characterId === 0 && (
             <CharacterSelection
@@ -716,11 +826,12 @@ class App extends Component {
           )}
 
         {isAuth &&
-          pseudo !== '' &&
+          pseudo !== "" &&
           currentStory > -1 &&
           (characterId > 0 || isGameMaster) && (
             <GameScreen
               accessChatHelp={this.accessChatHelp}
+              bestiary={bestiary}
               buyItem={this.buyItem}
               character={character}
               chatHistory={chatHistory}
@@ -742,6 +853,7 @@ class App extends Component {
               isGameMaster={isGameMaster}
               isItemDescriptionShowed={isItemDescriptionShowed}
               isItemShowed={isItemShowed}
+              isOnBestiary={isOnBestiary}
               isOnPlayerView={isOnPlayerView}
               isQuestShowed={isQuestShowed}
               isTownShowed={isTownShowed}
@@ -771,6 +883,7 @@ class App extends Component {
               textureToApply={textureToApply}
               tilesTypes={tilesTypes}
               toggleMusic={this.toggleMusic}
+              toggleBestiary={this.toggleBestiary}
               togglePlayerView={this.togglePlayerView}
               towns={towns}
               triggerError={this.triggerError}

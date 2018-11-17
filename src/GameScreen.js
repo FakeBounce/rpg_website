@@ -7,12 +7,39 @@ import Header from "./Utils/Header";
 import MiddlePanel from "./MiddlePanel";
 import EventModal from "./EventModal/EventModal";
 import ButtonLarge from "./Utils/ButtonLarge";
+import { heightLeft, widthLeft } from "./Utils/StyleConstants";
 
 const styledToggleEvent = {
   position: "absolute",
   top: 100,
   left: 0,
   zIndex: 100,
+};
+const styledImage = {
+  position: "relative",
+  float: "left",
+  width: 100,
+  height: 100,
+};
+const styledContainer = {
+  position: "relative",
+  width: window.innerWidth / 4 - 2,
+  float: "left",
+  display: "inline-block",
+  borderLeft: "1px dashed black",
+  borderRight: "1px dashed black",
+  borderBottom: "1px dashed black",
+};
+const styledText = {
+  position: "relative",
+  float: "left",
+  width: window.innerWidth / 4 - 2 - 120,
+  padding: 10,
+};
+const styledTitle = {
+  fontSize: 22,
+  fontWeight: "bolder",
+  color: "red",
 };
 
 class GameScreen extends Component {
@@ -64,6 +91,7 @@ class GameScreen extends Component {
       eventHistory,
       gameMaster,
       isGameMaster,
+      isOnBestiary,
       musicMute,
       onChatHelp,
       pseudo,
@@ -72,9 +100,11 @@ class GameScreen extends Component {
       stories,
       storyCharacters,
       toggleMusic,
+      toggleBestiary,
       togglePlayerView,
       triggerError,
       uid,
+      bestiary,
       ...rest
     } = this.props;
 
@@ -90,11 +120,13 @@ class GameScreen extends Component {
         <Header
           accessChatHelp={accessChatHelp}
           chatHelpTitle={onChatHelp ? "Return to map" : "Access chat help"}
+          bestiaryTitle={isOnBestiary ? "Return to map" : "Bestiary"}
           isGameMaster={isGameMaster}
           musicMute={musicMute}
           selectAnotherCharacter={selectAnotherCharacter}
           signOut={signOut}
           title={stories[currentStory].name}
+          toggleBestiary={toggleBestiary}
           toggleMusic={toggleMusic}
           togglePlayerView={togglePlayerView}
           uid={uid}
@@ -114,7 +146,50 @@ class GameScreen extends Component {
             uid={uid}
           />
         )}
-        {onChatHelp ? (
+        {isOnBestiary ? (
+          <div>
+            {bestiary.map(b => {
+              if (b.seen) {
+                if (typeof b[uid] !== "undefined") {
+                  return (
+                    <div style={styledContainer}>
+                      <div style={styledTitle}> {b.name}</div>
+                      <img src={"./bestiary/" + b.image} style={styledImage} />
+                      <div style={styledText}>
+                        {b[uid].text1 && <div>{b.text1}</div>}
+                        {b[uid].text2 && <div>{b.text2}</div>}
+                        {b[uid].text3 && <div>{b.text3}</div>}
+                        {b[uid].text4 && <div>{b.text4}</div>}
+                        {b.monster &&
+                          b[uid].dangerosity && <div>{b.dangerosity}</div>}
+                        {!b.monster && b[uid].age && <div>{b.age} ans</div>}
+                        {b[uid].taille && (
+                          <div>
+                            {b.taille}
+                            cm
+                          </div>
+                        )}
+                        {b[uid].poids && (
+                          <div>
+                            {b.poids}
+                            kg
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div style={styledContainer}>
+                      <div style={styledTitle}> {b.name}</div>
+                      <img src={"./bestiary/" + b.image} style={styledImage} />
+                    </div>
+                  );
+                }
+              }
+            })}
+          </div>
+        ) : onChatHelp ? (
           <ChatCommandsPanel />
         ) : (
           <MiddlePanel
@@ -147,6 +222,7 @@ GameScreen.propTypes = {
   eventHistory: PropTypes.array.isRequired,
   gameMaster: PropTypes.string.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
+  isOnBestiary: PropTypes.bool.isRequired,
   musicMute: PropTypes.bool.isRequired,
   onChatHelp: PropTypes.bool.isRequired,
   pseudo: PropTypes.string.isRequired,
@@ -155,9 +231,11 @@ GameScreen.propTypes = {
   stories: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   toggleMusic: PropTypes.func.isRequired,
+  toggleBestiary: PropTypes.func.isRequired,
   togglePlayerView: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
+  bestiary: PropTypes.array.isRequired,
 };
 
 export default GameScreen;

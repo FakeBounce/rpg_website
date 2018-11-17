@@ -107,7 +107,7 @@ export const resetEvents = id => {
     });
 };
 
-export const loadAllItems = (doSetState, currentStory = -1) => {
+export const loadAllItems = (doSetState, currentStory = -1, cb = () => {}) => {
   firebase
     .database()
     .ref('/items')
@@ -116,6 +116,7 @@ export const loadAllItems = (doSetState, currentStory = -1) => {
       doSetState({
         items: snapshot.val(),
       });
+      cb();
       // addIconPathToAllItems(snapshot.val());
       if (currentStory > -1) {
         listenArtefacts(currentStory, snapshot.val(), doSetState);

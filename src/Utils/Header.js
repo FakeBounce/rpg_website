@@ -11,8 +11,14 @@ const styledSignOut = {
 
 const styledToggling = {
   position: "absolute",
+  top: 50,
+  right: 167,
+};
+
+const styledTogglingAbsolute = {
+  position: "absolute",
   top: 0,
-  right: 200,
+  right: 167,
 };
 
 const styledBoxHeader = {
@@ -58,6 +64,7 @@ class Header extends Component {
   render() {
     const {
       title,
+      bestiaryTitle,
       signOut,
       accessChatHelp,
       chatHelpTitle,
@@ -66,6 +73,7 @@ class Header extends Component {
       musicMute,
       isGameMaster,
       togglePlayerView,
+      toggleBestiary,
       uid,
     } = this.props;
 
@@ -76,6 +84,9 @@ class Header extends Component {
         </div>
         <div style={styledBoxHeader}>{title}</div>
         <div style={styledHeaderRight}>
+          <ButtonLarge style={styledTogglingAbsolute} onClick={toggleBestiary}>
+            {bestiaryTitle}
+          </ButtonLarge>
           <ButtonLarge style={styledSignOut} onClick={signOut}>
             Sign Out
           </ButtonLarge>
@@ -109,6 +120,7 @@ class Header extends Component {
 }
 
 Header.propTypes = {
+  bestiaryTitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   chatHelpTitle: PropTypes.string.isRequired,
   signOut: PropTypes.func.isRequired,
@@ -116,6 +128,7 @@ Header.propTypes = {
   selectAnotherCharacter: PropTypes.func.isRequired,
   toggleMusic: PropTypes.func.isRequired,
   togglePlayerView: PropTypes.func.isRequired,
+  toggleBestiary: PropTypes.func.isRequired,
   musicMute: PropTypes.bool.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
   uid: PropTypes.bool.isRequired,

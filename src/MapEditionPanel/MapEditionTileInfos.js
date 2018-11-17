@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { towns } from "../Utils/Constants";
 
 const styledBoxHeader = {
   width: "100%",
@@ -36,6 +37,11 @@ class MapEditionTileInfos extends Component {
               value={townToAssign}
               onChange={e => onChange(parseInt(e.target.value, 10))}
             />
+            {
+              currentTile.hasTown > -1 && <div>
+                Town name : {towns[currentTile.hasTown].name}
+                <br /></div>
+            }
             <button onClick={() => toggleHasTown}>Validate</button>
             <br />
             isCurrent : {currentTile.isCurrent}

@@ -55,7 +55,7 @@ export const hydrateAllMerchants = (
   const newMerchants = [];
   const artefactsLeft = [...items.artefacts];
   merchants.map(m => {
-    newMerchants.push(this.hydrateMerchant(artefactsLeft, m, items, hard));
+    newMerchants.push(hydrateMerchant(artefactsLeft, m, items, hard));
     return null;
   });
 
