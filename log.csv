@@ -1,4 +1,16 @@
+<div className="commit"> fakebounce, le 2018-11-17 : Now gm can toggle seen creatures </div>
+<div className="commit"> fakebounce, le 2018-11-17 : Added bestiary </div>
+<div className="commit"> fakebounce, le 2018-11-17 : Added spell generator in admin panel and fixed some css </div>
+<div className="commit"> fakebounce, le 2018-11-17 : Merge branch 'master' of https://github.com/FakeBounce/rpg_website </div>
+<div className="commit"> FakeBounce, le 2018-11-16 : Changed header styles for toggle player view </div>
+<div className="commit"> FakeBounce, le 2018-11-16 : Fixed chat focus and GM button </div>
+<div className="commit"> FakeBounce, le 2018-11-16 : Did some css on player's panel </div>
+<div className="commit"> FakeBounce, le 2018-11-16 : Did some css on player's panel </div>
+<div className="commit"> FakeBounce, le 2018-11-16 : Feature/camera (#3) </div>
+<div className="commit"> FakeBounce, le 2018-11-15 : Added large button </div>
+<div className="commit"> FakeBounce, le 2018-11-15 : Fixed warnings </div>
 <div className="commit"> FakeBounce, le 2018-11-15 : Added some quests </div>
+<div className="commit"> fakebounce, le 2018-11-15 : Merge branch 'master' of https://github.com/FakeBounce/rpg_website </div>
 <div className="commit"> FakeBounce, le 2018-11-14 : Added cursor styles for selects </div>
 <div className="commit"> FakeBounce, le 2018-11-14 : Reworking styles... Changed cursor to glove and trying to rework buttons </div>
 <div className="commit"> FakeBounce, le 2018-11-14 : Did some css </div>
@@ -13,6 +25,7 @@
 <div className="commit"> FakeBounce, le 2018-11-13 : Fixed map rerender overflow </div>
 <div className="commit"> FakeBounce, le 2018-11-13 : Fixed event overflow </div>
 <div className="commit"> FakeBounce, le 2018-11-13 : Reworked styles; Added life total to characters and fixed some css issues </div>
+<div className="commit"> fakebounce, le 2018-11-09 : Remote peer connexion </div>
 <div className="commit"> FakeBounce, le 2018-10-30 : WIP Reworking images... </div>
 <div className="commit"> FakeBounce, le 2018-10-29 : Added some beasts and did the first step to load images from db instead of public repo </div>
 <div className="commit"> FakeBounce, le 2018-10-23 : Added somes images </div>

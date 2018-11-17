@@ -492,7 +492,7 @@ export const defaultState = {
   isItemShowed: false,
   isMusicFirst: false,
   isMusicTransition: false,
-  isOnBestiary: true,
+  isOnBestiary: false,
   isOnPlayerView: false,
   isQuestShowed: false,
   isTownShowed: false,

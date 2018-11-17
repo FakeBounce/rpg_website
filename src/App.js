@@ -47,8 +47,8 @@ class App extends Component {
   componentDidMount() {
     loadTilesTypes(this.doSetState);
     loadAllItems(this.doSetState);
-    setQuests(0, quests);
-    loadUnusedArtefacts(0);
+    // setQuests(0, quests);
+    // loadUnusedArtefacts(0);
     // populateTilesTypes();
     // resetMap(0,40);
     // resetEvents(0);

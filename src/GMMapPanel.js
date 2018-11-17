@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { heightLeft, widthLeft } from "./Utils/StyleConstants";
+import { cursorPointer, heightLeft, widthLeft } from "./Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import SoundPanel from "./SoundPanel/SoundPanel";
@@ -9,6 +9,7 @@ import StoryQuestsAndMerchantsPanel from "./StoryQuestsAndMerchantsPanel/StoryQu
 import TownPanel from "./TownPanel/TownPanel";
 import PanelToggle from "./PanelToggle";
 import SpellGenerator from "./SpellGenerator";
+import firebase from "firebase";
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -27,12 +28,56 @@ const styledMiddlePanel = {
   position: "relative",
 };
 
+const styledContainer = {
+  width: `${widthLeft / 2}px`,
+  height: `${heightLeft / 2 - 20}px`,
+  overflow: "auto",
+  display: "inline-block",
+  float: "left",
+  position: "relative",
+};
+
+const styledBestiary = {
+  width: `${widthLeft / 2}px`,
+  height: 20,
+  display: "inline-block",
+  float: "left",
+  position: "relative",
+  cursor: cursorPointer,
+};
+
 class GMMapPanel extends Component {
   state = {
     isOnQuest: true,
     isOnMap: true,
     isOnSpell: false,
     townToAssign: -1,
+    bestiary: [],
+  };
+
+  componentDidMount() {
+    firebase
+      .database()
+      .ref("stories/" + 0 + "/bestiary")
+      .on("value", snapshot => {
+        this.setState(state => ({
+          ...state,
+          bestiary: snapshot.val(),
+        }));
+      });
+  }
+
+  toggleSeenBeast = index => {
+    const tempBestiary = [...this.state.bestiary];
+    tempBestiary[index].seen = !tempBestiary[index].seen;
+    firebase
+      .database()
+      .ref("stories/" + 0 + "/bestiary")
+      .set(tempBestiary)
+      .catch(error => {
+        // Handle Errors here.
+        this.triggerError(error);
+      });
   };
 
   toggleRightPanel = bool => {
@@ -91,7 +136,7 @@ class GMMapPanel extends Component {
       triggerError,
       stories,
     } = this.props;
-    const { isOnQuest, isOnMap, isOnSpell } = this.state;
+    const { isOnQuest, isOnMap, isOnSpell, bestiary } = this.state;
     return (
       <div style={styledMiddlePanel}>
         <div style={styledMapSide}>
@@ -100,7 +145,19 @@ class GMMapPanel extends Component {
             toggleIsOnSpell={this.toggleIsOnSpell}
           />
           {isOnSpell ? (
-            <SpellGenerator items={items}/>
+            <div style={styledContainer}>
+              <SpellGenerator items={items} />
+              {bestiary.map((b, index) => {
+                return (
+                  <div
+                    style={styledBestiary}
+                    onClick={() => this.toggleSeenBeast(index)}
+                  >
+                    {b.name} : {b.seen ? "Yes" : "No"}
+                  </div>
+                );
+              })}
+            </div>
           ) : isOnMap ? (
             <MapEditionPanel
               changeCurrentScale={changeCurrentScale}

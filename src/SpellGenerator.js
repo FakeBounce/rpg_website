@@ -2,10 +2,8 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 
 import { spellModeList, spellTypeList } from "./Utils/Constants";
-import { heightLeft } from "./Utils/StyleConstants";
 
 const styledSpellContainer = {
-  height: `${heightLeft / 2 - 26}px`,
   position: "relative",
   float: "left",
   display: "inline-block",
