@@ -49,7 +49,7 @@ class MapEditionTilesList extends Component {
         return null;
       });
     }
-    return <MapEditionTile action={this.unloadTexture} tile={bg} />;
+    return <MapEditionTile action={this.unloadTexture} tile={bg} isSelected />;
   };
 
   unloadTexture = () => {

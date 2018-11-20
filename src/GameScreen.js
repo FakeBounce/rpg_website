@@ -6,15 +6,7 @@ import ChatCommandsPanel from "./ChatCommandsPanel/ChatCommandsPanel";
 import Header from "./Utils/Header";
 import MiddlePanel from "./MiddlePanel";
 import EventModal from "./EventModal/EventModal";
-import ButtonLarge from "./Utils/ButtonLarge";
-import { heightLeft, widthLeft } from "./Utils/StyleConstants";
 
-const styledToggleEvent = {
-  position: "absolute",
-  top: 100,
-  left: 0,
-  zIndex: 100,
-};
 const styledImage = {
   position: "relative",
   float: "left",
@@ -112,15 +104,11 @@ class GameScreen extends Component {
 
     return (
       <div>
-        {isGameMaster && (
-          <ButtonLarge onClick={this.toggleEvent} style={styledToggleEvent}>
-            Toggle event {isEventHidden ? "(Is hidden)" : ""}
-          </ButtonLarge>
-        )}
         <Header
           accessChatHelp={accessChatHelp}
           chatHelpTitle={onChatHelp ? "Return to map" : "Access chat help"}
           bestiaryTitle={isOnBestiary ? "Return to map" : "Bestiary"}
+          eventTitle={isEventHidden ? "Toggle event (Is hidden)" : "Toggle event"}
           isGameMaster={isGameMaster}
           musicMute={musicMute}
           selectAnotherCharacter={selectAnotherCharacter}
@@ -129,6 +117,7 @@ class GameScreen extends Component {
           toggleBestiary={toggleBestiary}
           toggleMusic={toggleMusic}
           togglePlayerView={togglePlayerView}
+          toggleEvent={this.toggleEvent}
           uid={uid}
         />
         {this.canReadEvent() && (

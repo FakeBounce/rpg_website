@@ -6,7 +6,6 @@ import IsNotAuth from './Authentication/IsNotAuth';
 import HasNoNickname from './NicknameSelection/HasNoNickname';
 import CharacterSelection from './CharacterSelection/CharacterSelection';
 import StoriesPanel from './StoryPanel/StoriesPanel';
-import CanvasDraw from 'react-canvas-draw';
 
 import { defaultState, quests, bestiary } from './Utils/Constants';
 // import LoadSpreasheet from './Utils/LoadSpreasheet';
@@ -48,8 +47,7 @@ class App extends Component {
     this.state = localStorage.getItem('appState')
       ? JSON.parse(localStorage.getItem('appState'))
       : { ...defaultState };
-    if(localStorage.getItem('appState'))
-    {
+    if (localStorage.getItem('appState')) {
       this.loadUsers();
       this.loadStories();
     }
@@ -64,27 +62,6 @@ class App extends Component {
     // resetMap(0,40);
     // resetEvents(0);
 
-    // console.log(
-    //   'test',
-    //   firebase
-    //     .app()
-    //     .storage()
-    //     .ref()
-    //     .child('images/artefacts/akila_urn.jpg')
-    //     .getDownloadURL()
-    //     .then(url => {
-    //       console.log('url', url);
-    //     })
-    // );
-    // firebase
-    //   .database()
-    //   .ref("stories/" + 0 + "/bestiary")
-    //   .set(bestiary)
-    //   .catch(error => {
-    //     // Handle Errors here.
-    //     this.triggerError(error);
-    //   });
-
     firebase
       .database()
       .ref('stories/' + 0 + '/bestiary')
@@ -94,88 +71,6 @@ class App extends Component {
           bestiary: snapshot.val(),
         }));
       });
-
-    // firebase
-    //   .database()
-    //   .ref("stories/" + 0 + "/bestiary")
-    //   .once("value")
-    //   .then(sn => {
-    //     firebase
-    //       .database()
-    //       .ref("stories/" + 0 + "/characters")
-    //       .once("value")
-    //       .then(snapshot => {
-    //         const tempBestiary = [...sn.val()];
-    //         const tempCharacters = { ...snapshot.val() };
-    //         Object.keys(tempCharacters).map(key => {
-    //           tempBestiary.map((b, i) => {
-    //             let cpt = 0;
-    //             const maxRoll =
-    //               tempCharacters[key].character.userPseudo === "Danjors" &&
-    //               b.monster
-    //                 ? parseInt(tempCharacters[key].character.education) + 10
-    //                 : b.monster || tempCharacters[key].character.userPseudo === "Danjors"
-    //                   ? parseInt(tempCharacters[key].character.education) - 10
-    //                 : parseInt(tempCharacters[key].character.education);
-    //             while (
-    //               Math.floor(Math.random() * 100 + 1) <= maxRoll &&
-    //               cpt < 7
-    //             ) {
-    //               ++cpt;
-    //             }
-    //             const statsKnown = {};
-    //             if (cpt >= 1) {
-    //               statsKnown["text1"] = true;
-    //             }
-    //             if (cpt >= 2) {
-    //               statsKnown["text2"] = true;
-    //             }
-    //             if (cpt >= 3) {
-    //               statsKnown["text3"] = true;
-    //             }
-    //             if (cpt >= 4) {
-    //               statsKnown["text4"] = true;
-    //             }
-    //             if (cpt >= 5) {
-    //               if (b.monster) {
-    //                 statsKnown["dangerosity"] = true;
-    //               } else {
-    //                 statsKnown["age"] = true;
-    //               }
-    //             }
-    //             if (cpt >= 6) {
-    //               statsKnown["taille"] = true;
-    //             }
-    //             if (cpt >= 7) {
-    //               statsKnown["poids"] = true;
-    //             }
-    //             tempBestiary[i] = {
-    //               ...tempBestiary[i],
-    //               [key]: { ...statsKnown },
-    //             };
-    //             // if(tempCharacters[key].character.userPseudo === "Danjors")
-    //           });
-    //         });
-    //         firebase
-    //           .database()
-    //           .ref("stories/" + 0 + "/bestiary")
-    //           .set(tempBestiary)
-    //           .catch(error => {
-    //             // Handle Errors here.
-    //             this.triggerError(error);
-    //           });
-    //         this.setState(state => ({
-    //           ...state,
-    //           bestiary: tempBestiary,
-    //         }));
-    //       })
-    //       .catch(error => {
-    //         this.triggerError(error);
-    //       });
-    //   })
-    //   .catch(error => {
-    //     this.triggerError(error);
-    //   });
   }
 
   loadMerchantsAndItems = () => {
@@ -620,10 +515,10 @@ class App extends Component {
         email: this.state.email,
         isAuth: this.state.isAuth,
         password: this.state.password,
-        pseudo:this.state.pseudo,
-        stories:this.state.stories,
+        pseudo: this.state.pseudo,
+        stories: this.state.stories,
         uid: this.state.uid,
-        users:this.state.users,
+        users: this.state.users,
       })
     );
     let isGM = false;

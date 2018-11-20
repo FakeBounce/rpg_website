@@ -15,12 +15,12 @@ const styledGrid = {
 
 class MapEditionTile extends Component {
   render() {
-    const { tile, tileKey, action } = this.props;
+    const { tile, tileKey, action, isSelected } = this.props;
     return (
       <div
         style={{
           ...styledGrid,
-          border: "none",
+          border: isSelected ? "1px solid red" : "none",
           borderLeft: "1px solid black",
           backgroundColor:
             tileKey === "Fog"
@@ -39,12 +39,14 @@ class MapEditionTile extends Component {
 
 MapEditionTile.defaultProps = {
   tileKey: "",
+  isSelected: false,
 };
 
 MapEditionTile.propTypes = {
   action: PropTypes.func.isRequired,
   tile: PropTypes.object.isRequired,
   tileKey: PropTypes.string,
+  isSelected: PropTypes.bool,
 };
 
 export default MapEditionTile;

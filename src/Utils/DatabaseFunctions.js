@@ -415,3 +415,234 @@ export const loadCurrentPosition = (currentStory, doSetState) => {
       triggerError(error);
     });
 };
+
+// Set default bestiary
+// firebase
+//   .database()
+//   .ref("stories/" + 0 + "/bestiary")
+//   .set(bestiary)
+//   .catch(error => {
+//     // Handle Errors here.
+//     this.triggerError(error);
+//   });
+
+// Reroll bestiary for story
+// firebase
+//   .database()
+//   .ref("stories/" + 0 + "/bestiary")
+//   .once("value")
+//   .then(sn => {
+//     firebase
+//       .database()
+//       .ref("stories/" + 0 + "/characters")
+//       .once("value")
+//       .then(snapshot => {
+//         const tempBestiary = [...sn.val()];
+//         const tempCharacters = { ...snapshot.val() };
+//         Object.keys(tempCharacters).map(key => {
+//           tempBestiary.map((b, i) => {
+//             let cpt = 0;
+//             const maxRoll =
+//               tempCharacters[key].character.userPseudo === "Danjors" &&
+//               b.monster
+//                 ? parseInt(tempCharacters[key].character.education) + 10
+//                 : b.monster || tempCharacters[key].character.userPseudo === "Danjors"
+//                   ? parseInt(tempCharacters[key].character.education) - 10
+//                 : parseInt(tempCharacters[key].character.education);
+//             while (
+//               Math.floor(Math.random() * 100 + 1) <= maxRoll &&
+//               cpt < 7
+//             ) {
+//               ++cpt;
+//             }
+//             const statsKnown = {};
+//             if (cpt >= 1) {
+//               statsKnown["text1"] = true;
+//             }
+//             if (cpt >= 2) {
+//               statsKnown["text2"] = true;
+//             }
+//             if (cpt >= 3) {
+//               statsKnown["text3"] = true;
+//             }
+//             if (cpt >= 4) {
+//               statsKnown["text4"] = true;
+//             }
+//             if (cpt >= 5) {
+//               if (b.monster) {
+//                 statsKnown["dangerosity"] = true;
+//               } else {
+//                 statsKnown["age"] = true;
+//               }
+//             }
+//             if (cpt >= 6) {
+//               statsKnown["taille"] = true;
+//             }
+//             if (cpt >= 7) {
+//               statsKnown["poids"] = true;
+//             }
+//             tempBestiary[i] = {
+//               ...tempBestiary[i],
+//               [key]: { ...statsKnown },
+//             };
+//             // if(tempCharacters[key].character.userPseudo === "Danjors")
+//           });
+//         });
+//         firebase
+//           .database()
+//           .ref("stories/" + 0 + "/bestiary")
+//           .set(tempBestiary)
+//           .catch(error => {
+//             // Handle Errors here.
+//             this.triggerError(error);
+//           });
+//         this.setState(state => ({
+//           ...state,
+//           bestiary: tempBestiary,
+//         }));
+//       })
+//       .catch(error => {
+//         this.triggerError(error);
+//       });
+//   })
+//   .catch(error => {
+//     this.triggerError(error);
+//   });
+
+// Fill bestiary with unknown
+// firebase
+//   .database()
+//   .ref('stories/' + 0 + '/bestiary')
+//   .once('value')
+//   .then(sn => {
+//     firebase
+//       .database()
+//       .ref('stories/' + 0 + '/characters')
+//       .once('value')
+//       .then(snapshot => {
+//         const tempBestiary = [...sn.val()];
+//         const tempCharacters = { ...snapshot.val() };
+//         Object.keys(tempCharacters).map(key => {
+//           tempBestiary.map((b, i) => {
+//             let statsKnown;
+//             if (!b[key]) {
+//               statsKnown = { unknown: true };
+//             } else {
+//               statsKnown = { ...b[key] };
+//             }
+//             tempBestiary[i] = {
+//               ...tempBestiary[i],
+//               [key]: { ...statsKnown },
+//             };
+//           });
+//         });
+//         firebase
+//           .database()
+//           .ref('stories/' + 0 + '/bestiary')
+//           .set(tempBestiary)
+//           .catch(error => {
+//             // Handle Errors here.
+//             this.triggerError(error);
+//           });
+//         this.setState(state => ({
+//           ...state,
+//           bestiary: tempBestiary,
+//         }));
+//       })
+//       .catch(error => {
+//         this.triggerError(error);
+//       });
+//   })
+//   .catch(error => {
+//     this.triggerError(error);
+//   });
+
+// Filling bestiary correctly
+export const populateBestiary = (currentStory, doSetState) => {
+  firebase
+    .database()
+    .ref('stories/' + currentStory + '/bestiary')
+    .once('value')
+    .then(sn => {
+      firebase
+        .database()
+        .ref('stories/' + currentStory + '/characters')
+        .once('value')
+        .then(snapshot => {
+          const tempBestiary = [...sn.val()];
+          const tempCharacters = { ...snapshot.val() };
+          Object.keys(tempCharacters).map(key => {
+            tempBestiary.map((b, i) => {
+              if (!b[key]) {
+                let cpt = 0;
+                const maxRoll =
+                  tempCharacters[key].character.userPseudo === 'Danjors' &&
+                  b.monster
+                    ? parseInt(tempCharacters[key].character.education) + 10
+                    : b.monster ||
+                      tempCharacters[key].character.userPseudo === 'Danjors'
+                      ? parseInt(tempCharacters[key].character.education) - 10
+                      : parseInt(tempCharacters[key].character.education);
+                while (
+                  Math.floor(Math.random() * 100 + 1) <= maxRoll &&
+                  cpt < 7
+                ) {
+                  ++cpt;
+                }
+                const statsKnown = {};
+                if (cpt === 0) {
+                  statsKnown['unknown'] = true;
+                } else {
+                  if (cpt >= 1) {
+                    statsKnown['text1'] = true;
+                  }
+                  if (cpt >= 2) {
+                    statsKnown['text2'] = true;
+                  }
+                  if (cpt >= 3) {
+                    statsKnown['text3'] = true;
+                  }
+                  if (cpt >= 4) {
+                    statsKnown['text4'] = true;
+                  }
+                  if (cpt >= 5) {
+                    if (b.monster) {
+                      statsKnown['dangerosity'] = true;
+                    } else {
+                      statsKnown['age'] = true;
+                    }
+                  }
+                  if (cpt >= 6) {
+                    statsKnown['taille'] = true;
+                  }
+                  if (cpt >= 7) {
+                    statsKnown['poids'] = true;
+                  }
+                }
+                tempBestiary[i] = {
+                  ...tempBestiary[i],
+                  [key]: { ...statsKnown },
+                };
+              }
+            });
+          });
+          firebase
+            .database()
+            .ref('stories/' + 0 + '/bestiary')
+            .set(tempBestiary)
+            .catch(error => {
+              // Handle Errors here.
+              this.triggerError(error);
+            });
+          doSetState({
+            bestiary: tempBestiary,
+          });
+        })
+        .catch(error => {
+          this.triggerError(error);
+        });
+    })
+    .catch(error => {
+      this.triggerError(error);
+    });
+};
