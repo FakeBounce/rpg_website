@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Sound from "react-sound";
 import PropTypes from "prop-types";
 
-class SoundPlayer extends Component {
+class SoundPlayer extends PureComponent {
   render() {
     const {
       musicMute,
@@ -16,6 +16,7 @@ class SoundPlayer extends Component {
       musicVolumeSecond,
       musicNameSecond,
       musicStatusSecond,
+      stopNoise,
     } = this.props;
 
     return (
@@ -43,7 +44,7 @@ class SoundPlayer extends Component {
             url={`./noise/${noiseName}.mp3`}
             playStatus={noiseStatus}
             volume={noiseMute ? 0 : noiseVolume}
-            onFinishedPlaying={this.stopNoise}
+            onFinishedPlaying={stopNoise}
             autoLoad
           />
         )}
@@ -64,6 +65,7 @@ SoundPlayer.propTypes = {
   noiseName: PropTypes.string.isRequired,
   noiseStatus: PropTypes.string.isRequired,
   noiseVolume: PropTypes.number.isRequired,
+  stopNoise: PropTypes.func.isRequired,
 };
 
 export default SoundPlayer;
