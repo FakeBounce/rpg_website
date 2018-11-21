@@ -40,6 +40,7 @@ import {
   // hydrateMerchant,
 } from './Utils/MerchantsFunctions';
 import LoadSpreasheet from './Utils/LoadSpreasheet';
+import Draw from "./Draw";
 
 class App extends Component {
   constructor(props) {
@@ -702,6 +703,8 @@ class App extends Component {
           cursor: `url('/common/cursor.png'), auto`,
         }}
       >
+        <Draw isGameMaster={isGameMaster}/>
+        <Draw uid={uid} />
         {!isAuth && (
           <IsNotAuth
             doSetState={this.doSetState}
