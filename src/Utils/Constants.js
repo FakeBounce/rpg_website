@@ -604,10 +604,14 @@ export const bestiary = [
   {
     name: "Rhodogueux",
     image: "rhodogueux.jpg",
-    text1:"Le Rhodogueux est une créature eldrazi habitant sur des terres arides. il est plutôt agressif sur son territoire et attaque sans réfléchir. Il se repère au bruit, il possède une ouïe surdéveloppée, il pourrait entendre une mouche à des centaines de mètres. Il se nourrit principalement de créatures vivant dans la terre.",
-    text2:"Seul il n’est pas très dangereux, mais attention tout de même, il ne faut surtout pas baisser sa garde sinon ce serait prendre le risque de se faire planter par des griffes de dizaines de centimètres de long ou se faire croquer par une mâchoire de plus de 50 dents capable de broyer le métal.",
-    text3:"Il est agile, il peut faire des bonds d’une douzaine de mètres, tout en restant stable pour porter une attaque en plein vol. ",
-    text4:"Sa peau n’est pas très dure, il est assez facile de blesser cette créature et de la forcer à se replier. Mais attention, en bande ils auront plus confiance en eux et ne se contenteront pas de quelques blessures pour s’arrêter. ",
+    text1:
+      "Le Rhodogueux est une créature eldrazi habitant sur des terres arides. il est plutôt agressif sur son territoire et attaque sans réfléchir. Il se repère au bruit, il possède une ouïe surdéveloppée, il pourrait entendre une mouche à des centaines de mètres. Il se nourrit principalement de créatures vivant dans la terre.",
+    text2:
+      "Seul il n’est pas très dangereux, mais attention tout de même, il ne faut surtout pas baisser sa garde sinon ce serait prendre le risque de se faire planter par des griffes de dizaines de centimètres de long ou se faire croquer par une mâchoire de plus de 50 dents capable de broyer le métal.",
+    text3:
+      "Il est agile, il peut faire des bonds d’une douzaine de mètres, tout en restant stable pour porter une attaque en plein vol. ",
+    text4:
+      "Sa peau n’est pas très dure, il est assez facile de blesser cette créature et de la forcer à se replier. Mais attention, en bande ils auront plus confiance en eux et ne se contenteront pas de quelques blessures pour s’arrêter. ",
     dangerosity: "6/10",
     taille: "350/700",
     poids: "1300",
@@ -618,10 +622,13 @@ export const bestiary = [
   {
     name: "Zorgul",
     image: "zorgul.jpg",
-    text1:"Un Zorgul est une entité spectrale extrêmement puissante qui vient hanter les cimetières. Il apparaît généralement entre 02h et 04h du matin pour se nourrir de la haine des morts. Les esprits ainsi consommés peuvent être invoqués par le Zorgul à son bon vouloir. Son apparition marque l’esprit des vivants pendant leur sommeil, en leur insinuant des cauchemars de mort violente ou de torture atroce. ",
-    text2:"Il est sensible à la lumière et au feu, mais toute la difficulté est de s’approcher de cet être. Distorsion de réalité, sommeil profond, il possède de nombreuses compétences magiques permettant de tenir tout agresseur à distance. Si toutefois on réussit à l’approcher, son aura de gel limite toute action, et sa magie du chaos pénètre facilement les armures.",
-    text3:"",
-    text4:"Intangible, manipulation mentale, attaques psychiques, insinuation de peur/douleur, sommeil instantané, invocation d’esprits, aura de gel, souffle glacial, lances téléguidées de chaos, griffe de chaos, évasion interdimensionnelle",
+    text1:
+      "Un Zorgul est une entité spectrale extrêmement puissante qui vient hanter les cimetières. Il apparaît généralement entre 02h et 04h du matin pour se nourrir de la haine des morts. Les esprits ainsi consommés peuvent être invoqués par le Zorgul à son bon vouloir. Son apparition marque l’esprit des vivants pendant leur sommeil, en leur insinuant des cauchemars de mort violente ou de torture atroce. ",
+    text2:
+      "Il est sensible à la lumière et au feu, mais toute la difficulté est de s’approcher de cet être. Distorsion de réalité, sommeil profond, il possède de nombreuses compétences magiques permettant de tenir tout agresseur à distance. Si toutefois on réussit à l’approcher, son aura de gel limite toute action, et sa magie du chaos pénètre facilement les armures.",
+    text3: "",
+    text4:
+      "Intangible, manipulation mentale, attaques psychiques, insinuation de peur/douleur, sommeil instantané, invocation d’esprits, aura de gel, souffle glacial, lances téléguidées de chaos, griffe de chaos, évasion interdimensionnelle",
     dangerosity: "8/10",
     taille: "280~350",
     poids: "0",
@@ -632,11 +639,15 @@ export const bestiary = [
   {
     name: "Tribus autochtones",
     image: "tribal.jpg",
-    text1:"Peuple natif de Dravos qui s’est fait écraser par les Humains lors de leur arrivée sur le continent." +
+    text1:
+      "Peuple natif de Dravos qui s’est fait écraser par les Humains lors de leur arrivée sur le continent." +
       "Comme les autres autochtones, ils ont une haine noire envers les Humains. Ils organisent souvent des attaques sur les convois ou pillent des villages à l’écart des grandes villes.",
-    text2:"Il y a assez peu de survivants chez les autochtones, malgré tout ils continuent de mener la vie dure aux paysans Humains, quitte à être exterminés. Ne tenant plus à la vie, ils essayent de déstabiliser l’économie avec leur maigre moyens.",
-    text3:"Nous n’avons pas encore remarqués de regroupement des différentes tribus.",
-    text4:"En fonction de la tribu : (Bouyaka) Manipulation de réalité, (Titata) contrôle des bêtes de faible rang, (Kotalu) régénération, magie mineure",
+    text2:
+      "Il y a assez peu de survivants chez les autochtones, malgré tout ils continuent de mener la vie dure aux paysans Humains, quitte à être exterminés. Ne tenant plus à la vie, ils essayent de déstabiliser l’économie avec leur maigre moyens.",
+    text3:
+      "Nous n’avons pas encore remarqués de regroupement des différentes tribus.",
+    text4:
+      "En fonction de la tribu : (Bouyaka) Manipulation de réalité, (Titata) contrôle des bêtes de faible rang, (Kotalu) régénération, magie mineure",
     dangerosity: "2~3/10",
     taille: "140~180",
     poids: "50~90",
@@ -647,10 +658,13 @@ export const bestiary = [
   {
     name: "Tot",
     image: "tot.jpg",
-    text1:"Tot le voleur de son surnom, il adore les objets brillants, un peu comme un corbeau. Tout ce qui brille finit sur lui puis dans une de ses cachettes. Il est très habile et à appris des sorts de dissimulation exclusivement pour voler. ",
-    text2:"Quand il arrive dans une ville, il mémorise les rondes des gardes, teste la portée des sorts de détection de magie, trouve et crée des passages secrets, et une fois toutes les bases préparées, il pille tout ce qu’il peut avant de passer à une autre ville. Si la ville est trop grande il pille quartier après quartier. Ses victimes ne se rendent compte du vol qu’une fois Tot à une centaine de mètres, ce qui rend la chasse impossible.",
-    text3:"On a déjà réussi à l’attraper plusieurs fois mais impossible de lui faire avouer l’emplacement des cachettes, et surtout il réussit à s’évader à chaque fois.",
-    text4:"Il faut le reconnaître, il a un vrai talent.",
+    text1:
+      "Tot le voleur de son surnom, il adore les objets brillants, un peu comme un corbeau. Tout ce qui brille finit sur lui puis dans une de ses cachettes. Il est très habile et à appris des sorts de dissimulation exclusivement pour voler. ",
+    text2:
+      "Quand il arrive dans une ville, il mémorise les rondes des gardes, teste la portée des sorts de détection de magie, trouve et crée des passages secrets, et une fois toutes les bases préparées, il pille tout ce qu’il peut avant de passer à une autre ville. Si la ville est trop grande il pille quartier après quartier. Ses victimes ne se rendent compte du vol qu’une fois Tot à une centaine de mètres, ce qui rend la chasse impossible.",
+    text3:
+      "On a déjà réussi à l’attraper plusieurs fois mais impossible de lui faire avouer l’emplacement des cachettes, et surtout il réussit à s’évader à chaque fois.",
+    text4: "Il faut le reconnaître, il a un vrai talent.",
     age: "23",
     taille: "99",
     poids: "19",
@@ -660,10 +674,10 @@ export const bestiary = [
   {
     name: "Jenko",
     image: "jenko.jpg",
-    text1:"",
-    text2:"",
-    text3:"",
-    text4:"",
+    text1: "",
+    text2: "",
+    text3: "",
+    text4: "",
     age: "46",
     taille: "172",
     poids: "63",
@@ -673,10 +687,13 @@ export const bestiary = [
   {
     name: "Banshee",
     image: "banshee.jpg",
-    text1:"Esprit errant sur les terres. La banshee peut être seule ou en groupe. Elle n’est généralement pas agressive à moins de trop l’approcher ou de l’attaquer. Dans de rares cas des aventuriers furent attaqués par une Banshee, donc il ne faut pas hésiter à prendre ses précautions. Le cri de la Banshee est ravageur et peut tourmenter un être pendant des mois. Les victimes étant constamment sous état de choc finissent par se suicider.",
-    text2:"La Banshee est un esprit donc intangible mais facilement contrable si l’on utilise la magie Psychique ou la magie Esprit. Prévoir des objets ou enchantement anti-bruits sous peine de subir le cri de la Banshee, pouvant affecter une cible à une centaine de mètres.",
-    text3:"Elle peut apparaître tel un mirage dans les désert, son apparence humaine crée une parfaite illusion si on l’observe de loin, mais on peut distinguer la légère traînée bleutée que laisse la Banshee qui la fait se distinguer de tout être vivant.",
-    text4:"",
+    text1:
+      "Esprit errant sur les terres. La banshee peut être seule ou en groupe. Elle n’est généralement pas agressive à moins de trop l’approcher ou de l’attaquer. Dans de rares cas des aventuriers furent attaqués par une Banshee, donc il ne faut pas hésiter à prendre ses précautions. Le cri de la Banshee est ravageur et peut tourmenter un être pendant des mois. Les victimes étant constamment sous état de choc finissent par se suicider.",
+    text2:
+      "La Banshee est un esprit donc intangible mais facilement contrable si l’on utilise la magie Psychique ou la magie Esprit. Prévoir des objets ou enchantement anti-bruits sous peine de subir le cri de la Banshee, pouvant affecter une cible à une centaine de mètres.",
+    text3:
+      "Elle peut apparaître tel un mirage dans les désert, son apparence humaine crée une parfaite illusion si on l’observe de loin, mais on peut distinguer la légère traînée bleutée que laisse la Banshee qui la fait se distinguer de tout être vivant.",
+    text4: "",
     dangerosity: "4/10",
     taille: "???",
     poids: "0",
@@ -687,10 +704,13 @@ export const bestiary = [
   {
     name: "Cultiste Eldrazi",
     image: "cultist.jpg",
-    text1:"Les cultistes Eldrazi ont choisis de vénérer comme dieux les Eldrazi. Le culte est apparu quelques décennies après l’arrivée sur Dravos, lors d’une attaque dévastatrice par une créature Eldrazi gigantesque. La découverte de ces derniers et de leur puissance a rassemblé un petit groupe de personne qui s’est agrandit d’années en années. Ils voient les Eldrazi comme des descendants direct des dieux. Chacune de leur engeances est sacré pour eux. C’est pourquoi ils mènent des manifestations et ils sabotent les opérations lorsqu’elles sont liées à l’avancée du front au nord. On parle même d’assassinats de leur part mais aucune preuve n’as été avancée. Ils convertissent de plus en plus de monde, surtout dans les petits villages. ",
-    text2:"De temps en temps le culte fait des pèlerinages dans les forêts Eldrazis, en sacrifice pour ces derniers. Parfois les soldats s’en servent pour exterminer des groupes d’Eldrazis regroupés pour manger les sacrifiés, ce qui rend la relation entre le culte et l’armée très difficile. ",
-    text3:"Pour l’instant le culte ne prospèrent que dans les petites villes et villages, mais apparemment ils auraient établit une base à Hystrou. En tout cas, l’apparition du culte présage toujours de mauvaises nouvelles.",
-    text4:"",
+    text1:
+      "Les cultistes Eldrazi ont choisis de vénérer comme dieux les Eldrazi. Le culte est apparu quelques décennies après l’arrivée sur Dravos, lors d’une attaque dévastatrice par une créature Eldrazi gigantesque. La découverte de ces derniers et de leur puissance a rassemblé un petit groupe de personne qui s’est agrandit d’années en années. Ils voient les Eldrazi comme des descendants direct des dieux. Chacune de leur engeances est sacré pour eux. C’est pourquoi ils mènent des manifestations et ils sabotent les opérations lorsqu’elles sont liées à l’avancée du front au nord. On parle même d’assassinats de leur part mais aucune preuve n’as été avancée. Ils convertissent de plus en plus de monde, surtout dans les petits villages. ",
+    text2:
+      "De temps en temps le culte fait des pèlerinages dans les forêts Eldrazis, en sacrifice pour ces derniers. Parfois les soldats s’en servent pour exterminer des groupes d’Eldrazis regroupés pour manger les sacrifiés, ce qui rend la relation entre le culte et l’armée très difficile. ",
+    text3:
+      "Pour l’instant le culte ne prospèrent que dans les petites villes et villages, mais apparemment ils auraient établit une base à Hystrou. En tout cas, l’apparition du culte présage toujours de mauvaises nouvelles.",
+    text4: "",
     age: "???",
     taille: "???",
     poids: "???",
@@ -700,10 +720,10 @@ export const bestiary = [
   {
     name: "Assassin",
     image: "assassin.jpg",
-    text1:"Un assassin déguisé sous l’emblème des Plague Doctors.",
-    text2:"",
-    text3:"",
-    text4:"",
+    text1: "Un assassin déguisé sous l’emblème des Plague Doctors.",
+    text2: "",
+    text3: "",
+    text4: "",
     age: "???",
     taille: "173",
     poids: "64",
@@ -713,10 +733,13 @@ export const bestiary = [
   {
     name: "Taton & Sacahe",
     image: "taton_sacahe.png",
-    text1:"Les Tatons et les Sacahes sont deux espèces très proches. Elles forment des duos de chasse jusqu’à des dizaines de kilomètres de leur foyer. Chaque duo est composé d’un Taton et d’un Sacahe, le Taton faisant l’appât tandis que le Sacahe se met en position, prêt à sauter sur leur proie.",
-    text2:"Ils ont tous les deux une capacité régénératrice puissante, qui leur permet de décupler leur puissance jusqu’à une certaine limite. Elle ne s’enclenche qu’après avoir subis des blessures. Le Taton gagne en force et en résistance tandis que le Sacahe gagne en force, agilité et rapidité. C’est pourquoi le Taton fait l’appât; dans tous les cas, ils ne subiront que très peu de dommage avec leur capacité. ",
-    text3:"Ils chassent assez pour nourrir leur famille pendant plusieurs semaine avant de retrouver leur foyer. Les Tatons fabriquent de grande toiles pour embarquer la viande pendant que les Sacahe coupent et préparent la viande.",
-    text4:"",
+    text1:
+      "Les Tatons et les Sacahes sont deux espèces très proches. Elles forment des duos de chasse jusqu’à des dizaines de kilomètres de leur foyer. Chaque duo est composé d’un Taton et d’un Sacahe, le Taton faisant l’appât tandis que le Sacahe se met en position, prêt à sauter sur leur proie.",
+    text2:
+      "Ils ont tous les deux une capacité régénératrice puissante, qui leur permet de décupler leur puissance jusqu’à une certaine limite. Elle ne s’enclenche qu’après avoir subis des blessures. Le Taton gagne en force et en résistance tandis que le Sacahe gagne en force, agilité et rapidité. C’est pourquoi le Taton fait l’appât; dans tous les cas, ils ne subiront que très peu de dommage avec leur capacité. ",
+    text3:
+      "Ils chassent assez pour nourrir leur famille pendant plusieurs semaine avant de retrouver leur foyer. Les Tatons fabriquent de grande toiles pour embarquer la viande pendant que les Sacahe coupent et préparent la viande.",
+    text4: "",
     dangerosity: "6~7/10, 7~8/10",
     taille: "180~360, 160~250",
     poids: "250~500, 80~110",
@@ -726,10 +749,13 @@ export const bestiary = [
   {
     name: "Serf",
     image: "serf.jpg",
-    text1:"Combattante cornu faisant partie des rebelles, Sert est venu au tournoi pour essayer de remporter la première place au prix de sa vie. L’argent promis au gagnant permettront à sa cause de grandir et d’avoir plus d’influence. Ils pourront sûrement porter atteinte à la communauté peu après sa victoire, grâce au sort d'Apothéose, c’est pourquoi il est très important pour eux qu’elle gagne.",
-    text2:"Evidemment, les autorités pensent qu’elle est une cornue normale et chercher juste à gagner de l’argent, comme les autres participants…",
-    text3:"Elle fait partie des meilleurs combattants cornus rebelles parmi les nouvelles recrues, elle a suffisamment fait ses preuves pour qu’ils laissent une recrue participer à ce tournoi.",
-    text4:"",
+    text1:
+      "Combattante cornu faisant partie des rebelles, Sert est venu au tournoi pour essayer de remporter la première place au prix de sa vie. L’argent promis au gagnant permettront à sa cause de grandir et d’avoir plus d’influence. Ils pourront sûrement porter atteinte à la communauté peu après sa victoire, grâce au sort d'Apothéose, c’est pourquoi il est très important pour eux qu’elle gagne.",
+    text2:
+      "Evidemment, les autorités pensent qu’elle est une cornue normale et chercher juste à gagner de l’argent, comme les autres participants…",
+    text3:
+      "Elle fait partie des meilleurs combattants cornus rebelles parmi les nouvelles recrues, elle a suffisamment fait ses preuves pour qu’ils laissent une recrue participer à ce tournoi.",
+    text4: "",
     age: "75",
     taille: "182",
     poids: "67",
@@ -739,10 +765,13 @@ export const bestiary = [
   {
     name: "Gnolls",
     image: "gnoll.jpg",
-    text1:"Les Gnolls sont des créatures féroces de l’Est. Elles sont agressives et vicieuses; elles n'attaquent pas à moins d’être sûr de gagner. Elles vivent sur des Terres arides, en meute. Les meutes peuvent se rassembler pour créer une Waaaagh, lorsque plusieurs chef des meutes s’allient. Pour cela, il faut qu’un chef de meute montre sa puissance en combat. Les meutes se rallient si un des chefs combattant se démarque beaucoup des autres, attirant l’admiration et le respect de la foule.",
-    text2:"Pièges, attaque sournoise, embuscade, ces créatures sont intelligentes. S’aventurer sur leur territoire n’est pas chose aisé. Elle attaquent le plus souvent quand leurs proies dorment tranquillement.  Elles sont équipées d’armures et de lames usées, récupérées sur les champs de bataille. Généralement, ils portent des armes de combat rapproché.",
-    text3:"",
-    text4:"Force accrue, dextérité accrue, perception accrue, sens du respect, magies mineures",
+    text1:
+      "Les Gnolls sont des créatures féroces de l’Est. Elles sont agressives et vicieuses; elles n'attaquent pas à moins d’être sûr de gagner. Elles vivent sur des Terres arides, en meute. Les meutes peuvent se rassembler pour créer une Waaaagh, lorsque plusieurs chef des meutes s’allient. Pour cela, il faut qu’un chef de meute montre sa puissance en combat. Les meutes se rallient si un des chefs combattant se démarque beaucoup des autres, attirant l’admiration et le respect de la foule.",
+    text2:
+      "Pièges, attaque sournoise, embuscade, ces créatures sont intelligentes. S’aventurer sur leur territoire n’est pas chose aisé. Elle attaquent le plus souvent quand leurs proies dorment tranquillement.  Elles sont équipées d’armures et de lames usées, récupérées sur les champs de bataille. Généralement, ils portent des armes de combat rapproché.",
+    text3: "",
+    text4:
+      "Force accrue, dextérité accrue, perception accrue, sens du respect, magies mineures",
     dangerosity: "3~4/10",
     taille: "130~180",
     poids: "50~70",
@@ -752,10 +781,12 @@ export const bestiary = [
   {
     name: "Chef Gnoll: Rwokrwoka",
     image: "gnoll_chief.jpg",
-    text1:"Puissant chef de meute, il a participé à plusieurs Waaaagh et à toujours su rallier ses troupes. Combattant vétéran, il utilise une masse d’arme capable de briser n’importe quelle armure.",
-    text2:"",
-    text3:"Il porte un anneau étrange sur sa annulaire gauche.",
-    text4:"Force accrue, dextérité accrue, perception accrue, aura de feu,  souffle de flammes, stabilité, peau de roche, résistance mentale accrue",
+    text1:
+      "Puissant chef de meute, il a participé à plusieurs Waaaagh et à toujours su rallier ses troupes. Combattant vétéran, il utilise une masse d’arme capable de briser n’importe quelle armure.",
+    text2: "",
+    text3: "Il porte un anneau étrange sur sa annulaire gauche.",
+    text4:
+      "Force accrue, dextérité accrue, perception accrue, aura de feu,  souffle de flammes, stabilité, peau de roche, résistance mentale accrue",
     dangerosity: "7/10",
     taille: "210",
     poids: "90",
@@ -764,4 +795,5 @@ export const bestiary = [
   },
 ];
 
-export const tempoImagesList = ['noTown.jpg', 'desert.jpg', 'cavern.jpg'];
+export const tempoImagesList = ["noTown.jpg", "desert.jpg", "cavern.jpg"];
+export const bonusList = [-30, -20, -10, 0, 10, 20, 30];

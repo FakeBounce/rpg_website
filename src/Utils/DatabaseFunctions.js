@@ -632,17 +632,52 @@ export const populateBestiary = (currentStory, doSetState) => {
             .set(tempBestiary)
             .catch(error => {
               // Handle Errors here.
-              this.triggerError(error);
+              triggerError(error);
             });
           doSetState({
             bestiary: tempBestiary,
           });
         })
         .catch(error => {
-          this.triggerError(error);
+          triggerError(error);
         });
     })
     .catch(error => {
-      this.triggerError(error);
+      triggerError(error);
     });
 };
+
+// firebase
+//   .database()
+//   .ref('stories/' + 0 + '/bestiary')
+//   .once('value').then(snapshot => {
+//   this.setState(state => ({
+//     ...state,
+//     bestiary: snapshot.val(),
+//   }), () => {
+//     const newMonster = {
+//       name: "Spavausa",
+//       image: "spavausa.jpg",
+//       text1:"Les Spavausa sont des Eldrazis carnivores qui parcourent les déserts en quête de viande. Ils chassent en meute allant de 3 à 30 Spavausa. Ils se déplacent et se cachent dans le sable en attendant leur proie, puis une fois leur position révélée, ils poursuivent cette dernière à l’aide de leur deux grandes pattes. Ils utilisent leur pouvoirs psychiques pour créer peur et confusion, voire pour certains créer des illusions de mur (pour empêcher la fuite) ou d’appât (pour la première phase d’attaque).",
+//       text2:"Leur carapace est relativement dure mais elle ne se trouve que sur le crâne de la bête. Leur peau est plutôt fragile, surtout au niveau de l’abdomen et du creu entre le crâne et la queue.",
+//       text3:"Ils aiment déchiqueter et jouer avec leurs proie, si vous vous croyez sorti d’affaire c’est qu’ils sont juste derrière vous, bouche grande ouverte.",
+//       text4:"Crocs et griffes aiguisées, insinuation de peur, confusion, création d’illusions mentales, attaque en meute, difficile à intimider",
+//       dangerosity: "4/10",
+//       taille: "300/500",
+//       poids: "150~200",
+//       known: false,
+//       monster: true,
+//     };
+//     const newBestiaryArray = [...snapshot.val()];
+//     newBestiaryArray.push(newMonster);
+//
+//     firebase
+//       .database()
+//       .ref("stories/" + 0 + "/bestiary")
+//       .set(newBestiaryArray)
+//       .catch(error => {
+//         // Handle Errors here.
+//         this.triggerError(error);
+//       });
+//   });
+// });

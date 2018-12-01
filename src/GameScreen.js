@@ -6,6 +6,7 @@ import ChatCommandsPanel from "./ChatCommandsPanel/ChatCommandsPanel";
 import Header from "./Utils/Header";
 import MiddlePanel from "./MiddlePanel";
 import EventModal from "./EventModal/EventModal";
+import { heightLeft } from "./Utils/StyleConstants";
 
 const styledImage = {
   position: "relative",
@@ -108,7 +109,9 @@ class GameScreen extends Component {
           accessChatHelp={accessChatHelp}
           chatHelpTitle={onChatHelp ? "Return to map" : "Access chat help"}
           bestiaryTitle={isOnBestiary ? "Return to map" : "Bestiary"}
-          eventTitle={isEventHidden ? "Toggle event (Is hidden)" : "Toggle event"}
+          eventTitle={
+            isEventHidden ? "Toggle event (Is hidden)" : "Toggle event"
+          }
           isGameMaster={isGameMaster}
           musicMute={musicMute}
           selectAnotherCharacter={selectAnotherCharacter}
@@ -136,22 +139,31 @@ class GameScreen extends Component {
           />
         )}
         {isOnBestiary ? (
-          <div>
+          <div
+            style={{
+              overflowY: "auto",
+              height: heightLeft,
+              width: "102%",
+            }}
+          >
             {bestiary.map(b => {
-              if (b.seen) {
-                if (typeof b[uid] !== "undefined") {
+              if (b.seen || isGameMaster) {
+                if (typeof b[uid] !== "undefined" || isGameMaster) {
                   return (
                     <div style={styledContainer}>
                       <div style={styledTitle}> {b.name}</div>
                       <img src={"./bestiary/" + b.image} style={styledImage} />
                       <div style={styledText}>
-                        {b[uid].text1 && <div>{b.text1}</div>}
-                        {b[uid].text2 && <div>{b.text2}</div>}
-                        {b[uid].text3 && <div>{b.text3}</div>}
-                        {b[uid].text4 && <div>{b.text4}</div>}
+                        {(b[uid].text1 || isGameMaster) && <div>{b.text1}</div>}
+                        {(b[uid].text2 || isGameMaster) && <div>{b.text2}</div>}
+                        {(b[uid].text3 || isGameMaster) && <div>{b.text3}</div>}
+                        {(b[uid].text4 || isGameMaster) && <div>{b.text4}</div>}
                         {b.monster &&
-                          b[uid].dangerosity && <div>Dangerosité : {b.dangerosity}</div>}
-                        {!b.monster && b[uid].age && <div>Age : {b.age} ans</div>}
+                          b[uid].dangerosity && (
+                            <div>Dangerosité : {b.dangerosity}</div>
+                          )}
+                        {!b.monster &&
+                          b[uid].age && <div>Age : {b.age} ans</div>}
                         {b[uid].taille && (
                           <div>
                             Taille : {b.taille}

@@ -31,8 +31,8 @@ import {
   // populateTilesTypes,
   // resetEvents,
   // resetMap,
-  setQuests,
-} from './Utils/DatabaseFunctions';
+  setQuests, populateBestiary,
+} from "./Utils/DatabaseFunctions";
 import {
   hydrateStoryArtefacts,
   // resetStoryMerchants,
@@ -62,6 +62,7 @@ class App extends Component {
     // populateTilesTypes();
     // resetMap(0,40);
     // resetEvents(0);
+    // populateBestiary(0, this.doSetState);
 
     firebase
       .database()
