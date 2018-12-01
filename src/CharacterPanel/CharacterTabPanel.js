@@ -41,6 +41,8 @@ class CharacterTabPanel extends Component {
         {infoTab === 'Skills' && (
           <CharacterTabPanelContent
             tab={character.skills || []}
+            tabName={'Skills'}
+            character={character}
           />
         )}
         {infoTab === 'Items' && (

@@ -113,7 +113,18 @@ class IsNotAuth extends Component {
         />
         <ButtonLarge onClick={this.signIn}>Sign In</ButtonLarge>
         <ButtonLarge onClick={this.signUp}>Sign Up</ButtonLarge>
-<div><div className="commit"> fakebounce, le 2018-11-17 : Now gm can toggle seen creatures </div>
+<div><div className="commit"> fakebounce, le 2018-12-01 : Added button to load self drawing </div>
+  <div className="commit"> fakebounce, le 2018-12-01 : Added drawing event </div>
+  <div className="commit"> fakebounce, le 2018-12-01 : Added select for malus/bonus while doing a dice action </div>
+  <div className="commit"> fakebounce, le 2018-12-01 : Fixed some style and added png to cover Player panel when no town is accessible </div>
+  <div className="commit"> FakeBounce, le 2018-11-21 : Working on drawer; Added colors and saved drawer with user uid </div>
+  <div className="commit"> FakeBounce, le 2018-11-20 : Moved drawer, and reviewed bestiary functions. Did some GM css </div>
+  <div className="commit"> FakeBounce, le 2018-11-20 : Fixed noises issues, added a drawer and saved user in cache </div>
+  <div className="commit"> fakebounce, le 2018-11-17 : Added infomrations on bestiairy </div>
+  <div className="commit"> fakebounce, le 2018-11-17 : Fixed bestiary reset </div>
+  <div className="commit"> fakebounce, le 2018-11-17 : Fixed webcam styles </div>
+  <div className="commit"> fakebounce, le 2018-11-17 : Added some beast </div>
+  <div className="commit"> fakebounce, le 2018-11-17 : Now gm can toggle seen creatures </div>
   <div className="commit"> fakebounce, le 2018-11-17 : Added bestiary </div>
   <div className="commit"> fakebounce, le 2018-11-17 : Added spell generator in admin panel and fixed some css </div>
   <div className="commit"> fakebounce, le 2018-11-17 : Merge branch 'master' of https://github.com/FakeBounce/rpg_website </div>
