@@ -451,6 +451,7 @@ export const noises = [
   "Pluie",
   "Port",
   "Squelettes",
+  "Tempete",
   "Tonnerre",
 ];
 
@@ -762,3 +763,5 @@ export const bestiary = [
     monster: true,
   },
 ];
+
+export const tempoImagesList = ['noTown.jpg', 'desert.jpg', 'cavern.jpg'];

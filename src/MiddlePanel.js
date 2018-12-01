@@ -140,6 +140,7 @@ class MiddlePanel extends Component {
             isTownShowed={isTownShowed}
             itemsList={itemsList}
             itemToDescribe={itemToDescribe}
+            isGameMaster={isGameMaster}
             merchants={merchants}
             merchantsList={merchantsList}
             quests={quests}

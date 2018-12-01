@@ -23,8 +23,8 @@ const styledToggleEvent = {
 
 const styledTogglingAbsolute = {
   position: 'absolute',
-  top: 0,
-  right: 167,
+  top: 100,
+  right: 0,
 };
 
 const styledBoxHeader = {

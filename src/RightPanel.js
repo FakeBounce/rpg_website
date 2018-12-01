@@ -14,6 +14,7 @@ const styles = {
     borderLeft: '1px solid black',
     width: `${widthRightPanel}px`,
     height: `${window.innerHeight - heightHeader}px`,
+    overflow: 'hidden',
   },
 };
 

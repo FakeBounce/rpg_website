@@ -13,7 +13,7 @@ import {
 const styles = {
   characterTeamHeader: {
     width: `${widthRightPanel - 20}px`,
-    height: `${heightHeader / 2}px`,
+    height: `${imageSize / 2}px`,
     position: 'relative',
     float: 'left',
     display: 'inline-block',

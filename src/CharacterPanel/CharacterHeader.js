@@ -12,7 +12,7 @@ import {
 const styles = {
   characterHeader: {
     width: `${widthRightPanel}px`,
-    height: `${heightHeader}px`,
+    height: `${imageSize}px`,
     position: "relative",
     float: "left",
     display: "inline-block",

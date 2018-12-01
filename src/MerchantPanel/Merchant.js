@@ -10,6 +10,7 @@ class Merchant extends Component {
       isDiscovered,
       items,
       icon,
+      job,
       description,
       showItems,
       currentMerchant,
@@ -28,7 +29,7 @@ class Merchant extends Component {
           alt={description}
           className="merchant-icon"
         />
-        <div className="merchant-text">{isDiscovered ? name : "???"}</div>
+        <div className="merchant-text">{isDiscovered ? name + ' ('+job+')' : "???"}</div>
         <div className="merchant-text">{description}</div>
       </div>
     );
@@ -45,6 +46,7 @@ Merchant.propTypes = {
   isDiscovered: PropTypes.bool,
   name: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
+  job: PropTypes.string.isRequired,
   description: PropTypes.string,
   showItems: PropTypes.func.isRequired,
   currentMerchant: PropTypes.number.isRequired,

@@ -81,7 +81,6 @@ class QuestPanel extends Component {
           backgroundSize: "cover",
         }}
       >
-        <div style={styledBoxHeader}>Liste des quêtes</div>
         {questsList.map(q => {
           if (!quests[q].validated) {
             return (

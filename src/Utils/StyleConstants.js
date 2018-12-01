@@ -1,5 +1,5 @@
 export const widthRightPanel = 400;
-export const heightHeader = 100;
+export const heightHeader = 133;
 export const heightCameras = 0;
 export const imageSize = 100;
 export const widthRightPanelLeft = widthRightPanel - imageSize;
@@ -24,35 +24,35 @@ export const cursorPointer = `url('/common/cursor_pointer.png'), pointer`;
 export const questsPosition = [
   {
     left: '5%',
-    top: '10%',
+    top: '5%',
   },
   {
     left: '25%',
-    top: '10%',
+    top: '5%',
   },
   {
     left: '45%',
-    top: '10%',
+    top: '5%',
   },
   {
     left: '65%',
-    top: '10%',
+    top: '5%',
   },
   {
     left: '5%',
-    top: '55%',
+    top: '45%',
   },
   {
     left: '25%',
-    top: '55%',
+    top: '45%',
   },
   {
     left: '45%',
-    top: '55%',
+    top: '45%',
   },
   {
     left: '65%',
-    top: '55%',
+    top: '45%',
   },
 ];
 
