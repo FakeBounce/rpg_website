@@ -5,7 +5,7 @@ import ButtonLarge from "./Utils/ButtonLarge";
 import { cursorPointer, heightHeader } from "./Utils/StyleConstants";
 
 const styledVideo = {
-  width: 133,
+  width: 175,
   height: heightHeader,
   float: "left",
   position: "relative",
