@@ -57,7 +57,7 @@ class Draw extends Component {
         <CanvasDraw
           ref={c => (this.canvas = c)}
           loadTimeOffset={10}
-          brushRadius={2}
+          brushRadius={1}
           lazyRadius={0}
           canvasWidth={uid === "default" ? defaultWidth : otherWidth}
           canvasHeight={uid === "default" ? defaultWidth / 2 : otherWidth / 2}
@@ -132,7 +132,25 @@ class Draw extends Component {
               }
             }}
           >
-            Load
+            Load GM
+          </button>
+        )}
+        {!disabled && (
+          <button
+            onClick={() => {
+              if (this.canvas) {
+                firebase
+                  .database()
+                  .ref("stories/" + 0 + "/draw/" + uid)
+                  .once("value")
+                  .then(sn => {
+                    this.canvas.loadSaveData(sn.val(), false);
+                  })
+                  .catch(e => this.triggerError(e));
+              }
+            }}
+          >
+            Load self
           </button>
         )}
       </div>
