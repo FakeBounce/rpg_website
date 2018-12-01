@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment, PureComponent } from "react";
+import PropTypes from "prop-types";
 
 import {
   heightCameras,
@@ -8,35 +8,44 @@ import {
   widthRightPanel,
   mapWidth,
   widthLeft,
-} from '../Utils/StyleConstants';
-import firebase from 'firebase';
-import EventModalActionHistory from './EventModalActionHistory';
-import EventModalItem from './EventModalItem';
-import EventModalGold from './EventModalGold';
-import EventModalDescription from './EventModalDescription';
-import EventModalViewers from './EventModalViewers';
+} from "../Utils/StyleConstants";
+import firebase from "firebase";
+import EventModalActionHistory from "./EventModalActionHistory";
+import EventModalItem from "./EventModalItem";
+import EventModalGold from "./EventModalGold";
+import EventModalDescription from "./EventModalDescription";
+import EventModalViewers from "./EventModalViewers";
 import EventModalDebt from "./EventModalDebt";
+import Draw from "../Draw";
 
 const styledEventModal = {
-  position: 'absolute',
+  position: "absolute",
   zIndex: 99,
   top: `${heightHeader / 2}px`,
   left: `${widthRightPanel / 2}px`,
   width: `${widthLeft + mapWidth}px`,
   height: `${heightHeader / 2 + heightCameras / 2 + heightLeft - 50}px`,
-  backgroundColor: 'white',
-  border: '2px solid brown',
+  backgroundColor: "white",
+  border: "2px solid brown",
   borderRadius: 40,
 };
 
 const styledEventTitle = {
-  width: '100%',
-  height: '40px',
+  width: "100%",
+  height: "40px",
   marginTop: 15,
   marginBottom: 15,
-  textAlign: 'center',
+  textAlign: "center",
   fontSize: 25,
-  float: 'left',
+  float: "left",
+  position: "relative",
+  display: "inline-block",
+};
+
+const styledEventAction = {
+  margin: '0px 15px',
+  padding: 5,
+  textAlign: 'center',
   position: 'relative',
   display: 'inline-block',
 };
@@ -50,7 +59,7 @@ class EventModal extends PureComponent {
     const { currentStory, triggerError } = this.props;
     firebase
       .database()
-      .ref('stories/' + currentStory + '/currentEvent')
+      .ref("stories/" + currentStory + "/currentEvent")
       .set(-1)
       .catch(error => {
         // Handle Errors here.
@@ -62,7 +71,7 @@ class EventModal extends PureComponent {
     const { currentStory, triggerError } = this.props;
     firebase
       .database()
-      .ref('stories/' + currentStory + '/events')
+      .ref("stories/" + currentStory + "/events")
       .set(newEventHistory)
       .catch(error => {
         // Handle Errors here.
@@ -74,7 +83,7 @@ class EventModal extends PureComponent {
     const { currentStory, uid, triggerError } = this.props;
     firebase
       .database()
-      .ref('stories/' + currentStory + '/characters/' + uid + '/character/gold')
+      .ref("stories/" + currentStory + "/characters/" + uid + "/character/gold")
       .set(goldWanted)
       .catch(error => {
         // Handle Errors here.
@@ -101,7 +110,7 @@ class EventModal extends PureComponent {
     }
     firebase
       .database()
-      .ref('stories/' + currentStory + '/characters/' + uid + '/character')
+      .ref("stories/" + currentStory + "/characters/" + uid + "/character")
       .set({
         ...character,
         items: newItemsTab,
@@ -120,7 +129,7 @@ class EventModal extends PureComponent {
       newEvent.quantityLeft = 0;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has taken all the items left (${quantityLeft}).`
+          `@${pseudo} has taken all the items left (${quantityLeft}).`,
         );
       } else {
         newEvent.actionHistory = [
@@ -147,7 +156,7 @@ class EventModal extends PureComponent {
           newEvent.actionHistory.push(
             `@${pseudo} has taken ${numberWanted} items. ${
               newEvent.quantityLeft
-            } left)`
+            } left)`,
           );
         } else {
           newEvent.actionHistory = [
@@ -159,7 +168,7 @@ class EventModal extends PureComponent {
       } else {
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has taken the last items (${numberWanted}).`
+            `@${pseudo} has taken the last items (${numberWanted}).`,
           );
         } else {
           newEvent.actionHistory = [
@@ -185,7 +194,9 @@ class EventModal extends PureComponent {
       if (newEvent.quantityLeft > 0) {
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has taken only one item.(${newEvent.quantityLeft} left)`
+            `@${pseudo} has taken only one item.(${
+              newEvent.quantityLeft
+            } left)`,
           );
         } else {
           newEvent.actionHistory = [
@@ -238,7 +249,7 @@ class EventModal extends PureComponent {
         newEvent.goldLeft = newEvent.gold;
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has given all the gold (${goldGiven}). How generous !`
+            `@${pseudo} has given all the gold (${goldGiven}). How generous !`,
           );
         } else {
           newEvent.actionHistory = [
@@ -249,7 +260,7 @@ class EventModal extends PureComponent {
         newEventHistory[currentEvent] = { ...newEvent };
 
         this.updateCharacterGold(
-          parseInt(character.gold, 10) - parseInt(goldGiven, 10)
+          parseInt(character.gold, 10) - parseInt(goldGiven, 10),
         );
         this.updateCurrentEvent(newEventHistory);
       } else {
@@ -258,14 +269,14 @@ class EventModal extends PureComponent {
           newEvent.actionHistory.push(
             `@${pseudo} has given all his money (${parseInt(
               character.gold,
-              10
-            )}). How generous !`
+              10,
+            )}). How generous !`,
           );
         } else {
           newEvent.actionHistory = [
             `@${pseudo} has given all his money (${parseInt(
               character.gold,
-              10
+              10,
             )}). How generous !`,
           ];
         }
@@ -290,7 +301,7 @@ class EventModal extends PureComponent {
         newEvent.goldLeft = newEvent.goldLeft + numberWanted;
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has given ${numberWanted} gold.`
+            `@${pseudo} has given ${numberWanted} gold.`,
           );
         } else {
           newEvent.actionHistory = [
@@ -302,7 +313,7 @@ class EventModal extends PureComponent {
 
         this.updateCurrentEvent(newEventHistory);
         this.updateCharacterGold(
-          parseInt(character.gold, 10) - parseInt(numberWanted, 10)
+          parseInt(character.gold, 10) - parseInt(numberWanted, 10),
         );
       } else {
         this.giveAllGold();
@@ -327,7 +338,7 @@ class EventModal extends PureComponent {
       newEvent.goldLeft = newEvent.goldLeft + goldGiven;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has given his part (${goldGiven}) of gold.`
+          `@${pseudo} has given his part (${goldGiven}) of gold.`,
         );
       } else {
         newEvent.actionHistory = [
@@ -350,7 +361,7 @@ class EventModal extends PureComponent {
       newEvent.goldLeft = 0;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has taken all the gold left (${goldTaken}).`
+          `@${pseudo} has taken all the gold left (${goldTaken}).`,
         );
       } else {
         newEvent.actionHistory = [
@@ -361,7 +372,7 @@ class EventModal extends PureComponent {
       newEventHistory[currentEvent] = { ...newEvent };
 
       this.updateCharacterGold(
-        parseInt(character.gold, 10) + parseInt(goldTaken, 10)
+        parseInt(character.gold, 10) + parseInt(goldTaken, 10),
       );
       this.updateCurrentEvent(newEventHistory);
     }
@@ -376,7 +387,7 @@ class EventModal extends PureComponent {
         newEvent.goldLeft = newEvent.goldLeft - numberWanted;
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has taken ${numberWanted} gold.`
+            `@${pseudo} has taken ${numberWanted} gold.`,
           );
         } else {
           newEvent.actionHistory = [
@@ -388,7 +399,7 @@ class EventModal extends PureComponent {
 
         this.updateCurrentEvent(newEventHistory);
         this.updateCharacterGold(
-          parseInt(character.gold, 10) + parseInt(numberWanted, 10)
+          parseInt(character.gold, 10) + parseInt(numberWanted, 10),
         );
       }
     }
@@ -411,7 +422,7 @@ class EventModal extends PureComponent {
       newEvent.goldLeft = newEvent.goldLeft - goldTaken;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has taken his part (${goldTaken}) of gold.`
+          `@${pseudo} has taken his part (${goldTaken}) of gold.`,
         );
       } else {
         newEvent.actionHistory = [
@@ -550,6 +561,8 @@ class EventModal extends PureComponent {
       currentEvent,
       eventHistory,
       storyCharacters,
+      gameMaster,
+      uid,
     } = this.props;
 
     const { numberWanted } = this.state;
@@ -557,23 +570,29 @@ class EventModal extends PureComponent {
     return (
       <div style={styledEventModal}>
         <div style={styledEventTitle}>EVENEMENT !</div>
-        <EventModalViewers
-          isGameMaster={isGameMaster}
-          currentEvent={currentEvent}
-          eventHistory={eventHistory}
-          storyCharacters={storyCharacters}
-          removeViewerFromEvent={this.removeViewerFromEvent}
-          addViewerToEvent={this.addViewerToEvent}
-        />
-        <EventModalDescription
-          currentEvent={currentEvent}
-          eventHistory={eventHistory}
-        />
-        <EventModalActionHistory
-          currentEvent={currentEvent}
-          eventHistory={eventHistory}
-        />
-        {eventHistory[currentEvent].type === 'gold' && (
+        {eventHistory[currentEvent].type !== "draw" && (
+          <EventModalViewers
+            isGameMaster={isGameMaster}
+            currentEvent={currentEvent}
+            eventHistory={eventHistory}
+            storyCharacters={storyCharacters}
+            removeViewerFromEvent={this.removeViewerFromEvent}
+            addViewerToEvent={this.addViewerToEvent}
+          />
+        )}
+        {eventHistory[currentEvent].type !== "draw" && (
+          <EventModalDescription
+            currentEvent={currentEvent}
+            eventHistory={eventHistory}
+          />
+        )}
+        {eventHistory[currentEvent].type !== "draw" && (
+          <EventModalActionHistory
+            currentEvent={currentEvent}
+            eventHistory={eventHistory}
+          />
+        )}
+        {eventHistory[currentEvent].type === "gold" && (
           <EventModalGold
             isGameMaster={isGameMaster}
             event={eventHistory[currentEvent]}
@@ -586,7 +605,7 @@ class EventModal extends PureComponent {
             takeEquivalentGold={this.takeEquivalentGold}
           />
         )}
-        {eventHistory[currentEvent].type === 'debt' && (
+        {eventHistory[currentEvent].type === "debt" && (
           <EventModalDebt
             isGameMaster={isGameMaster}
             event={eventHistory[currentEvent]}
@@ -598,7 +617,7 @@ class EventModal extends PureComponent {
             giveEquivalentGold={this.giveEquivalentGold}
           />
         )}
-        {eventHistory[currentEvent].type === 'item' && (
+        {eventHistory[currentEvent].type === "item" && (
           <EventModalItem
             isGameMaster={isGameMaster}
             currentEvent={currentEvent}
@@ -612,6 +631,30 @@ class EventModal extends PureComponent {
             takeAllItems={this.takeAllItems}
             onChange={this.onChange}
           />
+        )}
+        {eventHistory[currentEvent].type === "draw" && (
+          <Fragment>
+            {storyCharacters.map(sc => {
+              return sc.userUid === gameMaster ? (
+                <Draw
+                  isGameMaster
+                  name={"GameMaster"}
+                  disabled={uid !== gameMaster}
+                />
+              ) : (
+                <Draw
+                  uid={sc.userUid}
+                  disabled={uid !== sc.userId}
+                  name={sc.name}
+                />
+              );
+            })}
+            {isGameMaster && (
+              <button style={styledEventAction} onClick={this.closeEvent}>
+                Delete Event
+              </button>
+            )}
+          </Fragment>
         )}
       </div>
     );

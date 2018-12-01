@@ -545,7 +545,7 @@ export const attributes = [
   "luck",
 ];
 
-export const eventList = ["nothing", "gold", "item", "debt"];
+export const eventList = ["nothing", "gold", "item", "debt", "draw"];
 export const spellTypeList = [
   "Chaos",
   "Eau",

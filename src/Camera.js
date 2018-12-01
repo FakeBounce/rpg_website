@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
 import ButtonLarge from "./Utils/ButtonLarge";
-import { cursorPointer } from "./Utils/StyleConstants";
+import { cursorPointer, heightHeader } from "./Utils/StyleConstants";
 
 const styledVideo = {
   width: 133,
-  height: 100,
+  height: heightHeader,
   float: "left",
   position: "relative",
 };
