@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import firebase from "firebase";
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker, { unregister } from "./registerServiceWorker";
 
 var config = {
     apiKey: "AIzaSyA7Uk2daoLGmxUlJp07uEvXu826Q3_uXdc",
@@ -13,4 +13,4 @@ var config = {
 firebase.initializeApp(config);
 
 ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+unregister();
