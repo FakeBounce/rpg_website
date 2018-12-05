@@ -5,13 +5,6 @@ import PropTypes from "prop-types";
 import { widthLeft, heightLeft } from "../Utils/StyleConstants";
 import QuestFullscreen from "./QuestFullscreen";
 
-const styledBoxHeader = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-};
-
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2 - 10}px`,

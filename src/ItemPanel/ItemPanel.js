@@ -1,24 +1,25 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { widthLeft, heightLeft } from "../Utils/StyleConstants";
-import ItemList from "./ItemList";
-
-const styledBoxHeader = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-};
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { widthLeft, heightLeft } from '../Utils/StyleConstants';
+import ItemList from './ItemList';
 
 const styledMapSide = {
   width: `${widthLeft / 2 - 20}px`,
   height: `${heightLeft / 2 - 10}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
-  position: "relative",
+  display: 'inline-block',
+  float: 'left',
+  textAlign: 'left',
+  position: 'relative',
   padding: 10,
   top: -20,
+};
+
+const styledCadre = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: `${widthLeft / 2 - 3}px`,
+  height: `${heightLeft / 2}px`,
 };
 
 class ItemPanel extends Component {
@@ -36,16 +37,7 @@ class ItemPanel extends Component {
 
     return (
       <div style={styledMapSide}>
-        <img
-          src={'./common/cadreall.png'}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: `${widthLeft / 2 - 3}px`,
-            height: `${heightLeft / 2}px`,
-          }}
-        />
+        <img src={'./common/cadreall.png'} style={styledCadre} alt="Cadre" />
         <ItemList
           character={character}
           itemsList={itemsList}

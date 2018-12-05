@@ -5,7 +5,6 @@ import TeamCharacterInfo from './TeamCharacterInfo';
 import {
   cursorPointer,
   widthRightPanel,
-  heightHeader,
   imageSize,
   widthRightPanelLeft,
 } from '../Utils/StyleConstants';

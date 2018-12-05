@@ -637,7 +637,6 @@ class EventModal extends PureComponent {
             {storyCharacters.map(sc => {
               return sc.userUid === gameMaster ? (
                 <Draw
-                  isGameMaster
                   name={"GameMaster"}
                   disabled={uid !== gameMaster}
                 />

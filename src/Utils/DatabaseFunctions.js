@@ -376,6 +376,7 @@ export const listenChat = doSetState => {
   firebase
     .database()
     .ref('/chat')
+    .limitToLast(50)
     .on('value', snapshot => {
       doSetState({
         chatHistory: snapshot.val(),
@@ -445,7 +446,7 @@ export const loadCurrentPosition = (currentStory, doSetState) => {
 //             const maxRoll =
 //               tempCharacters[key].character.userPseudo === "Danjors" &&
 //               b.monster
-//                 ? parseInt(tempCharacters[key].character.education) + 10
+//                 ? parseInt(tempCharacters[key].character.education) + 20
 //                 : b.monster || tempCharacters[key].character.userPseudo === "Danjors"
 //                   ? parseInt(tempCharacters[key].character.education) - 10
 //                 : parseInt(tempCharacters[key].character.education);
@@ -578,11 +579,12 @@ export const populateBestiary = (currentStory, doSetState) => {
                 const maxRoll =
                   tempCharacters[key].character.userPseudo === 'Danjors' &&
                   b.monster
-                    ? parseInt(tempCharacters[key].character.education) + 10
+                    ? parseInt(tempCharacters[key].character.education) + 20
                     : b.monster ||
                       tempCharacters[key].character.userPseudo === 'Danjors'
                       ? parseInt(tempCharacters[key].character.education) - 10
                       : parseInt(tempCharacters[key].character.education);
+                console.log("maxroll",maxRoll, tempCharacters[key].character.userPseudo);
                 while (
                   Math.floor(Math.random() * 100 + 1) <= maxRoll &&
                   cpt < 7

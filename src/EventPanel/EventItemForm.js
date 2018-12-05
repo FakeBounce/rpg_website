@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import EventItem from './EventItem';
+import { sortAlphabetical } from "../Utils/Functions";
 
 const styledItemList = {
   width: '100%',
@@ -11,7 +12,7 @@ const styledItemList = {
   overflowY: 'auto',
 };
 
-class EventItemForm extends Component {
+class EventItemForm extends PureComponent {
   render() {
     const {
       items,
@@ -31,15 +32,7 @@ class EventItemForm extends Component {
       return null;
     });
 
-    filteredItems.sort((a, b) => {
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
-    });
+    sortAlphabetical(filteredItems);
 
     return (
       <div>

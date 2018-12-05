@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { widthRightPanelLeft } from '../Utils/StyleConstants';
-import ButtonLarge from "../Utils/ButtonLarge";
+import ButtonLarge from '../Utils/ButtonLarge';
+import firebase from 'firebase';
 
 const styles = {
   tabPanelItem: {
@@ -45,6 +46,40 @@ const styles = {
 };
 
 class CharacterTabPanelItem extends Component {
+  state = {
+    itemValue: '',
+  };
+
+  onChangeItem = value => {
+    this.setState(state => ({
+      ...state,
+      itemValue: value,
+    }));
+  };
+
+  onValidateItem = () => {
+    const { itemValue } = this.state;
+    const { character } = this.props;
+    const obj = [...character.items];
+    const newObject = {
+      name: itemValue,
+      quantity: 1,
+      rarity: 1,
+    };
+    obj.push(newObject);
+
+    firebase
+      .database()
+      .ref(
+        'stories/' + 0 + '/characters/' + character.userUid + '/character/items'
+      )
+      .set(obj)
+      .catch(error => {
+        // Handle Errors here.
+        console.log('Error', error);
+      });
+  };
+
   render() {
     const { character, onItemUse, isGameMaster } = this.props;
 
@@ -67,7 +102,10 @@ class CharacterTabPanelItem extends Component {
                 <div style={styles.itemName}>
                   {character.education < item.rarity * 9 ? '???' : item.name}
                 </div>
-                <ButtonLarge style={styles.itemButton} onClick={() => onItemUse(index, item.quantity - 1)}>
+                <ButtonLarge
+                  style={styles.itemButton}
+                  onClick={() => onItemUse(index, item.quantity - 1)}
+                >
                   Use ({item.quantity} left)
                 </ButtonLarge>
               </div>

@@ -13,6 +13,14 @@ const styledMapSide = {
   padding: 10,
 };
 
+const styledCadre = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: `${widthLeft / 2 - 3}px`,
+  height: `${heightLeft / 2}px`,
+};
+
 class MerchantPanel extends Component {
   showItems = (list, index) => {
     this.props.doSetState({
@@ -27,16 +35,7 @@ class MerchantPanel extends Component {
 
     return (
       <div style={styledMapSide}>
-        <img
-          src={'./common/cadreall.png'}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: `${widthLeft / 2 - 3}px`,
-            height: `${heightLeft / 2}px`,
-          }}
-        />
+        <img src={'./common/cadreall.png'} style={styledCadre} alt="Cadre" />
         <MerchantList
           currentMerchant={currentMerchant}
           merchantsList={merchantsList}

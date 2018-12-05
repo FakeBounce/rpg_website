@@ -6,7 +6,6 @@ import {
   widthRightPanel,
   imageSize,
   widthRightPanelLeft,
-  heightHeader,
 } from "../Utils/StyleConstants";
 
 const styles = {

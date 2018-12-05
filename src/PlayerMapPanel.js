@@ -1,43 +1,22 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 
-import ItemDescriptionPanel from "./ItemDescriptionPanel/ItemDescriptionPanel";
-import MerchantPanel from "./MerchantPanel/MerchantPanel";
-import ItemPanel from "./ItemPanel/ItemPanel";
-import QuestPanel from "./QuestPanel/QuestPanel";
-import { heightHeader, widthLeft } from "./Utils/StyleConstants";
-import ButtonLarge from "./Utils/ButtonLarge";
-import { tempoImagesList } from "./Utils/Constants";
-import firebase from "firebase";
+import ItemDescriptionPanel from './ItemDescriptionPanel/ItemDescriptionPanel';
+import MerchantPanel from './MerchantPanel/MerchantPanel';
+import ItemPanel from './ItemPanel/ItemPanel';
+import QuestPanel from './QuestPanel/QuestPanel';
+import { heightHeader, widthLeft } from './Utils/StyleConstants';
+import TempImage from './TempImage';
+
+const styledPlayerMapContainer = {
+  float: 'left',
+  width: `${widthLeft}px`,
+  height: `${window.innerHeight - heightHeader}px`,
+  display: 'inline-block',
+  position: 'relative',
+};
 
 class PlayerMapPanel extends Component {
-  state = {
-    tempImage: "noTown.jpg",
-  };
-
-  componentDidMount() {
-    firebase
-      .database()
-      .ref("stories/" + 0 + "/tempoImage")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          tempImage: snapshot.val(),
-        }));
-      });
-  }
-
-  onChange = value => {
-    firebase
-      .database()
-      .ref("stories/" + 0 + "/tempoImage")
-      .set(value)
-      .catch(error => {
-        // Handle Errors here.
-        this.triggerError(error);
-      });
-  };
-
   render() {
     const {
       character,
@@ -58,18 +37,8 @@ class PlayerMapPanel extends Component {
       currentMerchant,
     } = this.props;
 
-    const { tempImage } = this.state;
-
     return (
-      <div
-        style={{
-          float: "left",
-          width: `${widthLeft}px`,
-          height: `${window.innerHeight - heightHeader}px`,
-          display: "inline-block",
-          position: "relative",
-        }}
-      >
+      <div style={styledPlayerMapContainer}>
         {isTownShowed ? (
           <Fragment>
             <QuestPanel
@@ -104,38 +73,7 @@ class PlayerMapPanel extends Component {
             )}
           </Fragment>
         ) : (
-          <Fragment>
-            {isGameMaster && (
-              <select
-                value={tempImage}
-                onChange={e => {
-                  this.onChange(e.target.value);
-                }}
-                style={{
-                  position: "absolute",
-                  zIndex: 1,
-                }}
-              >
-                {tempoImagesList.map(sts => {
-                  return (
-                    <option key={sts} value={sts}>
-                      {sts}
-                    </option>
-                  );
-                })}
-              </select>
-            )}
-            <img
-              src={"./common/"+tempImage}
-              style={{
-                float: "left",
-                width: `${widthLeft}px`,
-                height: `${window.innerHeight - heightHeader}px`,
-                display: "inline-block",
-                position: "relative",
-              }}
-            />
-          </Fragment>
+          <TempImage isGameMaster={isGameMaster} />
         )}
       </div>
     );
