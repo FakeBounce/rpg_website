@@ -29,7 +29,7 @@ class BestiaryPanel extends Component {
     selectedOrderBy: 'Default',
     selectedOrderByType: 'None',
     filteredBestiary: [...this.props.bestiary],
-    selectedBeast: '-1',
+    selectedBeast: -1,
   };
 
   onChangeFilter = value => {
@@ -37,79 +37,80 @@ class BestiaryPanel extends Component {
     if (value === 'All') {
       this.setState(state => ({
         ...state,
-        selectedType: value,
+        selectedFilter: value,
         filteredBestiary: [...bestiary],
+        selectedBeast: -1,
       }));
-    }
-    if (value === 'Monster') {
+    } else {
       const tempBestiary = [...bestiary];
-      bestiary.map((b, i) => {
-        if (!b.monster) {
-          tempBestiary.splice(i, 1);
-        }
-        return null;
-      });
+      if (value === 'Monster') {
+        bestiary.map((b, i) => {
+          if (!b.monster) {
+            tempBestiary.splice(i, 1);
+          }
+          return null;
+        });
+      }
+      if (value === 'PNJ') {
+        bestiary.map((b, i) => {
+          if (b.monster) {
+            tempBestiary.splice(i, 1);
+          }
+          return null;
+        });
+      }
       this.setState(state => ({
         ...state,
-        selectedType: value,
+        selectedFilter: value,
         filteredBestiary: [...tempBestiary],
-      }));
-    }
-    if (value === 'PNJ') {
-      const tempBestiary = [...bestiary];
-      bestiary.map((b, i) => {
-        if (b.monster) {
-          tempBestiary.splice(i, 1);
-        }
-        return null;
-      });
-      this.setState(state => ({
-        ...state,
-        selectedType: value,
-        filteredBestiary: [...tempBestiary],
+        selectedBeast: -1,
       }));
     }
   };
 
   onChangeOrderByType = value => {
     if (value === 'None') {
-      this.onChangeFilter(this.state.selectedFilter);
-      if (this.state.selectedOrderBy !== 'Default') {
-        this.onChangeOrderBy(this.state.selectedOrderBy);
+      this.setState(
+        state => ({
+          ...state,
+          selectedOrderByType: value,
+        }),
+        () => {
+          this.onChangeFilter(this.state.selectedFilter);
+          if (this.state.selectedOrderBy !== 'Default') {
+            this.onChangeOrderBy(this.state.selectedOrderBy);
+          }
+        }
+      );
+    } else {
+      const tempBestiary = [...this.state.filteredBestiary];
+      if (value === 'Monster') {
+        tempBestiary.sort((a, b) => {
+          if (!a.monster && b.monster) {
+            return -1;
+          }
+          if (a.monster && !b.monster) {
+            return 1;
+          }
+          return 0;
+        });
       }
-    }
-    if (value === 'Monster') {
-      const tempBestiary = [...this.state.filteredBestiary];
-      tempBestiary.sort((a, b) => {
-        if (!a.monster && b.monster) {
-          return -1;
-        }
-        if (a.monster && !b.monster) {
-          return 1;
-        }
-        return 0;
-      });
+      if (value === 'PNJ') {
+        tempBestiary.sort((a, b) => {
+          if (!a.monster && b.monster) {
+            return 1;
+          }
+          if (a.monster && !b.monster) {
+            return -1;
+          }
+          return 0;
+        });
+      }
       this.setState(state => ({
         ...state,
-        selectedType: value,
+        selectedOrderByType: value,
         filteredBestiary: [...tempBestiary],
-      }));
-    }
-    if (value === 'PNJ') {
-      const tempBestiary = [...this.state.filteredBestiary];
-      tempBestiary.sort((a, b) => {
-        if (!a.monster && b.monster) {
-          return 1;
-        }
-        if (a.monster && !b.monster) {
-          return -1;
-        }
-        return 0;
-      });
-      this.setState(state => ({
-        ...state,
-        selectedType: value,
-        filteredBestiary: [...tempBestiary],
+        selectedBeast: -1,
       }));
     }
   };
@@ -117,10 +118,18 @@ class BestiaryPanel extends Component {
   onChangeOrderBy = value => {
     const { uid } = this.props;
     if (value === 'Default') {
-      this.onChangeFilter(this.state.selectedFilter);
-      if (this.state.selectedOrderBy !== 'All') {
-        this.onChangeOrderByType(this.state.selectedOrderByType);
-      }
+      this.setState(
+        state => ({
+          ...state,
+          selectedOrderBy: value,
+        }),
+        () => {
+          this.onChangeFilter(this.state.selectedFilter);
+          if (this.state.selectedOrderBy !== 'All') {
+            this.onChangeOrderByType(this.state.selectedOrderByType);
+          }
+        }
+      );
     } else {
       const tempBestiary = [...this.state.filteredBestiary];
       if (value === 'Alphabetical') {
@@ -153,8 +162,9 @@ class BestiaryPanel extends Component {
       }
       this.setState(state => ({
         ...state,
-        selectedType: value,
+        selectedOrderBy: value,
         filteredBestiary: [...tempBestiary],
+        selectedBeast: -1,
       }));
     }
   };
@@ -169,17 +179,18 @@ class BestiaryPanel extends Component {
   unselectBeast = () => {
     this.setState(state => ({
       ...state,
-      selectedBeast: '-1',
+      selectedBeast: -1,
     }));
   };
 
   render() {
-    const { isGameMaster, uid } = this.props;
+    const { isGameMaster, uid, bestiary } = this.props;
     const {
       selectedFilter,
       selectedOrderBy,
       selectedOrderByType,
       filteredBestiary,
+      selectedBeast,
     } = this.state;
 
     return (
@@ -228,43 +239,106 @@ class BestiaryPanel extends Component {
             })}
           </select>
         </div>
-        {filteredBestiary.map(b => {
-          if (b.seen || isGameMaster) {
-            if (typeof b[uid] !== 'undefined' || isGameMaster) {
-              if (b.monster) {
-                return (
-                  <Beast
-                    name={b.name}
-                    image={b.image}
-                    text1={b[uid].text1 || isGameMaster ? b.text1 : ''}
-                    text2={b[uid].text2 || isGameMaster ? b.text2 : ''}
-                    text3={b[uid].text3 || isGameMaster ? b.text3 : ''}
-                    text4={b[uid].text4 || isGameMaster ? b.text4 : ''}
-                    dangerosity={b[uid].dangerosity ? b.dangerosity : ''}
-                    taille={b[uid].taille ? b.taille : ''}
-                    poids={b[uid].poids ? b.poids : ''}
-                  />
-                );
+        <div>
+          <div style={{ width: '30%', display: 'inline-block', float: 'left' }}>
+            {filteredBestiary.map((b, i) => {
+              if (b.seen || isGameMaster) {
+                if (typeof b[uid] !== 'undefined' || isGameMaster) {
+                  return (
+                    <div onClick={() => this.selectBeast(i)}>{b.name}</div>
+                  );
+                } else {
+                  return <DefaultBeast {...b} />;
+                }
               }
-              return (
-                <PNJ
-                  name={b.name}
-                  image={b.image}
-                  text1={b[uid].text1 || isGameMaster ? b.text1 : ''}
-                  text2={b[uid].text2 || isGameMaster ? b.text2 : ''}
-                  text3={b[uid].text3 || isGameMaster ? b.text3 : ''}
-                  text4={b[uid].text4 || isGameMaster ? b.text4 : ''}
-                  age={b[uid].age ? b.age : ''}
-                  taille={b[uid].taille ? b.taille : ''}
-                  poids={b[uid].poids ? b.poids : ''}
+              return null;
+            })}
+          </div>
+          <div style={{ width: '65%', display: 'inline-block', float: 'left' }}>
+            {selectedBeast !== -1 &&
+              (filteredBestiary[selectedBeast].monster ? (
+                <Beast
+                  name={filteredBestiary[selectedBeast].name}
+                  image={filteredBestiary[selectedBeast].image}
+                  text1={
+                    filteredBestiary[selectedBeast][uid].text1 || isGameMaster
+                      ? filteredBestiary[selectedBeast].text1
+                      : ''
+                  }
+                  text2={
+                    filteredBestiary[selectedBeast][uid].text2 || isGameMaster
+                      ? filteredBestiary[selectedBeast].text2
+                      : ''
+                  }
+                  text3={
+                    filteredBestiary[selectedBeast][uid].text3 || isGameMaster
+                      ? filteredBestiary[selectedBeast].text3
+                      : ''
+                  }
+                  text4={
+                    filteredBestiary[selectedBeast][uid].text4 || isGameMaster
+                      ? filteredBestiary[selectedBeast].text4
+                      : ''
+                  }
+                  dangerosity={
+                    filteredBestiary[selectedBeast][uid].dangerosity
+                      ? filteredBestiary[selectedBeast].dangerosity
+                      : ''
+                  }
+                  taille={
+                    filteredBestiary[selectedBeast][uid].taille
+                      ? filteredBestiary[selectedBeast].taille
+                      : ''
+                  }
+                  poids={
+                    filteredBestiary[selectedBeast][uid].poids
+                      ? filteredBestiary[selectedBeast].poids
+                      : ''
+                  }
                 />
-              );
-            } else {
-              return <DefaultBeast {...b} />;
-            }
-          }
-          return null;
-        })}
+              ) : (
+                <PNJ
+                  name={filteredBestiary[selectedBeast].name}
+                  image={filteredBestiary[selectedBeast].image}
+                  text1={
+                    filteredBestiary[selectedBeast][uid].text1 || isGameMaster
+                      ? filteredBestiary[selectedBeast].text1
+                      : ''
+                  }
+                  text2={
+                    filteredBestiary[selectedBeast][uid].text2 || isGameMaster
+                      ? filteredBestiary[selectedBeast].text2
+                      : ''
+                  }
+                  text3={
+                    filteredBestiary[selectedBeast][uid].text3 || isGameMaster
+                      ? filteredBestiary[selectedBeast].text3
+                      : ''
+                  }
+                  text4={
+                    filteredBestiary[selectedBeast][uid].text4 || isGameMaster
+                      ? filteredBestiary[selectedBeast].text4
+                      : ''
+                  }
+                  age={
+                    filteredBestiary[selectedBeast][uid].age
+                      ? filteredBestiary[selectedBeast].age
+                      : ''
+                  }
+                  taille={
+                    filteredBestiary[selectedBeast][uid].taille
+                      ? filteredBestiary[selectedBeast].taille
+                      : ''
+                  }
+                  poids={
+                    filteredBestiary[selectedBeast][uid].poids
+                      ? filteredBestiary[selectedBeast].poids
+                      : ''
+                  }
+                />
+              ))}
+          </div>
+        </div>
       </div>
     );
   }

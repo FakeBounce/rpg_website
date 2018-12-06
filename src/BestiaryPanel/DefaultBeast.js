@@ -12,9 +12,6 @@ const styledContainer = {
   width: window.innerWidth / 4 - 2,
   float: 'left',
   display: 'inline-block',
-  borderLeft: '1px dashed black',
-  borderRight: '1px dashed black',
-  borderBottom: '1px dashed black',
 };
 const styledTitle = {
   fontSize: 22,

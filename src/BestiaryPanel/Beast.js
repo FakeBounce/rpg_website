@@ -9,17 +9,14 @@ const styledImage = {
 };
 const styledContainer = {
   position: 'relative',
-  width: window.innerWidth / 4 - 2,
+  width: '100%',
   float: 'left',
   display: 'inline-block',
-  borderLeft: '1px dashed black',
-  borderRight: '1px dashed black',
-  borderBottom: '1px dashed black',
 };
 const styledText = {
   position: 'relative',
   float: 'left',
-  width: window.innerWidth / 4 - 2 - 120,
+  width: '100%',
   padding: 10,
 };
 const styledTitle = {
