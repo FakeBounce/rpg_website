@@ -29,6 +29,7 @@ class BestiaryPanel extends Component {
     selectedOrderBy: 'Default',
     selectedOrderByType: 'None',
     filteredBestiary: [...this.props.bestiary],
+    selectedBeast: '-1',
   };
 
   onChangeFilter = value => {
@@ -156,6 +157,20 @@ class BestiaryPanel extends Component {
         filteredBestiary: [...tempBestiary],
       }));
     }
+  };
+
+  selectBeast = i => {
+    this.setState(state => ({
+      ...state,
+      selectedBeast: i,
+    }));
+  };
+
+  unselectBeast = () => {
+    this.setState(state => ({
+      ...state,
+      selectedBeast: '-1',
+    }));
   };
 
   render() {

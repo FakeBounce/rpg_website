@@ -82,6 +82,7 @@ class CharacterTabPanelItem extends Component {
 
   render() {
     const { character, onItemUse, isGameMaster } = this.props;
+    const { itemValue } = this.state;
 
     return (
       <div>
@@ -111,6 +112,18 @@ class CharacterTabPanelItem extends Component {
               </div>
             );
           })}
+
+        <div style={styles.tabPanelItem}>
+          <input
+            type="text"
+            placeholder={`Item + description if needed`}
+            value={itemValue}
+            onChange={e => {
+              this.onChangeItem(e.target.value);
+            }}
+          />
+          <button onClick={this.onValidateItem}>Add Item</button>
+        </div>
       </div>
     );
   }
