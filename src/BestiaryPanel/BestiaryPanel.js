@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { heightLeft, widthLeftBestiary, widthListPanelBestiary, widthRightPanel } from "../Utils/StyleConstants";
+import {
+  heightLeft,
+  widthLeftBestiary,
+  widthListPanelBestiary,
+  widthRightPanel,
+} from '../Utils/StyleConstants';
 import Beast from './Beast';
 import PNJ from './PNJ';
 import { sortAlphabetical, sortReversedAlphabetical } from '../Utils/Functions';
 import BestiaryHeader from './BestiaryHeader';
+import BestiaryList from './BestiaryList';
+import BestiaryProfile from './BestiaryProfile';
 
 const styledBestiaryPanel = {
   height: heightLeft,
@@ -17,6 +24,23 @@ const styledImage = {
   float: 'left',
   width: 50,
   height: 50,
+};
+
+const styledBeast = {
+  width: widthLeftBestiary,
+  overflowX: 'hidden',
+  height: heightLeft - 25,
+  overflowY: 'auto',
+  display: 'inline-block',
+  float: 'left',
+};
+
+const styledPreview = {
+  width: widthListPanelBestiary,
+  height: heightLeft - 25,
+  overflowY: 'auto',
+  display: 'inline-block',
+  float: 'left',
 };
 
 class BestiaryPanel extends Component {
@@ -38,19 +62,19 @@ class BestiaryPanel extends Component {
         selectedBeast: -1,
       }));
     } else {
-      const tempBestiary = [...bestiary];
+      const tempBestiary = [];
       if (value === 'Monster') {
-        bestiary.map((b, i) => {
-          if (!b.monster) {
-            tempBestiary.splice(i, 1);
+        bestiary.map(b => {
+          if (b.monster) {
+            tempBestiary.push(b);
           }
           return null;
         });
       }
       if (value === 'PNJ') {
-        bestiary.map((b, i) => {
-          if (b.monster) {
-            tempBestiary.splice(i, 1);
+        bestiary.map(b => {
+          if (!b.monster) {
+            tempBestiary.push(b);
           }
           return null;
         });
@@ -199,129 +223,18 @@ class BestiaryPanel extends Component {
           onChangeOrderByType={this.onChangeOrderByType}
           selectedFilter={selectedFilter}
         />
-        <div>
-          <div
-            style={{
-              width: widthListPanelBestiary,
-              height: heightLeft - 25,
-              overflowY: 'auto',
-              display: 'inline-block',
-              float: 'left',
-            }}
-          >
-            {filteredBestiary.map((b, i) => {
-              if (b.seen || isGameMaster) {
-                return (
-                  <div
-                    style={{ height: 50 }}
-                    onClick={() => this.selectBeast(i)}
-                  >
-                    <img
-                      src={'./bestiary/' + b.image}
-                      style={styledImage}
-                      alt={b.image}
-                    />
-                    {b.name}
-                  </div>
-                );
-              }
-              return null;
-            })}
-          </div>
-          <div
-            style={{
-              width: widthLeftBestiary,
-              overflowX:'hidden',
-              height: heightLeft - 25,
-              overflowY: 'auto',
-              display: 'inline-block',
-              float: 'left',
-            }}
-          >
-            {selectedBeast !== -1 &&
-              (filteredBestiary[selectedBeast].monster ? (
-                <Beast
-                  name={filteredBestiary[selectedBeast].name}
-                  image={filteredBestiary[selectedBeast].image}
-                  text1={
-                    filteredBestiary[selectedBeast][uid].text1 || isGameMaster
-                      ? filteredBestiary[selectedBeast].text1
-                      : ''
-                  }
-                  text2={
-                    filteredBestiary[selectedBeast][uid].text2 || isGameMaster
-                      ? filteredBestiary[selectedBeast].text2
-                      : ''
-                  }
-                  text3={
-                    filteredBestiary[selectedBeast][uid].text3 || isGameMaster
-                      ? filteredBestiary[selectedBeast].text3
-                      : ''
-                  }
-                  text4={
-                    filteredBestiary[selectedBeast][uid].text4 || isGameMaster
-                      ? filteredBestiary[selectedBeast].text4
-                      : ''
-                  }
-                  dangerosity={
-                    filteredBestiary[selectedBeast][uid].dangerosity
-                      ? filteredBestiary[selectedBeast].dangerosity
-                      : ''
-                  }
-                  taille={
-                    filteredBestiary[selectedBeast][uid].taille
-                      ? filteredBestiary[selectedBeast].taille
-                      : ''
-                  }
-                  poids={
-                    filteredBestiary[selectedBeast][uid].poids
-                      ? filteredBestiary[selectedBeast].poids
-                      : ''
-                  }
-                />
-              ) : (
-                <PNJ
-                  name={filteredBestiary[selectedBeast].name}
-                  image={filteredBestiary[selectedBeast].image}
-                  text1={
-                    filteredBestiary[selectedBeast][uid].text1 || isGameMaster
-                      ? filteredBestiary[selectedBeast].text1
-                      : ''
-                  }
-                  text2={
-                    filteredBestiary[selectedBeast][uid].text2 || isGameMaster
-                      ? filteredBestiary[selectedBeast].text2
-                      : ''
-                  }
-                  text3={
-                    filteredBestiary[selectedBeast][uid].text3 || isGameMaster
-                      ? filteredBestiary[selectedBeast].text3
-                      : ''
-                  }
-                  text4={
-                    filteredBestiary[selectedBeast][uid].text4 || isGameMaster
-                      ? filteredBestiary[selectedBeast].text4
-                      : ''
-                  }
-                  age={
-                    filteredBestiary[selectedBeast][uid].age
-                      ? filteredBestiary[selectedBeast].age
-                      : ''
-                  }
-                  taille={
-                    filteredBestiary[selectedBeast][uid].taille
-                      ? filteredBestiary[selectedBeast].taille
-                      : ''
-                  }
-                  poids={
-                    filteredBestiary[selectedBeast][uid].poids
-                      ? filteredBestiary[selectedBeast].poids
-                      : ''
-                  }
-                />
-              ))}
-          </div>
-        </div>
+        <BestiaryList
+          filteredBestiary={filteredBestiary}
+          isGameMaster={isGameMaster}
+          selectBeast={this.selectBeast}
+        />
+        {selectedBeast !== -1 && (
+          <BestiaryProfile
+            isGameMaster={isGameMaster}
+            uid={uid}
+            beast={filteredBestiary[selectedBeast]}
+          />
+        )}
       </div>
     );
   }
