@@ -12,6 +12,12 @@ const styledBestiaryHeader = {
   width: '100%',
 };
 
+const styledFilterContainer = {
+  width: (window.innerWidth - 100) / 4,
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
 class BestiaryHeader extends Component {
   render() {
     const {
@@ -25,21 +31,30 @@ class BestiaryHeader extends Component {
 
     return (
       <div style={styledBestiaryHeader}>
-        <SelectMapper
-          mapArray={bestiaryFilters}
-          value={selectedFilter}
-          onChange={onChangeFilter}
-        />
-        <SelectMapper
-          mapArray={bestiaryOrderByType}
-          value={selectedOrderByType}
-          onChange={onChangeOrderByType}
-        />
-        <SelectMapper
-          mapArray={bestiaryOrderBy}
-          value={selectedOrderBy}
-          onChange={onChangeOrderBy}
-        />
+        <div style={styledFilterContainer}>
+          Filter by :
+          <SelectMapper
+            mapArray={bestiaryFilters}
+            value={selectedFilter}
+            onChange={onChangeFilter}
+          />
+        </div>
+        <div style={styledFilterContainer}>
+          Order by type :
+          <SelectMapper
+            mapArray={bestiaryOrderByType}
+            value={selectedOrderByType}
+            onChange={onChangeOrderByType}
+          />
+        </div>
+        <div style={styledFilterContainer}>
+          Order by :
+          <SelectMapper
+            mapArray={bestiaryOrderBy}
+            value={selectedOrderBy}
+            onChange={onChangeOrderBy}
+          />
+        </div>
       </div>
     );
   }
