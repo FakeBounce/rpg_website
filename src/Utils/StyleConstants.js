@@ -3,6 +3,10 @@ export const heightHeader = 133;
 export const heightCameras = 0;
 export const imageSize = 100;
 export const widthRightPanelLeft = widthRightPanel - imageSize;
+export const widthListPanelBestiary = 200;
+export const widthLeftBestiary = window.innerWidth - 200;
+export const widthImageBestiary = 200;
+export const widthTextBestiary = widthLeftBestiary - 200;
 
 // export const gridHeight = 20;
 // export const gridWidth = 20;

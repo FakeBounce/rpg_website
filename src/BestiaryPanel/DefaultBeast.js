@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {
+  widthImageBestiary,
+  widthLeftBestiary,
+  widthTextBestiary,
+} from '../Utils/StyleConstants';
 
 const styledImage = {
   position: 'relative',
   float: 'left',
-  width: 100,
-  height: 100,
-};
-const styledContainer = {
-  position: 'relative',
-  width: window.innerWidth / 4 - 2,
-  float: 'left',
+  width: widthImageBestiary,
   display: 'inline-block',
 };
+
+const styledContainer = {
+  position: 'relative',
+  width: widthLeftBestiary,
+  float: 'left',
+  display: 'inline-block',
+  padding: 15,
+};
+
 const styledTitle = {
   fontSize: 22,
   fontWeight: 'bolder',

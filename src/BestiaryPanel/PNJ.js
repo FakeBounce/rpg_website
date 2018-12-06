@@ -1,28 +1,36 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {
+  widthImageBestiary,
+  widthLeftBestiary,
+  widthTextBestiary,
+} from '../Utils/StyleConstants';
 
 const styledImage = {
   position: 'relative',
   float: 'left',
-  width: 100,
-  height: 100,
+  width: widthImageBestiary,
+  display:'inline-block',
 };
+
 const styledContainer = {
   position: 'relative',
-  width: '100%',
+  width: widthLeftBestiary,
   float: 'left',
   display: 'inline-block',
+  padding:15,
 };
 const styledText = {
   position: 'relative',
   float: 'left',
-  width: '100%',
-  padding: 10,
+  width: widthTextBestiary - 30,
+  display:'inline-block',
+  marginTop: 30,
 };
 const styledTitle = {
   fontSize: 22,
   fontWeight: 'bolder',
-  color: 'red',
+  color: 'blue',
 };
 
 class PNJ extends Component {

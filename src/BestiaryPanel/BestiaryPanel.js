@@ -1,26 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { heightLeft } from '../Utils/StyleConstants';
-import DefaultBeast from './DefaultBeast';
+import { heightLeft, widthLeftBestiary, widthListPanelBestiary, widthRightPanel } from "../Utils/StyleConstants";
 import Beast from './Beast';
 import PNJ from './PNJ';
-import {
-  bestiaryFilters,
-  bestiaryOrderBy,
-  bestiaryOrderByType,
-} from '../Utils/Constants';
 import { sortAlphabetical, sortReversedAlphabetical } from '../Utils/Functions';
+import BestiaryHeader from './BestiaryHeader';
 
 const styledBestiaryPanel = {
-  overflowY: 'auto',
   height: heightLeft,
-  width: '102%',
+  width: '100%',
 };
 
-const styledBestiaryHeader = {
-  height: 25,
-  width: '100%',
+const styledImage = {
+  position: 'relative',
+  float: 'left',
+  width: 50,
+  height: 50,
 };
 
 class BestiaryPanel extends Component {
@@ -184,7 +180,7 @@ class BestiaryPanel extends Component {
   };
 
   render() {
-    const { isGameMaster, uid, bestiary } = this.props;
+    const { isGameMaster, uid } = this.props;
     const {
       selectedFilter,
       selectedOrderBy,
@@ -195,66 +191,53 @@ class BestiaryPanel extends Component {
 
     return (
       <div style={styledBestiaryPanel}>
-        <div style={styledBestiaryHeader}>
-          <select
-            value={selectedFilter}
-            onChange={e => {
-              this.onChangeFilter(e.target.value);
-            }}
-          >
-            {bestiaryFilters.map(sts => {
-              return (
-                <option key={sts} value={sts}>
-                  {sts}
-                </option>
-              );
-            })}
-          </select>
-          <select
-            value={selectedOrderByType}
-            onChange={e => {
-              this.onChangeOrderByType(e.target.value);
-            }}
-          >
-            {bestiaryOrderByType.map(sts => {
-              return (
-                <option key={sts} value={sts}>
-                  {sts}
-                </option>
-              );
-            })}
-          </select>
-          <select
-            value={selectedOrderBy}
-            onChange={e => {
-              this.onChangeOrderBy(e.target.value);
-            }}
-          >
-            {bestiaryOrderBy.map(sts => {
-              return (
-                <option key={sts} value={sts}>
-                  {sts}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+        <BestiaryHeader
+          selectedOrderByType={selectedOrderByType}
+          selectedOrderBy={selectedOrderBy}
+          onChangeFilter={this.onChangeFilter}
+          onChangeOrderBy={this.onChangeOrderBy}
+          onChangeOrderByType={this.onChangeOrderByType}
+          selectedFilter={selectedFilter}
+        />
         <div>
-          <div style={{ width: '30%', display: 'inline-block', float: 'left' }}>
+          <div
+            style={{
+              width: widthListPanelBestiary,
+              height: heightLeft - 25,
+              overflowY: 'auto',
+              display: 'inline-block',
+              float: 'left',
+            }}
+          >
             {filteredBestiary.map((b, i) => {
               if (b.seen || isGameMaster) {
-                if (typeof b[uid] !== 'undefined' || isGameMaster) {
-                  return (
-                    <div onClick={() => this.selectBeast(i)}>{b.name}</div>
-                  );
-                } else {
-                  return <DefaultBeast {...b} />;
-                }
+                return (
+                  <div
+                    style={{ height: 50 }}
+                    onClick={() => this.selectBeast(i)}
+                  >
+                    <img
+                      src={'./bestiary/' + b.image}
+                      style={styledImage}
+                      alt={b.image}
+                    />
+                    {b.name}
+                  </div>
+                );
               }
               return null;
             })}
           </div>
-          <div style={{ width: '65%', display: 'inline-block', float: 'left' }}>
+          <div
+            style={{
+              width: widthLeftBestiary,
+              overflowX:'hidden',
+              height: heightLeft - 25,
+              overflowY: 'auto',
+              display: 'inline-block',
+              float: 'left',
+            }}
+          >
             {selectedBeast !== -1 &&
               (filteredBestiary[selectedBeast].monster ? (
                 <Beast
