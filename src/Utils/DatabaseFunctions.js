@@ -372,15 +372,24 @@ export const listenCurrentEvent = (currentStory, doSetState) => {
     });
 };
 
-export const listenChat = doSetState => {
+export const loadChat = doSetState => {
   firebase
     .database()
     .ref('/chat')
     .limitToLast(50)
-    .on('value', snapshot => {
-      doSetState({
-        chatHistory: snapshot.val(),
+    .once('value')
+    .then(snapshot => {
+      const chat = [];
+      Object.keys(snapshot.val()).map(key => {
+        chat.push(snapshot.val()[key]);
       });
+      doSetState({
+        chatHistory: chat,
+      });
+    })
+    .catch(error => {
+      // Handle Errors here.
+      triggerError(error);
     });
 };
 
@@ -584,7 +593,11 @@ export const populateBestiary = (currentStory, doSetState) => {
                       tempCharacters[key].character.userPseudo === 'Danjors'
                       ? parseInt(tempCharacters[key].character.education) - 10
                       : parseInt(tempCharacters[key].character.education);
-                console.log("maxroll",maxRoll, tempCharacters[key].character.userPseudo);
+                console.log(
+                  'maxroll',
+                  maxRoll,
+                  tempCharacters[key].character.userPseudo
+                );
                 while (
                   Math.floor(Math.random() * 100 + 1) <= maxRoll &&
                   cpt < 7

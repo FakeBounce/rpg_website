@@ -14,7 +14,6 @@ import SoundPlayer from './SoundPlayer/SoundPlayer';
 import {
   // listenArtefacts,
   loadUnusedArtefacts,
-  listenChat,
   listenCurrentEvent,
   listenEvents,
   listenMerchants,
@@ -33,6 +32,7 @@ import {
   // resetMap,
   setQuests,
   populateBestiary,
+  loadChat,
 } from './Utils/DatabaseFunctions';
 import {
   hydrateStoryArtefacts,
@@ -594,7 +594,21 @@ class App extends Component {
   };
 
   createChat = () => {
-    listenChat(this.doSetState);
+    loadChat(this.doSetState);
+
+    firebase
+      .database()
+      .ref('/chat')
+      .limitToLast(50)
+      .on('child_added', snapshot => {
+        const tempChat = [...this.state.chatHistory, snapshot.val()];
+        tempChat.splice(0, 1);
+
+        this.setState(state => ({
+          ...state,
+          chatHistory: [...tempChat],
+        }));
+      });
   };
 
   accessChatHelp = () => {

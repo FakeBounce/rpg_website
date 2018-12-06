@@ -579,6 +579,7 @@ class ChatPanel extends PureComponent {
     if (bonus < 0) {
       bonusMessage = ' (' + bonus + ')';
     }
+
     if (dice < 6) {
       message = `@${pseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Critical success !)`;
     } else if (dice <= character[attribute] + parseInt(bonus, 10)) {
@@ -602,12 +603,10 @@ class ChatPanel extends PureComponent {
 
   sendChatInput = input => {
     const { chatHistory, doSetState, triggerError } = this.props;
-    const nextChat = chatHistory;
-    nextChat.push(input);
     firebase
       .database()
       .ref('chat/')
-      .set(nextChat)
+      .push(input)
       .then(() => {
         doSetState({
           error: '',

@@ -30,12 +30,16 @@ class CharacterTabPanel extends Component {
         {infoTab === 'Weapons' && (
           <CharacterTabPanelContent
             tab={character.weapons || []}
+            tabName={'Weapons'}
             isGameMaster="Weapons :"
+            character={character}
           />
         )}
         {infoTab === 'Abilities' && (
           <CharacterTabPanelContent
             tab={character.abilities || []}
+            tabName={'Abilities'}
+            character={character}
           />
         )}
         {infoTab === 'Skills' && (

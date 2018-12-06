@@ -90,7 +90,10 @@ class CharacterTabPanelContent extends Component {
           return (
             <div key={`${description}-${index}`} style={styles.tabPanelItem}>
               {description}
-              <button style={styles.itemButton} onClick={this.onRemove(index)}>
+              <button
+                style={styles.itemButton}
+                onClick={() => this.onRemove(index)}
+              >
                 Remove
               </button>
             </div>
