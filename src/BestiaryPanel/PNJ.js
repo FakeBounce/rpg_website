@@ -27,6 +27,13 @@ const styledText = {
   display:'inline-block',
   marginTop: 30,
 };
+const styledParagraph = {
+  position: 'relative',
+  float: 'left',
+  width: widthTextBestiary - 30,
+  display:'inline-block',
+  marginTop: 20,
+};
 const styledTitle = {
   fontSize: 22,
   fontWeight: 'bolder',
@@ -52,10 +59,10 @@ class PNJ extends Component {
         <div style={styledTitle}> {name}</div>
         <img src={'./bestiary/' + image} style={styledImage} alt={image} />
         <div style={styledText}>
-          {text1 && <div>{text1}</div>}
-          {text2 && <div>{text2}</div>}
-          {text3 && <div>{text3}</div>}
-          {text4 && <div>{text4}</div>}
+          {text1 && <div style={styledParagraph}>{text1}</div>}
+          {text2 && <div style={styledParagraph}>{text2}</div>}
+          {text3 && <div style={styledParagraph}>{text3}</div>}
+          {text4 && <div style={styledParagraph}>Skills and traits : {text4}</div>}
           {age && <div>Age : {age} ans</div>}
           {taille && (
             <div>

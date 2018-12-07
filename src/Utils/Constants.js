@@ -609,9 +609,9 @@ export const bestiary = [
     text2:
       'Seul il n’est pas très dangereux, mais attention tout de même, il ne faut surtout pas baisser sa garde sinon ce serait prendre le risque de se faire planter par des griffes de dizaines de centimètres de long ou se faire croquer par une mâchoire de plus de 50 dents capable de broyer le métal.',
     text3:
-      'Il est agile, il peut faire des bonds d’une douzaine de mètres, tout en restant stable pour porter une attaque en plein vol. ',
+      'Il est agile, il peut faire des bonds d’une douzaine de mètres, tout en restant stable pour porter une attaque en plein vol. Sa peau n’est pas très dure, il est assez facile de blesser cette créature et de la forcer à se replier. Mais attention, en bande ils auront plus confiance en eux et ne se contenteront pas de quelques blessures pour s’arrêter.',
     text4:
-      'Sa peau n’est pas très dure, il est assez facile de blesser cette créature et de la forcer à se replier. Mais attention, en bande ils auront plus confiance en eux et ne se contenteront pas de quelques blessures pour s’arrêter. ',
+      'Perception accrue, Agilité accrue, Bonds, Machoîre capable de broyer le métal, Griffes acérées',
     dangerosity: '6/10',
     taille: '350/700',
     poids: '1300',
@@ -663,8 +663,8 @@ export const bestiary = [
     text2:
       'Quand il arrive dans une ville, il mémorise les rondes des gardes, teste la portée des sorts de détection de magie, trouve et crée des passages secrets, et une fois toutes les bases préparées, il pille tout ce qu’il peut avant de passer à une autre ville. Si la ville est trop grande il pille quartier après quartier. Ses victimes ne se rendent compte du vol qu’une fois Tot à une centaine de mètres, ce qui rend la chasse impossible.',
     text3:
-      'On a déjà réussi à l’attraper plusieurs fois mais impossible de lui faire avouer l’emplacement des cachettes, et surtout il réussit à s’évader à chaque fois.',
-    text4: 'Il faut le reconnaître, il a un vrai talent.',
+      'On a déjà réussi à l’attraper plusieurs fois mais impossible de lui faire avouer l’emplacement des cachettes, et surtout il réussit à s’évader à chaque fois. Il faut le reconnaître, il a un vrai talent.',
+    text4: 'Invisibilité, Perception et agilité exceptionnelles, Immunisé aux attaques mentales, Enfouissement, Manipulation',
     age: '23',
     taille: '99',
     poids: '19',
@@ -677,7 +677,7 @@ export const bestiary = [
     text1: '',
     text2: '',
     text3: '',
-    text4: '',
+    text4: 'Sacré (Soin, Boucliers, ???), Sombre (Décharge sombre, Manipulation, Augmentation physique, ???), Liaison mentale',
     age: '46',
     taille: '172',
     poids: '63',
@@ -693,7 +693,7 @@ export const bestiary = [
       'La Banshee est un esprit donc intangible mais facilement contrable si l’on utilise la magie Psychique ou la magie Esprit. Prévoir des objets ou enchantement anti-bruits sous peine de subir le cri de la Banshee, pouvant affecter une cible à une centaine de mètres.',
     text3:
       'Elle peut apparaître tel un mirage dans les désert, son apparence humaine crée une parfaite illusion si on l’observe de loin, mais on peut distinguer la légère traînée bleutée que laisse la Banshee qui la fait se distinguer de tout être vivant.',
-    text4: '',
+    text4: 'Cri strident, Intangible, Langage Esprit, Aura de froid',
     dangerosity: '4/10',
     taille: '???',
     poids: '0',
@@ -736,10 +736,10 @@ export const bestiary = [
     text1:
       'Les Tatons et les Sacahes sont deux espèces très proches. Elles forment des duos de chasse jusqu’à des dizaines de kilomètres de leur foyer. Chaque duo est composé d’un Taton et d’un Sacahe, le Taton faisant l’appât tandis que le Sacahe se met en position, prêt à sauter sur leur proie.',
     text2:
-      'Ils ont tous les deux une capacité régénératrice puissante, qui leur permet de décupler leur puissance jusqu’à une certaine limite. Elle ne s’enclenche qu’après avoir subis des blessures. Le Taton gagne en force et en résistance tandis que le Sacahe gagne en force, agilité et rapidité. C’est pourquoi le Taton fait l’appât; dans tous les cas, ils ne subiront que très peu de dommage avec leur capacité. ',
+      'Ils ont tous les deux une capacité régénératrice puissante, qui leur permet de décupler leur puissance jusqu’à une certaine limite. Elle ne s’enclenche qu’après avoir subis des blessures. Le Taton gagne en force et en résistance tandis que le Sacahe gagne en force, agilité et rapidité. C’est pourquoi le Taton fait l’appât; dans tous les cas, ils ne subiront que très peu de dégâts avec leur capacité.',
     text3:
       'Ils chassent assez pour nourrir leur famille pendant plusieurs semaine avant de retrouver leur foyer. Les Tatons fabriquent de grande toiles pour embarquer la viande pendant que les Sacahe coupent et préparent la viande.',
-    text4: '',
+    text4: "Taton: Régénération majeure, Force et constitution accrues, Prise d'aggression; Sacahe: Régénération, Force et agilité accrues, Griffes acérées, Bonds, Inaudible si caché",
     dangerosity: '6~7/10, 7~8/10',
     taille: '180~360, 160~250',
     poids: '250~500, 80~110',

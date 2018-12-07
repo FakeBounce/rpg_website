@@ -71,6 +71,7 @@ class RightPanel extends Component {
       character: { health, maxHealth },
       currentStory,
       uid,
+      triggerError,
     } = this.props;
     const { damageTaken } = this.state;
 
@@ -88,12 +89,12 @@ class RightPanel extends Component {
       .set(parseInt(healthLeft, 10))
       .catch(error => {
         // Handle Errors here.
-        this.triggerError(error);
+        triggerError(error);
       });
   };
 
   onStatusChange = () => {
-    const { currentStory, uid } = this.props;
+    const { currentStory, uid, triggerError } = this.props;
     const { status } = this.state;
 
     firebase
@@ -104,12 +105,18 @@ class RightPanel extends Component {
       .set(status)
       .catch(error => {
         // Handle Errors here.
-        this.triggerError(error);
+        triggerError(error);
       });
   };
 
   onItemUse = (i, value) => {
-    const { character, currentStory, uid, doSetState } = this.props;
+    const {
+      character,
+      currentStory,
+      uid,
+      doSetState,
+      triggerError,
+    } = this.props;
 
     if (value > -1) {
       const newCharacterItems = [...character.items];
@@ -135,14 +142,20 @@ class RightPanel extends Component {
         .set(newCharacter)
         .catch(error => {
           // Handle Errors here.
-          this.triggerError(error);
+          triggerError(error);
         });
     }
   };
 
   // for GM only
   onGoldChange = () => {
-    const { character, currentStory, uid, isGameMaster } = this.props;
+    const {
+      character,
+      currentStory,
+      uid,
+      isGameMaster,
+      triggerError,
+    } = this.props;
     const { gold } = this.state;
 
     if (isGameMaster) {
@@ -156,7 +169,7 @@ class RightPanel extends Component {
         .set(goldToSet)
         .catch(error => {
           // Handle Errors here.
-          this.triggerError(error);
+          triggerError(error);
         });
     }
   };
@@ -188,7 +201,15 @@ class RightPanel extends Component {
   };
 
   render() {
-    const { character, gameMaster, isGameMaster, storyCharacters } = this.props;
+    const {
+      uid,
+      character,
+      gameMaster,
+      isGameMaster,
+      storyCharacters,
+      triggerError,
+      currentStory,
+    } = this.props;
 
     const { status, infoTab, damageTaken, gold } = this.state;
 
@@ -207,6 +228,9 @@ class RightPanel extends Component {
           onLifeChange={this.onLifeChange}
           onStatusChange={this.onStatusChange}
           status={status}
+          triggerError={triggerError}
+          uid={uid}
+          currentStory={currentStory}
         />
         <TeamPanel
           chatWithTeamMember={this.chatWithTeamMember}

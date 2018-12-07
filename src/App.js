@@ -845,7 +845,9 @@ class App extends Component {
           noiseVolume={noiseVolume}
           stopNoise={this.stopNoise}
         />
-        {error}
+        <div style={{ position: 'absolute', bottom: 0, textAlign: 'center' }}>
+          {error}
+        </div>
       </div>
     );
   }
