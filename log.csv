@@ -1,3 +1,14 @@
+<div className="commit"> FakeBounce, le 2018-12-07 : Added image inputs for chat </div>
+<div className="commit"> FakeBounce, le 2018-12-07 : Reviewed Bestiary and now players can change their character's image in a story </div>
+<div className="commit"> FakeBounce, le 2018-12-06 : Added style on bestiary filters </div>
+<div className="commit"> FakeBounce, le 2018-12-06 : Fixed wrong filters for bestiary </div>
+<div className="commit"> FakeBounce, le 2018-12-06 : Added some bestiary css </div>
+<div className="commit"> FakeBounce, le 2018-12-06 : Fixed bestiary filters and added list preview </div>
+<div className="commit"> FakeBounce, le 2018-12-06 : Fixed item addition </div>
+<div className="commit"> FakeBounce, le 2018-12-06 : Fixed chat bad behavior and optimized it </div>
+<div className="commit"> FakeBounce, le 2018-12-05 : Limited chat to 50 last message, added some filter for bestiary, and cleaned up some code </div>
+<div className="commit"> fakebounce, le 2018-12-01 : Trying to not register cache </div>
+<div className="commit"> fakebounce, le 2018-12-01 : Now players can add skills in game </div>
 <div className="commit"> fakebounce, le 2018-12-01 : Added button to load self drawing </div>
 <div className="commit"> fakebounce, le 2018-12-01 : Added drawing event </div>
 <div className="commit"> fakebounce, le 2018-12-01 : Added select for malus/bonus while doing a dice action </div>
