@@ -7,34 +7,38 @@ import {
   cursorPointer,
   heightHeader,
   heightLeft,
+  imageSize,
   widthLeft,
 } from '../Utils/StyleConstants';
 import ButtonLarge from '../Utils/ButtonLarge';
 import { bonusList, chatDices, tempoImagesList } from '../Utils/Constants';
+import SelectMapper from '../Utils/SelectMapper';
+import FileUploader from '../CharacterCreation/FileUploader';
 
 const styles = {
   Historic: {
-    width: '100%',
+    width: widthLeft / 2,
     height: `${heightLeft / 2 - (25 + 5) - 25}px`,
     float: 'left',
     display: 'inline-block',
     overflowY: 'auto',
   },
   ChatBox: {
-    width: '100%',
+    width: widthLeft / 2,
     height: '20px',
     float: 'left',
     display: 'inline-block',
     marginTop: '5px',
   },
   ChatInput: {
-    width: '88%',
+    width: widthLeft / 2 - 51,
     height: '20px',
     float: 'left',
     display: 'inline-block',
+    marginLeft: 20,
   },
   ChatButton: {
-    width: '10%',
+    width: 25,
     height: '26px',
     float: 'left',
     display: 'inline-block',
@@ -42,8 +46,8 @@ const styles = {
     padding: '0px',
   },
   ChatButtonGMActive: {
-    width: '10%',
-    height: '26px',
+    width: 40,
+    height: 26,
     float: 'right',
     display: 'inline-block',
     textAlign: 'center',
@@ -52,15 +56,15 @@ const styles = {
     color: 'white',
   },
   ChatButtonGM: {
-    width: '10%',
-    height: '26px',
+    width: 40,
+    height: 26,
     float: 'right',
     display: 'inline-block',
     textAlign: 'center',
     padding: '0px',
   },
   ChatDices: {
-    width: '100%',
+    width: widthLeft / 2,
     height: '25px',
     float: 'left',
     display: 'inline-block',
@@ -80,6 +84,18 @@ const styles = {
     position: 'absolute',
     height: heightLeft / 2,
     top: heightLeft / 2 + heightHeader + 5,
+  },
+  ChatImageContainer: {
+    width: 20,
+    height: 25,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+  },
+  ChatSelect: {
+    display: 'inline-block',
+    float: 'left',
+    width: 40,
   },
 };
 
@@ -288,7 +304,8 @@ class ChatPanel extends PureComponent {
   };
 
   whisperPlayerAction = () => {
-    const { chatInput, pseudo, users } = this.props;
+    const { chatInput, pseudo, users, isGameMaster } = this.props;
+    const realPseudo = isGameMaster ? 'GM' : pseudo;
     const splittedString = chatInput.trim().split('/w ');
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
@@ -296,13 +313,13 @@ class ChatPanel extends PureComponent {
       Object.keys(users).map(key => {
         if (splittedString[1].split(users[key].pseudo).length > 1) {
           this.sendChatInput({
-            message: `@${pseudo}, you say to @${users[key].pseudo} :${
+            message: `@${realPseudo}, you say to @${users[key].pseudo} :${
               splittedString[1].split(users[key].pseudo)[1]
             }`,
             viewers: [pseudo],
           });
           this.sendChatInput({
-            message: `@${pseudo} tells you secretly :${
+            message: `@${realPseudo} tells you secretly :${
               splittedString[1].split(users[key].pseudo)[1]
             }`,
             viewers: [users[key].pseudo],
@@ -315,7 +332,8 @@ class ChatPanel extends PureComponent {
   };
 
   whisperGMAction = () => {
-    const { chatInput, pseudo, users, gameMaster } = this.props;
+    const { chatInput, pseudo, users, gameMaster, isGameMaster } = this.props;
+    const realPseudo = isGameMaster ? 'GM' : pseudo;
     const splittedString = chatInput.trim().split('/gmw ');
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
@@ -323,11 +341,11 @@ class ChatPanel extends PureComponent {
       Object.keys(users).map(key => {
         if (key === gameMaster) {
           this.sendChatInput({
-            message: `@${pseudo}, you say to GM :${splittedString[1]}`,
+            message: `@${realPseudo}, you say to GM :${splittedString[1]}`,
             viewers: [pseudo],
           });
           this.sendChatInput({
-            message: `@${pseudo} tells GM secretly :${splittedString[1]}`,
+            message: `@${realPseudo} tells GM secretly :${splittedString[1]}`,
             viewers: [users[key].pseudo],
           });
         }
@@ -338,7 +356,8 @@ class ChatPanel extends PureComponent {
   };
 
   whisperTeamAction = () => {
-    const { chatInput, pseudo, users, gameMaster } = this.props;
+    const { chatInput, pseudo, users, gameMaster, isGameMaster } = this.props;
+    const realPseudo = isGameMaster ? 'GM' : pseudo;
     const splittedString = chatInput.trim().split('/tmw ');
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
@@ -353,7 +372,7 @@ class ChatPanel extends PureComponent {
       });
 
       this.sendChatInput({
-        message: `@${pseudo} tells to team :${splittedString[1]}`,
+        message: `@${realPseudo} tells to team :${splittedString[1]}`,
         viewers: team,
       });
     }
@@ -361,7 +380,8 @@ class ChatPanel extends PureComponent {
   };
 
   diceAction = (limiter, viewers = null) => {
-    const { chatInput, pseudo } = this.props;
+    const { chatInput, pseudo, isGameMaster } = this.props;
+    const realPseudo = isGameMaster ? 'GM' : pseudo;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
@@ -369,7 +389,7 @@ class ChatPanel extends PureComponent {
     const isnum = /^\d+$/.test(splittedString);
     if (isnum) {
       this.sendChatInput({
-        message: `@${pseudo} launched a D${splittedString}. Result : ${Math.floor(
+        message: `@${realPseudo} launched a D${splittedString}. Result : ${Math.floor(
           Math.random() * parseInt(splittedString, 10) + 1
         )}`,
         viewers,
@@ -379,7 +399,15 @@ class ChatPanel extends PureComponent {
   };
 
   sendGoldGMAction = () => {
-    const { chatInput, character, pseudo, uid, currentStory } = this.props;
+    const {
+      chatInput,
+      character,
+      pseudo,
+      uid,
+      currentStory,
+      isGameMaster,
+    } = this.props;
+    const realPseudo = isGameMaster ? 'GM' : pseudo;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
@@ -392,7 +420,7 @@ class ChatPanel extends PureComponent {
           0
         ) {
           this.sendChatInput({
-            message: `@${pseudo} gave ${
+            message: `@${realPseudo} gave ${
               splittedString[1]
             } gold to the GameMaster. He is very thankfull !`,
           });
@@ -426,7 +454,9 @@ class ChatPanel extends PureComponent {
       character,
       uid,
       currentStory,
+      isGameMaster,
     } = this.props;
+    const realPseudo = isGameMaster ? 'GM' : pseudo;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
@@ -453,7 +483,7 @@ class ChatPanel extends PureComponent {
               viewers: [pseudo],
             });
             this.sendChatInput({
-              message: `@${pseudo} gave ${splittedString[2]} gold to you.`,
+              message: `@${realPseudo} gave ${splittedString[2]} gold to you.`,
               viewers: [splittedString[1]],
             });
 
@@ -507,7 +537,9 @@ class ChatPanel extends PureComponent {
       character,
       currentStory,
       gameMaster,
+      isGameMaster,
     } = this.props;
+    const realPseudo = isGameMaster ? 'GM' : pseudo;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
@@ -530,7 +562,7 @@ class ChatPanel extends PureComponent {
             );
 
             this.sendChatInput({
-              message: `@${pseudo} gave ${
+              message: `@${realPseudo} gave ${
                 splittedString[1]
               } gold to the team (${goldForEach} each).`,
             });
@@ -567,8 +599,9 @@ class ChatPanel extends PureComponent {
   };
 
   attributeAction = (attribute, isGm = false) => {
-    const { pseudo, character } = this.props;
+    const { pseudo, character, isGameMaster } = this.props;
     const { gmCommands, bonus } = this.state;
+    const realPseudo = isGameMaster ? 'GM' : pseudo;
     const dice = Math.floor(Math.random() * parseInt(100, 10) + 1);
     let message = '';
     let bonusMessage = '';
@@ -581,13 +614,13 @@ class ChatPanel extends PureComponent {
     }
 
     if (dice < 6) {
-      message = `@${pseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Critical success !)`;
+      message = `@${realPseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Critical success !)`;
     } else if (dice <= character[attribute] + parseInt(bonus, 10)) {
-      message = `@${pseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Success !)`;
+      message = `@${realPseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Success !)`;
     } else if (dice > 95) {
-      message = `@${pseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Critical fail !)`;
+      message = `@${realPseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Critical fail !)`;
     } else {
-      message = `@${pseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Fail !)`;
+      message = `@${realPseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Fail !)`;
     }
     if (isGm || gmCommands) {
       this.sendChatInput({
@@ -602,7 +635,7 @@ class ChatPanel extends PureComponent {
   };
 
   sendChatInput = input => {
-    const { chatHistory, doSetState, triggerError } = this.props;
+    const { doSetState, triggerError } = this.props;
     firebase
       .database()
       .ref('chat/')
@@ -636,6 +669,56 @@ class ChatPanel extends PureComponent {
     }));
   };
 
+  onDrop = picture => {
+    const { triggerError, chatInput, doSetState } = this.props;
+    const newPostKey = firebase
+      .database()
+      .ref('chat/')
+      .push().key;
+    const path =
+      'images/chat/' +
+      newPostKey +
+      '_image.' +
+      picture[picture.length - 1].name.split('.')[1];
+
+    firebase
+      .storage()
+      .ref()
+      .child(path)
+      .put(picture[picture.length - 1])
+      .then(() => {
+        firebase
+          .storage()
+          .ref()
+          .child(path)
+          .getDownloadURL()
+          .then(url => {
+            firebase
+              .database()
+              .ref('chat/' + newPostKey)
+              .set({
+                message: chatInput,
+                imagePath: path,
+                image: url,
+              })
+              .then(() => {
+                doSetState({
+                  error: '',
+                  chatInput: '',
+                });
+              })
+              .catch(error => {
+                // Handle Errors here.
+                triggerError(error);
+              });
+          })
+          .catch(error => {
+            // Handle any errors
+            triggerError(error);
+          });
+      });
+  };
+
   render() {
     const { chatInput, chatHistory, onChange } = this.props;
     const { gmCommands, bonus } = this.state;
@@ -663,20 +746,12 @@ class ChatPanel extends PureComponent {
               />
             );
           })}
-          <select
+          <SelectMapper
+            mapArray={bonusList}
             value={bonus}
-            onChange={e => {
-              this.onChangeDice(e.target.value);
-            }}
-          >
-            {bonusList.map(sts => {
-              return (
-                <option key={sts} value={sts}>
-                  {sts}
-                </option>
-              );
-            })}
-          </select>
+            onChange={this.onChangeDice}
+            style={styles.ChatSelect}
+          />
           <button
             style={gmCommands ? styles.ChatButtonGMActive : styles.ChatButtonGM}
             onClick={this.toggleGMCommands}
@@ -685,6 +760,21 @@ class ChatPanel extends PureComponent {
           </button>
         </div>
         <div style={styles.ChatBox}>
+          <div style={styles.ChatImageContainer}>
+            <FileUploader
+              onDrop={this.onDrop}
+              buttonText="+"
+              fileContainerStyle={{ padding: 0, margin: 0, display: 'block' }}
+              buttonStyles={{
+                width: 20,
+                padding: 0,
+                margin: 0,
+                border: '1px solid #3f4257',
+              }}
+              withIcon={false}
+              label=""
+            />
+          </div>
           <input
             type="text"
             name="chatInput"

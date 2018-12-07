@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class SelectMapper extends Component {
   render() {
-    const { mapArray, value, onChange } = this.props;
+    const { mapArray, value, onChange, style } = this.props;
 
     return (
       <select
@@ -11,6 +11,7 @@ class SelectMapper extends Component {
         onChange={e => {
           onChange(e.target.value);
         }}
+        style={style}
       >
         {mapArray.map(options => {
           return (
@@ -24,10 +25,15 @@ class SelectMapper extends Component {
   }
 }
 
+SelectMapper.defaultProps = {
+  style: {},
+}
+
 SelectMapper.propTypes = {
   mapArray: PropTypes.array.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  style: PropTypes.object,
 };
 
 export default SelectMapper;
