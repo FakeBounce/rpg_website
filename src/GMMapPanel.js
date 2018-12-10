@@ -1,48 +1,48 @@
-import React, { Component } from "react";
-import { cursorPointer, heightLeft, widthLeft } from "./Utils/StyleConstants";
+import React, { Component } from 'react';
+import { cursorPointer, heightLeft, widthLeft } from './Utils/StyleConstants';
 
-import PropTypes from "prop-types";
-import SoundPanel from "./SoundPanel/SoundPanel";
-import EventPanel from "./EventPanel/EventPanel";
-import MapEditionPanel from "./MapEditionPanel/MapEditionPanel";
-import StoryQuestsAndMerchantsPanel from "./StoryQuestsAndMerchantsPanel/StoryQuestsAndMerchantsPanel";
-import TownPanel from "./TownPanel/TownPanel";
-import PanelToggle from "./PanelToggle";
-import SpellGenerator from "./SpellGenerator";
-import firebase from "firebase";
+import PropTypes from 'prop-types';
+import SoundPanel from './SoundPanel/SoundPanel';
+import EventPanel from './EventPanel/EventPanel';
+import MapEditionPanel from './MapEditionPanel/MapEditionPanel';
+import StoryQuestsAndMerchantsPanel from './StoryQuestsAndMerchantsPanel/StoryQuestsAndMerchantsPanel';
+import TownPanel from './TownPanel/TownPanel';
+import PanelToggle from './PanelToggle';
+import SpellGenerator from './SpellGenerator';
+import firebase from 'firebase';
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
-  position: "relative",
+  display: 'inline-block',
+  float: 'left',
+  textAlign: 'left',
+  position: 'relative',
 };
 
 const styledMiddlePanel = {
   width: `${widthLeft}px`,
   height: `${heightLeft}px`,
-  display: "inline-block",
-  float: "left",
-  position: "relative",
+  display: 'inline-block',
+  float: 'left',
+  position: 'relative',
 };
 
 const styledContainer = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2 - 20}px`,
-  overflow: "auto",
-  display: "inline-block",
-  float: "left",
-  position: "relative",
+  overflow: 'auto',
+  display: 'inline-block',
+  float: 'left',
+  position: 'relative',
 };
 
 const styledBestiary = {
   width: `${widthLeft / 2}px`,
   height: 20,
-  display: "inline-block",
-  float: "left",
-  position: "relative",
+  display: 'inline-block',
+  float: 'left',
+  position: 'relative',
   cursor: cursorPointer,
 };
 
@@ -52,32 +52,6 @@ class GMMapPanel extends Component {
     isOnMap: true,
     isOnSpell: false,
     townToAssign: -1,
-    bestiary: [],
-  };
-
-  componentDidMount() {
-    firebase
-      .database()
-      .ref("stories/" + 0 + "/bestiary")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          bestiary: snapshot.val(),
-        }));
-      });
-  }
-
-  toggleSeenBeast = index => {
-    const tempBestiary = [...this.state.bestiary];
-    tempBestiary[index].seen = !tempBestiary[index].seen;
-    firebase
-      .database()
-      .ref("stories/" + 0 + "/bestiary")
-      .set(tempBestiary)
-      .catch(error => {
-        // Handle Errors here.
-        this.triggerError(error);
-      });
   };
 
   toggleRightPanel = bool => {
@@ -136,7 +110,7 @@ class GMMapPanel extends Component {
       triggerError,
       stories,
     } = this.props;
-    const { isOnQuest, isOnMap, isOnSpell, bestiary } = this.state;
+    const { isOnQuest, isOnMap, isOnSpell } = this.state;
     return (
       <div style={styledMiddlePanel}>
         <div style={styledMapSide}>
@@ -147,16 +121,6 @@ class GMMapPanel extends Component {
           {isOnSpell ? (
             <div style={styledContainer}>
               <SpellGenerator items={items} />
-              {bestiary.map((b, index) => {
-                return (
-                  <div
-                    style={styledBestiary}
-                    onClick={() => this.toggleSeenBeast(index)}
-                  >
-                    {b.name} : {b.seen ? "Yes" : "No"}
-                  </div>
-                );
-              })}
             </div>
           ) : isOnMap ? (
             <MapEditionPanel

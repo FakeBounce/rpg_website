@@ -1,46 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  heightLeft,
-  widthLeftBestiary,
-  widthListPanelBestiary,
-  widthRightPanel,
-} from '../Utils/StyleConstants';
-import Beast from './Beast';
+import { heightLeft } from '../Utils/StyleConstants';
 import PNJ from './PNJ';
 import { sortAlphabetical, sortReversedAlphabetical } from '../Utils/Functions';
 import BestiaryHeader from './BestiaryHeader';
 import BestiaryList from './BestiaryList';
 import BestiaryProfile from './BestiaryProfile';
+import firebase from 'firebase';
 
 const styledBestiaryPanel = {
   height: heightLeft,
   width: '100%',
-};
-
-const styledImage = {
-  position: 'relative',
-  float: 'left',
-  width: 50,
-  height: 50,
-};
-
-const styledBeast = {
-  width: widthLeftBestiary,
-  overflowX: 'hidden',
-  height: heightLeft - 25,
-  overflowY: 'auto',
-  display: 'inline-block',
-  float: 'left',
-};
-
-const styledPreview = {
-  width: widthListPanelBestiary,
-  height: heightLeft - 25,
-  overflowY: 'auto',
-  display: 'inline-block',
-  float: 'left',
 };
 
 class BestiaryPanel extends Component {
@@ -203,6 +174,32 @@ class BestiaryPanel extends Component {
     }));
   };
 
+  toggleSeenBeast = index => {
+    const { filteredBestiary } = this.state;
+    const { bestiary } = this.props;
+    const tempBestiary = [...bestiary];
+    const tempFilteredBestiary = [...filteredBestiary];
+
+    tempBestiary.map((b, i) => {
+      if (b.name === tempFilteredBestiary[index].name) {
+        tempFilteredBestiary[index].seen = tempBestiary[i].seen = !b.seen;
+      }
+    });
+    this.setState(state => ({
+      ...state,
+      filteredBestiary: [...tempFilteredBestiary],
+    }));
+
+    firebase
+      .database()
+      .ref('stories/' + 0 + '/bestiary')
+      .set(tempBestiary)
+      .catch(error => {
+        // Handle Errors here.
+        this.triggerError(error);
+      });
+  };
+
   render() {
     const { isGameMaster, uid } = this.props;
     const {
@@ -227,6 +224,7 @@ class BestiaryPanel extends Component {
           filteredBestiary={filteredBestiary}
           isGameMaster={isGameMaster}
           selectBeast={this.selectBeast}
+          toggleSeenBeast={this.toggleSeenBeast}
         />
         {selectedBeast !== -1 && (
           <BestiaryProfile
