@@ -5,13 +5,13 @@ import ItemDescriptionPanel from './ItemDescriptionPanel/ItemDescriptionPanel';
 import MerchantPanel from './MerchantPanel/MerchantPanel';
 import ItemPanel from './ItemPanel/ItemPanel';
 import QuestPanel from './QuestPanel/QuestPanel';
-import { heightHeader, widthLeft } from './Utils/StyleConstants';
+import { heightLeft, widthLeft } from './Utils/StyleConstants';
 import TempImage from './TempImage';
 
 const styledPlayerMapContainer = {
   float: 'left',
   width: `${widthLeft}px`,
-  height: `${window.innerHeight - heightHeader}px`,
+  height: `${heightLeft}px`,
   display: 'inline-block',
   position: 'relative',
 };

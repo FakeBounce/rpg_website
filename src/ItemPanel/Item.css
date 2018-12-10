@@ -4,6 +4,7 @@
     cursor: url('/common/cursor_pointer.png'), pointer;
     height: 50px;
     margin-top:-4px;
+    color: white;
 }
 
 .item:hover{

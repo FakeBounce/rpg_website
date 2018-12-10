@@ -83,13 +83,13 @@ const styles = {
     width: widthLeft / 2,
     position: 'absolute',
     height: heightLeft / 2,
-    top: heightLeft / 2 + heightHeader + 5,
+    top: heightLeft / 2 + heightHeader,
   },
   ChatImageContainer: {
     width: 20,
     height: 25,
     position: 'absolute',
-    bottom: 0,
+    bottom: 3,
     left: 0,
   },
   ChatSelect: {
@@ -114,6 +114,10 @@ class ChatPanel extends PureComponent {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.chatInput !== this.props.chatInput) {
       this.chatInputRef.focus();
+    }
+    if(prevProps.chatHistory.length !== this.props.chatHistory.length)
+    {
+      this.scrollToBottom();
     }
   }
 

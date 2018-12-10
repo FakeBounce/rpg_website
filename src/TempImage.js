@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { heightHeader, widthLeft } from './Utils/StyleConstants';
+import { heightLeft, widthLeft } from './Utils/StyleConstants';
 import { tempoImagesList } from './Utils/Constants';
 import firebase from 'firebase';
 
 const styledTempImage = {
   float: 'left',
   width: `${widthLeft}px`,
-  height: `${window.innerHeight - heightHeader}px`,
+  height: `${heightLeft}px`,
   display: 'inline-block',
   position: 'relative',
 };

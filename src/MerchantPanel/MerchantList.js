@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Merchant from "../MerchantPanel/Merchant";
 import PropTypes from "prop-types";
-import { widthLeft } from "../Utils/StyleConstants";
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 
 const styledItemContainer = {
   display: "inline-block",
@@ -10,7 +10,7 @@ const styledItemContainer = {
   top: 30,
   left : 16,
   overflowY: "auto",
-  height: "90%",
+  height: `${heightLeft / 2 - 60}px`,
   width: `${widthLeft / 2 - 36}px`,
 };
 

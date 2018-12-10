@@ -21,9 +21,17 @@ export const totalColumn = 40;
 export const gridTotal = gridDimension * gridLength;
 export const mapWidth = (window.innerWidth - widthRightPanel) / 3;
 export const widthLeft = window.innerWidth - mapWidth - widthRightPanel;
-export const heightLeft = gridLength * gridDimension * 2;
+export const heightLeft = window.innerHeight - heightHeader;
 
 export const cursorPointer = `url('/common/cursor_pointer.png'), pointer`;
+
+export const styledCadre = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: `${widthLeft / 2}px`,
+  height: `${heightLeft / 2}px`,
+};
 
 export const questsPosition = [
   {

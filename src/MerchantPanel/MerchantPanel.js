@@ -1,24 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { widthLeft, heightLeft } from '../Utils/StyleConstants';
+import { widthLeft, heightLeft, styledCadre } from "../Utils/StyleConstants";
 import MerchantList from './MerchantList';
 
 const styledMapSide = {
   width: `${widthLeft / 2 - 20}px`,
-  height: `${heightLeft / 2 - 10}px`,
+  height: `${heightLeft / 2}px`,
   display: 'inline-block',
   float: 'left',
   textAlign: 'left',
   position: 'relative',
-  padding: 10,
-};
-
-const styledCadre = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: `${widthLeft / 2 - 3}px`,
-  height: `${heightLeft / 2}px`,
+  paddingHorizontal: 10,
 };
 
 class MerchantPanel extends Component {
@@ -35,7 +27,7 @@ class MerchantPanel extends Component {
 
     return (
       <div style={styledMapSide}>
-        <img src={'./common/cadreall.png'} style={styledCadre} alt="Cadre" />
+        <img src={'./common/cadre.png'} style={styledCadre} alt="Cadre" />
         <MerchantList
           currentMerchant={currentMerchant}
           merchantsList={merchantsList}

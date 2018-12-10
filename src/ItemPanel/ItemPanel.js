@@ -1,25 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { widthLeft, heightLeft } from '../Utils/StyleConstants';
+import { widthLeft, heightLeft, styledCadre } from "../Utils/StyleConstants";
 import ItemList from './ItemList';
 
 const styledMapSide = {
-  width: `${widthLeft / 2 - 20}px`,
-  height: `${heightLeft / 2 - 10}px`,
+  width: `${widthLeft / 2}px`,
+  height: `${heightLeft / 2}px`,
   display: 'inline-block',
   float: 'left',
   textAlign: 'left',
   position: 'relative',
-  padding: 10,
-  top: -20,
-};
-
-const styledCadre = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: `${widthLeft / 2 - 3}px`,
-  height: `${heightLeft / 2}px`,
+  paddingHorizontal: 10,
 };
 
 class ItemPanel extends Component {
@@ -37,7 +28,7 @@ class ItemPanel extends Component {
 
     return (
       <div style={styledMapSide}>
-        <img src={'./common/cadreall.png'} style={styledCadre} alt="Cadre" />
+        <img src={'./common/cadre.png'} style={styledCadre} alt="Cadre" />
         <ItemList
           character={character}
           itemsList={itemsList}

@@ -8,7 +8,7 @@ const styledItemContainer = {
   display: "inline-block",
   float: "left",
   position: "absolute",
-  top: "20px",
+  top: 20,
   left: 16,
   overflowY: "auto",
   height: "82%",
@@ -20,7 +20,7 @@ class ItemList extends Component {
     const { character, itemsList, showItemDescription } = this.props;
 
     return (
-      <div style={styledItemContainer}>
+      <div style={styledItemContainer} className="scrollbar">
         {itemsList.map((itemFromMerchant, index) => {
           const isHidden = character.education < itemFromMerchant.rarity * 9;
           return (

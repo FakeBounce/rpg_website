@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { widthRightPanelLeft } from '../Utils/StyleConstants';
 import firebase from 'firebase';
+import ButtonLarge from '../Utils/ButtonLarge';
 
 const styles = {
   tabPanelItem: {
@@ -90,12 +91,12 @@ class CharacterTabPanelContent extends Component {
           return (
             <div key={`${description}-${index}`} style={styles.tabPanelItem}>
               {description}
-              <button
+              <ButtonLarge
                 style={styles.itemButton}
                 onClick={() => this.onRemove(index)}
               >
                 Remove
-              </button>
+              </ButtonLarge>
             </div>
           );
         })}
@@ -108,7 +109,9 @@ class CharacterTabPanelContent extends Component {
               this.onChange(e.target.value);
             }}
           />
-          <button onClick={this.onValidate}>Add {tabName.toLowerCase()}</button>
+          <ButtonLarge style={styles.itemButton} onClick={this.onValidate}>
+            Add {tabName.toLowerCase()}
+          </ButtonLarge>
         </div>
       </div>
     );

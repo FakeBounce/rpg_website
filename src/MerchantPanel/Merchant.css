@@ -6,6 +6,7 @@
     cursor: url('/common/cursor_pointer.png'), pointer;
     height: 30px;
     text-align: center;
+    color: white;
 }
 
 .merchant:hover{
@@ -29,4 +30,5 @@
     width: 70%;
     height: 25px;
     display: inline-block;
+    color: white;
 }

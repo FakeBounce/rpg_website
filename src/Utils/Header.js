@@ -53,7 +53,6 @@ const styledHeaderLeft = {
 };
 
 const styledHeader = {
-  borderBottom: "1px solid black",
   width: "100%",
   height: `${heightHeader}px`,
   backgroundImage: `url(./common/dravos_header.jpg)`,

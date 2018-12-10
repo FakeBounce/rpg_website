@@ -122,7 +122,9 @@ class CharacterTabPanelItem extends Component {
               this.onChangeItem(e.target.value);
             }}
           />
-          <button onClick={this.onValidateItem}>Add Item</button>
+          <ButtonLarge style={styles.itemButton} onClick={this.onValidateItem}>
+            Add Item
+          </ButtonLarge>
         </div>
       </div>
     );
