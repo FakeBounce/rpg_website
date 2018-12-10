@@ -86,6 +86,16 @@ class App extends Component {
     // resetStoryMerchants(currentStory, this.doSetState);
   };
 
+  hydrateMerchants = () => {
+    hydrateAllMerchants(
+      this.state.currentStory,
+      this.state.merchants,
+      this.state.items,
+      this.doSetState,
+      false
+    );
+  };
+
   toggleBestiary = () => {
     this.setState(state => ({
       ...state,
@@ -595,11 +605,11 @@ class App extends Component {
   };
 
   createChat = () => {
-    loadChat(this.doSetState);
+    loadChat(this.state.currentStory, this.doSetState);
 
     firebase
       .database()
-      .ref('/chat')
+      .ref('/stories/' + this.state.currentStory + '/chat')
       .limitToLast(50)
       .on('child_added', snapshot => {
         const tempChat = [...this.state.chatHistory, snapshot.val()];
@@ -792,6 +802,7 @@ class App extends Component {
               eventHistory={eventHistory}
               gameMaster={gameMaster}
               generateTable={this.generateTable}
+              hydrateMerchants={this.hydrateMerchants}
               isGameMaster={isGameMaster}
               isItemDescriptionShowed={isItemDescriptionShowed}
               isItemShowed={isItemShowed}

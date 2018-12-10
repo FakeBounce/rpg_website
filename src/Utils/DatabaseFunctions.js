@@ -372,10 +372,10 @@ export const listenCurrentEvent = (currentStory, doSetState) => {
     });
 };
 
-export const loadChat = doSetState => {
+export const loadChat = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('/chat')
+    .ref('/stories/'+currentStory+'/chat')
     .limitToLast(50)
     .once('value')
     .then(snapshot => {

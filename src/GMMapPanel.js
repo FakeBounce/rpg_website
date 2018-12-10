@@ -10,6 +10,7 @@ import TownPanel from './TownPanel/TownPanel';
 import PanelToggle from './PanelToggle';
 import SpellGenerator from './SpellGenerator';
 import firebase from 'firebase';
+import ButtonLarge from './Utils/ButtonLarge';
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -86,29 +87,30 @@ class GMMapPanel extends Component {
 
   render() {
     const {
-      textureToApply,
-      onChangeMusics,
-      resetSounds,
+      changeCurrentScale,
+      currentScale,
+      currentStory,
+      currentTile,
+      currentTown,
+      doSetState,
+      eventHistory,
+      gameMaster,
+      hydrateMerchants,
+      items,
+      merchants,
       musicName,
       musicVolume,
       noiseName,
       noiseVolume,
-      changeCurrentScale,
-      currentScale,
-      currentTown,
-      towns,
+      onChangeMusics,
       quests,
-      merchants,
-      currentTile,
-      storyCharacters,
-      gameMaster,
-      items,
-      currentStory,
-      eventHistory,
-      doSetState,
-      tilesTypes,
-      triggerError,
+      resetSounds,
       stories,
+      storyCharacters,
+      textureToApply,
+      tilesTypes,
+      towns,
+      triggerError,
     } = this.props;
     const { isOnQuest, isOnMap, isOnSpell } = this.state;
     return (
@@ -121,6 +123,9 @@ class GMMapPanel extends Component {
           {isOnSpell ? (
             <div style={styledContainer}>
               <SpellGenerator items={items} />
+              <ButtonLarge style={{ marginTop: 30 }} onClick={hydrateMerchants}>
+                Hydrate merchants
+              </ButtonLarge>
             </div>
           ) : isOnMap ? (
             <MapEditionPanel
@@ -182,29 +187,30 @@ GMMapPanel.defaultProps = {
 };
 
 GMMapPanel.propTypes = {
+  changeCurrentScale: PropTypes.func.isRequired,
+  currentScale: PropTypes.number.isRequired,
+  currentStory: PropTypes.number.isRequired,
+  currentTile: PropTypes.object.isRequired,
+  currentTown: PropTypes.number.isRequired,
+  doSetState: PropTypes.func.isRequired,
+  eventHistory: PropTypes.array.isRequired,
+  gameMaster: PropTypes.string.isRequired,
+  hydrateMerchants: PropTypes.string.isRequired,
   items: PropTypes.object.isRequired,
-  textureToApply: PropTypes.object,
+  merchants: PropTypes.array.isRequired,
   musicName: PropTypes.string.isRequired,
-  noiseName: PropTypes.string.isRequired,
   musicVolume: PropTypes.number.isRequired,
+  noiseName: PropTypes.string.isRequired,
   noiseVolume: PropTypes.number.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
-  resetSounds: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
-  changeCurrentScale: PropTypes.func.isRequired,
-  tilesTypes: PropTypes.object.isRequired,
-  currentScale: PropTypes.number.isRequired,
-  currentTown: PropTypes.number.isRequired,
-  currentStory: PropTypes.number.isRequired,
-  towns: PropTypes.array.isRequired,
   quests: PropTypes.array.isRequired,
-  merchants: PropTypes.array.isRequired,
+  resetSounds: PropTypes.func.isRequired,
   stories: PropTypes.array.isRequired,
-  currentTile: PropTypes.object.isRequired,
-  eventHistory: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
-  gameMaster: PropTypes.string.isRequired,
+  textureToApply: PropTypes.object,
+  tilesTypes: PropTypes.object.isRequired,
+  towns: PropTypes.array.isRequired,
+  triggerError: PropTypes.func.isRequired,
 };
 
 export default GMMapPanel;

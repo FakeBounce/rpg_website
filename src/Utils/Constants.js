@@ -858,3 +858,24 @@ export const bestiaryOrderBy = [
   'Knowledge',
   'Reversed knowledge',
 ];
+
+export const initialBestiaryPanel = {
+  selectedFilter: 'All',
+  selectedOrderBy: 'Default',
+  selectedOrderByType: 'None',
+  filteredBestiary: [...this.props.bestiary],
+  selectedBeast: -1,
+  isOnForm: false,
+  name: '',
+  monster: true,
+  image: '',
+  text1: '',
+  text2: '',
+  text3: '',
+  text4: '',
+  age: '',
+  taille: '',
+  poids: '',
+  known: false,
+  dangerosity: '',
+};

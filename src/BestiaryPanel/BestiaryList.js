@@ -30,6 +30,7 @@ class BestiaryList extends Component {
       filteredBestiary,
       selectBeast,
       toggleSeenBeast,
+      displayMonsterForm,
     } = this.props;
 
     return (
@@ -70,6 +71,21 @@ class BestiaryList extends Component {
           }
           return null;
         })}
+        <div
+          style={{
+            height: 50,
+            position: 'relative',
+            cursor: cursorPointer,
+          }}
+          onClick={displayMonsterForm}
+        >
+          <img
+            src={'./common/unknown_image_black.png'}
+            style={styledImage}
+            alt={'Unknown'}
+          />
+          Add a monster
+        </div>
       </div>
     );
   }
@@ -80,6 +96,7 @@ BestiaryList.propTypes = {
   filteredBestiary: PropTypes.array.isRequired,
   selectBeast: PropTypes.func.isRequired,
   toggleSeenBeast: PropTypes.func.isRequired,
+  displayMonsterForm: PropTypes.func.isRequired,
 };
 
 export default BestiaryList;

@@ -32,6 +32,7 @@ class MiddlePanel extends Component {
       doSetState,
       eventHistory,
       gameMaster,
+      hydrateMerchants,
       isGameMaster,
       isItemDescriptionShowed,
       isItemShowed,
@@ -110,6 +111,7 @@ class MiddlePanel extends Component {
               doSetState={doSetState}
               eventHistory={eventHistory}
               gameMaster={gameMaster}
+              hydrateMerchants={hydrateMerchants}
               items={items}
               merchants={merchants}
               musicName={musicName}
@@ -190,6 +192,7 @@ MiddlePanel.propTypes = {
   doSetState: PropTypes.func.isRequired,
   eventHistory: PropTypes.array.isRequired,
   gameMaster: PropTypes.string.isRequired,
+  hydrateMerchants: PropTypes.string.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,
   isItemShowed: PropTypes.bool.isRequired,

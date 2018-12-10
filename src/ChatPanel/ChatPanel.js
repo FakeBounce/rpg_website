@@ -115,8 +115,7 @@ class ChatPanel extends PureComponent {
     if (prevProps.chatInput !== this.props.chatInput) {
       this.chatInputRef.focus();
     }
-    if(prevProps.chatHistory.length !== this.props.chatHistory.length)
-    {
+    if (prevProps.chatHistory.length !== this.props.chatHistory.length) {
       this.scrollToBottom();
     }
   }
@@ -676,10 +675,10 @@ class ChatPanel extends PureComponent {
   };
 
   onDrop = picture => {
-    const { triggerError, chatInput, doSetState } = this.props;
+    const { triggerError, chatInput, doSetState, currentStory } = this.props;
     const newPostKey = firebase
       .database()
-      .ref('chat/')
+      .ref('/stories/' + currentStory + '/chat/')
       .push().key;
     const path =
       'images/chat/' +
@@ -701,7 +700,7 @@ class ChatPanel extends PureComponent {
           .then(url => {
             firebase
               .database()
-              .ref('chat/' + newPostKey)
+              .ref('/stories/' + currentStory + '/chat/' + newPostKey)
               .set({
                 message: chatInput,
                 imagePath: path,
