@@ -115,7 +115,6 @@ class ChatPanel extends PureComponent {
     if (prevProps.chatInput !== this.props.chatInput) {
       this.chatInputRef.focus();
     }
-    this.scrollToBottom();
   }
 
   onChangeDice = value => {
@@ -615,7 +614,10 @@ class ChatPanel extends PureComponent {
 
     if (dice < 6) {
       message = `@${realPseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Critical success !)`;
-    } else if (dice <= character[attribute] + parseInt(bonus, 10)) {
+    } else if (
+      dice <=
+      parseInt(character[attribute], 10) + parseInt(bonus, 10)
+    ) {
       message = `@${realPseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Success !)`;
     } else if (dice > 95) {
       message = `@${realPseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Critical fail !)`;

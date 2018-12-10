@@ -90,6 +90,7 @@ class App extends Component {
     this.setState(state => ({
       ...state,
       isOnBestiary: !state.isOnBestiary,
+      onChatHelp: false,
     }));
   };
 
@@ -615,6 +616,7 @@ class App extends Component {
     this.setState(state => ({
       ...state,
       onChatHelp: !state.onChatHelp,
+      isOnBestiary: false,
     }));
   };
 

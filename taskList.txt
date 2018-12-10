@@ -37,5 +37,18 @@ Gérer les Websockets pour la mise à jour du site pour tous les joueurs de l'hi
 Mettre en ligne le site
 Insérer les données
 
+----------------------------
+
+V2.9.2
+Mettre un système d'échange entre joueurs
+Ajouter des salons de discussions vocals
+Voir si on peut gérer le son vocal/musique
+Virer le panneau de droite pour le GM (ou laisser juste l'équipe)
+Mettre du style sur l'achat d'objets
+Mieux gérer les panneaux du GM
+Mettre du style sur le bestiaire
+Ajouter un onglet "Forger" ou "Enchanter" pour les marchands
+Mettre à jours la liste de sorts avec des invocations
+Checker l'event dessin
 
 BDD : https://rpgwebsite-8a535.firebaseio.com/
