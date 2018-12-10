@@ -635,11 +635,18 @@ class EventModal extends PureComponent {
         {eventHistory[currentEvent].type === "draw" && (
           <Fragment>
             {storyCharacters.map(sc => {
-              return <Draw
+              return sc.userUid === gameMaster ? (
+                <Draw
+                  name={"GameMaster"}
+                  disabled={uid !== gameMaster}
+                />
+              ) : (
+                <Draw
                   uid={sc.userUid}
                   disabled={uid !== sc.userUid}
                   name={sc.name}
                 />
+              );
             })}
             {isGameMaster && (
               <button style={styledEventAction} onClick={this.closeEvent}>
