@@ -40,8 +40,8 @@ Insérer les données
 ----------------------------
 
 V2.9.2
-0) Mettre à jours la liste de sorts avec des invocations
-1) Checker l'event dessin
+0) Mettre à jours la liste de sorts avec des invocations - OK
+1) Checker l'event dessin - OK
 2) Ajouter des salons de discussions vocals
 3) Mettre du style sur l'achat d'objets
 4) Mettre un bouton pour rafraîchir les marchands/Mettre un bouton pour ajouter un monstre

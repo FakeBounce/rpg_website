@@ -11,6 +11,12 @@ const styledMapArrows = {
   zIndex: 5,
   cursor: cursorPointer,
 };
+const styledMapCenter = {
+  width: 30,
+  height: 30,
+  backgroundColor: "grey",
+  borderRadius: 30,
+};
 
 class MapArrows extends Component {
   render() {
@@ -20,18 +26,13 @@ class MapArrows extends Component {
       <div style={styledMapArrows}>
         <div className="map-move map-move-center" onClick={loadCurrentPosition}>
           <div
-            style={{
-              width: 30,
-              height: 30,
-              backgroundColor: "grey",
-              borderRadius: 30,
-            }}
+            style={styledMapCenter}
           />
         </div>
         <div
           className="map-move map-move-left"
           onClick={() => {
-            doSetState({ currentX: currentX - 1 });
+            doSetState({ currentX: currentX - 3 });
           }}
         >
           <img
@@ -43,7 +44,7 @@ class MapArrows extends Component {
         <div
           className="map-move map-move-right"
           onClick={() => {
-            doSetState({ currentX: currentX + 1 });
+            doSetState({ currentX: currentX + 3 });
           }}
         >
           <img
@@ -55,7 +56,7 @@ class MapArrows extends Component {
         <div
           className="map-move map-move-up"
           onClick={() => {
-            doSetState({ currentY: currentY - 1 });
+            doSetState({ currentY: currentY - 3 });
           }}
         >
           <img
@@ -67,7 +68,7 @@ class MapArrows extends Component {
         <div
           className="map-move map-move-down"
           onClick={() => {
-            doSetState({ currentY: currentY + 1 });
+            doSetState({ currentY: currentY + 3 });
           }}
         >
           <img
