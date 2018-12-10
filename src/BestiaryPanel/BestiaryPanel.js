@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { heightLeft, imageSize } from '../Utils/StyleConstants';
+import { cursorPointer, heightLeft, imageSize } from "../Utils/StyleConstants";
 import PNJ from './PNJ';
 import { sortAlphabetical, sortReversedAlphabetical } from '../Utils/Functions';
 import BestiaryHeader from './BestiaryHeader';
@@ -19,6 +19,13 @@ const styledBestiaryPanel = {
 
 class BestiaryPanel extends Component {
   state = initialBestiaryPanel;
+
+  componentDidMount() {
+    this.setState(state => ({
+      ...state,
+      filteredBestiary: [...this.props.bestiary],
+    }));
+  }
 
   onChangeFilter = value => {
     const { bestiary } = this.props;
@@ -288,6 +295,7 @@ class BestiaryPanel extends Component {
       .then(() => {
         this.setState(state => ({
           ...initialBestiaryPanel,
+          filteredBestiary: [...this.props.bestiary],
         }));
       })
       .catch(error => {
@@ -357,12 +365,18 @@ class BestiaryPanel extends Component {
             <FileUploader
               onDrop={this.onDrop}
               buttonText="+"
-              fileContainerStyle={{ padding: 0, margin: 0, display: 'block' }}
+              fileContainerStyle={{
+                width: 20,
+                padding: 0,
+                margin: 0,
+                display: 'inline-block',
+              }}
               buttonStyles={{
                 width: 20,
                 padding: 0,
                 margin: 0,
                 border: '1px solid #3f4257',
+                cursor:cursorPointer,
               }}
               withIcon={false}
               label=""

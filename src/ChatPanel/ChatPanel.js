@@ -775,6 +775,7 @@ class ChatPanel extends PureComponent {
                 padding: 0,
                 margin: 0,
                 border: '1px solid #3f4257',
+                cursor:cursorPointer,
               }}
               withIcon={false}
               label=""

@@ -863,7 +863,7 @@ export const initialBestiaryPanel = {
   selectedFilter: 'All',
   selectedOrderBy: 'Default',
   selectedOrderByType: 'None',
-  filteredBestiary: [...this.props.bestiary],
+  filteredBestiary: [],
   selectedBeast: -1,
   isOnForm: false,
   name: '',

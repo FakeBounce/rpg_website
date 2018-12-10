@@ -91,9 +91,6 @@ class Header extends Component {
         </div>
         <div style={styledBoxHeader}>{title}</div>
         <div style={styledHeaderRight}>
-          <ButtonLarge style={styledTogglingAbsolute} onClick={toggleBestiary}>
-            {bestiaryTitle}
-          </ButtonLarge>
           <ButtonLarge style={styledSignOut} onClick={signOut}>
             Sign Out
           </ButtonLarge>
@@ -106,9 +103,6 @@ class Header extends Component {
           >
             Select another character
           </ButtonLarge>
-          <ButtonLarge style={styledSignOut} onClick={accessChatHelp}>
-            {chatHelpTitle}
-          </ButtonLarge>
           <ButtonLarge style={styledSignOut} onClick={toggleMusic}>
             Toggle music
             <img
@@ -120,6 +114,12 @@ class Header extends Component {
               style={styledSound}
               alt="sound muted or not"
             />
+          </ButtonLarge>
+          <ButtonLarge style={styledSignOut} onClick={accessChatHelp}>
+            {chatHelpTitle}
+          </ButtonLarge>
+          <ButtonLarge style={styledTogglingAbsolute} onClick={toggleBestiary}>
+            {bestiaryTitle}
           </ButtonLarge>
         </div>
         {isGameMaster && (

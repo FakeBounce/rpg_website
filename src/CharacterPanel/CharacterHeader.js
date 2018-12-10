@@ -5,8 +5,8 @@ import CharacterHeaderInfos from './CharacterHeaderInfos';
 import {
   widthRightPanel,
   imageSize,
-  widthRightPanelLeft,
-} from '../Utils/StyleConstants';
+  widthRightPanelLeft, cursorPointer,
+} from "../Utils/StyleConstants";
 import firebase from 'firebase';
 import FileUploader from '../CharacterCreation/FileUploader';
 
@@ -123,6 +123,7 @@ class CharacterHeader extends Component {
               padding: 0,
               margin: 0,
               border: '1px solid #3f4257',
+              cursor:cursorPointer,
             }}
             withIcon={false}
             label=""
