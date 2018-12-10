@@ -71,21 +71,23 @@ class BestiaryList extends Component {
           }
           return null;
         })}
-        <div
-          style={{
-            height: 50,
-            position: 'relative',
-            cursor: cursorPointer,
-          }}
-          onClick={displayMonsterForm}
-        >
-          <img
-            src={'./common/unknown_image_black.png'}
-            style={styledImage}
-            alt={'Unknown'}
-          />
-          Add a monster
-        </div>
+        {isGameMaster && (
+          <div
+            style={{
+              height: 50,
+              position: 'relative',
+              cursor: cursorPointer,
+            }}
+            onClick={displayMonsterForm}
+          >
+            <img
+              src={'./common/unknown_image_black.png'}
+              style={styledImage}
+              alt={'Unknown'}
+            />
+            Add a monster
+          </div>
+        )}
       </div>
     );
   }

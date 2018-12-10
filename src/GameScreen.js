@@ -116,6 +116,8 @@ class GameScreen extends Component {
             isGameMaster={isGameMaster}
             uid={uid}
             bestiary={bestiary}
+            doSetState={doSetState}
+            currentStory={currentStory}
           />
         ) : onChatHelp ? (
           <ChatCommandsPanel />

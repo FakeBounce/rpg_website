@@ -859,13 +859,7 @@ export const bestiaryOrderBy = [
   'Reversed knowledge',
 ];
 
-export const initialBestiaryPanel = {
-  selectedFilter: 'All',
-  selectedOrderBy: 'Default',
-  selectedOrderByType: 'None',
-  filteredBestiary: [],
-  selectedBeast: -1,
-  isOnForm: false,
+export const initialBestiaryForm = {
   name: '',
   monster: true,
   image: '',
