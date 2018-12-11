@@ -8,6 +8,12 @@
 }
 
 .item:hover{
+    border-bottom: 1px solid blue;
+    border-top: 1px solid blue;
+}
+
+.item.selected{
+    border:none;
     border-bottom: 1px solid red;
     border-top: 1px solid red;
 }

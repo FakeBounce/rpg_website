@@ -7,6 +7,12 @@ import ItemPanel from './ItemPanel/ItemPanel';
 import QuestPanel from './QuestPanel/QuestPanel';
 import { heightLeft, widthLeft } from './Utils/StyleConstants';
 import TempImage from './TempImage';
+import Cadre from './Utils/Cadre';
+import Item from './ItemPanel/Item';
+import EnhancementWeaponsPanel from './EnhancementWeaponsPanel/EnhancementWeaponsPanel';
+import ShopHeaderBlacksmith from './ShopHeader/ShopHeaderBlacksmith';
+import ShopHeaderEnhancements from './ShopHeader/ShopHeaderEnhancements';
+import ShopHeaderDefault from './ShopHeader/ShopHeaderDefault';
 
 const styledPlayerMapContainer = {
   float: 'left',
@@ -16,7 +22,64 @@ const styledPlayerMapContainer = {
   position: 'relative',
 };
 
+const styledPanelContainer = {
+  width: `${widthLeft / 2}px`,
+  height: `${heightLeft / 2}px`,
+  display: 'inline-block',
+  float: 'left',
+  position: 'relative',
+};
+
+const styledTabs = {
+  width: `${widthLeft / 2}px`,
+  height: 25,
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  color: 'white',
+  zIndex: 1,
+};
+
+const styledTripleTab = {
+  width: '33%',
+  height: 25,
+  display: 'inline-block',
+  position: 'relative',
+};
+
+const styledDoubleTab = {
+  width: '50%',
+  height: 25,
+  display: 'inline-block',
+  position: 'relative',
+};
+
 class PlayerMapPanel extends Component {
+  state = {
+    currentTab: 'items',
+    showEnhancers: false,
+    isFromMerchant: false,
+    choosedItem: null,
+  };
+
+  changeTab = newTab => {
+    this.setState(state => ({
+      ...state,
+      currentTab: newTab,
+      showEnhancers: false,
+      isFromMerchant: false,
+      choosedItem: null,
+    }));
+  };
+
+  showEnhancers = (isFromMerchant, item) => {
+    this.setState(state => ({
+      ...state,
+      isFromMerchant,
+      choosedItem: item,
+    }));
+  };
+
   render() {
     const {
       character,
@@ -37,6 +100,13 @@ class PlayerMapPanel extends Component {
       currentMerchant,
     } = this.props;
 
+    const {
+      currentTab,
+      showEnhancers,
+      isFromMerchant,
+      choosedItem,
+    } = this.state;
+
     return (
       <div style={styledPlayerMapContainer}>
         {isTownShowed ? (
@@ -55,13 +125,110 @@ class PlayerMapPanel extends Component {
               doSetState={doSetState}
             />
             {isItemShowed && (
-              <ItemPanel
-                currentMerchant={currentMerchant}
-                character={character}
-                itemsList={itemsList}
-                merchants={merchants}
-                doSetState={doSetState}
-              />
+              <div style={styledPanelContainer}>
+                {merchants[currentMerchant].job === 'Forgeron' ? (
+                  <ShopHeaderBlacksmith changeTab={this.changeTab} />
+                ) : parseInt(merchants[currentMerchant].enhancements, 10) >
+                0 ? (
+                  <ShopHeaderEnhancements changeTab={this.changeTab} />
+                ) : (
+                  <ShopHeaderDefault />
+                )}
+                {currentTab === 'items' && (
+                  <ItemPanel
+                    currentMerchant={currentMerchant}
+                    character={character}
+                    itemsList={itemsList}
+                    merchants={merchants}
+                    doSetState={doSetState}
+                  />
+                )}
+                {currentTab === 'enhancements' && (
+                  <EnhancementWeaponsPanel
+                    currentMerchant={currentMerchant}
+                    character={character}
+                    isFromMerchant={isFromMerchant}
+                    choosedItem={choosedItem}
+                    showEnhancers={this.showEnhancers}
+                    merchants={merchants}
+                    itemsList={itemsList}
+                  />
+                )}
+                {currentTab === 'blacksmith' && (
+                  <ItemPanel
+                    currentMerchant={currentMerchant}
+                    character={character}
+                    itemsList={itemsList}
+                    merchants={merchants}
+                    doSetState={doSetState}
+                  />
+                )}
+              </div>
+            )}
+            {showEnhancers && (
+              <div
+                style={{
+                  width: `${widthLeft / 2}px`,
+                  height: `${heightLeft / 2}px`,
+                  display: 'inline-block',
+                  float: 'left',
+                  textAlign: 'left',
+                  position: 'relative',
+                  paddingHorizontal: 10,
+                  color: 'white',
+                }}
+              >
+                <Cadre />
+                <div
+                  style={{
+                    display: 'inline-block',
+                    float: 'left',
+                    position: 'absolute',
+                    top: 40,
+                    left: 16,
+                    overflowY: 'auto',
+                    height: `${heightLeft / 2 - 60}px`,
+                    width: `${widthLeft / 2 - 42}px`,
+                  }}
+                >
+                  <div style={{ width: '100%', display: 'block' }}>
+                    Choose enhancer (temporary) :
+                  </div>
+                  {parseInt(merchants[currentMerchant].enhancements, 10) > 0 &&
+                    itemsList.map((itemFromMerchant, index) => {
+                      const isHidden =
+                        character.education < itemFromMerchant.rarity * 9;
+                      if (itemFromMerchant.itemType === 'weapons') {
+                        return (
+                          <Item
+                            key={`item-${itemFromMerchant.name}-${index}`}
+                            {...itemFromMerchant}
+                            index={index}
+                            isHidden={isHidden}
+                            showItemDescription={() => {}}
+                          />
+                        );
+                      }
+                    })}
+                  <div style={{ width: '100%', display: 'block' }}>
+                    Your enhancers :
+                  </div>
+                  {character.items.map((item, index) => {
+                    const isHidden = character.education < item.rarity * 9;
+                    if (item.itemType === 'enhancements') {
+                      return (
+                        <Item
+                          key={`item-${item.name}-${index}`}
+                          {...item}
+                          index={index}
+                          isHidden={isHidden}
+                          showItemDescription={() => {}}
+                        />
+                      );
+                    }
+                  })}
+                </div>
+              </div>
             )}
             {isItemDescriptionShowed && (
               <ItemDescriptionPanel

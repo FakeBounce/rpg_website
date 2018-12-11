@@ -54,6 +54,15 @@ V2.9.2
 10) Faire de l'édition de bestiaire
 11) Ajouter djimenir en ville
 
+v2.10.0
+12) Mettre context
+13) Revoir le découpage des composants dans tous les fichiers
+14) Revoir le style dans tous les fichiers
+15) Revoir les composants "Fonctions", essayer de déclarer
+les fonctions au plus bas niveau de composant possible
+16) Pouvoir modifier les attribut du personnage GM
+17) Pouvoir revenir au personnage GM sans devoir quitter la page
+
 
 
 BDD : https://rpgwebsite-8a535.firebaseio.com/

@@ -2,16 +2,16 @@ import React, { Component } from "react";
 
 import Item from "./Item";
 import PropTypes from "prop-types";
-import { widthLeft } from "../Utils/StyleConstants";
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 
 const styledItemContainer = {
   display: "inline-block",
   float: "left",
   position: "absolute",
-  top: 20,
+  top: 40,
   left: 16,
   overflowY: "auto",
-  height: "82%",
+  height:`${heightLeft / 2 - 60}px`,
   width: `${widthLeft / 2 - 42}px`,
 };
 
