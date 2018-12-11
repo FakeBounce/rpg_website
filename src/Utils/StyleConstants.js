@@ -7,6 +7,8 @@ export const widthListPanelBestiary = 250;
 export const widthLeftBestiary = window.innerWidth - widthListPanelBestiary;
 export const widthImageBestiary = 200;
 export const widthTextBestiary = widthLeftBestiary - widthImageBestiary;
+export const widthExchangeBox = 300;
+export const heightExchangeBox = 300;
 
 // export const gridHeight = 20;
 // export const gridWidth = 20;

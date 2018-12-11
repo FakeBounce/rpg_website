@@ -46,7 +46,7 @@ V2.9.2
 3)  Mettre du style sur l'achat d'objets - OK
 4)  - Mettre un bouton pour rafraîchir les marchands - OK
     - Mettre un bouton pour ajouter un monstre - OK
-5)  Mettre un système d'échange entre joueurs
+5)  Mettre un système d'échange entre joueurs - OK
 6)  Ajouter un onglet "Forger" ou "Enchanter" pour les marchands
 7)  Mieux gérer les panneaux du GM
 8)  Mettre du style sur le bestiaire

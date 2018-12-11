@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TeamCharacter from './TeamCharacter';
-import {
-  widthRightPanel,
-  heightLeft,
-} from '../Utils/StyleConstants';
+import { widthRightPanel, heightLeft } from '../Utils/StyleConstants';
 
 const styles = {
   TeamPanel: {
@@ -32,14 +29,14 @@ const styles = {
   },
   HeaderText: {
     position: 'relative',
-    width: `${widthRightPanel/4}px`,
+    width: `${widthRightPanel / 4}px`,
     height: 25,
     float: 'left',
     display: 'inline-block',
   },
   HeaderTextLeft: {
     position: 'relative',
-    width: `${widthRightPanel/4}px`,
+    width: `${widthRightPanel / 4}px`,
     height: 25,
     float: 'left',
     display: 'inline-block',
@@ -51,6 +48,7 @@ class TeamPanel extends Component {
   render() {
     const {
       storyCharacters,
+      exchangeWithTeamMember,
       chatWithTeamMember,
       goldWithTeamMember,
       modifyCurrentCharacter,
@@ -61,10 +59,10 @@ class TeamPanel extends Component {
     return (
       <div style={styles.TeamPanel}>
         <div style={styles.HeaderTextContainer}>
-        <div style={styles.HeaderTextLeft}>Equipe :</div>
-        <div style={styles.HeaderText}>Name</div>
-        <div style={styles.HeaderText}>Status</div>
-        <div style={styles.HeaderText}>Gold</div>
+          <div style={styles.HeaderTextLeft}>Equipe :</div>
+          <div style={styles.HeaderText}>Name</div>
+          <div style={styles.HeaderText}>Status</div>
+          <div style={styles.HeaderText}>Gold</div>
         </div>
         <div style={styles.teamCharacters}>
           <TeamCharacter
@@ -94,6 +92,9 @@ class TeamPanel extends Component {
                   goldWithTeamMember={() =>
                     goldWithTeamMember(storyCharacter.userPseudo)
                   }
+                  exchangeWithTeamMember={() =>
+                    exchangeWithTeamMember(storyCharacter)
+                  }
                 />
               );
             }
@@ -107,6 +108,7 @@ class TeamPanel extends Component {
 
 TeamPanel.propTypes = {
   storyCharacters: PropTypes.array.isRequired,
+  exchangeWithTeamMember: PropTypes.func.isRequired,
   chatWithTeamMember: PropTypes.func.isRequired,
   goldWithTeamMember: PropTypes.func.isRequired,
   modifyCurrentCharacter: PropTypes.func.isRequired,

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { widthLeft, heightLeft, styledCadre } from "../Utils/StyleConstants";
+import { widthLeft, heightLeft } from '../Utils/StyleConstants';
 import ItemList from './ItemList';
+import Cadre from '../Utils/Cadre';
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -28,7 +29,7 @@ class ItemPanel extends Component {
 
     return (
       <div style={styledMapSide}>
-        <img src={'./common/cadre.png'} style={styledCadre} alt="Cadre" />
+        <Cadre />
         <ItemList
           character={character}
           itemsList={itemsList}

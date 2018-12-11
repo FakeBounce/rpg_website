@@ -3,8 +3,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import TeamPanel from './TeamCharacters/TeamPanel';
-import { widthRightPanel, heightHeader } from './Utils/StyleConstants';
+import {
+  widthRightPanel,
+  heightHeader,
+  cursorPointer,
+  widthExchangeBox,
+  heightExchangeBox,
+  widthRightPanelLeft,
+} from './Utils/StyleConstants';
 import CharacterPanel from './CharacterPanel/CharacterPanel';
+import ButtonLarge from './Utils/ButtonLarge';
+import ExchangePanel from './ExchangePanel/ExchangePanel';
 
 const styles = {
   RightPanel: {
@@ -14,7 +23,6 @@ const styles = {
     borderLeft: '1px solid black',
     width: `${widthRightPanel}px`,
     height: `${window.innerHeight - heightHeader}px`,
-    overflow: 'hidden',
   },
 };
 
@@ -24,6 +32,7 @@ class RightPanel extends Component {
     infoTab: 'Weapons',
     damageTaken: 0,
     gold: 0,
+    currentExchangeCharacter: null,
   };
 
   chatWithTeamMember = pseudo => {
@@ -48,6 +57,13 @@ class RightPanel extends Component {
         chatInput: `/gold ${pseudo} `,
       });
     }
+  };
+
+  exchangeWithTeamMember = character => {
+    this.setState(state => ({
+      ...state,
+      currentExchangeCharacter: character,
+    }));
   };
 
   onChange = (name, value) => {
@@ -147,6 +163,48 @@ class RightPanel extends Component {
     }
   };
 
+  onItemExchange = (i, value, givableItem) => {
+    const { character, currentStory, triggerError } = this.props;
+    const { currentExchangeCharacter } = this.state;
+
+    const newCharacterItems = currentExchangeCharacter.items
+      ? [...currentExchangeCharacter.items]
+      : [];
+    let hasAlready = false;
+    if (currentExchangeCharacter.items) {
+      currentExchangeCharacter.items.map((item, index) => {
+        if (item.name === givableItem.name) {
+          hasAlready = true;
+          newCharacterItems[index].quantity =
+            parseInt(newCharacterItems[index].quantity, 10) + 1;
+        }
+        return null;
+      });
+    }
+    if (!hasAlready) {
+      newCharacterItems.push({ ...givableItem, quantity: 1 });
+    }
+    currentExchangeCharacter.items = newCharacterItems;
+
+    firebase
+      .database()
+      .ref(
+        'stories/' +
+          currentStory +
+          '/characters/' +
+          currentExchangeCharacter.userUid +
+          '/character/items'
+      )
+      .set(newCharacterItems)
+      .then(() => {
+        this.onItemUse(i, value);
+      })
+      .catch(error => {
+        // Handle Errors here.
+        triggerError(error);
+      });
+  };
+
   // for GM only
   onGoldChange = () => {
     const {
@@ -200,6 +258,13 @@ class RightPanel extends Component {
     }
   };
 
+  closeExchange = () => {
+    this.setState(state => ({
+      ...state,
+      currentExchangeCharacter: null,
+    }));
+  };
+
   render() {
     const {
       uid,
@@ -211,7 +276,13 @@ class RightPanel extends Component {
       currentStory,
     } = this.props;
 
-    const { status, infoTab, damageTaken, gold } = this.state;
+    const {
+      status,
+      infoTab,
+      damageTaken,
+      gold,
+      currentExchangeCharacter,
+    } = this.state;
 
     return (
       <div style={styles.RightPanel}>
@@ -232,8 +303,17 @@ class RightPanel extends Component {
           uid={uid}
           currentStory={currentStory}
         />
+        {currentExchangeCharacter !== null && (
+          <ExchangePanel
+            closeExchange={this.closeExchange}
+            onItemExchange={this.onItemExchange}
+            currentExchangeCharacter={currentExchangeCharacter}
+            character={character}
+          />
+        )}
         <TeamPanel
           chatWithTeamMember={this.chatWithTeamMember}
+          exchangeWithTeamMember={this.exchangeWithTeamMember}
           gameMaster={gameMaster}
           goldWithTeamMember={this.goldWithTeamMember}
           isGameMaster={isGameMaster}

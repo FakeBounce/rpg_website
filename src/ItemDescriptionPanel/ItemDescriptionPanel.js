@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './ItemDescription.css';
 import PropTypes from 'prop-types';
 import { widthLeft, heightLeft, styledCadre } from '../Utils/StyleConstants';
-import ButtonLarge from "../Utils/ButtonLarge";
+import ButtonLarge from '../Utils/ButtonLarge';
+import Cadre from '../Utils/Cadre';
 
 const styledMapSide = {
   width: `${widthLeft / 2 - 20}px`,
@@ -30,11 +31,13 @@ class ItemDescriptionPanel extends Component {
     } = this.props;
     return (
       <div style={styledMapSide}>
-        <img src={'./common/cadre.png'} style={styledCadre} alt="Cadre" />
+        <Cadre />
         <div className="item-description">
           <div className="item-description-header">Description</div>
           <img
-            src={'./' + itemType + '/' + icon || './common/unknown_image_white.png'}
+            src={
+              './' + itemType + '/' + icon || './common/unknown_image_white.png'
+            }
             alt={isHidden ? "Can't be described" : description}
             className="item-description-icon"
           />

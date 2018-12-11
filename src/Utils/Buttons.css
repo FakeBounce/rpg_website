@@ -1,13 +1,13 @@
 .styledButtonLarge {
     background: url('/common/button1.png') no-repeat;
     background-size: cover;
-    width: 167px;
-    height: 25px;
     color: white;
-    padding: 5px 15px;
     border: none;
 }
 
 .buttonLargeActive, .styledButtonLarge:hover {
     background: url('/common/button2.png') no-repeat;
+    background-size: cover;
+    color: white;
+    border: none;
 }
