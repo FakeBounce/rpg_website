@@ -13,6 +13,7 @@ class EnhancementWeaponsItem extends Component {
       itemAction,
       isHidden,
       isSelected,
+      slot,
     } = this.props;
     return (
       <div
@@ -24,7 +25,9 @@ class EnhancementWeaponsItem extends Component {
           alt={' '}
           className="item-icon"
         />
-        <div className="item-text">{isHidden ? '???' : name}</div>
+        <div className="item-text">
+          {isHidden ? '???' : name} (Slots: {slot})
+        </div>
       </div>
     );
   }
@@ -35,6 +38,7 @@ EnhancementWeaponsItem.defaultProps = {
   description: '',
   icon: 'weapon.png',
   itemType: 'weapons',
+  slot: 1,
 };
 
 EnhancementWeaponsItem.propTypes = {
@@ -47,6 +51,7 @@ EnhancementWeaponsItem.propTypes = {
   itemAction: PropTypes.func.isRequired,
   isHidden: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool.isRequired,
+  slot: PropTypes.number,
 };
 
 export default EnhancementWeaponsItem;

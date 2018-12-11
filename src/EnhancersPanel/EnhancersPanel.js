@@ -48,6 +48,7 @@ class EnhancersPanel extends Component {
       choosedEnhancer2,
       slots,
       enhanceWeapon,
+      enhancePrice,
     } = this.props;
 
     return (
@@ -106,6 +107,7 @@ class EnhancersPanel extends Component {
                     (choosedEnhancer1 && choosedEnhancer1.name === item.name) ||
                     (choosedEnhancer2 && choosedEnhancer2.name === item.name)
                   }
+                  slot={parseInt(item.slot, 10)}
                   showItemDescription={() => {
                     if (parseInt(item.slot, 10) === 1) {
                       chooseEnhancer1(item);
@@ -119,8 +121,12 @@ class EnhancersPanel extends Component {
           })}
         </div>
         {(choosedEnhancer1 !== null || choosedEnhancer2 !== null) && (
-          <ButtonLarge onClick={() => enhanceWeapon} style={styledEnhanceButton}>
-            Enhance item
+          <ButtonLarge
+            onClick={() => enhanceWeapon}
+            style={styledEnhanceButton}
+          >
+            Enhance item ({enhancePrice}
+            g)
           </ButtonLarge>
         )}
       </div>
@@ -139,6 +145,7 @@ EnhancersPanel.propTypes = {
   choosedEnhancer2: PropTypes.object.isRequired,
   slots: PropTypes.number.isRequired,
   enhanceWeapon: PropTypes.func.isRequired,
+  enhancePrice: PropTypes.number.isRequired,
 };
 
 export default EnhancersPanel;

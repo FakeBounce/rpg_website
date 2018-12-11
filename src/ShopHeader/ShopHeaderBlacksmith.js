@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { widthLeft } from '../Utils/StyleConstants';
+import { cursorPointer, widthLeft } from '../Utils/StyleConstants';
 
 const styledTabs = {
   width: `${widthLeft / 2}px`,
@@ -17,6 +17,7 @@ const styledTripleTab = {
   height: 25,
   display: 'inline-block',
   position: 'relative',
+  cursor: cursorPointer,
 };
 
 class ShopHeaderBlacksmith extends Component {

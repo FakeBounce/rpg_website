@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { widthLeft } from '../Utils/StyleConstants';
+import { cursorPointer, widthLeft } from '../Utils/StyleConstants';
 
 const styledTabs = {
   width: `${widthLeft / 2}px`,
@@ -18,18 +18,15 @@ const styledDoubleTab = {
   height: 25,
   display: 'inline-block',
   position: 'relative',
+  cursor: cursorPointer,
 };
 
 class ShopHeaderEnhancements extends Component {
-
   render() {
     const { changeTab } = this.props;
     return (
       <div style={styledTabs}>
-        <div
-          style={styledDoubleTab}
-          onClick={() => this.changeTab('items')}
-        >
+        <div style={styledDoubleTab} onClick={() => this.changeTab('items')}>
           Items
         </div>
         <div

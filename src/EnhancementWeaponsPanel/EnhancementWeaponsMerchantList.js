@@ -29,9 +29,8 @@ class EnhancementWeaponsMerchantList extends Component {
                 isSelected={
                   isFromMerchant && choosedItem.name === itemFromMerchant.name
                 }
-                itemAction={() =>
-                  showEnhancers(true, itemFromMerchant)
-                }
+                itemAction={() => showEnhancers(true, itemFromMerchant)}
+                slot={itemFromMerchant.slots}
               />
             );
           }

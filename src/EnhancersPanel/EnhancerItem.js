@@ -13,6 +13,7 @@ class EnhancerItem extends Component {
       itemAction,
       isHidden,
       isSelected,
+      slot,
     } = this.props;
     return (
       <div
@@ -24,7 +25,9 @@ class EnhancerItem extends Component {
           alt={' '}
           className="item-icon"
         />
-        <div className="item-text">{isHidden ? '???' : name}</div>
+        <div className="item-text">
+          {isHidden ? '??? ' : name} (Slot {slot})
+        </div>
       </div>
     );
   }
@@ -33,6 +36,7 @@ class EnhancerItem extends Component {
 EnhancerItem.defaultProps = {
   type: '',
   description: '',
+  slot: 1,
 };
 
 EnhancerItem.propTypes = {
@@ -45,6 +49,7 @@ EnhancerItem.propTypes = {
   itemAction: PropTypes.func.isRequired,
   isHidden: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool.isRequired,
+  slot: PropTypes.number,
 };
 
 export default EnhancerItem;
