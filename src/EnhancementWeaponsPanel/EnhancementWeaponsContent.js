@@ -30,7 +30,7 @@ class EnhancementWeaponsContent extends Component {
     } = this.props;
 
     return (
-      <div style={styledEnhancementWeaponsList}>
+      <div style={styledEnhancementWeaponsList} className="scrollbar">
         {parseInt(merchants[currentMerchant].weapons, 10) > 0 && (
           <EnhancementWeaponsMerchantList
             character={character}

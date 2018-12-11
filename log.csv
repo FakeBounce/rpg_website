@@ -1,3 +1,16 @@
+<div className="commit"> FakeBounce, le 2018-12-11 : Added Enhancement Panel; Cannot enhance yet </div>
+<div className="commit"> FakeBounce, le 2018-12-11 : Added Exchange between player </div>
+<div className="commit"> FakeBounce, le 2018-12-10 : Fixed bestiary listener </div>
+<div className="commit"> FakeBounce, le 2018-12-10 : Fix critical bug and added some css </div>
+<div className="commit"> FakeBounce, le 2018-12-10 : Added a button to hydrate merchants and added a form to add beasts </div>
+<div className="commit"> FakeBounce, le 2018-12-10 : Updated bestiary (toggle seen) for GM </div>
+<div className="commit"> FakeBounce, le 2018-12-10 : Added some css for items and fixed global heightLeft problem </div>
+<div className="commit"> FakeBounce, le 2018-12-10 : Added some range to map Arrows </div>
+<div className="commit"> FakeBounce, le 2018-12-10 : Fixed GM drawer </div>
+<div className="commit"> FakeBounce, le 2018-12-10 : Fixed Draw for players </div>
+<div className="commit"> FakeBounce, le 2018-12-10 : Fixed some chat panel behavior </div>
+<div className="commit"> FakeBounce, le 2018-12-07 : Fixed auth fields removed </div>
+<div className="commit"> FakeBounce, le 2018-12-07 : Added tags and updated version </div>
 <div className="commit"> FakeBounce, le 2018-12-07 : Added image inputs for chat </div>
 <div className="commit"> FakeBounce, le 2018-12-07 : Reviewed Bestiary and now players can change their character's image in a story </div>
 <div className="commit"> FakeBounce, le 2018-12-06 : Added style on bestiary filters </div>

@@ -13,9 +13,8 @@
 }
 
 .item.selected{
-    border:none;
-    border-bottom: 1px solid red;
-    border-top: 1px solid red;
+    color: red;
+    border: none;
 }
 
 .item-icon{
