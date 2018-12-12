@@ -10,6 +10,7 @@ import {
 import ExchangeExit from './ExchangeExit';
 import Cadre from '../Utils/Cadre';
 import ExchangeContent from './ExchangeContent';
+import ExchangeHeader from './ExchangeHeader';
 
 const styledExchangeContainer = {
   position: 'absolute',
@@ -36,15 +37,17 @@ class ExchangePanel extends Component {
       currentExchangeCharacter,
       closeExchange,
       onItemExchange,
+      onWeaponExchange,
     } = this.props;
 
     return (
       <div style={styledExchangeContainer}>
         <Cadre style={styledCadre} />
+        <ExchangeHeader name={currentExchangeCharacter.name} />
         <ExchangeContent
           onItemExchange={onItemExchange}
+          onWeaponExchange={onWeaponExchange}
           character={character}
-          currentExchangeCharacter={currentExchangeCharacter}
         />
         <ExchangeExit closeExchange={closeExchange} />
       </div>
@@ -55,6 +58,7 @@ class ExchangePanel extends Component {
 ExchangePanel.propTypes = {
   closeExchange: PropTypes.func.isRequired,
   onItemExchange: PropTypes.func.isRequired,
+  onWeaponExchange: PropTypes.func.isRequired,
   currentExchangeCharacter: PropTypes.object.isRequired,
   character: PropTypes.object.isRequired,
 };

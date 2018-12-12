@@ -46,7 +46,7 @@ class PlayerMapPanel extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.currentMerchant !== this.props.currentMerchant) {
       this.setState(state => ({
-       ...state,
+        ...state,
         currentTab: 'items',
         showEnhancers: false,
         choosedItem: null,
@@ -218,6 +218,7 @@ class PlayerMapPanel extends Component {
 
   enhanceWeapon = () => {
     const {
+      currentTab,
       choosedItem,
       choosedEnhancer1,
       choosedEnhancer2,
@@ -241,6 +242,11 @@ class PlayerMapPanel extends Component {
     }
     if (choosedEnhancer2 !== null) {
       newWeapon += ' (' + choosedEnhancer2.item.name + ')';
+    }
+    if (currentTab === 'enhancements') {
+      newWeapon += ' (T)';
+    } else {
+      newWeapon += ' (P)';
     }
 
     const newItemsTab = character.weapons ? [...character.weapons] : [];

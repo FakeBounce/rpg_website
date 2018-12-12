@@ -6,13 +6,8 @@ import TeamPanel from './TeamCharacters/TeamPanel';
 import {
   widthRightPanel,
   heightHeader,
-  cursorPointer,
-  widthExchangeBox,
-  heightExchangeBox,
-  widthRightPanelLeft,
 } from './Utils/StyleConstants';
 import CharacterPanel from './CharacterPanel/CharacterPanel';
-import ButtonLarge from './Utils/ButtonLarge';
 import ExchangePanel from './ExchangePanel/ExchangePanel';
 
 const styles = {
@@ -164,7 +159,7 @@ class RightPanel extends Component {
   };
 
   onItemExchange = (i, value, givableItem) => {
-    const { character, currentStory, triggerError } = this.props;
+    const { currentStory, triggerError } = this.props;
     const { currentExchangeCharacter } = this.state;
 
     const newCharacterItems = currentExchangeCharacter.items
@@ -198,6 +193,61 @@ class RightPanel extends Component {
       .set(newCharacterItems)
       .then(() => {
         this.onItemUse(i, value);
+      })
+      .catch(error => {
+        // Handle Errors here.
+        triggerError(error);
+      });
+  };
+
+  onWeaponExchange = (i, givableItem) => {
+    const {
+      character,
+      currentStory,
+      uid,
+      doSetState,
+      triggerError,
+    } = this.props;
+    const { currentExchangeCharacter } = this.state;
+
+    const newCharacterItems = currentExchangeCharacter.weapons
+      ? [...currentExchangeCharacter.weapons]
+      : [];
+    newCharacterItems.push(givableItem);
+    currentExchangeCharacter.weapons = newCharacterItems;
+
+    firebase
+      .database()
+      .ref(
+        'stories/' +
+          currentStory +
+          '/characters/' +
+          currentExchangeCharacter.userUid +
+          '/character/weapons'
+      )
+      .set(newCharacterItems)
+      .then(() => {
+        const newCharacterWeapons = [...character.weapons];
+
+        newCharacterWeapons.splice(i, 1);
+
+        const newCharacter = {
+          ...character,
+          weapons: newCharacterWeapons,
+        };
+
+        doSetState({
+          character: newCharacter,
+        });
+
+        firebase
+          .database()
+          .ref('stories/' + currentStory + '/characters/' + uid + '/character')
+          .set(newCharacter)
+          .catch(error => {
+            // Handle Errors here.
+            triggerError(error);
+          });
       })
       .catch(error => {
         // Handle Errors here.
@@ -307,6 +357,7 @@ class RightPanel extends Component {
           <ExchangePanel
             closeExchange={this.closeExchange}
             onItemExchange={this.onItemExchange}
+            onWeaponExchange={this.onWeaponExchange}
             currentExchangeCharacter={currentExchangeCharacter}
             character={character}
           />

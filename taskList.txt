@@ -47,7 +47,7 @@ V2.9.2
 4)  - Mettre un bouton pour rafraîchir les marchands - OK
     - Mettre un bouton pour ajouter un monstre - OK
 5)  Mettre un système d'échange entre joueurs - OK
-6)  Ajouter un onglet "Forger" ou "Enchanter" pour les marchands
+6)  Ajouter un onglet "Forger" ou "Enchanter" pour les marchands - OK
 7)  Mieux gérer les panneaux du GM
 8)  Mettre du style sur le bestiaire
 9)  Voir si on peut gérer le son vocal/musique
@@ -62,6 +62,9 @@ v2.10.0
 les fonctions au plus bas niveau de composant possible
 16) Pouvoir modifier les attribut du personnage GM
 17) Pouvoir revenir au personnage GM sans devoir quitter la page
+
+v2.13.1
+18) Urgent : Pour éviter les erreurs, ne plus travailler sur des index locals (uniquement id, et listen)
 
 
 

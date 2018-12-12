@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import {
-  widthExchangeBox,
-  heightExchangeBox,
-} from '../Utils/StyleConstants';
-import ExchangeHeader from './ExchangeHeader';
+import { widthExchangeBox, heightExchangeBox } from '../Utils/StyleConstants';
 import ExchangeItems from './ExchangeItems';
+import ExchangeWeapons from './ExchangeWeapons';
 
 const styledItemContainer = {
   position: 'absolute',
@@ -19,21 +16,22 @@ const styledItemContainer = {
   overflowX: 'hidden',
 };
 
+const styledSeparator = { marginBottom: 10 };
+const styledSeparator2 = { marginTop: 20, display: 'inline-block' };
+
 class ExchangeContent extends Component {
   render() {
-    const {
-      character,
-      currentExchangeCharacter,
-      onItemExchange,
-    } = this.props;
+    const { character, onItemExchange, onWeaponExchange } = this.props;
 
     return (
       <div className="scrollbar" style={styledItemContainer}>
-        <ExchangeHeader name={currentExchangeCharacter.name} />
-        <ExchangeItems
+        <div style={styledSeparator}>Weapons : </div>
+        <ExchangeWeapons
           character={character}
-          onItemExchange={onItemExchange}
+          onWeaponExchange={onWeaponExchange}
         />
+        <div style={styledSeparator2}>Items : </div>
+        <ExchangeItems character={character} onItemExchange={onItemExchange} />
       </div>
     );
   }
@@ -41,7 +39,7 @@ class ExchangeContent extends Component {
 
 ExchangeContent.propTypes = {
   onItemExchange: PropTypes.func.isRequired,
-  currentExchangeCharacter: PropTypes.object.isRequired,
+  onWeaponExchange: PropTypes.func.isRequired,
   character: PropTypes.object.isRequired,
 };
 
