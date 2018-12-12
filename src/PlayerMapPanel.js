@@ -43,6 +43,20 @@ class PlayerMapPanel extends Component {
     enhancePrice: 0,
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentMerchant !== this.props.currentMerchant) {
+      this.setState(state => ({
+       ...state,
+        currentTab: 'items',
+        showEnhancers: false,
+        choosedItem: null,
+        choosedEnhancer1: null,
+        choosedEnhancer2: null,
+        enhancePrice: 0,
+      }));
+    }
+  }
+
   changeTab = newTab => {
     this.setState(
       state => ({
@@ -50,6 +64,9 @@ class PlayerMapPanel extends Component {
         currentTab: newTab,
         showEnhancers: false,
         choosedItem: null,
+        choosedEnhancer1: null,
+        choosedEnhancer2: null,
+        enhancePrice: 0,
       }),
       () => {
         this.props.doSetState({
@@ -62,13 +79,24 @@ class PlayerMapPanel extends Component {
 
   calculateEnhancePrice = price => {
     const { merchants, currentMerchant } = this.props;
-    return (
-      Math.ceil(
-        price * (0.75 + parseInt(merchants[currentMerchant].level * 0.1, 10))
-      ) +
-      15 +
-      Math.ceil(3 * parseInt(merchants[currentMerchant].level, 10))
-    );
+    const { currentTab } = this.state;
+    if (currentTab === 'enhancements') {
+      return (
+        Math.ceil(
+          price * (0.75 + parseInt(merchants[currentMerchant].level * 0.1, 10))
+        ) +
+        15 +
+        Math.ceil(3 * parseInt(merchants[currentMerchant].level, 10))
+      );
+    } else {
+      return (
+        Math.ceil(
+          price * (1.25 + parseInt(merchants[currentMerchant].level * 0.1, 10))
+        ) +
+        30 +
+        Math.ceil(7 * parseInt(merchants[currentMerchant].level, 10))
+      );
+    }
   };
 
   showEnhancers = (isFromMerchant, item, index) => {
@@ -363,10 +391,16 @@ class PlayerMapPanel extends Component {
             {isItemShowed && (
               <div style={styledPanelContainer}>
                 {merchants[currentMerchant].job === 'Forgeron' ? (
-                  <ShopHeaderBlacksmith changeTab={this.changeTab} />
+                  <ShopHeaderBlacksmith
+                    changeTab={this.changeTab}
+                    currentTab={currentTab}
+                  />
                 ) : parseInt(merchants[currentMerchant].enhancements, 10) >
                 0 ? (
-                  <ShopHeaderEnhancements changeTab={this.changeTab} />
+                  <ShopHeaderEnhancements
+                    changeTab={this.changeTab}
+                    currentTab={currentTab}
+                  />
                 ) : (
                   <ShopHeaderDefault />
                 )}
@@ -390,12 +424,13 @@ class PlayerMapPanel extends Component {
                   />
                 )}
                 {currentTab === 'blacksmith' && (
-                  <ItemPanel
+                  <EnhancementWeaponsPanel
                     currentMerchant={currentMerchant}
                     character={character}
-                    itemsList={itemsList}
+                    choosedItem={choosedItem}
+                    showEnhancers={this.showEnhancers}
                     merchants={merchants}
-                    doSetState={doSetState}
+                    itemsList={itemsList}
                   />
                 )}
               </div>

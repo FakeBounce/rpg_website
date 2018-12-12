@@ -8,7 +8,6 @@ const styledTabs = {
   position: 'absolute',
   top: 0,
   left: 0,
-  color: 'white',
   zIndex: 1,
 };
 
@@ -18,20 +17,49 @@ const styledTripleTab = {
   display: 'inline-block',
   position: 'relative',
   cursor: cursorPointer,
+  color: 'white',
+};
+
+const styledTripleTabSelected = {
+  width: '33%',
+  height: 25,
+  display: 'inline-block',
+  position: 'relative',
+  cursor: cursorPointer,
+  color: 'red',
 };
 
 class ShopHeaderBlacksmith extends Component {
   render() {
-    const { changeTab } = this.props;
+    const { changeTab, currentTab } = this.props;
     return (
       <div style={styledTabs}>
-        <div style={styledTripleTab} onClick={() => changeTab('items')}>
+        <div
+          style={
+            currentTab === 'items' ? styledTripleTabSelected : styledTripleTab
+          }
+          onClick={() => changeTab('items')}
+        >
           Items
         </div>
-        <div style={styledTripleTab} onClick={() => changeTab('enhancements')}>
+        <div
+          style={
+            currentTab === 'enhancements'
+              ? styledTripleTabSelected
+              : styledTripleTab
+          }
+          onClick={() => changeTab('enhancements')}
+        >
           Enhancements
         </div>
-        <div style={styledTripleTab} onClick={() => changeTab('blacksmith')}>
+        <div
+          style={
+            currentTab === 'blacksmith'
+              ? styledTripleTabSelected
+              : styledTripleTab
+          }
+          onClick={() => changeTab('blacksmith')}
+        >
           Blacksmith
         </div>
       </div>
@@ -41,6 +69,7 @@ class ShopHeaderBlacksmith extends Component {
 
 ShopHeaderBlacksmith.propTypes = {
   changeTab: PropTypes.func.isRequired,
+  currentTab: PropTypes.string.isRequired,
 };
 
 export default ShopHeaderBlacksmith;

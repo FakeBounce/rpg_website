@@ -9,7 +9,6 @@ const styledTabs = {
   position: 'absolute',
   top: 0,
   left: 0,
-  color: 'white',
   zIndex: 1,
 };
 
@@ -19,19 +18,40 @@ const styledDoubleTab = {
   display: 'inline-block',
   position: 'relative',
   cursor: cursorPointer,
+  color: 'white',
+};
+
+const styledDoubleTabSelected = {
+  width: '50%',
+  height: 25,
+  display: 'inline-block',
+  position: 'relative',
+  cursor: cursorPointer,
+  color: 'red',
 };
 
 class ShopHeaderEnhancements extends Component {
   render() {
-    const { changeTab } = this.props;
+    const { changeTab, currentTab } = this.props;
     return (
       <div style={styledTabs}>
-        <div style={styledDoubleTab} onClick={() => this.changeTab('items')}>
+        <div
+          style={
+            currentTab === 'items'
+              ? styledDoubleTabSelected
+              : styledDoubleTab
+          }
+          onClick={() => changeTab('items')}
+        >
           Items
         </div>
         <div
-          style={styledDoubleTab}
-          onClick={() => this.changeTab('enhancements')}
+          style={
+            currentTab === 'enhancements'
+              ? styledDoubleTabSelected
+              : styledDoubleTab
+          }
+          onClick={() => changeTab('enhancements')}
         >
           Enhancements
         </div>
@@ -42,6 +62,7 @@ class ShopHeaderEnhancements extends Component {
 
 ShopHeaderEnhancements.propTypes = {
   changeTab: PropTypes.func.isRequired,
+  currentTab: PropTypes.string.isRequired,
 };
 
 export default ShopHeaderEnhancements;
