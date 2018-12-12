@@ -11,3 +11,8 @@
     color: white;
     border: none;
 }
+
+.noGold {
+    color: red;
+    cursor:url('/common/cursor.png'), auto;
+}

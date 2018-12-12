@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { heightLeft, widthLeft } from '../Utils/StyleConstants';
 import EnhancementWeaponsMerchantList from './EnhancementWeaponsMerchantList';
 import EnhancementWeaponsCharacterWeaponList from './EnhancementWeaponsCharacterWeaponList';
-import EnhancementWeaponsCharacterItemsList from './EnhancementWeaponsCharacterItemsList';
+// Not supported now
+// import EnhancementWeaponsCharacterItemsList from './EnhancementWeaponsCharacterItemsList';
 
 const styledEnhancementWeaponsList = {
   display: 'inline-block',
@@ -23,7 +24,6 @@ class EnhancementWeaponsContent extends Component {
       character,
       merchants,
       currentMerchant,
-      isFromMerchant,
       choosedItem,
       showEnhancers,
       itemsList,
@@ -34,20 +34,12 @@ class EnhancementWeaponsContent extends Component {
         {parseInt(merchants[currentMerchant].weapons, 10) > 0 && (
           <EnhancementWeaponsMerchantList
             character={character}
-            isFromMerchant={isFromMerchant}
             choosedItem={choosedItem}
             showEnhancers={showEnhancers}
             itemsList={itemsList}
           />
         )}
         <EnhancementWeaponsCharacterWeaponList
-          character={character}
-          isFromMerchant={isFromMerchant}
-          choosedItem={choosedItem}
-          showEnhancers={showEnhancers}
-        />
-        <EnhancementWeaponsCharacterItemsList
-          isFromMerchant={isFromMerchant}
           character={character}
           choosedItem={choosedItem}
           showEnhancers={showEnhancers}
@@ -60,7 +52,6 @@ class EnhancementWeaponsContent extends Component {
 EnhancementWeaponsContent.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
-  isFromMerchant: PropTypes.bool.isRequired,
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
   merchants: PropTypes.array.isRequired,

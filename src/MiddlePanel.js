@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import GMMapPanel from "./GMMapPanel";
-import RightPanel from "./RightPanel";
-import PlayerMapPanel from "./PlayerMapPanel";
-import MapGenerator from "./MapGenerator/MapGenerator";
-import ChatPanel from "./ChatPanel/ChatPanel";
+import GMMapPanel from './GMMapPanel';
+import RightPanel from './RightPanel';
+import PlayerMapPanel from './PlayerMapPanel';
+import MapGenerator from './MapGenerator/MapGenerator';
+import ChatPanel from './ChatPanel/ChatPanel';
 
 class MiddlePanel extends Component {
   changeCurrentScale = value => {
@@ -135,6 +135,7 @@ class MiddlePanel extends Component {
             character={character}
             currentMerchant={currentMerchant}
             currentQuest={currentQuest}
+            currentStory={currentStory}
             doSetState={doSetState}
             isItemDescriptionShowed={isItemDescriptionShowed}
             isItemShowed={isItemShowed}
@@ -147,6 +148,7 @@ class MiddlePanel extends Component {
             merchantsList={merchantsList}
             quests={quests}
             questsList={questsList}
+            uid={uid}
             triggerError={triggerError}
           />
         )}

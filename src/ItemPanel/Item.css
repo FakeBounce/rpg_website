@@ -7,14 +7,14 @@
     color: white;
 }
 
-.item:hover{
-    border-bottom: 1px solid blue;
-    border-top: 1px solid blue;
-}
-
 .item.selected{
     color: red;
     border: none;
+}
+
+.item:hover{
+    border-bottom: 1px solid blue;
+    border-top: 1px solid blue;
 }
 
 .item-icon{

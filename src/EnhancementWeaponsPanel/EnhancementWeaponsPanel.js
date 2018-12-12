@@ -23,7 +23,6 @@ class EnhancementWeaponsPanel extends Component {
       itemsList,
       merchants,
       currentMerchant,
-      isFromMerchant,
       choosedItem,
       showEnhancers,
     } = this.props;
@@ -35,7 +34,6 @@ class EnhancementWeaponsPanel extends Component {
           showEnhancers={showEnhancers}
           choosedItem={choosedItem}
           character={character}
-          isFromMerchant={isFromMerchant}
           currentMerchant={currentMerchant}
           merchants={merchants}
           itemsList={itemsList}
@@ -48,7 +46,6 @@ class EnhancementWeaponsPanel extends Component {
 EnhancementWeaponsPanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
-  isFromMerchant: PropTypes.bool.isRequired,
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
   merchants: PropTypes.array.isRequired,

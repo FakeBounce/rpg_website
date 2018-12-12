@@ -8,7 +8,6 @@ import firebase from 'firebase';
 const styles = {
   tabPanelItem: {
     width: `${widthRightPanelLeft - 20}px`,
-    height: 30,
     paddingHorizontal: 5,
     position: 'relative',
     float: 'left',
@@ -17,7 +16,6 @@ const styles = {
   },
   itemName: {
     width: `${widthRightPanelLeft - 120}px`,
-    height: 30,
     position: 'relative',
     float: 'left',
     display: 'inline-block',

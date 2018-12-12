@@ -6,13 +6,7 @@ import EnhancementWeaponsSeparator from './EnhancementWeaponsSeparator';
 
 class EnhancementWeaponsMerchantList extends Component {
   render() {
-    const {
-      character,
-      itemsList,
-      isFromMerchant,
-      choosedItem,
-      showEnhancers,
-    } = this.props;
+    const { character, itemsList, choosedItem, showEnhancers } = this.props;
 
     return (
       <Fragment>
@@ -26,10 +20,8 @@ class EnhancementWeaponsMerchantList extends Component {
                 {...itemFromMerchant}
                 index={index}
                 isHidden={isHidden}
-                isSelected={
-                  isFromMerchant && choosedItem.name === itemFromMerchant.name
-                }
-                itemAction={() => showEnhancers(true, itemFromMerchant)}
+                isSelected={choosedItem && choosedItem.index === index}
+                itemAction={() => showEnhancers(true, itemFromMerchant, index)}
                 slot={itemFromMerchant.slots}
               />
             );
@@ -42,7 +34,6 @@ class EnhancementWeaponsMerchantList extends Component {
 
 EnhancementWeaponsMerchantList.propTypes = {
   character: PropTypes.object.isRequired,
-  isFromMerchant: PropTypes.bool.isRequired,
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
   itemsList: PropTypes.array.isRequired,

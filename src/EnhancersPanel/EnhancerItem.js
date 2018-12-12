@@ -14,6 +14,7 @@ class EnhancerItem extends Component {
       isHidden,
       isSelected,
       slot,
+      quantity,
     } = this.props;
     return (
       <div
@@ -27,6 +28,7 @@ class EnhancerItem extends Component {
         />
         <div className="item-text">
           {isHidden ? '??? ' : name} (Slot {slot})
+          {quantity > 0 ? `(${quantity} left)` : ''}
         </div>
       </div>
     );
@@ -37,6 +39,7 @@ EnhancerItem.defaultProps = {
   type: '',
   description: '',
   slot: 1,
+  quantity: 0,
 };
 
 EnhancerItem.propTypes = {
@@ -50,6 +53,7 @@ EnhancerItem.propTypes = {
   isHidden: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool.isRequired,
   slot: PropTypes.number,
+  quantity: PropTypes.number,
 };
 
 export default EnhancerItem;

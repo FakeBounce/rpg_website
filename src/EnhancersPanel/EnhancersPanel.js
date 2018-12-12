@@ -55,7 +55,7 @@ class EnhancersPanel extends Component {
       <div style={styledEnhancersContainer}>
         <Cadre />
         <div style={styledItemsContainer} className="scrollbar">
-          <div style={styledSeparator}>Choose enhancer (temporary) :</div>
+          <div style={styledSeparator}>Choose enhancement (temporary) :</div>
           {parseInt(merchants[currentMerchant].enhancements, 10) > 0 &&
             itemsList.map((itemFromMerchant, index) => {
               const isHidden =
@@ -73,23 +73,21 @@ class EnhancersPanel extends Component {
                     index={index}
                     isHidden={isHidden}
                     isSelected={
-                      (choosedEnhancer1 &&
-                        choosedEnhancer1.name === itemFromMerchant.name) ||
-                      (choosedEnhancer2 &&
-                        choosedEnhancer2.name === itemFromMerchant.name)
+                      (choosedEnhancer1 && choosedEnhancer1.index === index) ||
+                      (choosedEnhancer2 && choosedEnhancer2.index === index)
                     }
                     itemAction={() => {
                       if (parseInt(itemFromMerchant.slot, 10) === 1) {
-                        chooseEnhancer1(itemFromMerchant);
+                        chooseEnhancer1(true, itemFromMerchant, index);
                       } else {
-                        chooseEnhancer2(itemFromMerchant);
+                        chooseEnhancer2(true, itemFromMerchant, index);
                       }
                     }}
                   />
                 );
               }
             })}
-          <div style={styledSeparator}>Your enhancers :</div>
+          <div style={styledSeparator}>In your inventory :</div>
           {character.items.map((item, index) => {
             const isHidden = character.education < item.rarity * 9;
             if (
@@ -104,15 +102,15 @@ class EnhancersPanel extends Component {
                   index={index}
                   isHidden={isHidden}
                   isSelected={
-                    (choosedEnhancer1 && choosedEnhancer1.name === item.name) ||
-                    (choosedEnhancer2 && choosedEnhancer2.name === item.name)
+                    (choosedEnhancer1 && choosedEnhancer1.index === index) ||
+                    (choosedEnhancer2 && choosedEnhancer2.index === index)
                   }
                   slot={parseInt(item.slot, 10)}
                   showItemDescription={() => {
                     if (parseInt(item.slot, 10) === 1) {
-                      chooseEnhancer1(item);
+                      chooseEnhancer1(false, item, index);
                     } else {
-                      chooseEnhancer2(item);
+                      chooseEnhancer2(false, item, index);
                     }
                   }}
                 />
@@ -122,8 +120,13 @@ class EnhancersPanel extends Component {
         </div>
         {(choosedEnhancer1 !== null || choosedEnhancer2 !== null) && (
           <ButtonLarge
-            onClick={() => enhanceWeapon}
+            onClick={() => {
+              if (character.gold >= enhancePrice) {
+                enhanceWeapon();
+              }
+            }}
             style={styledEnhanceButton}
+            className={`${character.gold < enhancePrice ? 'noGold' : ''}`}
           >
             Enhance item ({enhancePrice}
             g)

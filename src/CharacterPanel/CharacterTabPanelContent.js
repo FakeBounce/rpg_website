@@ -22,6 +22,15 @@ const styles = {
     margin: 0,
     textAlign: 'center',
   },
+  itemDescription: {
+    width: `${widthRightPanelLeft - 70}px`,
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
+    padding: 0,
+    margin: 0,
+    textAlign: 'center',
+  },
 };
 
 class CharacterTabPanelContent extends Component {
@@ -90,7 +99,7 @@ class CharacterTabPanelContent extends Component {
         {tab.map((description, index) => {
           return (
             <div key={`${description}-${index}`} style={styles.tabPanelItem}>
-              {description}
+              <div style={styles.itemDescription}>{description}</div>
               <ButtonLarge
                 style={styles.itemButton}
                 onClick={() => this.onRemove(index)}

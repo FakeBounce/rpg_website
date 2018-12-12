@@ -6,7 +6,6 @@ import ButtonLarge from '../Utils/ButtonLarge';
 
 const styledItem = {
   width: `${widthExchangeBox - 40}px`,
-  height: 30,
   paddingHorizontal: 5,
   position: 'relative',
   float: 'left',
@@ -16,7 +15,6 @@ const styledItem = {
 
 const styledItemName = {
   width: `${widthExchangeBox - 130}px`,
-  height: 30,
   position: 'relative',
   float: 'left',
   display: 'inline-block',

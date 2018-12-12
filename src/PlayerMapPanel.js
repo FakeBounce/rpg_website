@@ -14,6 +14,8 @@ import ShopHeaderBlacksmith from './ShopHeader/ShopHeaderBlacksmith';
 import ShopHeaderEnhancements from './ShopHeader/ShopHeaderEnhancements';
 import ShopHeaderDefault from './ShopHeader/ShopHeaderDefault';
 import EnhancersPanel from './EnhancersPanel/EnhancersPanel';
+import firebase from 'firebase';
+import { hydrateStoryArtefacts } from './Utils/MerchantsFunctions';
 
 const styledPlayerMapContainer = {
   float: 'left',
@@ -35,7 +37,6 @@ class PlayerMapPanel extends Component {
   state = {
     currentTab: 'items',
     showEnhancers: false,
-    isFromMerchant: false,
     choosedItem: null,
     choosedEnhancer1: null,
     choosedEnhancer2: null,
@@ -48,7 +49,6 @@ class PlayerMapPanel extends Component {
         ...state,
         currentTab: newTab,
         showEnhancers: false,
-        isFromMerchant: false,
         choosedItem: null,
       }),
       () => {
@@ -60,9 +60,19 @@ class PlayerMapPanel extends Component {
     );
   };
 
-  showEnhancers = (isFromMerchant, item) => {
+  calculateEnhancePrice = price => {
+    const { merchants, currentMerchant } = this.props;
+    return (
+      Math.ceil(
+        price * (0.75 + parseInt(merchants[currentMerchant].level * 0.1, 10))
+      ) +
+      15 +
+      Math.ceil(7 * parseInt(merchants[currentMerchant].level, 10))
+    );
+  };
+
+  showEnhancers = (isFromMerchant, item, index) => {
     const { showEnhancers, choosedEnhancer1, choosedEnhancer2 } = this.state;
-    const { currentMerchant, merchants } = this.props;
 
     let enhancePrice = 0;
     if (showEnhancers) {
@@ -70,50 +80,38 @@ class PlayerMapPanel extends Component {
         enhancePrice += parseInt(item.price, 10);
       }
 
-      if (choosedEnhancer2 !== null) {
-        enhancePrice += parseInt(choosedEnhancer2.price, 10);
+      if (choosedEnhancer1 !== null && choosedEnhancer1.isFromMerchant) {
+        enhancePrice += parseInt(choosedEnhancer1.item.price, 10);
       }
 
-      if (choosedEnhancer1 !== null) {
-        enhancePrice += parseInt(choosedEnhancer1.price, 10);
+      if (choosedEnhancer2 !== null && choosedEnhancer2.isFromMerchant) {
+        enhancePrice += parseInt(choosedEnhancer2.item.price, 10);
       }
     }
-    enhancePrice = Math.ceil(
-      enhancePrice *
-        (0.8 + parseInt(merchants[currentMerchant].level * 0.1, 10))
-    );
+    enhancePrice = this.calculateEnhancePrice(enhancePrice);
     this.setState(state => ({
       ...state,
       showEnhancers: true,
-      isFromMerchant,
-      choosedItem: item,
+      choosedItem: { item, index, isFromMerchant },
+      itemIndex: index,
       enhancePrice,
     }));
   };
 
-  chooseEnhancer1 = item => {
-    const {
-      isFromMerchant,
-      choosedItem,
-      choosedEnhancer1,
-      choosedEnhancer2,
-    } = this.state;
-    const { currentMerchant, merchants } = this.props;
+  chooseEnhancer1 = (isFromMerchant, item, index) => {
+    const { choosedItem, choosedEnhancer1, choosedEnhancer2 } = this.state;
 
-    if (choosedEnhancer1 && item.name === choosedEnhancer1.name) {
+    if (choosedEnhancer1 !== null && item.name === choosedEnhancer1.item.name) {
       let enhancePrice = 0;
 
-      if (isFromMerchant) {
-        enhancePrice += parseInt(choosedItem.price, 10);
+      if (choosedItem.isFromMerchant) {
+        enhancePrice += parseInt(choosedItem.item.price, 10);
       }
 
-      if (choosedEnhancer2 !== null) {
-        enhancePrice += parseInt(choosedEnhancer2.price, 10);
+      if (choosedEnhancer2 !== null && choosedEnhancer2.isFromMerchant) {
+        enhancePrice += parseInt(choosedEnhancer2.item.price, 10);
       }
-      enhancePrice = Math.ceil(
-        enhancePrice *
-          (0.8 + parseInt(merchants[currentMerchant].level * 0.1, 10))
-      );
+      enhancePrice = this.calculateEnhancePrice(enhancePrice);
 
       this.setState(state => ({
         ...state,
@@ -123,51 +121,40 @@ class PlayerMapPanel extends Component {
     } else {
       let enhancePrice = 0;
 
-      if (isFromMerchant) {
-        enhancePrice += parseInt(choosedItem.price, 10);
+      if (choosedItem.isFromMerchant) {
+        enhancePrice += parseInt(choosedItem.item.price, 10);
       }
 
-      if (choosedEnhancer2 !== null) {
-        enhancePrice += parseInt(choosedEnhancer2.price, 10);
+      if (choosedEnhancer2 !== null && choosedEnhancer2.isFromMerchant) {
+        enhancePrice += parseInt(choosedEnhancer2.item.price, 10);
       }
 
       enhancePrice += parseInt(item.price, 10);
-      enhancePrice = Math.ceil(
-        enhancePrice *
-          (0.8 + parseInt(merchants[currentMerchant].level * 0.1, 10))
-      );
+      enhancePrice = this.calculateEnhancePrice(enhancePrice);
 
       this.setState(state => ({
         ...state,
-        choosedEnhancer1: item,
+        choosedEnhancer1: { item, index, isFromMerchant },
+        enhancer1Index: index,
         enhancePrice,
       }));
     }
   };
 
-  chooseEnhancer2 = item => {
-    const {
-      isFromMerchant,
-      choosedItem,
-      choosedEnhancer1,
-      choosedEnhancer2,
-    } = this.state;
-    const { currentMerchant, merchants } = this.props;
+  chooseEnhancer2 = (isFromMerchant, item, index) => {
+    const { choosedItem, choosedEnhancer1, choosedEnhancer2 } = this.state;
 
-    if (choosedEnhancer2 && item.name === choosedEnhancer2.name) {
+    if (choosedEnhancer2 !== null && item.name === choosedEnhancer2.name) {
       let enhancePrice = 0;
 
-      if (isFromMerchant) {
-        enhancePrice += parseInt(choosedItem.price, 10);
+      if (choosedItem.isFromMerchant) {
+        enhancePrice += parseInt(choosedItem.item.price, 10);
       }
 
-      if (choosedEnhancer1 !== null) {
-        enhancePrice += parseInt(choosedEnhancer1.price, 10);
+      if (choosedEnhancer1 !== null && choosedEnhancer1.isFromMerchant) {
+        enhancePrice += parseInt(choosedEnhancer1.item.price, 10);
       }
-      enhancePrice = Math.ceil(
-        enhancePrice *
-          (0.8 + parseInt(merchants[currentMerchant].level * 0.1, 10))
-      );
+      enhancePrice = this.calculateEnhancePrice(enhancePrice);
 
       this.setState(state => ({
         ...state,
@@ -178,28 +165,123 @@ class PlayerMapPanel extends Component {
       let enhancePrice = 0;
 
       if (isFromMerchant) {
-        enhancePrice += parseInt(choosedItem.price, 10);
+        enhancePrice += parseInt(choosedItem.item.price, 10);
       }
 
-      if (choosedEnhancer1 !== null) {
-        enhancePrice += parseInt(choosedEnhancer1.price, 10);
+      if (choosedEnhancer1 !== null && choosedEnhancer1.isFromMerchant) {
+        enhancePrice += parseInt(choosedEnhancer1.item.price, 10);
       }
 
       enhancePrice += parseInt(item.price, 10);
-      enhancePrice = Math.ceil(
-        enhancePrice *
-          (0.8 + parseInt(merchants[currentMerchant].level * 0.1, 10))
-      );
+      enhancePrice = this.calculateEnhancePrice(enhancePrice);
 
       this.setState(state => ({
         ...state,
-        choosedEnhancer2: item,
+        choosedEnhancer2: { item, index, isFromMerchant },
+        enhancer2Index: index,
         enhancePrice,
       }));
     }
   };
 
-  enhanceWeapon = () => {};
+  enhanceWeapon = () => {
+    const {
+      choosedItem,
+      choosedEnhancer1,
+      choosedEnhancer2,
+      enhancePrice,
+    } = this.state;
+
+    const {
+      currentStory,
+      currentMerchant,
+      merchants,
+      uid,
+      character,
+      itemsList,
+      doSetState,
+      triggerError,
+    } = this.props;
+
+    let newWeapon = choosedItem.item.name ? choosedItem.item.name : choosedItem;
+    if (choosedEnhancer1 !== null) {
+      newWeapon += ' (' + choosedEnhancer1.item.name + ')';
+    }
+    if (choosedEnhancer2 !== null) {
+      newWeapon += ' (' + choosedEnhancer2.item.name + ')';
+    }
+
+    const newItemsTab = character.weapons ? [...character.weapons] : [];
+    newItemsTab.push(newWeapon);
+
+    const newMerchantList = [...itemsList];
+    if (choosedItem.isFromMerchant) {
+      if (newMerchantList[choosedItem.index].quantity > 1) {
+        newMerchantList[choosedItem.index].quantity =
+          newMerchantList[choosedItem.index].quantity - 1;
+      } else {
+        newMerchantList.splice(choosedItem.index, 1);
+      }
+    }
+    if (choosedEnhancer1 !== null) {
+      if (choosedEnhancer1.isFromMerchant) {
+        if (newMerchantList[choosedEnhancer1.index].quantity > 1) {
+          newMerchantList[choosedEnhancer1.index].quantity =
+            newMerchantList[choosedEnhancer1.index].quantity - 1;
+        } else {
+          newMerchantList.splice(choosedEnhancer1.index, 1);
+        }
+      }
+    }
+    if (choosedEnhancer2 !== null) {
+      if (choosedEnhancer2.isFromMerchant) {
+        if (newMerchantList[choosedEnhancer2.index].quantity > 1) {
+          newMerchantList[choosedEnhancer2.index].quantity =
+            newMerchantList[choosedEnhancer2.index].quantity - 1;
+        } else {
+          newMerchantList.splice(choosedEnhancer2.index, 1);
+        }
+      }
+    }
+
+    const newMerchants = [...merchants];
+    newMerchants[currentMerchant].items = newMerchantList;
+
+    doSetState(
+      {
+        itemsList: newMerchantList,
+        merchants: newMerchants,
+      },
+      () => {
+        firebase
+          .database()
+          .ref('stories/' + currentStory + '/characters/' + uid + '/character')
+          .set({
+            ...character,
+            gold: character.gold - enhancePrice,
+            weapons: newItemsTab,
+          })
+          .then(() => {
+            firebase
+              .database()
+              .ref('stories/' + currentStory + '/merchants/' + currentMerchant)
+              .set(newMerchants[currentMerchant]);
+            this.setState(state => ({
+              ...state,
+              showEnhancers: false,
+              choosedItem: null,
+              choosedEnhancer1: null,
+              choosedEnhancer2: null,
+              enhancePrice: 0,
+            }));
+          })
+          .catch(error => {
+            // Handle Errors here.
+            triggerError(error);
+          });
+      }
+    );
+  };
 
   render() {
     const {
@@ -224,7 +306,6 @@ class PlayerMapPanel extends Component {
     const {
       currentTab,
       showEnhancers,
-      isFromMerchant,
       choosedItem,
       choosedEnhancer1,
       choosedEnhancer2,
@@ -271,7 +352,6 @@ class PlayerMapPanel extends Component {
                   <EnhancementWeaponsPanel
                     currentMerchant={currentMerchant}
                     character={character}
-                    isFromMerchant={isFromMerchant}
                     choosedItem={choosedItem}
                     showEnhancers={this.showEnhancers}
                     merchants={merchants}
@@ -301,7 +381,7 @@ class PlayerMapPanel extends Component {
                 choosedEnhancer1={choosedEnhancer1}
                 choosedEnhancer2={choosedEnhancer2}
                 enhancePrice={enhancePrice}
-                slots={choosedItem.slots ? choosedItem.slots : 1}
+                slots={choosedItem.item.slots ? choosedItem.item.slots : 1}
               />
             )}
             {isItemDescriptionShowed && (
@@ -323,6 +403,7 @@ class PlayerMapPanel extends Component {
 
 PlayerMapPanel.propTypes = {
   isQuestShowed: PropTypes.bool.isRequired,
+  currentStory: PropTypes.number.isRequired,
   currentQuest: PropTypes.number.isRequired,
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
