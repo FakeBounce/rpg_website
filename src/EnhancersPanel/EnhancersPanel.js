@@ -73,8 +73,12 @@ class EnhancersPanel extends Component {
                     index={index}
                     isHidden={isHidden}
                     isSelected={
-                      (choosedEnhancer1 && choosedEnhancer1.index === index) ||
-                      (choosedEnhancer2 && choosedEnhancer2.index === index)
+                      (choosedEnhancer1 &&
+                        choosedEnhancer1.isFromMerchant &&
+                        choosedEnhancer1.index === index) ||
+                      (choosedEnhancer2 &&
+                        choosedEnhancer2.isFromMerchant &&
+                        choosedEnhancer2.index === index)
                     }
                     itemAction={() => {
                       if (parseInt(itemFromMerchant.slot, 10) === 1) {
@@ -102,11 +106,15 @@ class EnhancersPanel extends Component {
                   index={index}
                   isHidden={isHidden}
                   isSelected={
-                    (choosedEnhancer1 && choosedEnhancer1.index === index) ||
-                    (choosedEnhancer2 && choosedEnhancer2.index === index)
+                    (choosedEnhancer1 &&
+                      !choosedEnhancer1.isFromMerchant &&
+                      choosedEnhancer1.index === index) ||
+                    (choosedEnhancer2 &&
+                      !choosedEnhancer2.isFromMerchant &&
+                      choosedEnhancer2.index === index)
                   }
                   slot={parseInt(item.slot, 10)}
-                  showItemDescription={() => {
+                  itemAction={() => {
                     if (parseInt(item.slot, 10) === 1) {
                       chooseEnhancer1(false, item, index);
                     } else {

@@ -21,7 +21,7 @@ class EnhancementWeaponsCharacterItemsList extends Component {
             {...item}
             index={index}
             isHidden={isHidden}
-            isSelected={choosedItem && choosedItem.index === index}
+            isSelected={choosedItem && !choosedItem.isFromMerchant && choosedItem.index === index}
             itemAction={() => showEnhancers(false, item, index)}
             slot={item.slots ? item.slots : 1}
           />

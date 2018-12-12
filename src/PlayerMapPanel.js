@@ -67,7 +67,7 @@ class PlayerMapPanel extends Component {
         price * (0.75 + parseInt(merchants[currentMerchant].level * 0.1, 10))
       ) +
       15 +
-      Math.ceil(7 * parseInt(merchants[currentMerchant].level, 10))
+      Math.ceil(3 * parseInt(merchants[currentMerchant].level, 10))
     );
   };
 
@@ -129,7 +129,9 @@ class PlayerMapPanel extends Component {
         enhancePrice += parseInt(choosedEnhancer2.item.price, 10);
       }
 
-      enhancePrice += parseInt(item.price, 10);
+      if (choosedItem.isFromMerchant) {
+        enhancePrice += parseInt(item.price, 10);
+      }
       enhancePrice = this.calculateEnhancePrice(enhancePrice);
 
       this.setState(state => ({
@@ -172,7 +174,9 @@ class PlayerMapPanel extends Component {
         enhancePrice += parseInt(choosedEnhancer1.item.price, 10);
       }
 
-      enhancePrice += parseInt(item.price, 10);
+      if (choosedItem.isFromMerchant) {
+        enhancePrice += parseInt(item.price, 10);
+      }
       enhancePrice = this.calculateEnhancePrice(enhancePrice);
 
       this.setState(state => ({
@@ -222,7 +226,11 @@ class PlayerMapPanel extends Component {
       } else {
         newMerchantList.splice(choosedItem.index, 1);
       }
+    } else {
+      newItemsTab.splice(choosedItem.index, 1);
     }
+
+    const toSplice = [];
     if (choosedEnhancer1 !== null) {
       if (choosedEnhancer1.isFromMerchant) {
         if (newMerchantList[choosedEnhancer1.index].quantity > 1) {
@@ -230,6 +238,13 @@ class PlayerMapPanel extends Component {
             newMerchantList[choosedEnhancer1.index].quantity - 1;
         } else {
           newMerchantList.splice(choosedEnhancer1.index, 1);
+        }
+      } else {
+        if (character.items[choosedEnhancer1.index].quantity > 1) {
+          character.items[choosedEnhancer1.index].quantity =
+            character.items[choosedEnhancer1.index].quantity - 1;
+        } else {
+          toSplice.push(choosedEnhancer1.index);
         }
       }
     }
@@ -241,7 +256,22 @@ class PlayerMapPanel extends Component {
         } else {
           newMerchantList.splice(choosedEnhancer2.index, 1);
         }
+      } else {
+        if (character.items[choosedEnhancer2.index].quantity > 1) {
+          character.items[choosedEnhancer2.index].quantity =
+            character.items[choosedEnhancer2.index].quantity - 1;
+        } else {
+          if (toSplice.length > 0 && toSplice[0] > choosedEnhancer2.index) {
+            toSplice.shift(choosedEnhancer2.index);
+          } else {
+            toSplice.push(choosedEnhancer2.index);
+          }
+        }
       }
+    }
+
+    if (toSplice.length > 0) {
+      toSplice.map(i => character.items.splice(i, 1));
     }
 
     const newMerchants = [...merchants];
@@ -260,6 +290,7 @@ class PlayerMapPanel extends Component {
             ...character,
             gold: character.gold - enhancePrice,
             weapons: newItemsTab,
+            items: character.items,
           })
           .then(() => {
             firebase

@@ -152,20 +152,25 @@ class App extends Component {
       itemDescribed,
       items: { artefacts },
     } = this.state;
+    const newWeaponsTab = character.weapons ? [...character.weapons] : [];
     const newItemsTab = character.items ? [...character.items] : [];
-    let hasAlready = false;
-    if (character.items) {
-      character.items.map((i, index) => {
-        if (i.name === item.name) {
-          hasAlready = true;
-          newItemsTab[index].quantity =
-            parseInt(newItemsTab[index].quantity, 10) + 1;
-        }
-        return null;
-      });
-    }
-    if (!hasAlready) {
-      newItemsTab.push({ ...item, quantity: 1 });
+    if (item.itemType === 'weapons') {
+      newWeaponsTab.push(item.name);
+    } else {
+      let hasAlready = false;
+      if (character.items) {
+        character.items.map((i, index) => {
+          if (i.name === item.name) {
+            hasAlready = true;
+            newItemsTab[index].quantity =
+              parseInt(newItemsTab[index].quantity, 10) + 1;
+          }
+          return null;
+        });
+      }
+      if (!hasAlready) {
+        newItemsTab.push({ ...item, quantity: 1 });
+      }
     }
 
     const newMerchantList = [...itemsList];
@@ -197,6 +202,7 @@ class App extends Component {
             ...character,
             gold: character.gold - price,
             items: newItemsTab,
+            weapons: newWeaponsTab,
           })
           .then(() => {
             if (item.itemType === 'artefacts') {

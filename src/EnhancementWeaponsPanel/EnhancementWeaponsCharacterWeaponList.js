@@ -12,16 +12,24 @@ class EnhancementWeaponsCharacterWeaponList extends Component {
       <Fragment>
         <EnhancementWeaponsSeparator text="Your weapons :" />
         {character.weapons.map((item, index) => {
-          return (
-            <EnhancementWeaponsItem
-              key={`item-${item.name}-${index}`}
-              index={index}
-              isHidden={false}
-              isSelected={choosedItem && choosedItem.index === index}
-              itemAction={() => showEnhancers(false, { name: item }, index)}
-              name={item}
-            />
-          );
+          if (item.indexOf('(') === -1) {
+            return (
+              <EnhancementWeaponsItem
+                key={`item-${item.name}-${index}`}
+                index={index}
+                isHidden={false}
+                isSelected={choosedItem && !choosedItem.isFromMerchant && choosedItem.index === index}
+                itemAction={() =>
+                  showEnhancers(
+                    false,
+                    { name: item.name ? item.name : item },
+                    index
+                  )
+                }
+                name={item}
+              />
+            );
+          }
         })}
       </Fragment>
     );
