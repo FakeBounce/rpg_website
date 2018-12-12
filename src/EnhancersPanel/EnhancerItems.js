@@ -2,66 +2,65 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { heightLeft, widthLeft } from '../Utils/StyleConstants';
-import Cadre from '../Utils/Cadre';
-import EnhanceButton from './EnhanceButton';
-import EnhancerItems from './EnhancerItems';
+import EnhancerMerchantItems from './EnhancerMerchantItems';
+import EnhancerCharacterItems from './EnhancerCharacterItems';
 
-const styledEnhancersContainer = {
-  width: `${widthLeft / 2}px`,
-  height: `${heightLeft / 2}px`,
+const styledItemsContainer = {
   display: 'inline-block',
   float: 'left',
-  textAlign: 'left',
   position: 'relative',
-  paddingHorizontal: 10,
-  color: 'white',
+  marginTop: 20,
+  marginLeft: 16,
+  overflowY: 'auto',
+  height: `${heightLeft / 2 - 80}px`,
+  width: `${widthLeft / 2 - 42}px`,
 };
 
-class EnhancersPanel extends Component {
+class EnhancerItems extends Component {
   render() {
     const {
+      currentMerchant,
       character,
       itemsList,
       merchants,
-      currentMerchant,
       chooseEnhancer1,
       chooseEnhancer2,
       choosedEnhancer1,
       choosedEnhancer2,
       slots,
-      enhanceWeapon,
-      enhancePrice,
       currentTab,
     } = this.props;
 
     return (
-      <div style={styledEnhancersContainer}>
-        <Cadre />
-        <EnhancerItems
-          slots={slots}
-          itemsList={itemsList}
-          currentTab={currentTab}
-          chooseEnhancer2={chooseEnhancer2}
-          chooseEnhancer1={chooseEnhancer1}
-          choosedEnhancer2={choosedEnhancer2}
-          choosedEnhancer1={choosedEnhancer1}
-          character={character}
+      <div style={styledItemsContainer} className="scrollbar">
+        <EnhancerMerchantItems
           merchants={merchants}
           currentMerchant={currentMerchant}
-        />
-        <EnhanceButton
           character={character}
+          choosedEnhancer1={choosedEnhancer1}
+          choosedEnhancer2={choosedEnhancer2}
           chooseEnhancer1={chooseEnhancer1}
           chooseEnhancer2={chooseEnhancer2}
-          enhanceWeapon={enhanceWeapon}
-          enhancePrice={enhancePrice}
+          currentTab={currentTab}
+          itemsList={itemsList}
+          slots={slots}
+        />
+        <EnhancerCharacterItems
+          merchants={merchants}
+          currentMerchant={currentMerchant}
+          character={character}
+          choosedEnhancer1={choosedEnhancer1}
+          choosedEnhancer2={choosedEnhancer2}
+          chooseEnhancer1={chooseEnhancer1}
+          chooseEnhancer2={chooseEnhancer2}
+          slots={slots}
         />
       </div>
     );
   }
 }
 
-EnhancersPanel.propTypes = {
+EnhancerItems.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
   itemsList: PropTypes.array.isRequired,
@@ -71,9 +70,7 @@ EnhancersPanel.propTypes = {
   choosedEnhancer1: PropTypes.object.isRequired,
   choosedEnhancer2: PropTypes.object.isRequired,
   slots: PropTypes.number.isRequired,
-  enhanceWeapon: PropTypes.func.isRequired,
-  enhancePrice: PropTypes.number.isRequired,
   currentTab: PropTypes.string.isRequired,
 };
 
-export default EnhancersPanel;
+export default EnhancerItems;

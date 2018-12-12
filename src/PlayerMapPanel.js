@@ -448,6 +448,7 @@ class PlayerMapPanel extends Component {
                 choosedEnhancer2={choosedEnhancer2}
                 enhancePrice={enhancePrice}
                 slots={choosedItem.item.slots ? choosedItem.item.slots : 1}
+                currentTab={currentTab}
               />
             )}
             {isItemDescriptionShowed && (
