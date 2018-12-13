@@ -1,15 +1,15 @@
-import firebase from "firebase";
-import { itemQuantities, priceRanges } from "./Constants";
+import firebase from 'firebase';
+import { itemQuantities, priceRanges } from './Constants';
 
 const triggerError = error => {
-  console.log("Merchants function error : ", error);
+  console.log('Merchants function error : ', error);
 };
 
 export const resetStoryMerchants = (currentStory, items, doSetState) => {
   firebase
     .database()
-    .ref("merchants")
-    .once("value")
+    .ref('merchants')
+    .once('value')
     .then(snapshot => {
       const newMerchants = [];
       const artefactsLeft = [...items.artefacts];
@@ -29,7 +29,7 @@ export const resetStoryMerchants = (currentStory, items, doSetState) => {
 
       firebase
         .database()
-        .ref("stories/" + currentStory + "/merchants")
+        .ref('stories/' + currentStory + '/merchants')
         .set(newMerchants)
         .then(() => {
           hydrateStoryArtefacts(currentStory, artefactsLeft);
@@ -50,28 +50,27 @@ export const hydrateAllMerchants = (
   merchants,
   items,
   doSetState,
-  hard = false,
+  hard = false
 ) => {
-  const newMerchants = [];
-  const artefactsLeft = [...items.artefacts];
-  merchants.map(m => {
-    newMerchants.push(hydrateMerchant(artefactsLeft, m, items, hard));
+  const artefactsLeft = { ...items.artefacts };
+  Object.keys(merchants).map(key => {
+    hydrateMerchant(artefactsLeft, merchants[key], items, hard);
     return null;
   });
 
   const newItems = { ...items };
-  newItems.artefacts = [...artefactsLeft];
+  newItems.artefacts = { ...artefactsLeft };
 
   doSetState({
-    merchants: newMerchants,
+    merchants,
     items: newItems,
   });
 
   // Hydrate DB artefacts
   firebase
     .database()
-    .ref("stories/" + currentStory + "/merchants")
-    .set(newMerchants)
+    .ref('stories/' + currentStory + '/merchants')
+    .set(merchants)
     .then(() => {
       hydrateStoryArtefacts(currentStory, artefactsLeft);
     })
@@ -85,13 +84,13 @@ export const hydrateMerchant = (
   artefactsLeft,
   merchant,
   items,
-  totalHydrate = false,
+  totalHydrate = false
 ) => {
   if (totalHydrate) {
     // Get back artefacts from merchant
     merchant.items &&
       merchant.items.map(i => {
-        if (i.itemType === "artefacts") {
+        if (i.itemType === 'artefacts') {
           artefactsLeft.push(i);
         }
         return null;
@@ -99,16 +98,16 @@ export const hydrateMerchant = (
 
     // Get items from each category
     merchant.items = [];
-    const consumableList = getItemsFromCategory("consumables", merchant, items);
+    const consumableList = getItemsFromCategory('consumables', merchant, items);
     const enhancementList = getItemsFromCategory(
-      "enhancements",
+      'enhancements',
       merchant,
-      items,
+      items
     );
-    const stoneList = getItemsFromCategory("stones", merchant, items);
-    const runeList = getItemsFromCategory("runes", merchant, items);
-    const weaponList = getItemsFromCategory("weapons", merchant, items);
-    const spellList = getItemsFromCategory("spells", merchant, items);
+    const stoneList = getItemsFromCategory('stones', merchant, items);
+    const runeList = getItemsFromCategory('runes', merchant, items);
+    const weaponList = getItemsFromCategory('weapons', merchant, items);
+    const spellList = getItemsFromCategory('spells', merchant, items);
     const artefactList = getArtefactsForMerchant(artefactsLeft, merchant);
 
     // Concats items lists
@@ -120,49 +119,63 @@ export const hydrateMerchant = (
       .concat(spellList)
       .concat(artefactList);
   } else {
+    // Get items from each category
+    const weaponList = getItemsFromCategory('weapons', merchant, items, 0);
+    const consumableList = getItemsFromCategory(
+      'consumables',
+      merchant,
+      items,
+      0
+    );
+    const enhancementList = getItemsFromCategory(
+      'enhancements',
+      merchant,
+      items,
+      0
+    );
+    const spellList = getItemsFromCategory('spells', merchant, items, 0);
+    const runeList = getItemsFromCategory('runes', merchant, items, 0);
+    const stoneList = getItemsFromCategory('stones', merchant, items, 0);
+
     // Store artefacts from merchant
-    const itemsStaying = [];
-    merchant.items.map((i, index) => {
-      if (i.rarity >= 7 || i.itemType === "artefacts") {
-        itemsStaying.push(i);
+    const itemsStaying = {};
+    Object.keys(merchant.items).map(key => {
+      if (
+        merchant.items[key].rarity >= 7 ||
+        merchant.items[key].itemType === 'artefacts'
+      ) {
+        const newPostKey = firebase
+          .database()
+          .ref('/items')
+          .push().key;
+        itemsStaying[newPostKey] = { ...merchant.items[key] };
       }
       return null;
     });
 
-    // Get items from each category
-    const consumableList = getItemsFromCategory(
-      "consumables",
-      merchant,
-      items,
-      0,
-    );
-    const enhancementList = getItemsFromCategory(
-      "enhancements",
-      merchant,
-      items,
-      0,
-    );
-    const stoneList = getItemsFromCategory("stones", merchant, items, 0);
-    const runeList = getItemsFromCategory("runes", merchant, items, 0);
-    const weaponList = getItemsFromCategory("weapons", merchant, items, 0);
-    const spellList = getItemsFromCategory("spells", merchant, items, 0);
-
     // Concats items lists and stored items
-    merchant.items = consumableList
-      .concat(enhancementList)
-      .concat(stoneList)
-      .concat(runeList)
-      .concat(weaponList)
-      .concat(spellList)
-      .concat(itemsStaying);
+    merchant.items = {
+      ...weaponList,
+      ...consumableList,
+      ...enhancementList,
+      ...spellList,
+      ...runeList,
+      ...stoneList,
+      ...itemsStaying,
+    };
   }
   return merchant;
 };
 
+const getRandomKey = obj => {
+  const keys = Object.keys(obj);
+  return keys[(keys.length * Math.random()) << 0];
+};
+
 export const getItemsFromCategory = (list, merchant, items, itemsHL = 3) => {
   let itemsToGet = 0;
-  let itemList = [];
-  const itemsListLeft = [...items[list.toLowerCase()]];
+  let itemList = {};
+  const itemsListLeft = { ...items[list.toLowerCase()] };
   for (let i = 0; i < parseInt(merchant[list], 10); i++) {
     itemsToGet += Math.floor(Math.random() * 5 + 1);
   }
@@ -172,8 +185,8 @@ export const getItemsFromCategory = (list, merchant, items, itemsHL = 3) => {
   }
 
   let randomItem = 0;
-  while (itemsToGet > 0 && itemsListLeft.length > 0) {
-    randomItem = Math.floor(Math.random() * itemsListLeft.length);
+  while (itemsToGet > 0 && Object.keys(itemsListLeft).length > 0) {
+    randomItem = getRandomKey(itemsListLeft);
     if (
       parseInt(itemsListLeft[randomItem].rarity, 10) <=
       parseInt(merchant[list], 10) * 2
@@ -196,31 +209,35 @@ export const getItemsFromCategory = (list, merchant, items, itemsHL = 3) => {
         parseInt(merchant[list], 10) *
           Math.floor(Math.random() * priceRange + 1);
 
-      if (list === "spells") {
+      if (list === 'spells') {
         const randomScroll = Math.floor(Math.random() * 10 + 1);
         if (randomScroll === 1) {
           newItem.name =
-            "Livre de sort (" + newItem.type + ") : " + newItem.name;
-          newItem.icon = "spell_book.jpg";
+            'Livre de sort (' + newItem.type + ') : ' + newItem.name;
+          newItem.icon = 'spell_book.jpg';
           newItem.isBook = true;
           newItem.price = newItem.price * Math.floor(Math.random() * 3 + 2);
         } else {
-          newItem.name = "Parchemin (" + newItem.type + ") : " + newItem.name;
+          newItem.name = 'Parchemin (' + newItem.type + ') : ' + newItem.name;
           newItem.isBook = false;
         }
       }
+      const newPostKey = firebase
+        .database()
+        .ref('/items')
+        .push().key;
       if (newItem.rarity >= 7) {
         if (itemsHL > 0) {
-          itemList.push(newItem);
+          itemList[newPostKey] = newItem;
           itemsToGet--;
           itemsHL--;
         }
       } else {
-        itemList.push(newItem);
+        itemList[newPostKey] = newItem;
         itemsToGet--;
       }
     }
-    itemsListLeft.splice(randomItem, 1);
+    delete itemsListLeft[randomItem];
   }
   return itemList;
 };
@@ -228,14 +245,14 @@ export const getItemsFromCategory = (list, merchant, items, itemsHL = 3) => {
 export const getArtefactsForMerchant = (artefactsCurrentList, merchant) => {
   let itemList = [];
   let randomItem = 0;
-  let itemsToGet = parseInt(merchant["artefacts"], 10);
+  let itemsToGet = parseInt(merchant['artefacts'], 10);
   for (let i = 0; i < itemsToGet; i++) {
     randomItem = Math.floor(Math.random() * artefactsCurrentList.length);
     if (!artefactsCurrentList[randomItem].isAcquired) {
       const newItem = { ...artefactsCurrentList[randomItem] };
       newItem.rarity = parseInt(newItem.rarity, 10);
       newItem.quantity = 1;
-      newItem.itemType = "artefacts";
+      newItem.itemType = 'artefacts';
       const priceRange = priceRanges[newItem.rarity].maxValue * 0.2;
 
       newItem.price =
@@ -252,7 +269,7 @@ export const getArtefactsForMerchant = (artefactsCurrentList, merchant) => {
 export const hydrateStoryArtefacts = (currentStory, artefactsLeft) => {
   firebase
     .database()
-    .ref("stories/" + currentStory + "/artefacts")
+    .ref('stories/' + currentStory + '/artefacts')
     .set(artefactsLeft)
     .catch(error => {
       // Handle Errors here.

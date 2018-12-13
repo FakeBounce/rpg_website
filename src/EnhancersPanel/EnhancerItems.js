@@ -63,7 +63,7 @@ class EnhancerItems extends Component {
 EnhancerItems.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
-  itemsList: PropTypes.array.isRequired,
+  itemsList: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   chooseEnhancer1: PropTypes.func.isRequired,
   chooseEnhancer2: PropTypes.func.isRequired,

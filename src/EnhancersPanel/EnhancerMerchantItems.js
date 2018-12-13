@@ -29,33 +29,33 @@ class EnhancerMerchantItems extends Component {
           }
         />
         {parseInt(merchants[currentMerchant].enhancements, 10) > 0 &&
-          itemsList.map((itemFromMerchant, index) => {
-            const isHidden = character.education < itemFromMerchant.rarity * 9;
+          Object.keys(itemsList).map(key => {
+            const isHidden = character.education < itemsList[key].rarity * 9;
             if (
-              itemFromMerchant.itemType === 'enhancements' &&
-              itemFromMerchant.slot <= slots &&
-              itemFromMerchant.slot <=
+              itemsList[key].itemType === 'enhancements' &&
+              itemsList[key].slot <= slots &&
+              itemsList[key].slot <=
                 parseInt(merchants[currentMerchant].level, 10)
             ) {
               return (
                 <EnhancerItem
-                  key={`item-${itemFromMerchant.name}-${index}`}
-                  {...itemFromMerchant}
-                  index={index}
+                  key={`item-${itemsList[key].name}-${key}`}
+                  {...itemsList[key]}
+                  index={key}
                   isHidden={isHidden}
                   isSelected={
                     (choosedEnhancer1 &&
                       choosedEnhancer1.isFromMerchant &&
-                      choosedEnhancer1.index === index) ||
+                      choosedEnhancer1.index === key) ||
                     (choosedEnhancer2 &&
                       choosedEnhancer2.isFromMerchant &&
-                      choosedEnhancer2.index === index)
+                      choosedEnhancer2.index === key)
                   }
                   itemAction={() => {
-                    if (parseInt(itemFromMerchant.slot, 10) === 1) {
-                      chooseEnhancer1(true, itemFromMerchant, index);
+                    if (parseInt(itemsList[key].slot, 10) === 1) {
+                      chooseEnhancer1(true, itemsList[key], key);
                     } else {
-                      chooseEnhancer2(true, itemFromMerchant, index);
+                      chooseEnhancer2(true, itemsList[key], key);
                     }
                   }}
                 />
@@ -70,7 +70,7 @@ class EnhancerMerchantItems extends Component {
 EnhancerMerchantItems.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
-  itemsList: PropTypes.array.isRequired,
+  itemsList: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   chooseEnhancer1: PropTypes.func.isRequired,
   chooseEnhancer2: PropTypes.func.isRequired,

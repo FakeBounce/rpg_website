@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import EventItem from './EventItem';
-import { sortAlphabetical } from "../Utils/Functions";
+import { sortAlphabetical } from '../Utils/Functions';
 
 const styledItemList = {
   width: '100%',
@@ -13,26 +13,32 @@ const styledItemList = {
 };
 
 class EventItemForm extends PureComponent {
-  render() {
-    const {
-      items,
-      descriptionEvent,
-      quantityEvent,
-      itemEvent,
-      onChange,
-    } = this.props;
+  state = {
+    filteredItems: [],
+  };
 
+  componentDidMount() {
+    const { items } = this.props;
     const filteredItems = [];
     Object.keys(items).map(ikey => {
       if (ikey !== 'runes' && ikey !== 'enhancements') {
-        items[ikey].map(i => {
-          return filteredItems.push({ ...i, itemType: ikey });
+        Object.keys(items[ikey]).map(key => {
+          return filteredItems.push({ ...items[ikey][key], itemType: ikey });
         });
       }
       return null;
     });
 
     sortAlphabetical(filteredItems);
+    this.setState(state => ({
+      ...state,
+      filteredItems,
+    }));
+  }
+
+  render() {
+    const { descriptionEvent, quantityEvent, itemEvent, onChange } = this.props;
+    const { filteredItems } = this.state;
 
     return (
       <div>

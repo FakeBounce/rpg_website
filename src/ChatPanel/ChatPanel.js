@@ -640,10 +640,10 @@ class ChatPanel extends PureComponent {
   };
 
   sendChatInput = input => {
-    const { doSetState, triggerError } = this.props;
+    const { currentStory, doSetState, triggerError } = this.props;
     firebase
       .database()
-      .ref('chat/')
+      .ref('/stories/' + currentStory + '/chat/')
       .push(input)
       .then(() => {
         doSetState({
@@ -775,7 +775,7 @@ class ChatPanel extends PureComponent {
                 padding: 0,
                 margin: 0,
                 border: '1px solid #3f4257',
-                cursor:cursorPointer,
+                cursor: cursorPointer,
               }}
               withIcon={false}
               label=""

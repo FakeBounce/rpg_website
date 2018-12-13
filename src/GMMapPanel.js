@@ -9,7 +9,6 @@ import StoryQuestsAndMerchantsPanel from './StoryQuestsAndMerchantsPanel/StoryQu
 import TownPanel from './TownPanel/TownPanel';
 import PanelToggle from './PanelToggle';
 import SpellGenerator from './SpellGenerator';
-import firebase from 'firebase';
 import ButtonLarge from './Utils/ButtonLarge';
 
 const styledMapSide = {

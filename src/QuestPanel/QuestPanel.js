@@ -74,11 +74,11 @@ class QuestPanel extends Component {
           backgroundSize: "cover",
         }}
       >
-        {questsList.map(q => {
+        {questsList.map((q,i) => {
           if (!quests[q].validated) {
             return (
               <Quest
-                key={`merchant-${quests[q].name}`}
+                key={`merchant-${quests[q].name} -${i}`}
                 {...quests[q]}
                 index={q}
                 showQuest={this.showQuest}

@@ -49,13 +49,15 @@ class EnhancersPanel extends Component {
           merchants={merchants}
           currentMerchant={currentMerchant}
         />
-        <EnhanceButton
-          character={character}
-          chooseEnhancer1={chooseEnhancer1}
-          chooseEnhancer2={chooseEnhancer2}
-          enhanceWeapon={enhanceWeapon}
-          enhancePrice={enhancePrice}
-        />
+        {(choosedEnhancer1 !== null || choosedEnhancer2 !== null) && (
+          <EnhanceButton
+            character={character}
+            chooseEnhancer1={chooseEnhancer1}
+            chooseEnhancer2={chooseEnhancer2}
+            enhanceWeapon={enhanceWeapon}
+            enhancePrice={enhancePrice}
+          />
+        )}
       </div>
     );
   }
@@ -64,7 +66,7 @@ class EnhancersPanel extends Component {
 EnhancersPanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
-  itemsList: PropTypes.array.isRequired,
+  itemsList: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   chooseEnhancer1: PropTypes.func.isRequired,
   chooseEnhancer2: PropTypes.func.isRequired,

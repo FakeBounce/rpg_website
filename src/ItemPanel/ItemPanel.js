@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { widthLeft, heightLeft } from '../Utils/StyleConstants';
 import ItemList from './ItemList';
 import Cadre from '../Utils/Cadre';
+import firebase from 'firebase';
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -17,11 +18,23 @@ const styledMapSide = {
 class ItemPanel extends Component {
   showItemDescription = i => {
     const { merchants, currentMerchant, doSetState } = this.props;
-    doSetState({
-      isItemDescriptionShowed: true,
-      itemToDescribe: merchants[currentMerchant].items[i],
-      itemDescribed: i,
-    });
+    doSetState(
+      {
+        isItemDescriptionShowed: true,
+        itemToDescribe: merchants[currentMerchant].items[i],
+        itemDescribed: i,
+      },
+      () => {
+        firebase
+          .database()
+          .ref('stories/0/merchants/' + currentMerchant + '/items/' + i)
+          .on('value', snapshot => {
+            this.props.doSetState({
+              itemToDescribe: snapshot.val(),
+            });
+          });
+      }
+    );
   };
 
   render() {
@@ -43,7 +56,7 @@ class ItemPanel extends Component {
 ItemPanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
-  itemsList: PropTypes.array.isRequired,
+  itemsList: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   doSetState: PropTypes.func.isRequired,
 };

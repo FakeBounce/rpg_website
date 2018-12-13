@@ -7,15 +7,12 @@ import ItemPanel from './ItemPanel/ItemPanel';
 import QuestPanel from './QuestPanel/QuestPanel';
 import { heightLeft, widthLeft } from './Utils/StyleConstants';
 import TempImage from './TempImage';
-import Cadre from './Utils/Cadre';
-import Item from './ItemPanel/Item';
 import EnhancementWeaponsPanel from './EnhancementWeaponsPanel/EnhancementWeaponsPanel';
 import ShopHeaderBlacksmith from './ShopHeader/ShopHeaderBlacksmith';
 import ShopHeaderEnhancements from './ShopHeader/ShopHeaderEnhancements';
 import ShopHeaderDefault from './ShopHeader/ShopHeaderDefault';
 import EnhancersPanel from './EnhancersPanel/EnhancersPanel';
 import firebase from 'firebase';
-import { hydrateStoryArtefacts } from './Utils/MerchantsFunctions';
 
 const styledPlayerMapContainer = {
   float: 'left',
@@ -44,6 +41,7 @@ class PlayerMapPanel extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    const { choosedItem, choosedEnhancer2, choosedEnhancer1 } = this.state;
     if (nextProps.currentMerchant !== this.props.currentMerchant) {
       this.setState(state => ({
         ...state,
@@ -54,6 +52,53 @@ class PlayerMapPanel extends Component {
         choosedEnhancer2: null,
         enhancePrice: 0,
       }));
+    }
+    if (
+      Object.keys(nextProps.itemsList).length <
+      Object.keys(this.props.itemsList).length
+    ) {
+      if (
+        choosedItem !== null &&
+        typeof nextProps.itemsList[choosedItem.index] === 'undefined'
+      ) {
+        this.setState(
+          state => ({
+            ...state,
+            choosedItem: null,
+          }),
+          () => {
+            this.calculateEnhancePrice();
+          }
+        );
+      }
+      if (
+        choosedEnhancer1 !== null &&
+        typeof nextProps.itemsList[choosedEnhancer1.index] === 'undefined'
+      ) {
+        this.setState(
+          state => ({
+            ...state,
+            choosedEnhancer1: null,
+          }),
+          () => {
+            this.calculateEnhancePrice();
+          }
+        );
+      }
+      if (
+        choosedEnhancer2 !== null &&
+        typeof nextProps.itemsList[choosedEnhancer2.index] === 'undefined'
+      ) {
+        this.setState(
+          state => ({
+            ...state,
+            choosedEnhancer2: null,
+          }),
+          () => {
+            this.calculateEnhancePrice();
+          }
+        );
+      }
     }
   }
 
@@ -77,35 +122,20 @@ class PlayerMapPanel extends Component {
     );
   };
 
-  calculateEnhancePrice = price => {
+  calculateEnhancePrice = () => {
     const { merchants, currentMerchant } = this.props;
-    const { currentTab } = this.state;
-    if (currentTab === 'enhancements') {
-      return (
-        Math.ceil(
-          price * (0.75 + parseInt(merchants[currentMerchant].level * 0.1, 10))
-        ) +
-        15 +
-        Math.ceil(3 * parseInt(merchants[currentMerchant].level, 10))
-      );
-    } else {
-      return (
-        Math.ceil(
-          price * (1.25 + parseInt(merchants[currentMerchant].level * 0.1, 10))
-        ) +
-        30 +
-        Math.ceil(7 * parseInt(merchants[currentMerchant].level, 10))
-      );
-    }
-  };
-
-  showEnhancers = (isFromMerchant, item, index) => {
-    const { showEnhancers, choosedEnhancer1, choosedEnhancer2 } = this.state;
+    const {
+      currentTab,
+      showEnhancers,
+      choosedItem,
+      choosedEnhancer1,
+      choosedEnhancer2,
+    } = this.state;
 
     let enhancePrice = 0;
     if (showEnhancers) {
-      if (isFromMerchant) {
-        enhancePrice += parseInt(item.price, 10);
+      if (choosedItem !== null && choosedItem.isFromMerchant) {
+        enhancePrice += parseInt(choosedItem.item.price, 10);
       }
 
       if (choosedEnhancer1 !== null && choosedEnhancer1.isFromMerchant) {
@@ -116,103 +146,95 @@ class PlayerMapPanel extends Component {
         enhancePrice += parseInt(choosedEnhancer2.item.price, 10);
       }
     }
-    enhancePrice = this.calculateEnhancePrice(enhancePrice);
+
+    if (currentTab === 'enhancements') {
+      enhancePrice =
+        Math.ceil(
+          enhancePrice *
+            (0.75 + parseInt(merchants[currentMerchant].level * 0.1, 10))
+        ) +
+        15 +
+        Math.ceil(3 * parseInt(merchants[currentMerchant].level, 10));
+    } else {
+      enhancePrice =
+        Math.ceil(
+          enhancePrice *
+            (1.25 + parseInt(merchants[currentMerchant].level * 0.1, 10))
+        ) +
+        30 +
+        Math.ceil(7 * parseInt(merchants[currentMerchant].level, 10));
+    }
     this.setState(state => ({
       ...state,
-      showEnhancers: true,
-      choosedItem: { item, index, isFromMerchant },
-      itemIndex: index,
       enhancePrice,
     }));
   };
 
+  showEnhancers = (isFromMerchant, item, index) => {
+    this.setState(
+      state => ({
+        ...state,
+        showEnhancers: true,
+        choosedItem: { item, index, isFromMerchant },
+        itemIndex: index,
+      }),
+      () => {
+        this.calculateEnhancePrice();
+      }
+    );
+  };
+
   chooseEnhancer1 = (isFromMerchant, item, index) => {
-    const { choosedItem, choosedEnhancer1, choosedEnhancer2 } = this.state;
+    const { choosedEnhancer1 } = this.state;
 
     if (choosedEnhancer1 !== null && item.name === choosedEnhancer1.item.name) {
-      let enhancePrice = 0;
-
-      if (choosedItem.isFromMerchant) {
-        enhancePrice += parseInt(choosedItem.item.price, 10);
-      }
-
-      if (choosedEnhancer2 !== null && choosedEnhancer2.isFromMerchant) {
-        enhancePrice += parseInt(choosedEnhancer2.item.price, 10);
-      }
-      enhancePrice = this.calculateEnhancePrice(enhancePrice);
-
-      this.setState(state => ({
-        ...state,
-        choosedEnhancer1: null,
-        enhancePrice,
-      }));
+      this.setState(
+        state => ({
+          ...state,
+          choosedEnhancer1: null,
+        }),
+        () => {
+          this.calculateEnhancePrice();
+        }
+      );
     } else {
-      let enhancePrice = 0;
-
-      if (choosedItem.isFromMerchant) {
-        enhancePrice += parseInt(choosedItem.item.price, 10);
-      }
-
-      if (choosedEnhancer2 !== null && choosedEnhancer2.isFromMerchant) {
-        enhancePrice += parseInt(choosedEnhancer2.item.price, 10);
-      }
-
-      if (choosedItem.isFromMerchant) {
-        enhancePrice += parseInt(item.price, 10);
-      }
-      enhancePrice = this.calculateEnhancePrice(enhancePrice);
-
-      this.setState(state => ({
-        ...state,
-        choosedEnhancer1: { item, index, isFromMerchant },
-        enhancer1Index: index,
-        enhancePrice,
-      }));
+      this.setState(
+        state => ({
+          ...state,
+          choosedEnhancer1: { item, index, isFromMerchant },
+          enhancer1Index: index,
+        }),
+        () => {
+          this.calculateEnhancePrice();
+        }
+      );
     }
   };
 
   chooseEnhancer2 = (isFromMerchant, item, index) => {
-    const { choosedItem, choosedEnhancer1, choosedEnhancer2 } = this.state;
+    const { choosedEnhancer2 } = this.state;
 
-    if (choosedEnhancer2 !== null && item.name === choosedEnhancer2.name) {
-      let enhancePrice = 0;
-
-      if (choosedItem.isFromMerchant) {
-        enhancePrice += parseInt(choosedItem.item.price, 10);
-      }
-
-      if (choosedEnhancer1 !== null && choosedEnhancer1.isFromMerchant) {
-        enhancePrice += parseInt(choosedEnhancer1.item.price, 10);
-      }
-      enhancePrice = this.calculateEnhancePrice(enhancePrice);
-
-      this.setState(state => ({
-        ...state,
-        choosedEnhancer2: null,
-        enhancePrice,
-      }));
+    if (choosedEnhancer2 !== null && item.name === choosedEnhancer2.item.name) {
+      this.setState(
+        state => ({
+          ...state,
+          choosedEnhancer2: null,
+        }),
+        () => {
+          this.calculateEnhancePrice();
+        }
+      );
     } else {
-      let enhancePrice = 0;
-
-      if (isFromMerchant) {
-        enhancePrice += parseInt(choosedItem.item.price, 10);
-      }
-
-      if (choosedEnhancer1 !== null && choosedEnhancer1.isFromMerchant) {
-        enhancePrice += parseInt(choosedEnhancer1.item.price, 10);
-      }
-
-      if (choosedItem.isFromMerchant) {
-        enhancePrice += parseInt(item.price, 10);
-      }
-      enhancePrice = this.calculateEnhancePrice(enhancePrice);
-
-      this.setState(state => ({
-        ...state,
-        choosedEnhancer2: { item, index, isFromMerchant },
-        enhancer2Index: index,
-        enhancePrice,
-      }));
+      this.setState(
+        state => ({
+          ...state,
+          choosedEnhancer2: { item, index, isFromMerchant },
+          enhancer2Index: index,
+        }),
+        () => {
+          this.calculateEnhancePrice();
+        }
+      );
     }
   };
 
@@ -252,16 +274,16 @@ class PlayerMapPanel extends Component {
     const newItemsTab = character.weapons ? [...character.weapons] : [];
     newItemsTab.push(newWeapon);
 
-    const newMerchantList = [...itemsList];
+    const newMerchantList = { ...itemsList };
     if (choosedItem.isFromMerchant) {
       if (newMerchantList[choosedItem.index].quantity > 1) {
         newMerchantList[choosedItem.index].quantity =
           newMerchantList[choosedItem.index].quantity - 1;
       } else {
-        newMerchantList.splice(choosedItem.index, 1);
+        delete newMerchantList[choosedItem.index];
       }
     } else {
-      newItemsTab.splice(choosedItem.index, 1);
+      delete newItemsTab[choosedItem.index];
     }
 
     const toSplice = [];
@@ -271,7 +293,7 @@ class PlayerMapPanel extends Component {
           newMerchantList[choosedEnhancer1.index].quantity =
             newMerchantList[choosedEnhancer1.index].quantity - 1;
         } else {
-          newMerchantList.splice(choosedEnhancer1.index, 1);
+          delete newMerchantList[choosedEnhancer1.index];
         }
       } else {
         if (character.items[choosedEnhancer1.index].quantity > 1) {
@@ -288,7 +310,7 @@ class PlayerMapPanel extends Component {
           newMerchantList[choosedEnhancer2.index].quantity =
             newMerchantList[choosedEnhancer2.index].quantity - 1;
         } else {
-          newMerchantList.splice(choosedEnhancer2.index, 1);
+          delete newMerchantList[choosedEnhancer2.index];
         }
       } else {
         if (character.items[choosedEnhancer2.index].quantity > 1) {
@@ -308,13 +330,12 @@ class PlayerMapPanel extends Component {
       toSplice.map(i => character.items.splice(i, 1));
     }
 
-    const newMerchants = [...merchants];
-    newMerchants[currentMerchant].items = newMerchantList;
+    merchants[currentMerchant].items = { ...newMerchantList };
 
     doSetState(
       {
         itemsList: newMerchantList,
-        merchants: newMerchants,
+        merchants,
       },
       () => {
         firebase
@@ -330,7 +351,7 @@ class PlayerMapPanel extends Component {
             firebase
               .database()
               .ref('stories/' + currentStory + '/merchants/' + currentMerchant)
-              .set(newMerchants[currentMerchant]);
+              .set(merchants[currentMerchant]);
             this.setState(state => ({
               ...state,
               showEnhancers: false,
@@ -481,7 +502,7 @@ PlayerMapPanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
   isItemShowed: PropTypes.bool.isRequired,
-  itemsList: PropTypes.array.isRequired,
+  itemsList: PropTypes.object.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,
   itemToDescribe: PropTypes.object.isRequired,
   isTownShowed: PropTypes.bool.isRequired,

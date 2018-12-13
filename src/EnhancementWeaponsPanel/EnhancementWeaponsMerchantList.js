@@ -11,22 +11,22 @@ class EnhancementWeaponsMerchantList extends Component {
     return (
       <Fragment>
         <EnhancementWeaponsSeparator text="Proposed weapons :" />
-        {itemsList.map((itemFromMerchant, index) => {
-          const isHidden = character.education < itemFromMerchant.rarity * 9;
-          if (itemFromMerchant.itemType === 'weapons') {
+        {Object.keys(itemsList).map(key => {
+          const isHidden = character.education < itemsList[key].rarity * 9;
+          if (itemsList[key].itemType === 'weapons') {
             return (
               <EnhancementWeaponsItem
-                key={`item-${itemFromMerchant.name}-${index}`}
-                {...itemFromMerchant}
-                index={index}
+                key={`item-${itemsList[key].name}-${key}`}
+                {...itemsList[key]}
+                index={key}
                 isHidden={isHidden}
                 isSelected={
                   choosedItem &&
                   choosedItem.isFromMerchant &&
-                  choosedItem.index === index
+                  choosedItem.index === key
                 }
-                itemAction={() => showEnhancers(true, itemFromMerchant, index)}
-                slot={itemFromMerchant.slots}
+                itemAction={() => showEnhancers(true, itemsList[key], key)}
+                slot={itemsList[key].slots}
               />
             );
           }
@@ -40,7 +40,7 @@ EnhancementWeaponsMerchantList.propTypes = {
   character: PropTypes.object.isRequired,
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
-  itemsList: PropTypes.array.isRequired,
+  itemsList: PropTypes.object.isRequired,
 };
 
 export default EnhancementWeaponsMerchantList;

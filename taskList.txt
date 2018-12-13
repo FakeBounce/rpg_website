@@ -65,6 +65,7 @@ les fonctions au plus bas niveau de composant possible
 
 v2.13.1
 18) Urgent : Pour éviter les erreurs, ne plus travailler sur des index locals (uniquement id, et listen)
+- Revoir hydrateAll en forced
 
 
 

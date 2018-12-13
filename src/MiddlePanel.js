@@ -202,7 +202,7 @@ MiddlePanel.propTypes = {
   isQuestShowed: PropTypes.bool.isRequired,
   isTownShowed: PropTypes.bool.isRequired,
   items: PropTypes.object.isRequired,
-  itemsList: PropTypes.array.isRequired,
+  itemsList: PropTypes.object.isRequired,
   itemToDescribe: PropTypes.object.isRequired,
   loadCurrentPosition: PropTypes.func.isRequired,
   map: PropTypes.array.isRequired,

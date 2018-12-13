@@ -173,18 +173,17 @@ class App extends Component {
       }
     }
 
-    const newMerchantList = [...itemsList];
+    const newMerchantList = { ...itemsList };
     let isQuantityLeft = false;
     if (newMerchantList[itemDescribed].quantity > 1) {
       newMerchantList[itemDescribed].quantity =
         newMerchantList[itemDescribed].quantity - 1;
       isQuantityLeft = true;
     } else {
-      newMerchantList.splice(itemDescribed, 1);
+      delete newMerchantList[itemDescribed];
     }
 
-    const newMerchants = [...merchants];
-    newMerchants[currentMerchant].items = newMerchantList;
+    merchants[currentMerchant].items = newMerchantList;
 
     this.setState(
       state => ({
@@ -192,7 +191,7 @@ class App extends Component {
         itemToDescribe: isQuantityLeft ? newMerchantList[itemDescribed] : {},
         isItemDescriptionShowed: isQuantityLeft,
         itemsList: newMerchantList,
-        merchants: newMerchants,
+        merchants,
       }),
       () => {
         firebase
@@ -218,7 +217,7 @@ class App extends Component {
             firebase
               .database()
               .ref('stories/' + currentStory + '/merchants/' + currentMerchant)
-              .set(newMerchants[currentMerchant]);
+              .set(merchants[currentMerchant]);
           })
           .catch(error => {
             // Handle Errors here.

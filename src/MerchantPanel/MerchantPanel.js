@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { widthLeft, heightLeft, styledCadre } from '../Utils/StyleConstants';
 import MerchantList from './MerchantList';
 import Cadre from '../Utils/Cadre';
+import firebase from "firebase";
 
 const styledMapSide = {
   width: `${widthLeft / 2 - 20}px`,
@@ -20,6 +21,15 @@ class MerchantPanel extends Component {
       isItemShowed: true,
       itemsList: list,
       currentMerchant: index,
+    }, () => {
+      firebase
+        .database()
+        .ref('stories/0/merchants/'+index+'/items')
+        .on('value', snapshot => {
+          this.props.doSetState({
+            itemsList: snapshot.val(),
+          });
+        });
     });
   };
 

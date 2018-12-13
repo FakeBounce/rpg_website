@@ -55,7 +55,7 @@ EnhancementWeaponsContent.propTypes = {
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
   merchants: PropTypes.array.isRequired,
-  itemsList: PropTypes.array.isRequired,
+  itemsList: PropTypes.object.isRequired,
 };
 
 export default EnhancementWeaponsContent;

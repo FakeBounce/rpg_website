@@ -21,23 +21,20 @@ class EnhanceButton extends Component {
       enhancePrice,
     } = this.props;
 
-    if (choosedEnhancer1 !== null || choosedEnhancer2 !== null) {
-      return (
-        <ButtonLarge
-          onClick={() => {
-            if (character.gold >= enhancePrice) {
-              enhanceWeapon();
-            }
-          }}
-          style={styledEnhanceButton}
-          className={`${character.gold < enhancePrice ? 'noGold' : ''}`}
-        >
-          Enhance item ({enhancePrice}
-          g)
-        </ButtonLarge>
-      );
-    }
-    return null;
+    return (
+      <ButtonLarge
+        onClick={() => {
+          if (character.gold >= enhancePrice) {
+            enhanceWeapon();
+          }
+        }}
+        style={styledEnhanceButton}
+        className={`${character.gold < enhancePrice ? 'noGold' : ''}`}
+      >
+        Enhance item ({enhancePrice}
+        g)
+      </ButtonLarge>
+    );
   }
 }
 

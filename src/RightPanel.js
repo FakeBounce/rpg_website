@@ -227,23 +227,14 @@ class RightPanel extends Component {
       )
       .set(newCharacterItems)
       .then(() => {
-        const newCharacterWeapons = [...character.weapons];
+        const newCharacterWeapons = character.weapons;
 
         newCharacterWeapons.splice(i, 1);
-
-        const newCharacter = {
-          ...character,
-          weapons: newCharacterWeapons,
-        };
-
-        doSetState({
-          character: newCharacter,
-        });
 
         firebase
           .database()
           .ref('stories/' + currentStory + '/characters/' + uid + '/character')
-          .set(newCharacter)
+          .set(character)
           .catch(error => {
             // Handle Errors here.
             triggerError(error);
