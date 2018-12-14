@@ -171,7 +171,7 @@ class MiddlePanel extends Component {
             users={users}
           />
         )}
-        {isGameMaster && (
+        {isGameMaster && !isOnPlayerView && (
           <SoundPanel
             musicName={musicName}
             noiseName={noiseName}
