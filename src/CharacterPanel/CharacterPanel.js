@@ -48,7 +48,11 @@ class CharacterPanel extends Component {
             uid={uid}
             currentStory={currentStory}
           />
-          <CharacterAttributes character={character} />
+          <CharacterAttributes
+            character={character}
+            isGameMaster={isGameMaster}
+            currentStory={currentStory}
+          />
           <CharacterOtherInfos
             character={character}
             status={status}
