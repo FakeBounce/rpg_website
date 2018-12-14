@@ -19,6 +19,20 @@ const styles = {
     display: 'inline-block',
     overflowY: 'auto',
   },
+  GMTeamPanel: {
+    borderBottom: '1px solid black',
+    width: '100%',
+    height: '100%',
+  },
+  GMteamCharacters: {
+    width: '100%',
+    height: `${heightLeft / 2 - 30}px`,
+    marginTop: 25,
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
+    overflowY: 'auto',
+  },
 };
 
 class TeamPanel extends PureComponent {
@@ -34,9 +48,9 @@ class TeamPanel extends PureComponent {
     } = this.props;
 
     return (
-      <div style={styles.TeamPanel}>
+      <div style={isGameMaster ? styles.GMTeamPanel : styles.TeamPanel}>
         <TeamHeader />
-        <div style={styles.teamCharacters}>
+        <div style={isGameMaster ? styles.GMteamCharacters : styles.teamCharacters}>
           <TeamCharacter
             icon="./common/gameMaster.jpg"
             name="Game Master"

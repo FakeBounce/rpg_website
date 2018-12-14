@@ -1,84 +1,107 @@
-import React, { PureComponent } from "react";
-import { cursorPointer, heightLeft, widthLeft } from "../Utils/StyleConstants";
-import { musics, noises } from "../Utils/Constants";
+import React, { PureComponent } from 'react';
+import {
+  cursorPointer,
+  heightLeft,
+  widthLeft,
+  widthRightPanel,
+} from '../Utils/StyleConstants';
+import { musics, noises } from '../Utils/Constants';
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const styledBoxHeaderMusic = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-  position: "absolute",
-  display: "block",
+  width: '100%',
+  height: '20px',
+  marginBottom: '5px',
+  textAlign: 'center',
+  position: 'absolute',
+  display: 'block',
 };
 
 const styledBoxHeaderNoise = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-  position: "absolute",
-  display: "block",
-  top: `${(heightLeft / 2 - 1 - 45 * 2) / 2 + 45}px`,
+  width: '100%',
+  height: '20px',
+  marginBottom: '5px',
+  textAlign: 'center',
+  position: 'absolute',
+  display: 'block',
+  top: `${(heightLeft - 1 - 45 * 2) / 2 + 45}px`,
 };
 
 const styledMapSide = {
-  width: `${widthLeft / 2}px`,
-  height: `${heightLeft / 2}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
-  position: "relative",
+  width: `${widthRightPanel}px`,
+  height: `${heightLeft}px`,
+  display: 'inline-block',
+  float: 'left',
+  textAlign: 'left',
+  position: 'relative',
 };
 
 const styledMusicVolume = {
-  width: "100%",
-  position: "absolute",
-  height: "25px",
-  top: "20px",
+  width: '100%',
+  position: 'absolute',
+  height: '25px',
+  top: '20px',
 };
 
 const styledNoiseVolume = {
-  width: "100%",
-  position: "absolute",
-  height: "25px",
-  top: `${(heightLeft / 2 - 1 - 45 * 2) / 2 + 45 + 20}px`,
+  width: '100%',
+  position: 'absolute',
+  height: '25px',
+  top: `${(heightLeft - 1 - 45 * 2) / 2 + 45 + 20}px`,
 };
 
 const styledMusicContainer = {
-  width: "100%",
-  position: "absolute",
-  height: `${(heightLeft / 2 - 1 - 45 * 2) / 2}px`,
-  top: "45px",
-  overflowY: "auto",
+  width: '50%',
+  position: 'absolute',
+  height: `${(heightLeft - 1 - 45 * 2) / 2}px`,
+  top: '45px',
+  overflowY: 'auto',
+};
+
+const styledMusicContainer2 = {
+  width: '50%',
+  position: 'absolute',
+  height: `${(heightLeft - 1 - 45 * 2) / 2}px`,
+  left: '50%',
+  top: '45px',
+  overflowY: 'auto',
 };
 
 const styledNoiseContainer = {
-  width: "100%",
-  position: "absolute",
-  height: `${(heightLeft / 2 - 1 - 45 * 2) / 2}px`,
-  top: `${(heightLeft / 2 - 1 - 45 * 2) / 2 + 45 + 45}px`,
-  overflowY: "auto",
+  width: '50%',
+  position: 'absolute',
+  height: `${(heightLeft - 1 - 45 * 2) / 2}px`,
+  top: `${(heightLeft - 1 - 45 * 2) / 2 + 45 + 45}px`,
+  overflowY: 'auto',
+};
+
+const styledNoiseContainer2 = {
+  width: '50%',
+  position: 'absolute',
+  height: `${(heightLeft - 1 - 45 * 2) / 2}px`,
+  top: `${(heightLeft - 1 - 45 * 2) / 2 + 45 + 45}px`,
+  left: '50%',
+  overflowY: 'auto',
 };
 
 const styledAudioFile = {
-  width: "100%",
-  height: "30px",
+  width: '100%',
+  height: '30px',
   cursor: cursorPointer,
-  borderBottom: "1px solid black",
+  borderBottom: '1px solid black',
 };
 
 class SoundPanel extends PureComponent {
   changeCurrentMusic = m => {
     const { onChangeMusics } = this.props;
-    onChangeMusics("musicName", m);
+    onChangeMusics('musicName', m);
   };
 
   changeCurrentNoise = n => {
     const { onChangeMusics } = this.props;
-    onChangeMusics("noiseName", n);
-    onChangeMusics("noiseStatus", "PLAYING");
+    onChangeMusics('noiseName', n);
+    onChangeMusics('noiseStatus', 'PLAYING');
   };
 
   render() {
@@ -96,7 +119,7 @@ class SoundPanel extends PureComponent {
         <button
           onClick={resetSounds}
           style={{
-            position: "absolute",
+            position: 'absolute',
             left: 0,
             top: 0,
             cursor: cursorPointer,
@@ -122,16 +145,37 @@ class SoundPanel extends PureComponent {
           />
         </div>
         <div style={styledMusicContainer}>
-          {musics.map(m => {
-            return (
-              <div
-                key={`music-${m}`}
-                style={styledAudioFile}
-                onClick={() => this.changeCurrentMusic(m)}
-              >
-                {m}
-              </div>
-            );
+          {musics.map((m,i) => {
+            if(i < musics.length/2)
+            {
+              return (
+                <div
+                  key={`music-${m}`}
+                  style={styledAudioFile}
+                  onClick={() => this.changeCurrentMusic(m)}
+                >
+                  {m}
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
+        <div style={styledMusicContainer2}>
+          {musics.map((m,i) => {
+            if(i >= musics.length/2)
+            {
+              return (
+                <div
+                  key={`music-${m}`}
+                  style={styledAudioFile}
+                  onClick={() => this.changeCurrentMusic(m)}
+                >
+                  {m}
+                </div>
+              );
+            }
+            return null;
           })}
         </div>
         <div style={styledBoxHeaderNoise}>
@@ -152,16 +196,36 @@ class SoundPanel extends PureComponent {
         </div>
 
         <div style={styledNoiseContainer}>
-          {noises.map(n => {
-            return (
-              <div
-                key={`noise-${n}`}
-                style={styledAudioFile}
-                onClick={() => this.changeCurrentNoise(n)}
-              >
-                {n}
-              </div>
-            );
+          {noises.map((n, i) => {
+            if (i < noises.length / 2) {
+              return (
+                <div
+                  key={`noise-${n}`}
+                  style={styledAudioFile}
+                  onClick={() => this.changeCurrentNoise(n)}
+                >
+                  {n}
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
+
+        <div style={styledNoiseContainer2}>
+          {noises.map((n, i) => {
+            if (i >= noises.length / 2) {
+              return (
+                <div
+                  key={`noise-${n}`}
+                  style={styledAudioFile}
+                  onClick={() => this.changeCurrentNoise(n)}
+                >
+                  {n}
+                </div>
+              );
+            }
+            return null;
           })}
         </div>
       </div>

@@ -6,6 +6,7 @@ import RightPanel from './RightPanel';
 import PlayerMapPanel from './PlayerMapPanel';
 import MapGenerator from './MapGenerator/MapGenerator';
 import ChatPanel from './ChatPanel/ChatPanel';
+import SoundPanel from './SoundPanel/SoundPanel';
 
 class MiddlePanel extends Component {
   changeCurrentScale = value => {
@@ -153,21 +154,33 @@ class MiddlePanel extends Component {
           />
         )}
 
-        <RightPanel
-          character={character}
-          chatHistory={chatHistory}
-          chatInput={chatInput}
-          currentStory={currentStory}
-          doSetState={doSetState}
-          gameMaster={gameMaster}
-          isGameMaster={isGameMaster}
-          onChange={onChange}
-          pseudo={pseudo}
-          storyCharacters={storyCharacters}
-          triggerError={triggerError}
-          uid={uid}
-          users={users}
-        />
+        {(!isGameMaster || isOnPlayerView) && (
+          <RightPanel
+            character={character}
+            chatHistory={chatHistory}
+            chatInput={chatInput}
+            currentStory={currentStory}
+            doSetState={doSetState}
+            gameMaster={gameMaster}
+            isGameMaster={isGameMaster}
+            onChange={onChange}
+            pseudo={pseudo}
+            storyCharacters={storyCharacters}
+            triggerError={triggerError}
+            uid={uid}
+            users={users}
+          />
+        )}
+        {isGameMaster && (
+          <SoundPanel
+            musicName={musicName}
+            noiseName={noiseName}
+            musicVolume={musicVolume}
+            noiseVolume={noiseVolume}
+            resetSounds={resetSounds}
+            onChangeMusics={onChangeMusics}
+          />
+        )}
       </div>
     );
   }

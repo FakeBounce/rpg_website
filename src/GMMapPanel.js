@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { heightLeft, widthLeft } from './Utils/StyleConstants';
 
 import PropTypes from 'prop-types';
-import SoundPanel from './SoundPanel/SoundPanel';
 import EventPanel from './EventPanel/EventPanel';
 import MapEditionPanel from './MapEditionPanel/MapEditionPanel';
 import StoryQuestsAndMerchantsPanel from './StoryQuestsAndMerchantsPanel/StoryQuestsAndMerchantsPanel';
@@ -10,6 +9,8 @@ import TownPanel from './TownPanel/TownPanel';
 import PanelToggle from './PanelToggle';
 import SpellGenerator from './SpellGenerator';
 import ButtonLarge from './Utils/ButtonLarge';
+import TeamPanel from './TeamCharacters/TeamPanel';
+import firebase from 'firebase';
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -89,6 +90,56 @@ class GMMapPanel extends Component {
     }, 3000);
   };
 
+  chatWithTeamMember = pseudo => {
+    if (pseudo === 'GM') {
+      this.props.doSetState({
+        chatInput: `/gmw `,
+      });
+    } else {
+      this.props.doSetState({
+        chatInput: `/w ${pseudo} `,
+      });
+    }
+  };
+
+  goldWithTeamMember = pseudo => {
+    if (pseudo === 'GM') {
+      this.props.doSetState({
+        chatInput: `/goldgm `,
+      });
+    } else {
+      this.props.doSetState({
+        chatInput: `/gold ${pseudo} `,
+      });
+    }
+  };
+
+  modifyCurrentCharacter = uid => {
+    const { currentStory, isGameMaster, doSetState } = this.props;
+
+    if (isGameMaster) {
+      firebase
+        .database()
+        .ref(
+          'stories/' +
+            currentStory +
+            '/characters/' +
+            this.props.uid +
+            '/character'
+        )
+        .off();
+      firebase
+        .database()
+        .ref('stories/' + currentStory + '/characters/' + uid + '/character')
+        .on('value', snapshot => {
+          doSetState({
+            uid,
+            character: snapshot.val(),
+          });
+        });
+    }
+  };
+
   render() {
     const {
       changeCurrentScale,
@@ -159,14 +210,17 @@ class GMMapPanel extends Component {
             />
           )}
         </div>
-        <SoundPanel
-          musicName={musicName}
-          noiseName={noiseName}
-          musicVolume={musicVolume}
-          noiseVolume={noiseVolume}
-          resetSounds={resetSounds}
-          onChangeMusics={onChangeMusics}
-        />
+        <div style={styledMapSide}>
+          <TeamPanel
+            storyCharacters={storyCharacters}
+            exchangeWithTeamMember={() => {}}
+            chatWithTeamMember={this.chatWithTeamMember}
+            goldWithTeamMember={this.goldWithTeamMember}
+            modifyCurrentCharacter={this.modifyCurrentCharacter}
+            isGameMaster={true}
+            gameMaster={gameMaster}
+          />
+        </div>
         {currentTown > -1 && (
           <TownPanel
             currentTown={currentTown}
