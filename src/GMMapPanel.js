@@ -43,6 +43,7 @@ class GMMapPanel extends Component {
     isOnMap: true,
     isOnSpell: false,
     townToAssign: -1,
+    hasHydrated: false,
   };
 
   toggleRightPanel = bool => {
@@ -75,6 +76,19 @@ class GMMapPanel extends Component {
     }));
   };
 
+  hasHydrated = () => {
+    this.setState(state => ({
+      ...state,
+      hasHydrated: true,
+    }));
+    setTimeout(() => {
+      this.setState(state => ({
+        ...state,
+        hasHydrated: false,
+      }));
+    }, 3000);
+  };
+
   render() {
     const {
       changeCurrentScale,
@@ -102,7 +116,7 @@ class GMMapPanel extends Component {
       towns,
       triggerError,
     } = this.props;
-    const { isOnQuest, isOnMap, isOnSpell } = this.state;
+    const { isOnQuest, isOnMap, isOnSpell, hasHydrated } = this.state;
     return (
       <div style={styledMiddlePanel}>
         <div style={styledMapSide}>
@@ -113,9 +127,16 @@ class GMMapPanel extends Component {
           {isOnSpell ? (
             <div style={styledContainer}>
               <SpellGenerator items={items} />
-              <ButtonLarge style={{ marginTop: 30 }} onClick={hydrateMerchants}>
+              <ButtonLarge
+                style={{ marginTop: 30 }}
+                onClick={() => {
+                  hydrateMerchants();
+                  this.hasHydrated();
+                }}
+              >
                 Hydrate merchants
               </ButtonLarge>
+              {hasHydrated ? 'OK' : ''}
             </div>
           ) : isOnMap ? (
             <MapEditionPanel
