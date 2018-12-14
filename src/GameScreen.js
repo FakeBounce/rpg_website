@@ -31,7 +31,7 @@ class GameScreen extends Component {
               return null;
             });
             return isAViewer;
-          } else {
+          } else if (!isEventHidden) {
             return true;
           }
         }
