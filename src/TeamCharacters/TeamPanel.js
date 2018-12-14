@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TeamCharacter from './TeamCharacter';
 import { widthRightPanel, heightLeft } from '../Utils/StyleConstants';
+import TeamHeader from './TeamHeader';
 
 const styles = {
   TeamPanel: {
@@ -17,30 +18,6 @@ const styles = {
     float: 'left',
     display: 'inline-block',
     overflowY: 'auto',
-  },
-  HeaderTextContainer: {
-    position: 'absolute',
-    width: `${widthRightPanel}px`,
-    height: 20,
-    float: 'left',
-    display: 'inline-block',
-    left: 0,
-    paddingTop: 2,
-  },
-  HeaderText: {
-    position: 'relative',
-    width: `${widthRightPanel / 4}px`,
-    height: 25,
-    float: 'left',
-    display: 'inline-block',
-  },
-  HeaderTextLeft: {
-    position: 'relative',
-    width: `${widthRightPanel / 4}px`,
-    height: 25,
-    float: 'left',
-    display: 'inline-block',
-    textAlign: 'left',
   },
 };
 
@@ -58,22 +35,21 @@ class TeamPanel extends Component {
 
     return (
       <div style={styles.TeamPanel}>
-        <div style={styles.HeaderTextContainer}>
-          <div style={styles.HeaderTextLeft}>Equipe :</div>
-          <div style={styles.HeaderText}>Name</div>
-          <div style={styles.HeaderText}>Status</div>
-          <div style={styles.HeaderText}>Gold</div>
-        </div>
+        <TeamHeader />
         <div style={styles.teamCharacters}>
           <TeamCharacter
             icon="./common/gameMaster.jpg"
             name="Game Master"
-            status="OK"
+            status="FURIOUS"
             gold={999999}
             health={9999}
             maxHealth={9999}
             isGM
-            chatWithTeamMember={() => chatWithTeamMember('GM')}
+            exchangeWithTeamMember={() => {}}
+            chatWithTeamMember={() => {
+              chatWithTeamMember('GM');
+              modifyCurrentCharacter(gameMaster);
+            }}
             goldWithTeamMember={() => goldWithTeamMember('GM')}
           />
 
