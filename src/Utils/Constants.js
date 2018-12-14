@@ -664,7 +664,8 @@ export const bestiary = [
       'Quand il arrive dans une ville, il mémorise les rondes des gardes, teste la portée des sorts de détection de magie, trouve et crée des passages secrets, et une fois toutes les bases préparées, il pille tout ce qu’il peut avant de passer à une autre ville. Si la ville est trop grande il pille quartier après quartier. Ses victimes ne se rendent compte du vol qu’une fois Tot à une centaine de mètres, ce qui rend la chasse impossible.',
     text3:
       'On a déjà réussi à l’attraper plusieurs fois mais impossible de lui faire avouer l’emplacement des cachettes, et surtout il réussit à s’évader à chaque fois. Il faut le reconnaître, il a un vrai talent.',
-    text4: 'Invisibilité, Perception et agilité exceptionnelles, Immunisé aux attaques mentales, Enfouissement, Manipulation',
+    text4:
+      'Invisibilité, Perception et agilité exceptionnelles, Immunisé aux attaques mentales, Enfouissement, Manipulation',
     age: '23',
     taille: '99',
     poids: '19',
@@ -677,7 +678,8 @@ export const bestiary = [
     text1: '',
     text2: '',
     text3: '',
-    text4: 'Sacré (Soin, Boucliers, ???), Sombre (Décharge sombre, Manipulation, Augmentation physique, ???), Liaison mentale',
+    text4:
+      'Sacré (Soin, Boucliers, ???), Sombre (Décharge sombre, Manipulation, Augmentation physique, ???), Liaison mentale',
     age: '46',
     taille: '172',
     poids: '63',
@@ -739,7 +741,8 @@ export const bestiary = [
       'Ils ont tous les deux une capacité régénératrice puissante, qui leur permet de décupler leur puissance jusqu’à une certaine limite. Elle ne s’enclenche qu’après avoir subis des blessures. Le Taton gagne en force et en résistance tandis que le Sacahe gagne en force, agilité et rapidité. C’est pourquoi le Taton fait l’appât; dans tous les cas, ils ne subiront que très peu de dégâts avec leur capacité.',
     text3:
       'Ils chassent assez pour nourrir leur famille pendant plusieurs semaine avant de retrouver leur foyer. Les Tatons fabriquent de grande toiles pour embarquer la viande pendant que les Sacahe coupent et préparent la viande.',
-    text4: "Taton: Régénération majeure, Force et constitution accrues, Prise d'aggression; Sacahe: Régénération, Force et agilité accrues, Griffes acérées, Bonds, Inaudible si caché",
+    text4:
+      "Taton: Régénération majeure, Force et constitution accrues, Prise d'aggression; Sacahe: Régénération, Force et agilité accrues, Griffes acérées, Bonds, Inaudible si caché",
     dangerosity: '6~7/10, 7~8/10',
     taille: '180~360, 160~250',
     poids: '250~500, 80~110',
@@ -795,7 +798,12 @@ export const bestiary = [
   },
 ];
 
-export const tempoImagesList = ['noTown.jpg', 'desert.jpg', 'cavern.jpg'];
+export const tempoImagesList = [
+  { path: 'common/noTown.jpg', name: 'Camping' },
+  { path: 'common/desert.jpg', name: 'Deset tempest' },
+  { path: 'common/cavern.jpg', name: 'Cavern' },
+];
+
 export const bonusList = [-30, -20, -10, 0, 10, 20, 30];
 
 export const chatDices = [

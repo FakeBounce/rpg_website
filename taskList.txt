@@ -64,13 +64,14 @@ les fonctions au plus bas niveau de composant possible
 17) Pouvoir revenir au personnage GM sans devoir quitter la page - OK
 
 v2.13.1
-18) Urgent : Pour éviter les erreurs, ne plus travailler sur des index locals (uniquement id, et listen)
+18) Urgent : Pour éviter les erreurs, ne plus travailler sur des index locaux (uniquement id, et listen)
 - Revoir hydrateAll en forced
 
 v2.15.1
 19) Ajouter en image de fond le bestiaire
-20) Ajouter les quêtes déjàs vues
+20) Ajouter les quêtes déjà vues
 21) Ajouter les items déjà vus (Marchand, prix, ville)
+22) Faire un compteur de réussite/fail et attribuer des bonus en fonction
 
 
 BDD : https://rpgwebsite-8a535.firebaseio.com/

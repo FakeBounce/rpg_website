@@ -371,22 +371,23 @@ class PlayerMapPanel extends Component {
 
   render() {
     const {
+      buyItem,
       character,
-      isItemShowed,
-      itemsList,
-      isItemDescriptionShowed,
-      itemToDescribe,
-      isTownShowed,
+      currentMerchant,
+      currentQuest,
+      currentStory,
+      doSetState,
       isGameMaster,
+      isItemDescriptionShowed,
+      isItemShowed,
+      isQuestShowed,
+      isTownShowed,
+      itemsList,
+      itemToDescribe,
+      merchants,
       merchantsList,
       quests,
       questsList,
-      buyItem,
-      currentQuest,
-      isQuestShowed,
-      merchants,
-      doSetState,
-      currentMerchant,
     } = this.props;
 
     const {
@@ -488,7 +489,7 @@ class PlayerMapPanel extends Component {
             )}
           </Fragment>
         ) : (
-          <TempImage isGameMaster={isGameMaster} />
+          <TempImage isGameMaster={isGameMaster} currentStory={currentStory} />
         )}
       </div>
     );

@@ -20,27 +20,39 @@ class TempImage extends Component {
   state = {
     tempImage: 'noTown.jpg',
   };
+  bestiaryList = [];
 
   componentDidMount() {
+    const { currentStory, isGameMaster } = this.props;
     firebase
       .database()
-      .ref('stories/' + 0 + '/tempoImage')
+      .ref('stories/' + currentStory + '/tempoImage')
       .on('value', snapshot => {
         this.setState(state => ({
           ...state,
           tempImage: snapshot.val(),
         }));
       });
+    if (isGameMaster) {
+      firebase
+        .database()
+        .ref('stories/' + currentStory + '/bestiary')
+        .once('value')
+        .then(snapshot => {
+          this.bestiaryList = snapshot.val();
+        });
+    }
   }
 
   onChange = value => {
+    const { currentStory } = this.props;
     firebase
       .database()
-      .ref('stories/' + 0 + '/tempoImage')
+      .ref('stories/' + currentStory + '/tempoImage')
       .set(value)
       .catch(error => {
         // Handle Errors here.
-        this.triggerError(error);
+        console.log('Error', error);
       });
   };
 
@@ -58,20 +70,23 @@ class TempImage extends Component {
             }}
             style={styledTempSelect}
           >
-            {tempoImagesList.map(sts => {
+            {tempoImagesList.map(obj => {
               return (
-                <option key={sts} value={sts}>
-                  {sts}
+                <option key={obj.path} value={obj.path}>
+                  {obj.name}
+                </option>
+              );
+            })}
+            {this.bestiaryList.map(obj => {
+              return (
+                <option key={obj.name} value={'bestiary/' + obj.image}>
+                  {obj.name}
                 </option>
               );
             })}
           </select>
         )}
-        <img
-          src={'./common/' + tempImage}
-          style={styledTempImage}
-          alt={tempImage}
-        />
+        <img src={'./' + tempImage} style={styledTempImage} alt={tempImage} />
       </Fragment>
     );
   }
@@ -79,6 +94,7 @@ class TempImage extends Component {
 
 TempImage.propTypes = {
   isGameMaster: PropTypes.bool.isRequired,
+  currentStory: PropTypes.number.isRequired,
 };
 
 export default TempImage;
