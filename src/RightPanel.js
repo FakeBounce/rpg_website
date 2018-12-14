@@ -205,7 +205,6 @@ class RightPanel extends Component {
       character,
       currentStory,
       uid,
-      doSetState,
       triggerError,
     } = this.props;
     const { currentExchangeCharacter } = this.state;

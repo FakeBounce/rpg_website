@@ -382,6 +382,7 @@ export const loadChat = (currentStory, doSetState) => {
       const chat = [];
       Object.keys(snapshot.val()).map(key => {
         chat.push(snapshot.val()[key]);
+        return null;
       });
       doSetState({
         chatHistory: chat,
@@ -588,16 +589,11 @@ export const populateBestiary = (currentStory, doSetState) => {
                 const maxRoll =
                   tempCharacters[key].character.userPseudo === 'Danjors' &&
                   b.monster
-                    ? parseInt(tempCharacters[key].character.education) + 20
+                    ? parseInt(tempCharacters[key].character.education, 10) + 20
                     : b.monster ||
                       tempCharacters[key].character.userPseudo === 'Danjors'
-                      ? parseInt(tempCharacters[key].character.education) - 10
-                      : parseInt(tempCharacters[key].character.education);
-                console.log(
-                  'maxroll',
-                  maxRoll,
-                  tempCharacters[key].character.userPseudo
-                );
+                      ? parseInt(tempCharacters[key].character.education, 10) - 10
+                      : parseInt(tempCharacters[key].character.education, 10);
                 while (
                   Math.floor(Math.random() * 100 + 1) <= maxRoll &&
                   cpt < 7
@@ -639,7 +635,9 @@ export const populateBestiary = (currentStory, doSetState) => {
                   [key]: { ...statsKnown },
                 };
               }
+              return null;
             });
+            return null;
           });
           firebase
             .database()

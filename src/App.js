@@ -41,7 +41,6 @@ import {
   // hydrateMerchant,
 } from './Utils/MerchantsFunctions';
 import LoadSpreasheet from './Utils/LoadSpreasheet';
-import Draw from './Draw';
 
 class App extends Component {
   constructor(props) {

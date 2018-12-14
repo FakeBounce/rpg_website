@@ -15,8 +15,6 @@ class EnhanceButton extends Component {
   render() {
     const {
       character,
-      choosedEnhancer1,
-      choosedEnhancer2,
       enhanceWeapon,
       enhancePrice,
     } = this.props;
@@ -40,8 +38,6 @@ class EnhanceButton extends Component {
 
 EnhanceButton.propTypes = {
   character: PropTypes.object.isRequired,
-  chooseEnhancer1: PropTypes.func.isRequired,
-  chooseEnhancer2: PropTypes.func.isRequired,
   enhanceWeapon: PropTypes.func.isRequired,
   enhancePrice: PropTypes.number.isRequired,
 };

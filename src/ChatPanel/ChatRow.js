@@ -19,12 +19,12 @@ const styles = {
 
 class ChatRow extends Component {
   render() {
-    const { pseudo, message, image, imagePath } = this.props;
+    const { pseudo, message, image } = this.props;
 
     return (
       <div style={styles.ChatRow}>
         {pseudo ? `@${pseudo}: ${message}` : message}
-        {image && <img src={image} alt="Chat image" style={styles.ChatImage} />}
+        {image && <img src={image} alt="Chat" style={styles.ChatImage} />}
       </div>
     );
   }
@@ -37,7 +37,6 @@ ChatRow.defaultProps = {
 
 ChatRow.propTypes = {
   pseudo: PropTypes.string,
-  imagePath: PropTypes.string,
   image: PropTypes.string,
   message: PropTypes.string.isRequired,
 };

@@ -1,41 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  heightLeft,
-  widthLeftBestiary,
-  widthListPanelBestiary,
-  widthRightPanel,
-} from '../Utils/StyleConstants';
+import { heightLeft, widthLeftBestiary } from '../Utils/StyleConstants';
 import Beast from './Beast';
 import PNJ from './PNJ';
-import { sortAlphabetical, sortReversedAlphabetical } from '../Utils/Functions';
-import BestiaryHeader from './BestiaryHeader';
-import BestiaryList from './BestiaryList';
-
-const styledBestiaryPanel = {
-  height: heightLeft,
-  width: '100%',
-};
-
-const styledImage = {
-  position: 'relative',
-  float: 'left',
-  width: 50,
-  height: 50,
-};
 
 const styledBeast = {
   width: widthLeftBestiary,
   overflowX: 'hidden',
-  height: heightLeft - 25,
-  overflowY: 'auto',
-  display: 'inline-block',
-  float: 'left',
-};
-
-const styledPreview = {
-  width: widthListPanelBestiary,
   height: heightLeft - 25,
   overflowY: 'auto',
   display: 'inline-block',

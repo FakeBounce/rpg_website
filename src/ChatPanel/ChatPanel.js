@@ -7,11 +7,10 @@ import {
   cursorPointer,
   heightHeader,
   heightLeft,
-  imageSize,
   widthLeft,
 } from '../Utils/StyleConstants';
 import ButtonLarge from '../Utils/ButtonLarge';
-import { bonusList, chatDices, tempoImagesList } from '../Utils/Constants';
+import { bonusList, chatDices } from '../Utils/Constants';
 import SelectMapper from '../Utils/SelectMapper';
 import FileUploader from '../CharacterCreation/FileUploader';
 

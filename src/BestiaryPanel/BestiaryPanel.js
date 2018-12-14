@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { heightLeft } from '../Utils/StyleConstants';
-import PNJ from './PNJ';
 import { sortAlphabetical, sortReversedAlphabetical } from '../Utils/Functions';
 import BestiaryHeader from './BestiaryHeader';
 import BestiaryList from './BestiaryList';
@@ -196,6 +195,7 @@ class BestiaryPanel extends Component {
       if (b.name === tempFilteredBestiary[index].name) {
         tempFilteredBestiary[index].seen = tempBestiary[i].seen = !b.seen;
       }
+      return null;
     });
     this.setState(state => ({
       ...state,

@@ -19,9 +19,9 @@ class BestiaryForm extends Component {
   };
 
   onDrop = picture => {
-    const { triggerError, chatInput, doSetState } = this.props;
+    // const { triggerError, chatInput, doSetState } = this.props;
 
-    const path = 'images/bestiary/' + picture[picture.length - 1].name;
+    // const path = 'images/bestiary/' + picture[picture.length - 1].name;
     this.setState(state => ({
       ...state,
       image: picture[picture.length - 1].name,
@@ -160,7 +160,7 @@ class BestiaryForm extends Component {
           label=""
         />
         {image !== '' && (
-          <img src={'./bestiary/' + image} style={{ width: 100 }} />
+          <img src={'./bestiary/' + image} style={{ width: 100 }} alt={image}/>
         )}
         <div onClick={() => this.onChange('known', !known)}>
           {known ? 'Is known' : 'Is unknown'}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { cursorPointer, heightLeft, widthLeft } from './Utils/StyleConstants';
+import { heightLeft, widthLeft } from './Utils/StyleConstants';
 
 import PropTypes from 'prop-types';
 import SoundPanel from './SoundPanel/SoundPanel';
@@ -35,15 +35,6 @@ const styledContainer = {
   display: 'inline-block',
   float: 'left',
   position: 'relative',
-};
-
-const styledBestiary = {
-  width: `${widthLeft / 2}px`,
-  height: 20,
-  display: 'inline-block',
-  float: 'left',
-  position: 'relative',
-  cursor: cursorPointer,
 };
 
 class GMMapPanel extends Component {

@@ -30,6 +30,7 @@ class EnhancementWeaponsCharacterWeaponList extends Component {
               />
             );
           }
+          return null;
         })}
       </Fragment>
     );

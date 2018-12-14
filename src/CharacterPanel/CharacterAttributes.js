@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   cursorPointer,
-  gridLength,
   heightLeft,
   imageSize,
 } from '../Utils/StyleConstants';

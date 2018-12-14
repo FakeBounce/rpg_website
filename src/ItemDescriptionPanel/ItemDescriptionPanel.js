@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './ItemDescription.css';
 import PropTypes from 'prop-types';
-import { widthLeft, heightLeft, styledCadre } from '../Utils/StyleConstants';
+import { widthLeft, heightLeft } from '../Utils/StyleConstants';
 import ButtonLarge from '../Utils/ButtonLarge';
 import Cadre from '../Utils/Cadre';
 

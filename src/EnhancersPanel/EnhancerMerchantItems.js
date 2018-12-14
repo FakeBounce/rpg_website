@@ -61,6 +61,7 @@ class EnhancerMerchantItems extends Component {
                 />
               );
             }
+            return null;
           })}
       </Fragment>
     );

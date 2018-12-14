@@ -30,6 +30,7 @@ class EnhancementWeaponsMerchantList extends Component {
               />
             );
           }
+          return null;
         })}
       </Fragment>
     );

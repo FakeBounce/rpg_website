@@ -52,6 +52,7 @@ class EnhancerCharacterItems extends Component {
               />
             );
           }
+          return null;
         })}
       </Fragment>
     );
