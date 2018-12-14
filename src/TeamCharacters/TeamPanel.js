@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import TeamCharacter from './TeamCharacter';
 import { widthRightPanel, heightLeft } from '../Utils/StyleConstants';
@@ -21,7 +21,7 @@ const styles = {
   },
 };
 
-class TeamPanel extends Component {
+class TeamPanel extends PureComponent {
   render() {
     const {
       storyCharacters,

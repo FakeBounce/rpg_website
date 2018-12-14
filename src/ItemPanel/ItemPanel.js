@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { widthLeft, heightLeft } from '../Utils/StyleConstants';
 import ItemList from './ItemList';
@@ -15,7 +15,7 @@ const styledMapSide = {
   paddingHorizontal: 10,
 };
 
-class ItemPanel extends Component {
+class ItemPanel extends PureComponent {
   showItemDescription = i => {
     const { merchants, currentMerchant, doSetState } = this.props;
     doSetState(

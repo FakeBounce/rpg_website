@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { cursorPointer, heightLeft, widthLeft } from "../Utils/StyleConstants";
 import { musics, noises } from "../Utils/Constants";
 
@@ -69,7 +69,7 @@ const styledAudioFile = {
   borderBottom: "1px solid black",
 };
 
-class SoundPanel extends Component {
+class SoundPanel extends PureComponent {
   changeCurrentMusic = m => {
     const { onChangeMusics } = this.props;
     onChangeMusics("musicName", m);

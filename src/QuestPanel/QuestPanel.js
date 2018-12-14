@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
 import Quest from "./Quest";
 import PropTypes from "prop-types";
@@ -14,7 +14,7 @@ const styledMapSide = {
   position: "relative",
 };
 
-class QuestPanel extends Component {
+class QuestPanel extends PureComponent {
   positionList = [];
 
   // For GM quest positionning

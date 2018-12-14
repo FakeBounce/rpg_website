@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { widthLeft, heightLeft, styledCadre } from '../Utils/StyleConstants';
+import { widthLeft, heightLeft } from '../Utils/StyleConstants';
 import MerchantList from './MerchantList';
 import Cadre from '../Utils/Cadre';
 import firebase from "firebase";
@@ -15,7 +15,7 @@ const styledMapSide = {
   paddingHorizontal: 10,
 };
 
-class MerchantPanel extends Component {
+class MerchantPanel extends PureComponent {
   showItems = (list, index) => {
     this.props.doSetState({
       isItemShowed: true,

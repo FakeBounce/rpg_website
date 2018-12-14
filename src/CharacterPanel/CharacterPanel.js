@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import PropTypes from 'prop-types';
 import CharacterAttributes from './CharacterAttributes';
@@ -14,7 +14,7 @@ const styles = {
   CharacterBox: { position: 'relative', height: '100%' },
 };
 
-class CharacterPanel extends Component {
+class CharacterPanel extends PureComponent {
   render() {
     const {
       character,

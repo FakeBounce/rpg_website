@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   cursorPointer,
@@ -45,7 +45,7 @@ const styledButton = {
 };
 const styledInput = { width: 30 };
 
-class CharacterAttributes extends Component {
+class CharacterAttributes extends PureComponent {
   state = {
     currentAttribute: '',
     currentValue: 0,
