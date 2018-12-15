@@ -8,10 +8,10 @@ const styledItemContainer = {
   float: "left",
   position: "absolute",
   top: 30,
-  left : 16,
+  left : 26,
   overflowY: "auto",
   height: `${heightLeft / 2 - 60}px`,
-  width: `${widthLeft / 2 - 36}px`,
+  width: `${widthLeft / 2 - 46}px`,
 };
 
 class MerchantList extends Component {

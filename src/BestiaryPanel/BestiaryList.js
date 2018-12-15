@@ -15,13 +15,6 @@ const styledImage = {
   height: 50,
 };
 
-const styledImageGM = {
-  position: 'relative',
-  float: 'left',
-  width: 50,
-  height: 50,
-};
-
 const styledPreview = {
   width: widthListPanelBestiary,
   height: heightLeft - 25,
@@ -61,19 +54,22 @@ class BestiaryList extends Component {
                 />
                 {b.name}
                 {isGameMaster && `(${b.seen ? 'Seen' : 'Unknown'})`}
-                <ButtonLarge
-                  style={{
-                    position: 'absolute',
-                    right: 0,
-                    bottom: 0,
-                    zIndex: 1,
-                    maxWidth: isGameMaster ? 150 :  100,
-                    cursor: cursorPointer,
-                  }}
-                  onClick={() => toggleSeenBeast(i)}
-                >
-                  Toggle Seen
-                </ButtonLarge>
+                {
+                  isGameMaster &&
+                  <ButtonLarge
+                    style={{
+                      position: 'absolute',
+                      right: 0,
+                      bottom: 0,
+                      zIndex: 1,
+                      maxWidth: isGameMaster ? 150 :  100,
+                      cursor: cursorPointer,
+                    }}
+                    onClick={() => toggleSeenBeast(i)}
+                  >
+                    Toggle Seen
+                  </ButtonLarge>
+                }
               </div>
             );
           }

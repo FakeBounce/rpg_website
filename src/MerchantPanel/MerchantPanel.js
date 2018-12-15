@@ -12,7 +12,7 @@ const styledMapSide = {
   float: 'left',
   textAlign: 'left',
   position: 'relative',
-  paddingHorizontal: 10,
+  paddingHorizontal: 20,
 };
 
 class MerchantPanel extends PureComponent {

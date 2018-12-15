@@ -13,7 +13,7 @@ const styledEnhancersContainer = {
   float: 'left',
   textAlign: 'left',
   position: 'relative',
-  paddingHorizontal: 10,
+  paddingHorizontal: 15,
   color: 'white',
 };
 

@@ -31,6 +31,7 @@ class EnhancerMerchantItems extends Component {
         {parseInt(merchants[currentMerchant].enhancements, 10) > 0 &&
           Object.keys(itemsList).map(key => {
             const isHidden = character.education < itemsList[key].rarity * 9;
+            console.log('enhancements',itemsList[key]);
             if (
               itemsList[key].itemType === 'enhancements' &&
               itemsList[key].slot <= slots &&

@@ -9,11 +9,11 @@ const styledItemsContainer = {
   display: 'inline-block',
   float: 'left',
   position: 'relative',
-  marginTop: 20,
-  marginLeft: 16,
+  marginTop: 22,
+  marginLeft: 26,
   overflowY: 'auto',
   height: `${heightLeft / 2 - 80}px`,
-  width: `${widthLeft / 2 - 42}px`,
+  width: `${widthLeft / 2 - 52}px`,
 };
 
 class EnhancerItems extends Component {

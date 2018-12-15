@@ -12,10 +12,10 @@ const styledEnhancementWeaponsList = {
   float: 'left',
   position: 'absolute',
   top: 40,
-  left: 16,
+  left: 26,
   overflowY: 'auto',
   height: `${heightLeft / 2 - 60}px`,
-  width: `${widthLeft / 2 - 42}px`,
+  width: `${widthLeft / 2 - 52}px`,
 };
 
 class EnhancementWeaponsContent extends Component {
