@@ -15,6 +15,13 @@ const styledImage = {
   height: 50,
 };
 
+const styledImageGM = {
+  position: 'relative',
+  float: 'left',
+  width: 50,
+  height: 50,
+};
+
 const styledPreview = {
   width: widthListPanelBestiary,
   height: heightLeft - 25,
@@ -40,9 +47,10 @@ class BestiaryList extends Component {
             return (
               <div
                 style={{
-                  height: 50,
+                  height: isGameMaster ? 75 : 50,
                   position: 'relative',
                   cursor: cursorPointer,
+                  borderBottom: isGameMaster ? '1px solid black' : 'none'
                 }}
                 onClick={() => selectBeast(i)}
               >
@@ -59,7 +67,7 @@ class BestiaryList extends Component {
                     right: 0,
                     bottom: 0,
                     zIndex: 1,
-                    maxWidth: 100,
+                    maxWidth: isGameMaster ? 150 :  100,
                     cursor: cursorPointer,
                   }}
                   onClick={() => toggleSeenBeast(i)}

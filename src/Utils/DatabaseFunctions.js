@@ -1,14 +1,14 @@
-import firebase from 'firebase';
+import firebase from "firebase";
 
 const triggerError = error => {
-  console.log('Database function error : ', error);
+  console.log("Database function error : ", error);
 };
 
 export const loadTilesTypes = doSetState => {
   firebase
     .database()
-    .ref('/tilesTypes')
-    .once('value')
+    .ref("/tilesTypes")
+    .once("value")
     .then(snapshot => {
       doSetState({
         tilesTypes: snapshot.val(),
@@ -22,24 +22,24 @@ export const loadTilesTypes = doSetState => {
 export const populateTilesTypes = () => {
   const tileTypes = {
     Forest: {
-      backgroundColor: '#136313',
+      backgroundColor: "#136313",
       icon:
-        'https://firebasestorage.googleapis.com/v0/b/rpgwebsite-8a535.appspot.com/o/images%2Ftiles%2Fforest.png?alt=media&token=adec2c19-b40d-4c89-b52f-997495fa25ce',
+        "https://firebasestorage.googleapis.com/v0/b/rpgwebsite-8a535.appspot.com/o/images%2Ftiles%2Fforest.png?alt=media&token=adec2c19-b40d-4c89-b52f-997495fa25ce",
     },
     Sand: {
-      backgroundColor: '#b79c68',
+      backgroundColor: "#b79c68",
     },
     Ocean: {
-      backgroundColor: '#2999b3',
+      backgroundColor: "#2999b3",
     },
     Lake: {
-      backgroundColor: '#02abd2',
+      backgroundColor: "#02abd2",
     },
     Mountain: {
-      backgroundColor: '#73470f',
+      backgroundColor: "#73470f",
     },
     Plains: {
-      backgroundColor: '#e8e3a9',
+      backgroundColor: "#e8e3a9",
     },
     Fog: {
       hasFog: true,
@@ -51,7 +51,7 @@ export const populateTilesTypes = () => {
 
   firebase
     .database()
-    .ref('/tilesTypes')
+    .ref("/tilesTypes")
     .set(tileTypes)
     .catch(error => {
       // Handle Errors here.
@@ -67,7 +67,7 @@ export const resetMap = (id, size = 40) => {
     rows = [];
     for (let j = 0; j < size; j++) {
       rows.push({
-        environment: 'Sand',
+        environment: "Sand",
         hasFog: true,
         hasTown: false,
         isCurrent: false,
@@ -79,7 +79,7 @@ export const resetMap = (id, size = 40) => {
   }
   firebase
     .database()
-    .ref('/stories/' + id + '/map')
+    .ref("/stories/" + id + "/map")
     .set(dravos)
     .catch(error => {
       // Handle Errors here.
@@ -90,13 +90,13 @@ export const resetMap = (id, size = 40) => {
 export const resetEvents = id => {
   firebase
     .database()
-    .ref('/stories/' + id + '/events')
+    .ref("/stories/" + id + "/events")
     .set([
       {
-        type: 'gold',
+        type: "gold",
         gold: 35,
         goldLeft: 35,
-        description: 'test',
+        description: "test",
         isActive: false,
         actionHistory: [],
       },
@@ -110,8 +110,8 @@ export const resetEvents = id => {
 export const loadAllItems = (doSetState, currentStory = -1, cb = () => {}) => {
   firebase
     .database()
-    .ref('/items')
-    .once('value')
+    .ref("/items")
+    .once("value")
     .then(snapshot => {
       doSetState({
         items: snapshot.val(),
@@ -131,12 +131,12 @@ export const loadAllItems = (doSetState, currentStory = -1, cb = () => {}) => {
 export const loadUnusedArtefacts = currentStory => {
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/artefacts')
-    .once('value')
+    .ref("/stories/" + currentStory + "/artefacts")
+    .once("value")
     .then(snapshot => {
       addIconPathToAllArtefacts(
         snapshot.val(),
-        '/stories/' + currentStory + '/artefacts'
+        "/stories/" + currentStory + "/artefacts",
       );
     })
     .catch(error => {
@@ -145,9 +145,9 @@ export const loadUnusedArtefacts = currentStory => {
     });
 };
 
-export const addIconPathToAllArtefacts = (items, path = '') => {
+export const addIconPathToAllArtefacts = (items, path = "") => {
   items.map((item, index) => {
-    addIconPathToItem(item, 'artefacts', path + '/' + index);
+    addIconPathToItem(item, "artefacts", path + "/" + index);
     return null;
   });
   return null;
@@ -156,7 +156,7 @@ export const addIconPathToAllArtefacts = (items, path = '') => {
 export const addIconPathToAllItems = items => {
   Object.keys(items).map(key => {
     items[key].map((item, index) => {
-      addIconPathToItem(item, key, 'items/' + key + '/' + index);
+      addIconPathToItem(item, key, "items/" + key + "/" + index);
       return null;
     });
     return null;
@@ -175,7 +175,12 @@ export const addItemsIconPathToMerchant = (currentStory, merchantId, items) => {
     addIconPathToItem(
       item,
       item.itemType,
-      'stories/' + currentStory + '/merchants/' + merchantId + '/items/' + index
+      "stories/" +
+        currentStory +
+        "/merchants/" +
+        merchantId +
+        "/items/" +
+        index,
     );
     return null;
   });
@@ -207,8 +212,8 @@ export const addIconPathToItem = (item, itemType, path, hardReset) => {
 export const loadMerchantsOnce = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('stories/' + currentStory + '/merchants')
-    .once('value')
+    .ref("stories/" + currentStory + "/merchants")
+    .once("value")
     .then(snapshot => {
       doSetState({
         merchants: snapshot.val(),
@@ -246,8 +251,8 @@ export const loadMerchantsOnce = (currentStory, doSetState) => {
 export const listenMerchants = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('stories/' + currentStory + '/merchants')
-    .on('value', snapshot => {
+    .ref("stories/" + currentStory + "/merchants")
+    .on("value", snapshot => {
       doSetState({
         merchants: snapshot.val(),
       });
@@ -257,8 +262,8 @@ export const listenMerchants = (currentStory, doSetState) => {
 export const listenArtefacts = (currentStory, items, doSetState) => {
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/artefacts')
-    .on('value', snapshot => {
+    .ref("/stories/" + currentStory + "/artefacts")
+    .on("value", snapshot => {
       doSetState({
         items: {
           ...items,
@@ -271,8 +276,8 @@ export const listenArtefacts = (currentStory, items, doSetState) => {
 export const listenTowns = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/towns')
-    .on('value', snapshot => {
+    .ref("/stories/" + currentStory + "/towns")
+    .on("value", snapshot => {
       doSetState({
         towns: snapshot.val(),
       });
@@ -282,8 +287,8 @@ export const listenTowns = (currentStory, doSetState) => {
 export const listenQuests = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/quests')
-    .on('value', snapshot => {
+    .ref("/stories/" + currentStory + "/quests")
+    .on("value", snapshot => {
       doSetState({
         quests: snapshot.val(),
       });
@@ -293,7 +298,7 @@ export const listenQuests = (currentStory, doSetState) => {
 export const setQuests = (currentStory, value) => {
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/quests')
+    .ref("/stories/" + currentStory + "/quests")
     .set(value)
     .catch(error => {
       // Handle Errors here.
@@ -304,8 +309,8 @@ export const setQuests = (currentStory, value) => {
 export const listenUsers = doSetState => {
   firebase
     .database()
-    .ref('/users')
-    .on('value', snapshot => {
+    .ref("/users")
+    .on("value", snapshot => {
       doSetState({
         users: snapshot.val(),
       });
@@ -315,8 +320,8 @@ export const listenUsers = doSetState => {
 export const listenMusic = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/music')
-    .on('value', snapshot => {
+    .ref("/stories/" + currentStory + "/music")
+    .on("value", snapshot => {
       doSetState({
         ...snapshot.val(),
       });
@@ -326,8 +331,8 @@ export const listenMusic = (currentStory, doSetState) => {
 export const listenNoise = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/noise')
-    .on('value', snapshot => {
+    .ref("/stories/" + currentStory + "/noise")
+    .on("value", snapshot => {
       doSetState({
         ...snapshot.val(),
       });
@@ -337,8 +342,8 @@ export const listenNoise = (currentStory, doSetState) => {
 export const loadStories = doSetState => {
   firebase
     .database()
-    .ref('/stories')
-    .once('value')
+    .ref("/stories")
+    .once("value")
     .then(snapshot => {
       doSetState({
         stories: snapshot.val(),
@@ -353,8 +358,8 @@ export const loadStories = doSetState => {
 export const listenEvents = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/events')
-    .on('value', snapshot => {
+    .ref("/stories/" + currentStory + "/events")
+    .on("value", snapshot => {
       doSetState({
         eventHistory: snapshot.val(),
       });
@@ -364,8 +369,8 @@ export const listenEvents = (currentStory, doSetState) => {
 export const listenCurrentEvent = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/currentEvent')
-    .on('value', snapshot => {
+    .ref("/stories/" + currentStory + "/currentEvent")
+    .on("value", snapshot => {
       doSetState({
         currentEvent: snapshot.val(),
       });
@@ -375,9 +380,9 @@ export const listenCurrentEvent = (currentStory, doSetState) => {
 export const loadChat = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('/stories/'+currentStory+'/chat')
+    .ref("/stories/" + currentStory + "/chat")
     .limitToLast(50)
-    .once('value')
+    .once("value")
     .then(snapshot => {
       const chat = [];
       Object.keys(snapshot.val()).map(key => {
@@ -398,8 +403,8 @@ export const loadCurrentPosition = (currentStory, doSetState) => {
   // Getting X pos
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/currentX')
-    .once('value')
+    .ref("/stories/" + currentStory + "/currentX")
+    .once("value")
     .then(snapshot => {
       doSetState({
         currentX: snapshot.val(),
@@ -413,8 +418,8 @@ export const loadCurrentPosition = (currentStory, doSetState) => {
   // Getting Y pos
   firebase
     .database()
-    .ref('/stories/' + currentStory + '/currentY')
-    .once('value')
+    .ref("/stories/" + currentStory + "/currentY")
+    .once("value")
     .then(snapshot => {
       doSetState({
         currentY: snapshot.val(),
@@ -572,13 +577,13 @@ export const loadCurrentPosition = (currentStory, doSetState) => {
 export const populateBestiary = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('stories/' + currentStory + '/bestiary')
-    .once('value')
+    .ref("stories/" + currentStory + "/bestiary")
+    .once("value")
     .then(sn => {
       firebase
         .database()
-        .ref('stories/' + currentStory + '/characters')
-        .once('value')
+        .ref("stories/" + currentStory + "/characters")
+        .once("value")
         .then(snapshot => {
           const tempBestiary = [...sn.val()];
           const tempCharacters = { ...snapshot.val() };
@@ -587,12 +592,15 @@ export const populateBestiary = (currentStory, doSetState) => {
               if (!b[key]) {
                 let cpt = 0;
                 const maxRoll =
-                  tempCharacters[key].character.userPseudo === 'Danjors' &&
+                  (tempCharacters[key].character.userPseudo === "Danjors" ||
+                    tempCharacters[key].character.userPseudo === "Rangrim") &&
                   b.monster
                     ? parseInt(tempCharacters[key].character.education, 10) + 20
                     : b.monster ||
-                      tempCharacters[key].character.userPseudo === 'Danjors'
-                      ? parseInt(tempCharacters[key].character.education, 10) - 10
+                      (tempCharacters[key].character.userPseudo === "Danjors" ||
+                        tempCharacters[key].character.userPseudo === "Rangrim")
+                      ? parseInt(tempCharacters[key].character.education, 10) -
+                        10
                       : parseInt(tempCharacters[key].character.education, 10);
                 while (
                   Math.floor(Math.random() * 100 + 1) <= maxRoll &&
@@ -602,32 +610,32 @@ export const populateBestiary = (currentStory, doSetState) => {
                 }
                 const statsKnown = {};
                 if (cpt === 0) {
-                  statsKnown['unknown'] = true;
+                  statsKnown["unknown"] = true;
                 } else {
                   if (cpt >= 1) {
-                    statsKnown['text1'] = true;
+                    statsKnown["text1"] = true;
                   }
                   if (cpt >= 2) {
-                    statsKnown['text2'] = true;
+                    statsKnown["text2"] = true;
                   }
                   if (cpt >= 3) {
-                    statsKnown['text3'] = true;
+                    statsKnown["text3"] = true;
                   }
                   if (cpt >= 4) {
-                    statsKnown['text4'] = true;
+                    statsKnown["text4"] = true;
                   }
                   if (cpt >= 5) {
                     if (b.monster) {
-                      statsKnown['dangerosity'] = true;
+                      statsKnown["dangerosity"] = true;
                     } else {
-                      statsKnown['age'] = true;
+                      statsKnown["age"] = true;
                     }
                   }
                   if (cpt >= 6) {
-                    statsKnown['taille'] = true;
+                    statsKnown["taille"] = true;
                   }
                   if (cpt >= 7) {
-                    statsKnown['poids'] = true;
+                    statsKnown["poids"] = true;
                   }
                 }
                 tempBestiary[i] = {
@@ -641,7 +649,7 @@ export const populateBestiary = (currentStory, doSetState) => {
           });
           firebase
             .database()
-            .ref('stories/' + 0 + '/bestiary')
+            .ref("stories/" + 0 + "/bestiary")
             .set(tempBestiary)
             .catch(error => {
               // Handle Errors here.
