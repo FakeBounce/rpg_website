@@ -1,17 +1,18 @@
-import React, { Component } from "react";
-import "./ItemDescription.css";
-import PropTypes from "prop-types";
-import { widthLeft, heightLeft } from "../Utils/StyleConstants";
+import React, { Component } from 'react';
+import './ItemDescription.css';
+import PropTypes from 'prop-types';
+import { widthLeft, heightLeft } from '../Utils/StyleConstants';
+import ButtonLarge from '../Utils/ButtonLarge';
+import Cadre from '../Utils/Cadre';
 
 const styledMapSide = {
   width: `${widthLeft / 2 - 20}px`,
-  height: `${heightLeft / 2 - 10}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
-  position: "relative",
-  padding: 10,
-  top: -20,
+  height: `${heightLeft / 2}px`,
+  display: 'inline-block',
+  float: 'left',
+  textAlign: 'left',
+  position: 'relative',
+  paddingHorizontal: 10,
 };
 
 class ItemDescriptionPanel extends Component {
@@ -30,49 +31,42 @@ class ItemDescriptionPanel extends Component {
     } = this.props;
     return (
       <div style={styledMapSide}>
-        <img
-          src={'./common/cadreall.png'}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: `${widthLeft / 2 - 3}px`,
-            height: `${heightLeft / 2}px`,
-          }}
-        />
+        <Cadre />
         <div className="item-description">
           <div className="item-description-header">Description</div>
           <img
-            src={"./" + itemType + "/" + icon || "./common/unknown_image.png"}
+            src={
+              './' + itemType + '/' + icon || './common/unknown_image_white.png'
+            }
             alt={isHidden ? "Can't be described" : description}
             className="item-description-icon"
           />
-          <div className="item-description-text">{isHidden ? "???" : name}</div>
+          <div className="item-description-text">{isHidden ? '???' : name}</div>
           <div className="item-description-description">
             {isHidden ? "Can't be described" : description}
           </div>
           <div className="item-description-effect">
-            {isHidden ? "" : effect}
+            {isHidden ? '' : effect}
           </div>
           <div className="item-description-quantity">
             Quantity left :{quantity}
           </div>
-          <button
+          <ButtonLarge
             className={`item-description-price ${gold < price &&
-              "item-description-cant-buy"}`}
+              'item-description-cant-buy'}`}
             onClick={gold >= price && buyItem}
           >
             Buy ({price}
             g)
-          </button>
+          </ButtonLarge>
         </div>
       </div>
     );
   }
 }
 ItemDescriptionPanel.defaultProps = {
-  effect: "",
-  description: "",
+  effect: '',
+  description: '',
 };
 
 ItemDescriptionPanel.propTypes = {

@@ -1,39 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import BottomPanel from "./BottomPanel/BottomPanel";
-import ChatCommandsPanel from "./ChatCommandsPanel/ChatCommandsPanel";
-import Header from "./Utils/Header";
-import MiddlePanel from "./MiddlePanel";
-import EventModal from "./EventModal/EventModal";
-import { heightLeft } from "./Utils/StyleConstants";
-
-const styledImage = {
-  position: "relative",
-  float: "left",
-  width: 100,
-  height: 100,
-};
-const styledContainer = {
-  position: "relative",
-  width: window.innerWidth / 4 - 2,
-  float: "left",
-  display: "inline-block",
-  borderLeft: "1px dashed black",
-  borderRight: "1px dashed black",
-  borderBottom: "1px dashed black",
-};
-const styledText = {
-  position: "relative",
-  float: "left",
-  width: window.innerWidth / 4 - 2 - 120,
-  padding: 10,
-};
-const styledTitle = {
-  fontSize: 22,
-  fontWeight: "bolder",
-  color: "red",
-};
+import BottomPanel from './BottomPanel/BottomPanel';
+import ChatCommandsPanel from './ChatCommandsPanel/ChatCommandsPanel';
+import Header from './Utils/Header';
+import MiddlePanel from './MiddlePanel';
+import EventModal from './EventModal/EventModal';
+import BestiaryPanel from './BestiaryPanel/BestiaryPanel';
 
 class GameScreen extends Component {
   state = {
@@ -58,7 +31,7 @@ class GameScreen extends Component {
               return null;
             });
             return isAViewer;
-          } else {
+          } else if (!isEventHidden) {
             return true;
           }
         }
@@ -107,10 +80,10 @@ class GameScreen extends Component {
       <div>
         <Header
           accessChatHelp={accessChatHelp}
-          chatHelpTitle={onChatHelp ? "Return to map" : "Access chat help"}
-          bestiaryTitle={isOnBestiary ? "Return to map" : "Bestiary"}
+          chatHelpTitle={onChatHelp ? 'Return to map' : 'Access chat help'}
+          bestiaryTitle={isOnBestiary ? 'Return to map' : 'Bestiary'}
           eventTitle={
-            isEventHidden ? "Toggle event (Is hidden)" : "Toggle event"
+            isEventHidden ? 'Toggle event (Is hidden)' : 'Toggle event'
           }
           isGameMaster={isGameMaster}
           musicMute={musicMute}
@@ -139,57 +112,13 @@ class GameScreen extends Component {
           />
         )}
         {isOnBestiary ? (
-          <div
-            style={{
-              overflowY: "auto",
-              height: heightLeft,
-              width: "102%",
-            }}
-          >
-            {bestiary.map(b => {
-              if (b.seen || isGameMaster) {
-                if (typeof b[uid] !== "undefined" || isGameMaster) {
-                  return (
-                    <div style={styledContainer}>
-                      <div style={styledTitle}> {b.name}</div>
-                      <img src={"./bestiary/" + b.image} style={styledImage} />
-                      <div style={styledText}>
-                        {(b[uid].text1 || isGameMaster) && <div>{b.text1}</div>}
-                        {(b[uid].text2 || isGameMaster) && <div>{b.text2}</div>}
-                        {(b[uid].text3 || isGameMaster) && <div>{b.text3}</div>}
-                        {(b[uid].text4 || isGameMaster) && <div>{b.text4}</div>}
-                        {b.monster &&
-                          b[uid].dangerosity && (
-                            <div>Dangerosité : {b.dangerosity}</div>
-                          )}
-                        {!b.monster &&
-                          b[uid].age && <div>Age : {b.age} ans</div>}
-                        {b[uid].taille && (
-                          <div>
-                            Taille : {b.taille}
-                            cm
-                          </div>
-                        )}
-                        {b[uid].poids && (
-                          <div>
-                            Poids : {b.poids}
-                            kg
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div style={styledContainer}>
-                      <div style={styledTitle}> {b.name}</div>
-                      <img src={"./bestiary/" + b.image} style={styledImage} />
-                    </div>
-                  );
-                }
-              }
-            })}
-          </div>
+          <BestiaryPanel
+            isGameMaster={isGameMaster}
+            uid={uid}
+            bestiary={bestiary}
+            doSetState={doSetState}
+            currentStory={currentStory}
+          />
         ) : onChatHelp ? (
           <ChatCommandsPanel />
         ) : (

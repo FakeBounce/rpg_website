@@ -372,14 +372,25 @@ export const listenCurrentEvent = (currentStory, doSetState) => {
     });
 };
 
-export const listenChat = doSetState => {
+export const loadChat = (currentStory, doSetState) => {
   firebase
     .database()
-    .ref('/chat')
-    .on('value', snapshot => {
-      doSetState({
-        chatHistory: snapshot.val(),
+    .ref('/stories/'+currentStory+'/chat')
+    .limitToLast(50)
+    .once('value')
+    .then(snapshot => {
+      const chat = [];
+      Object.keys(snapshot.val()).map(key => {
+        chat.push(snapshot.val()[key]);
+        return null;
       });
+      doSetState({
+        chatHistory: chat,
+      });
+    })
+    .catch(error => {
+      // Handle Errors here.
+      triggerError(error);
     });
 };
 
@@ -445,7 +456,7 @@ export const loadCurrentPosition = (currentStory, doSetState) => {
 //             const maxRoll =
 //               tempCharacters[key].character.userPseudo === "Danjors" &&
 //               b.monster
-//                 ? parseInt(tempCharacters[key].character.education) + 10
+//                 ? parseInt(tempCharacters[key].character.education) + 20
 //                 : b.monster || tempCharacters[key].character.userPseudo === "Danjors"
 //                   ? parseInt(tempCharacters[key].character.education) - 10
 //                 : parseInt(tempCharacters[key].character.education);
@@ -578,11 +589,11 @@ export const populateBestiary = (currentStory, doSetState) => {
                 const maxRoll =
                   tempCharacters[key].character.userPseudo === 'Danjors' &&
                   b.monster
-                    ? parseInt(tempCharacters[key].character.education) + 10
+                    ? parseInt(tempCharacters[key].character.education, 10) + 20
                     : b.monster ||
                       tempCharacters[key].character.userPseudo === 'Danjors'
-                      ? parseInt(tempCharacters[key].character.education) - 10
-                      : parseInt(tempCharacters[key].character.education);
+                      ? parseInt(tempCharacters[key].character.education, 10) - 10
+                      : parseInt(tempCharacters[key].character.education, 10);
                 while (
                   Math.floor(Math.random() * 100 + 1) <= maxRoll &&
                   cpt < 7
@@ -624,7 +635,9 @@ export const populateBestiary = (currentStory, doSetState) => {
                   [key]: { ...statsKnown },
                 };
               }
+              return null;
             });
+            return null;
           });
           firebase
             .database()

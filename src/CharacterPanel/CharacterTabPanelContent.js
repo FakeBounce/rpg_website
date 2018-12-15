@@ -1,79 +1,134 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { widthRightPanelLeft } from "../Utils/StyleConstants";
-import firebase from "firebase";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { widthRightPanelLeft } from '../Utils/StyleConstants';
+import firebase from 'firebase';
+import ButtonLarge from '../Utils/ButtonLarge';
 
 const styles = {
   tabPanelItem: {
     width: `${widthRightPanelLeft - 20}px`,
     paddingHorizontal: 5,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
+  },
+  itemButton: {
+    width: 50,
+    height: 30,
+    position: 'relative',
+    float: 'right',
+    display: 'inline-block',
+    padding: 0,
+    margin: 0,
+    textAlign: 'center',
+  },
+  itemDescription: {
+    width: `${widthRightPanelLeft - 70}px`,
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
+    padding: 0,
+    margin: 0,
+    textAlign: 'center',
   },
 };
 
 class CharacterTabPanelContent extends Component {
   state = {
-    skillValue: "",
+    newValue: '',
   };
 
-  onChangeSkill = value => {
+  onChange = value => {
     this.setState(state => ({
       ...state,
-      skillValue: value,
+      newValue: value,
     }));
   };
 
-  onValidateSkills = () => {
-    const { skillValue } = this.state;
-    const { character } = this.props;
-    const obj = [...this.props.tab];
-    obj.push(skillValue);
+  onValidate = () => {
+    const { newValue } = this.state;
+    const { character, tab, tabName } = this.props;
+    const obj = [...tab];
+    obj.push(newValue);
 
     firebase
       .database()
-      .ref("stories/" + 0 + "/characters/" + character.userUid + "/character/skills")
+      .ref(
+        'stories/' +
+          0 +
+          '/characters/' +
+          character.userUid +
+          '/character/' +
+          tabName.toLowerCase()
+      )
       .set(obj)
       .catch(error => {
         // Handle Errors here.
-        console.log("Error", error);
+        console.log('Error', error);
+      });
+  };
+
+  onRemove = i => {
+    const { character, tab, tabName } = this.props;
+    const obj = [...tab];
+    obj.splice(i, 1);
+
+    firebase
+      .database()
+      .ref(
+        'stories/' +
+          0 +
+          '/characters/' +
+          character.userUid +
+          '/character/' +
+          tabName.toLowerCase()
+      )
+      .set(obj)
+      .catch(error => {
+        // Handle Errors here.
+        console.log('Error', error);
       });
   };
 
   render() {
     const { tab, tabName } = this.props;
-    const { skillValue } = this.state;
+    const { newValue } = this.state;
 
     return (
       <div>
         {tab.map((description, index) => {
           return (
             <div key={`${description}-${index}`} style={styles.tabPanelItem}>
-              {description}
+              <div style={styles.itemDescription}>{description}</div>
+              <ButtonLarge
+                style={styles.itemButton}
+                onClick={() => this.onRemove(index)}
+              >
+                Remove
+              </ButtonLarge>
             </div>
           );
         })}
-        {tabName === "Skills" && (
-          <div style={styles.tabPanelItem}>
-            <input
-              type="text"
-              placeholder={`Skill + description if needed`}
-              value={skillValue}
-              onChange={e => {
-                this.onChangeSkill(e.target.value);
-              }}
-            />
-            <button onClick={this.onValidateSkills}>Add skill</button>
-          </div>
-        )}
+        <div style={styles.tabPanelItem}>
+          <input
+            type="text"
+            placeholder={`${tabName} + description if needed`}
+            value={newValue}
+            onChange={e => {
+              this.onChange(e.target.value);
+            }}
+          />
+          <ButtonLarge style={styles.itemButton} onClick={this.onValidate}>
+            Add {tabName.toLowerCase()}
+          </ButtonLarge>
+        </div>
       </div>
     );
   }
 }
 
 CharacterTabPanelContent.defaultProps = {
-  tabName: "",
+  tabName: '',
   character: {},
 };
 

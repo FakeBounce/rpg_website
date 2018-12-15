@@ -1,20 +1,20 @@
-import React, { Component } from "react";
+import React, { PureComponent } from 'react';
 
-import PropTypes from "prop-types";
-import CharacterAttributes from "./CharacterAttributes";
-import CharacterOtherInfos from "./CharacterOtherInfos";
-import CharacterHeader from "./CharacterHeader";
+import PropTypes from 'prop-types';
+import CharacterAttributes from './CharacterAttributes';
+import CharacterOtherInfos from './CharacterOtherInfos';
+import CharacterHeader from './CharacterHeader';
 
 const styles = {
   CharPanel: {
-    borderBottom: "1px solid black",
-    width: "100%",
-    height: "50%",
+    borderBottom: '1px solid black',
+    width: '100%',
+    height: '50%',
   },
-  CharacterBox: { position: "relative", height: "100%" },
+  CharacterBox: { position: 'relative', height: '100%' },
 };
 
-class CharacterPanel extends Component {
+class CharacterPanel extends PureComponent {
   render() {
     const {
       character,
@@ -29,6 +29,9 @@ class CharacterPanel extends Component {
       onStatusChange,
       onItemUse,
       onGoldChange,
+      triggerError,
+      uid,
+      currentStory,
     } = this.props;
 
     return (
@@ -41,8 +44,15 @@ class CharacterPanel extends Component {
             name={character.name}
             health={character.health}
             maxHealth={character.maxHealth}
+            triggerError={triggerError}
+            uid={uid}
+            currentStory={currentStory}
           />
-          <CharacterAttributes character={character} />
+          <CharacterAttributes
+            character={character}
+            isGameMaster={isGameMaster}
+            currentStory={currentStory}
+          />
           <CharacterOtherInfos
             character={character}
             status={status}
@@ -76,6 +86,9 @@ CharacterPanel.propTypes = {
   onStatusChange: PropTypes.func.isRequired,
   onItemUse: PropTypes.func.isRequired,
   onGoldChange: PropTypes.func.isRequired,
+  triggerError: PropTypes.func.isRequired,
+  uid: PropTypes.string.isRequired,
+  currentStory: PropTypes.number.isRequired,
 };
 
 export default CharacterPanel;

@@ -14,7 +14,6 @@ import SoundPlayer from './SoundPlayer/SoundPlayer';
 import {
   // listenArtefacts,
   loadUnusedArtefacts,
-  listenChat,
   listenCurrentEvent,
   listenEvents,
   listenMerchants,
@@ -31,8 +30,10 @@ import {
   // populateTilesTypes,
   // resetEvents,
   // resetMap,
-  setQuests, populateBestiary,
-} from "./Utils/DatabaseFunctions";
+  setQuests,
+  populateBestiary,
+  loadChat,
+} from './Utils/DatabaseFunctions';
 import {
   hydrateStoryArtefacts,
   // resetStoryMerchants,
@@ -40,7 +41,6 @@ import {
   // hydrateMerchant,
 } from './Utils/MerchantsFunctions';
 import LoadSpreasheet from './Utils/LoadSpreasheet';
-import Draw from "./Draw";
 
 class App extends Component {
   constructor(props) {
@@ -62,7 +62,7 @@ class App extends Component {
     // populateTilesTypes();
     // resetMap(0,40);
     // resetEvents(0);
-    // populateBestiary(0, this.doSetState);
+    populateBestiary(0, this.doSetState);
 
     firebase
       .database()
@@ -85,10 +85,21 @@ class App extends Component {
     // resetStoryMerchants(currentStory, this.doSetState);
   };
 
+  hydrateMerchants = () => {
+    hydrateAllMerchants(
+      this.state.currentStory,
+      this.state.merchants,
+      this.state.items,
+      this.doSetState,
+      false
+    );
+  };
+
   toggleBestiary = () => {
     this.setState(state => ({
       ...state,
       isOnBestiary: !state.isOnBestiary,
+      onChatHelp: false,
     }));
   };
 
@@ -140,34 +151,38 @@ class App extends Component {
       itemDescribed,
       items: { artefacts },
     } = this.state;
+    const newWeaponsTab = character.weapons ? [...character.weapons] : [];
     const newItemsTab = character.items ? [...character.items] : [];
-    let hasAlready = false;
-    if (character.items) {
-      character.items.map((i, index) => {
-        if (i.name === item.name) {
-          hasAlready = true;
-          newItemsTab[index].quantity =
-            parseInt(newItemsTab[index].quantity, 10) + 1;
-        }
-        return null;
-      });
-    }
-    if (!hasAlready) {
-      newItemsTab.push({ ...item, quantity: 1 });
+    if (item.itemType === 'weapons') {
+      newWeaponsTab.push(item.name);
+    } else {
+      let hasAlready = false;
+      if (character.items) {
+        character.items.map((i, index) => {
+          if (i.name === item.name) {
+            hasAlready = true;
+            newItemsTab[index].quantity =
+              parseInt(newItemsTab[index].quantity, 10) + 1;
+          }
+          return null;
+        });
+      }
+      if (!hasAlready) {
+        newItemsTab.push({ ...item, quantity: 1 });
+      }
     }
 
-    const newMerchantList = [...itemsList];
+    const newMerchantList = { ...itemsList };
     let isQuantityLeft = false;
     if (newMerchantList[itemDescribed].quantity > 1) {
       newMerchantList[itemDescribed].quantity =
         newMerchantList[itemDescribed].quantity - 1;
       isQuantityLeft = true;
     } else {
-      newMerchantList.splice(itemDescribed, 1);
+      delete newMerchantList[itemDescribed];
     }
 
-    const newMerchants = [...merchants];
-    newMerchants[currentMerchant].items = newMerchantList;
+    merchants[currentMerchant].items = newMerchantList;
 
     this.setState(
       state => ({
@@ -175,7 +190,7 @@ class App extends Component {
         itemToDescribe: isQuantityLeft ? newMerchantList[itemDescribed] : {},
         isItemDescriptionShowed: isQuantityLeft,
         itemsList: newMerchantList,
-        merchants: newMerchants,
+        merchants,
       }),
       () => {
         firebase
@@ -185,6 +200,7 @@ class App extends Component {
             ...character,
             gold: character.gold - price,
             items: newItemsTab,
+            weapons: newWeaponsTab,
           })
           .then(() => {
             if (item.itemType === 'artefacts') {
@@ -200,7 +216,7 @@ class App extends Component {
             firebase
               .database()
               .ref('stories/' + currentStory + '/merchants/' + currentMerchant)
-              .set(newMerchants[currentMerchant]);
+              .set(merchants[currentMerchant]);
           })
           .catch(error => {
             // Handle Errors here.
@@ -593,13 +609,28 @@ class App extends Component {
   };
 
   createChat = () => {
-    listenChat(this.doSetState);
+    loadChat(this.state.currentStory, this.doSetState);
+
+    firebase
+      .database()
+      .ref('/stories/' + this.state.currentStory + '/chat')
+      .limitToLast(50)
+      .on('child_added', snapshot => {
+        const tempChat = [...this.state.chatHistory, snapshot.val()];
+        tempChat.splice(0, 1);
+
+        this.setState(state => ({
+          ...state,
+          chatHistory: [...tempChat],
+        }));
+      });
   };
 
   accessChatHelp = () => {
     this.setState(state => ({
       ...state,
       onChatHelp: !state.onChatHelp,
+      isOnBestiary: false,
     }));
   };
 
@@ -775,6 +806,7 @@ class App extends Component {
               eventHistory={eventHistory}
               gameMaster={gameMaster}
               generateTable={this.generateTable}
+              hydrateMerchants={this.hydrateMerchants}
               isGameMaster={isGameMaster}
               isItemDescriptionShowed={isItemDescriptionShowed}
               isItemShowed={isItemShowed}
@@ -830,7 +862,9 @@ class App extends Component {
           noiseVolume={noiseVolume}
           stopNoise={this.stopNoise}
         />
-        {error}
+        <div style={{ position: 'absolute', bottom: 0, textAlign: 'center' }}>
+          {error}
+        </div>
       </div>
     );
   }

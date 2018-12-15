@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import TeamCharacter from './TeamCharacter';
-import {
-  widthRightPanel,
-  heightLeft,
-} from '../Utils/StyleConstants';
+import { widthRightPanel, heightLeft } from '../Utils/StyleConstants';
+import TeamHeader from './TeamHeader';
 
 const styles = {
   TeamPanel: {
@@ -21,36 +19,27 @@ const styles = {
     display: 'inline-block',
     overflowY: 'auto',
   },
-  HeaderTextContainer: {
-    position: 'absolute',
-    width: `${widthRightPanel}px`,
-    height: 20,
-    float: 'left',
-    display: 'inline-block',
-    left: 0,
-    paddingTop: 2,
+  GMTeamPanel: {
+    borderBottom: '1px solid black',
+    width: '100%',
+    height: '100%',
   },
-  HeaderText: {
+  GMteamCharacters: {
+    width: '100%',
+    height: `${heightLeft / 2 - 30}px`,
+    marginTop: 25,
     position: 'relative',
-    width: `${widthRightPanel/4}px`,
-    height: 25,
     float: 'left',
     display: 'inline-block',
-  },
-  HeaderTextLeft: {
-    position: 'relative',
-    width: `${widthRightPanel/4}px`,
-    height: 25,
-    float: 'left',
-    display: 'inline-block',
-    textAlign: 'left',
+    overflowY: 'auto',
   },
 };
 
-class TeamPanel extends Component {
+class TeamPanel extends PureComponent {
   render() {
     const {
       storyCharacters,
+      exchangeWithTeamMember,
       chatWithTeamMember,
       goldWithTeamMember,
       modifyCurrentCharacter,
@@ -59,23 +48,22 @@ class TeamPanel extends Component {
     } = this.props;
 
     return (
-      <div style={styles.TeamPanel}>
-        <div style={styles.HeaderTextContainer}>
-        <div style={styles.HeaderTextLeft}>Equipe :</div>
-        <div style={styles.HeaderText}>Name</div>
-        <div style={styles.HeaderText}>Status</div>
-        <div style={styles.HeaderText}>Gold</div>
-        </div>
-        <div style={styles.teamCharacters}>
+      <div style={isGameMaster ? styles.GMTeamPanel : styles.TeamPanel}>
+        <TeamHeader />
+        <div style={isGameMaster ? styles.GMteamCharacters : styles.teamCharacters}>
           <TeamCharacter
             icon="./common/gameMaster.jpg"
             name="Game Master"
-            status="OK"
+            status="FURIOUS"
             gold={999999}
             health={9999}
             maxHealth={9999}
             isGM
-            chatWithTeamMember={() => chatWithTeamMember('GM')}
+            exchangeWithTeamMember={() => {}}
+            chatWithTeamMember={() => {
+              chatWithTeamMember('GM');
+              modifyCurrentCharacter(gameMaster);
+            }}
             goldWithTeamMember={() => goldWithTeamMember('GM')}
           />
 
@@ -94,6 +82,9 @@ class TeamPanel extends Component {
                   goldWithTeamMember={() =>
                     goldWithTeamMember(storyCharacter.userPseudo)
                   }
+                  exchangeWithTeamMember={() =>
+                    exchangeWithTeamMember(storyCharacter)
+                  }
                 />
               );
             }
@@ -107,6 +98,7 @@ class TeamPanel extends Component {
 
 TeamPanel.propTypes = {
   storyCharacters: PropTypes.array.isRequired,
+  exchangeWithTeamMember: PropTypes.func.isRequired,
   chatWithTeamMember: PropTypes.func.isRequired,
   goldWithTeamMember: PropTypes.func.isRequired,
   modifyCurrentCharacter: PropTypes.func.isRequired,

@@ -9,7 +9,12 @@ class ButtonLarge extends Component {
     return (
       <button
         className={'styledButtonLarge ' + className}
-        style={style}
+        style={{
+          width: 167,
+          height: 25,
+          padding: '5px 15px',
+          ...style,
+        }}
         onClick={onClick}
         disabled={disabled}
       >

@@ -1,69 +1,68 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { heightHeader } from "./StyleConstants";
-import Camera from "../Camera";
-import ButtonLarge from "./ButtonLarge";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { heightHeader } from './StyleConstants';
+import Camera from '../Camera';
+import ButtonLarge from './ButtonLarge';
 
 const styledSignOut = {
-  display: "block",
-  position: "relative",
+  display: 'block',
+  position: 'relative',
 };
 
 const styledToggling = {
-  position: "absolute",
+  position: 'absolute',
   top: 50,
   right: 167,
 };
 
 const styledToggleEvent = {
-  position: "absolute",
+  position: 'absolute',
   top: 75,
   right: 167,
 };
 
 const styledTogglingAbsolute = {
-  position: "absolute",
+  position: 'absolute',
   top: 100,
   right: 0,
 };
 
 const styledBoxHeader = {
-  width: "75%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-  fontSize: "36px",
-  paddingTop: "25px",
-  color: "white",
-  marginLeft: "25%",
+  width: '75%',
+  height: '20px',
+  marginBottom: '5px',
+  textAlign: 'center',
+  fontSize: '36px',
+  paddingTop: '25px',
+  color: 'white',
+  marginLeft: '25%',
 };
 
 const styledHeaderRight = {
   height: heightHeader,
-  position: "absolute",
+  position: 'absolute',
   right: 0,
   top: 0,
 };
 
 const styledHeaderLeft = {
   height: heightHeader,
-  position: "absolute",
+  position: 'absolute',
   left: 0,
   top: 0,
 };
 
 const styledHeader = {
-  borderBottom: "1px solid black",
-  width: "100%",
+  width: '100%',
   height: `${heightHeader}px`,
   backgroundImage: `url(./common/dravos_header.jpg)`,
-  backgroundSize: "cover",
+  backgroundSize: 'cover',
 };
 
 const styledSound = {
-  marginLeft: "5px",
-  width: "10px",
-  height: "10px",
+  marginLeft: '5px',
+  width: '10px',
+  height: '10px',
 };
 
 class Header extends Component {
@@ -72,7 +71,7 @@ class Header extends Component {
       accessChatHelp,
       bestiaryTitle,
       chatHelpTitle,
-      isEventHidden,
+      eventTitle,
       isGameMaster,
       musicMute,
       selectAnotherCharacter,
@@ -92,9 +91,6 @@ class Header extends Component {
         </div>
         <div style={styledBoxHeader}>{title}</div>
         <div style={styledHeaderRight}>
-          <ButtonLarge style={styledTogglingAbsolute} onClick={toggleBestiary}>
-            {bestiaryTitle}
-          </ButtonLarge>
           <ButtonLarge style={styledSignOut} onClick={signOut}>
             Sign Out
           </ButtonLarge>
@@ -107,20 +103,23 @@ class Header extends Component {
           >
             Select another character
           </ButtonLarge>
-          <ButtonLarge style={styledSignOut} onClick={accessChatHelp}>
-            {chatHelpTitle}
-          </ButtonLarge>
           <ButtonLarge style={styledSignOut} onClick={toggleMusic}>
             Toggle music
             <img
               src={
                 musicMute
-                  ? "./common/soundMuted.png"
-                  : "./common/soundUnmuted.png"
+                  ? './common/soundMuted.png'
+                  : './common/soundUnmuted.png'
               }
               style={styledSound}
               alt="sound muted or not"
             />
+          </ButtonLarge>
+          <ButtonLarge style={styledSignOut} onClick={accessChatHelp}>
+            {chatHelpTitle}
+          </ButtonLarge>
+          <ButtonLarge style={styledTogglingAbsolute} onClick={toggleBestiary}>
+            {bestiaryTitle}
           </ButtonLarge>
         </div>
         {isGameMaster && (
@@ -130,7 +129,7 @@ class Header extends Component {
         )}
         {isGameMaster && (
           <ButtonLarge onClick={toggleEvent} style={styledToggleEvent}>
-            Toggle event {isEventHidden ? "(Is hidden)" : ""}
+            {eventTitle}
           </ButtonLarge>
         )}
       </div>
@@ -142,7 +141,7 @@ Header.propTypes = {
   accessChatHelp: PropTypes.func.isRequired,
   bestiaryTitle: PropTypes.string.isRequired,
   chatHelpTitle: PropTypes.string.isRequired,
-  isEventHidden: PropTypes.bool.isRequired,
+  eventTitle: PropTypes.string.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
   musicMute: PropTypes.bool.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,

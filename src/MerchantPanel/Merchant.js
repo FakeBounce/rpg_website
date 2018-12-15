@@ -24,7 +24,7 @@ class Merchant extends Component {
       >
         <img
           src={
-            isDiscovered ? "./merchants/" + icon : "./common/unknown_image.png"
+            isDiscovered ? "./merchants/" + icon : "./common/unknown_image_white.png"
           }
           alt={description}
           className="merchant-icon"

@@ -1,24 +1,35 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { widthLeft, heightLeft } from '../Utils/StyleConstants';
 import MerchantList from './MerchantList';
+import Cadre from '../Utils/Cadre';
+import firebase from "firebase";
 
 const styledMapSide = {
   width: `${widthLeft / 2 - 20}px`,
-  height: `${heightLeft / 2 - 10}px`,
+  height: `${heightLeft / 2}px`,
   display: 'inline-block',
   float: 'left',
   textAlign: 'left',
   position: 'relative',
-  padding: 10,
+  paddingHorizontal: 10,
 };
 
-class MerchantPanel extends Component {
+class MerchantPanel extends PureComponent {
   showItems = (list, index) => {
     this.props.doSetState({
       isItemShowed: true,
       itemsList: list,
       currentMerchant: index,
+    }, () => {
+      firebase
+        .database()
+        .ref('stories/0/merchants/'+index+'/items')
+        .on('value', snapshot => {
+          this.props.doSetState({
+            itemsList: snapshot.val(),
+          });
+        });
     });
   };
 
@@ -27,16 +38,7 @@ class MerchantPanel extends Component {
 
     return (
       <div style={styledMapSide}>
-        <img
-          src={'./common/cadreall.png'}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: `${widthLeft / 2 - 3}px`,
-            height: `${heightLeft / 2}px`,
-          }}
-        />
+        <Cadre />
         <MerchantList
           currentMerchant={currentMerchant}
           merchantsList={merchantsList}

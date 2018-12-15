@@ -3,6 +3,12 @@ export const heightHeader = 133;
 export const heightCameras = 0;
 export const imageSize = 100;
 export const widthRightPanelLeft = widthRightPanel - imageSize;
+export const widthListPanelBestiary = 250;
+export const widthLeftBestiary = window.innerWidth - widthListPanelBestiary;
+export const widthImageBestiary = 200;
+export const widthTextBestiary = widthLeftBestiary - widthImageBestiary;
+export const widthExchangeBox = 300;
+export const heightExchangeBox = 300;
 
 // export const gridHeight = 20;
 // export const gridWidth = 20;
@@ -17,9 +23,17 @@ export const totalColumn = 40;
 export const gridTotal = gridDimension * gridLength;
 export const mapWidth = (window.innerWidth - widthRightPanel) / 3;
 export const widthLeft = window.innerWidth - mapWidth - widthRightPanel;
-export const heightLeft = gridLength * gridDimension * 2;
+export const heightLeft = window.innerHeight - heightHeader;
 
 export const cursorPointer = `url('/common/cursor_pointer.png'), pointer`;
+
+export const styledCadre = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: `${widthLeft / 2}px`,
+  height: `${heightLeft / 2}px`,
+};
 
 export const questsPosition = [
   {

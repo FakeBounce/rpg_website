@@ -1,27 +1,20 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
 import Quest from "./Quest";
 import PropTypes from "prop-types";
 import { widthLeft, heightLeft } from "../Utils/StyleConstants";
 import QuestFullscreen from "./QuestFullscreen";
 
-const styledBoxHeader = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-};
-
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
-  height: `${heightLeft / 2 - 10}px`,
+  height: `${heightLeft / 2}px`,
   display: "inline-block",
   float: "left",
   textAlign: "left",
   position: "relative",
 };
 
-class QuestPanel extends Component {
+class QuestPanel extends PureComponent {
   positionList = [];
 
   // For GM quest positionning
@@ -81,11 +74,11 @@ class QuestPanel extends Component {
           backgroundSize: "cover",
         }}
       >
-        {questsList.map(q => {
+        {questsList.map((q,i) => {
           if (!quests[q].validated) {
             return (
               <Quest
-                key={`merchant-${quests[q].name}`}
+                key={`merchant-${quests[q].name} -${i}`}
                 {...quests[q]}
                 index={q}
                 showQuest={this.showQuest}

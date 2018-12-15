@@ -42,7 +42,7 @@ class EventViewers extends Component {
                     : () => addToViewer(sc.userUid)
                 }
               >
-                {sc.name} {isAViewer ? "-" : "+"}
+                {sc.name} {isAViewer ? "V" : "NV"}
               </div>
             );
           }

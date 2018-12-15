@@ -1,34 +1,40 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { widthLeft, heightLeft } from "../Utils/StyleConstants";
-import ItemList from "./ItemList";
-
-const styledBoxHeader = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-};
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { widthLeft, heightLeft } from '../Utils/StyleConstants';
+import ItemList from './ItemList';
+import Cadre from '../Utils/Cadre';
+import firebase from 'firebase';
 
 const styledMapSide = {
-  width: `${widthLeft / 2 - 20}px`,
-  height: `${heightLeft / 2 - 10}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
-  position: "relative",
-  padding: 10,
-  top: -20,
+  width: `${widthLeft / 2}px`,
+  height: `${heightLeft / 2}px`,
+  display: 'inline-block',
+  float: 'left',
+  textAlign: 'left',
+  position: 'relative',
+  paddingHorizontal: 10,
 };
 
-class ItemPanel extends Component {
+class ItemPanel extends PureComponent {
   showItemDescription = i => {
     const { merchants, currentMerchant, doSetState } = this.props;
-    doSetState({
-      isItemDescriptionShowed: true,
-      itemToDescribe: merchants[currentMerchant].items[i],
-      itemDescribed: i,
-    });
+    doSetState(
+      {
+        isItemDescriptionShowed: true,
+        itemToDescribe: merchants[currentMerchant].items[i],
+        itemDescribed: i,
+      },
+      () => {
+        firebase
+          .database()
+          .ref('stories/0/merchants/' + currentMerchant + '/items/' + i)
+          .on('value', snapshot => {
+            this.props.doSetState({
+              itemToDescribe: snapshot.val(),
+            });
+          });
+      }
+    );
   };
 
   render() {
@@ -36,16 +42,7 @@ class ItemPanel extends Component {
 
     return (
       <div style={styledMapSide}>
-        <img
-          src={'./common/cadreall.png'}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: `${widthLeft / 2 - 3}px`,
-            height: `${heightLeft / 2}px`,
-          }}
-        />
+        <Cadre />
         <ItemList
           character={character}
           itemsList={itemsList}
@@ -59,7 +56,7 @@ class ItemPanel extends Component {
 ItemPanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
-  itemsList: PropTypes.array.isRequired,
+  itemsList: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   doSetState: PropTypes.func.isRequired,
 };

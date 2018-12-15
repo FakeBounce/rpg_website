@@ -6,7 +6,6 @@ import EventItemForm from "./EventItemForm";
 import EventGoldForm from "./EventGoldForm";
 import EventTypeSelector from "./EventTypeSelector";
 import { heightLeft } from "../Utils/StyleConstants";
-import Draw from "../Draw";
 
 const styledEventContainer = {
   height: `${heightLeft / 2 - 26}px`,

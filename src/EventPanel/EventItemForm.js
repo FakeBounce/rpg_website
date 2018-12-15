@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import EventItem from './EventItem';
+import { sortAlphabetical } from '../Utils/Functions';
 
 const styledItemList = {
   width: '100%',
@@ -11,35 +12,33 @@ const styledItemList = {
   overflowY: 'auto',
 };
 
-class EventItemForm extends Component {
-  render() {
-    const {
-      items,
-      descriptionEvent,
-      quantityEvent,
-      itemEvent,
-      onChange,
-    } = this.props;
+class EventItemForm extends PureComponent {
+  state = {
+    filteredItems: [],
+  };
 
+  componentDidMount() {
+    const { items } = this.props;
     const filteredItems = [];
     Object.keys(items).map(ikey => {
       if (ikey !== 'runes' && ikey !== 'enhancements') {
-        items[ikey].map(i => {
-          return filteredItems.push({ ...i, itemType: ikey });
+        Object.keys(items[ikey]).map(key => {
+          return filteredItems.push({ ...items[ikey][key], itemType: ikey });
         });
       }
       return null;
     });
 
-    filteredItems.sort((a, b) => {
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
-    });
+    sortAlphabetical(filteredItems);
+    this.setState(state => ({
+      ...state,
+      filteredItems,
+    }));
+  }
+
+  render() {
+    const { descriptionEvent, quantityEvent, itemEvent, onChange } = this.props;
+    const { filteredItems } = this.state;
 
     return (
       <div>

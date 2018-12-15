@@ -1,29 +1,43 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { heightLeft } from "../Utils/StyleConstants";
 
 const styles = {
   ChatRow: {
-    width: "100%",
-    float: "left",
-    display: "inline-block",
-    textAlign: "left",
+    width: '100%',
+    float: 'left',
+    display: 'inline-block',
+    textAlign: 'left',
+  },
+  ChatImage: {
+    maxHeight: `${heightLeft / 2 - (25 + 5) - 25}px`,
+    float: 'left',
+    display: 'inline-block',
+    textAlign: 'left',
   },
 };
 
 class ChatRow extends Component {
   render() {
-    const { pseudo, message } = this.props;
+    const { pseudo, message, image } = this.props;
 
     return (
       <div style={styles.ChatRow}>
         {pseudo ? `@${pseudo}: ${message}` : message}
+        {image && <img src={image} alt="Chat" style={styles.ChatImage} />}
       </div>
     );
   }
 }
 
+ChatRow.defaultProps = {
+  image: null,
+  imagePath: null,
+};
+
 ChatRow.propTypes = {
   pseudo: PropTypes.string,
+  image: PropTypes.string,
   message: PropTypes.string.isRequired,
 };
 

@@ -5,7 +5,6 @@ import TeamCharacterInfo from './TeamCharacterInfo';
 import {
   cursorPointer,
   widthRightPanel,
-  heightHeader,
   imageSize,
   widthRightPanelLeft,
 } from '../Utils/StyleConstants';
@@ -28,6 +27,14 @@ const styles = {
     float: 'left',
     display: 'inline-block',
   },
+  characterTeamExchangeImage: {
+    position: 'absolute',
+    width: 25,
+    height: 25,
+    left: `${imageSize / 2}px`,
+    top: 0,
+    zIndex: 1,
+  },
 };
 
 class TeamCharacter extends Component {
@@ -39,6 +46,7 @@ class TeamCharacter extends Component {
       gold,
       health,
       maxHealth,
+      exchangeWithTeamMember,
       chatWithTeamMember,
       goldWithTeamMember,
       isGM,
@@ -46,6 +54,14 @@ class TeamCharacter extends Component {
 
     return (
       <div style={styles.characterTeamHeader}>
+        {!isGM && (
+          <img
+            onClick={exchangeWithTeamMember}
+            src="./common/exchange.png"
+            alt="Exchange icon"
+            style={styles.characterTeamExchangeImage}
+          />
+        )}
         <div onClick={chatWithTeamMember}>
           <img src={icon} alt={name} style={styles.characterTeamHeaderImage} />
           <TeamCharacterInfo doubleSized title={name} />
@@ -80,6 +96,7 @@ TeamCharacter.propTypes = {
   health: PropTypes.number,
   maxHealth: PropTypes.number,
   isGM: PropTypes.bool,
+  exchangeWithTeamMember: PropTypes.func.isRequired,
   chatWithTeamMember: PropTypes.func.isRequired,
   goldWithTeamMember: PropTypes.func.isRequired,
 };

@@ -3,8 +3,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import TeamPanel from './TeamCharacters/TeamPanel';
-import { widthRightPanel, heightHeader } from './Utils/StyleConstants';
+import {
+  widthRightPanel,
+  heightHeader,
+} from './Utils/StyleConstants';
 import CharacterPanel from './CharacterPanel/CharacterPanel';
+import ExchangePanel from './ExchangePanel/ExchangePanel';
 
 const styles = {
   RightPanel: {
@@ -14,7 +18,6 @@ const styles = {
     borderLeft: '1px solid black',
     width: `${widthRightPanel}px`,
     height: `${window.innerHeight - heightHeader}px`,
-    overflow: 'hidden',
   },
 };
 
@@ -24,6 +27,7 @@ class RightPanel extends Component {
     infoTab: 'Weapons',
     damageTaken: 0,
     gold: 0,
+    currentExchangeCharacter: null,
   };
 
   chatWithTeamMember = pseudo => {
@@ -50,6 +54,13 @@ class RightPanel extends Component {
     }
   };
 
+  exchangeWithTeamMember = character => {
+    this.setState(state => ({
+      ...state,
+      currentExchangeCharacter: character,
+    }));
+  };
+
   onChange = (name, value) => {
     const obj = {};
     obj[name] = value;
@@ -71,6 +82,7 @@ class RightPanel extends Component {
       character: { health, maxHealth },
       currentStory,
       uid,
+      triggerError,
     } = this.props;
     const { damageTaken } = this.state;
 
@@ -88,12 +100,12 @@ class RightPanel extends Component {
       .set(parseInt(healthLeft, 10))
       .catch(error => {
         // Handle Errors here.
-        this.triggerError(error);
+        triggerError(error);
       });
   };
 
   onStatusChange = () => {
-    const { currentStory, uid } = this.props;
+    const { currentStory, uid, triggerError } = this.props;
     const { status } = this.state;
 
     firebase
@@ -104,12 +116,18 @@ class RightPanel extends Component {
       .set(status)
       .catch(error => {
         // Handle Errors here.
-        this.triggerError(error);
+        triggerError(error);
       });
   };
 
   onItemUse = (i, value) => {
-    const { character, currentStory, uid, doSetState } = this.props;
+    const {
+      character,
+      currentStory,
+      uid,
+      doSetState,
+      triggerError,
+    } = this.props;
 
     if (value > -1) {
       const newCharacterItems = [...character.items];
@@ -135,14 +153,107 @@ class RightPanel extends Component {
         .set(newCharacter)
         .catch(error => {
           // Handle Errors here.
-          this.triggerError(error);
+          triggerError(error);
         });
     }
   };
 
+  onItemExchange = (i, value, givableItem) => {
+    const { currentStory, triggerError } = this.props;
+    const { currentExchangeCharacter } = this.state;
+
+    const newCharacterItems = currentExchangeCharacter.items
+      ? [...currentExchangeCharacter.items]
+      : [];
+    let hasAlready = false;
+    if (currentExchangeCharacter.items) {
+      currentExchangeCharacter.items.map((item, index) => {
+        if (item.name === givableItem.name) {
+          hasAlready = true;
+          newCharacterItems[index].quantity =
+            parseInt(newCharacterItems[index].quantity, 10) + 1;
+        }
+        return null;
+      });
+    }
+    if (!hasAlready) {
+      newCharacterItems.push({ ...givableItem, quantity: 1 });
+    }
+    currentExchangeCharacter.items = newCharacterItems;
+
+    firebase
+      .database()
+      .ref(
+        'stories/' +
+          currentStory +
+          '/characters/' +
+          currentExchangeCharacter.userUid +
+          '/character/items'
+      )
+      .set(newCharacterItems)
+      .then(() => {
+        this.onItemUse(i, value);
+      })
+      .catch(error => {
+        // Handle Errors here.
+        triggerError(error);
+      });
+  };
+
+  onWeaponExchange = (i, givableItem) => {
+    const {
+      character,
+      currentStory,
+      uid,
+      triggerError,
+    } = this.props;
+    const { currentExchangeCharacter } = this.state;
+
+    const newCharacterItems = currentExchangeCharacter.weapons
+      ? [...currentExchangeCharacter.weapons]
+      : [];
+    newCharacterItems.push(givableItem);
+    currentExchangeCharacter.weapons = newCharacterItems;
+
+    firebase
+      .database()
+      .ref(
+        'stories/' +
+          currentStory +
+          '/characters/' +
+          currentExchangeCharacter.userUid +
+          '/character/weapons'
+      )
+      .set(newCharacterItems)
+      .then(() => {
+        const newCharacterWeapons = character.weapons;
+
+        newCharacterWeapons.splice(i, 1);
+
+        firebase
+          .database()
+          .ref('stories/' + currentStory + '/characters/' + uid + '/character')
+          .set(character)
+          .catch(error => {
+            // Handle Errors here.
+            triggerError(error);
+          });
+      })
+      .catch(error => {
+        // Handle Errors here.
+        triggerError(error);
+      });
+  };
+
   // for GM only
   onGoldChange = () => {
-    const { character, currentStory, uid, isGameMaster } = this.props;
+    const {
+      character,
+      currentStory,
+      uid,
+      isGameMaster,
+      triggerError,
+    } = this.props;
     const { gold } = this.state;
 
     if (isGameMaster) {
@@ -156,7 +267,7 @@ class RightPanel extends Component {
         .set(goldToSet)
         .catch(error => {
           // Handle Errors here.
-          this.triggerError(error);
+          triggerError(error);
         });
     }
   };
@@ -187,10 +298,31 @@ class RightPanel extends Component {
     }
   };
 
-  render() {
-    const { character, gameMaster, isGameMaster, storyCharacters } = this.props;
+  closeExchange = () => {
+    this.setState(state => ({
+      ...state,
+      currentExchangeCharacter: null,
+    }));
+  };
 
-    const { status, infoTab, damageTaken, gold } = this.state;
+  render() {
+    const {
+      uid,
+      character,
+      gameMaster,
+      isGameMaster,
+      storyCharacters,
+      triggerError,
+      currentStory,
+    } = this.props;
+
+    const {
+      status,
+      infoTab,
+      damageTaken,
+      gold,
+      currentExchangeCharacter,
+    } = this.state;
 
     return (
       <div style={styles.RightPanel}>
@@ -207,9 +339,22 @@ class RightPanel extends Component {
           onLifeChange={this.onLifeChange}
           onStatusChange={this.onStatusChange}
           status={status}
+          triggerError={triggerError}
+          uid={uid}
+          currentStory={currentStory}
         />
+        {currentExchangeCharacter !== null && (
+          <ExchangePanel
+            closeExchange={this.closeExchange}
+            onItemExchange={this.onItemExchange}
+            onWeaponExchange={this.onWeaponExchange}
+            currentExchangeCharacter={currentExchangeCharacter}
+            character={character}
+          />
+        )}
         <TeamPanel
           chatWithTeamMember={this.chatWithTeamMember}
+          exchangeWithTeamMember={this.exchangeWithTeamMember}
           gameMaster={gameMaster}
           goldWithTeamMember={this.goldWithTeamMember}
           isGameMaster={isGameMaster}

@@ -39,9 +39,9 @@ class SpellGenerator extends PureComponent {
     const { items } = this.props;
     if (items && items.spells) {
       const filteredSpells = [];
-      items.spells.map(s => {
-        if (s["random"] === "TRUE") {
-          filteredSpells.push(s);
+      Object.keys(items.spells).map(key => {
+        if (items.spells[key]["random"] === "TRUE") {
+          filteredSpells.push(items.spells[key]);
         }
         return null;
       });

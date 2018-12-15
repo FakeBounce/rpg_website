@@ -4,11 +4,17 @@
     cursor: url('/common/cursor_pointer.png'), pointer;
     height: 50px;
     margin-top:-4px;
+    color: white;
+}
+
+.item.selected{
+    color: red;
+    border: none;
 }
 
 .item:hover{
-    border-bottom: 1px solid red;
-    border-top: 1px solid red;
+    border-bottom: 1px solid blue;
+    border-top: 1px solid blue;
 }
 
 .item-icon{

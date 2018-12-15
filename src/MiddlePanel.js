@@ -1,11 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import GMMapPanel from "./GMMapPanel";
-import RightPanel from "./RightPanel";
-import PlayerMapPanel from "./PlayerMapPanel";
-import MapGenerator from "./MapGenerator/MapGenerator";
-import ChatPanel from "./ChatPanel/ChatPanel";
+import GMMapPanel from './GMMapPanel';
+import RightPanel from './RightPanel';
+import PlayerMapPanel from './PlayerMapPanel';
+import MapGenerator from './MapGenerator/MapGenerator';
+import ChatPanel from './ChatPanel/ChatPanel';
+import SoundPanel from './SoundPanel/SoundPanel';
 
 class MiddlePanel extends Component {
   changeCurrentScale = value => {
@@ -32,6 +33,7 @@ class MiddlePanel extends Component {
       doSetState,
       eventHistory,
       gameMaster,
+      hydrateMerchants,
       isGameMaster,
       isItemDescriptionShowed,
       isItemShowed,
@@ -110,6 +112,7 @@ class MiddlePanel extends Component {
               doSetState={doSetState}
               eventHistory={eventHistory}
               gameMaster={gameMaster}
+              hydrateMerchants={hydrateMerchants}
               items={items}
               merchants={merchants}
               musicName={musicName}
@@ -133,6 +136,7 @@ class MiddlePanel extends Component {
             character={character}
             currentMerchant={currentMerchant}
             currentQuest={currentQuest}
+            currentStory={currentStory}
             doSetState={doSetState}
             isItemDescriptionShowed={isItemDescriptionShowed}
             isItemShowed={isItemShowed}
@@ -145,25 +149,38 @@ class MiddlePanel extends Component {
             merchantsList={merchantsList}
             quests={quests}
             questsList={questsList}
+            uid={uid}
             triggerError={triggerError}
           />
         )}
 
-        <RightPanel
-          character={character}
-          chatHistory={chatHistory}
-          chatInput={chatInput}
-          currentStory={currentStory}
-          doSetState={doSetState}
-          gameMaster={gameMaster}
-          isGameMaster={isGameMaster}
-          onChange={onChange}
-          pseudo={pseudo}
-          storyCharacters={storyCharacters}
-          triggerError={triggerError}
-          uid={uid}
-          users={users}
-        />
+        {(!isGameMaster || isOnPlayerView) && (
+          <RightPanel
+            character={character}
+            chatHistory={chatHistory}
+            chatInput={chatInput}
+            currentStory={currentStory}
+            doSetState={doSetState}
+            gameMaster={gameMaster}
+            isGameMaster={isGameMaster}
+            onChange={onChange}
+            pseudo={pseudo}
+            storyCharacters={storyCharacters}
+            triggerError={triggerError}
+            uid={uid}
+            users={users}
+          />
+        )}
+        {isGameMaster && !isOnPlayerView && (
+          <SoundPanel
+            musicName={musicName}
+            noiseName={noiseName}
+            musicVolume={musicVolume}
+            noiseVolume={noiseVolume}
+            resetSounds={resetSounds}
+            onChangeMusics={onChangeMusics}
+          />
+        )}
       </div>
     );
   }
@@ -190,6 +207,7 @@ MiddlePanel.propTypes = {
   doSetState: PropTypes.func.isRequired,
   eventHistory: PropTypes.array.isRequired,
   gameMaster: PropTypes.string.isRequired,
+  hydrateMerchants: PropTypes.string.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,
   isItemShowed: PropTypes.bool.isRequired,
@@ -197,7 +215,7 @@ MiddlePanel.propTypes = {
   isQuestShowed: PropTypes.bool.isRequired,
   isTownShowed: PropTypes.bool.isRequired,
   items: PropTypes.object.isRequired,
-  itemsList: PropTypes.array.isRequired,
+  itemsList: PropTypes.object.isRequired,
   itemToDescribe: PropTypes.object.isRequired,
   loadCurrentPosition: PropTypes.func.isRequired,
   map: PropTypes.array.isRequired,
