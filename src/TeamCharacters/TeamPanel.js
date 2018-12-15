@@ -1,37 +1,37 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import TeamCharacter from './TeamCharacter';
-import { widthRightPanel, heightLeft } from '../Utils/StyleConstants';
-import TeamHeader from './TeamHeader';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import TeamCharacter from "./TeamCharacter";
+import { widthRightPanel, heightLeft } from "../Utils/StyleConstants";
+import TeamHeader from "./TeamHeader";
 
 const styles = {
   TeamPanel: {
-    borderBottom: '1px solid black',
-    width: '100%',
-    height: '50%',
+    borderBottom: "1px solid black",
+    width: "100%",
+    height: "50%",
   },
   teamCharacters: {
     width: `${widthRightPanel}px`,
     height: `${heightLeft / 2 - 30}px`,
     marginTop: 25,
-    position: 'relative',
-    float: 'left',
-    display: 'inline-block',
-    overflowY: 'auto',
+    position: "relative",
+    float: "left",
+    display: "inline-block",
+    overflowY: "auto",
   },
   GMTeamPanel: {
-    borderBottom: '1px solid black',
-    width: '100%',
-    height: '100%',
+    borderBottom: "1px solid black",
+    width: "100%",
+    height: "100%",
   },
   GMteamCharacters: {
-    width: '100%',
+    width: "100%",
     height: `${heightLeft / 2 - 30}px`,
     marginTop: 25,
-    position: 'relative',
-    float: 'left',
-    display: 'inline-block',
-    overflowY: 'auto',
+    position: "relative",
+    float: "left",
+    display: "inline-block",
+    overflowY: "auto",
   },
 };
 
@@ -50,7 +50,9 @@ class TeamPanel extends PureComponent {
     return (
       <div style={isGameMaster ? styles.GMTeamPanel : styles.TeamPanel}>
         <TeamHeader />
-        <div style={isGameMaster ? styles.GMteamCharacters : styles.teamCharacters}>
+        <div
+          style={isGameMaster ? styles.GMteamCharacters : styles.teamCharacters}
+        >
           <TeamCharacter
             icon="./common/gameMaster.jpg"
             name="Game Master"
@@ -61,14 +63,17 @@ class TeamPanel extends PureComponent {
             isGM
             exchangeWithTeamMember={() => {}}
             chatWithTeamMember={() => {
-              chatWithTeamMember('GM');
+              chatWithTeamMember("GM");
               modifyCurrentCharacter(gameMaster);
             }}
-            goldWithTeamMember={() => goldWithTeamMember('GM')}
+            goldWithTeamMember={() => goldWithTeamMember("GM")}
           />
 
           {storyCharacters.map(storyCharacter => {
-            if (storyCharacter.userUid !== gameMaster) {
+            if (
+              storyCharacter.userUid !== gameMaster &&
+              storyCharacter.userPseudo !== "Tadlos"
+            ) {
               return (
                 <TeamCharacter
                   key={storyCharacter.name}
