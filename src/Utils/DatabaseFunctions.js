@@ -702,3 +702,34 @@ export const populateBestiary = (currentStory, doSetState) => {
 //       });
 //   });
 // });
+
+
+
+// Ajout d'une quête
+// export const listenQuests = (currentStory, doSetState) => {
+//   firebase
+//     .database()
+//     .ref("/stories/" + currentStory + "/quests")
+//     .once('value')
+//     .then(snapshot => {
+//       // doSetState({
+//       //   quests: snapshot.val(),
+//       // });
+//
+//       const newQuests = [...snapshot.val()];
+//       newQuests.push({
+//         dangerosity: 7,
+//         description: "Un Golgoth est apparu au nord de Willesden. On le cherche mort ou vif, c'est un danger pour les paysans environnants.",
+//         icon: "notice_3.jpg",
+//         name: "Golgoth",
+//         position: 4,
+//         randomStyle:[4, 8],
+//         reward: 4357,
+//       });
+//
+//       firebase
+//         .database()
+//         .ref("/stories/" + currentStory + "/quests")
+//         .set(newQuests);
+//     });
+// };
