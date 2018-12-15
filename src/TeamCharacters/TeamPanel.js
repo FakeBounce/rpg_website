@@ -22,7 +22,7 @@ const styles = {
   GMTeamPanel: {
     borderBottom: "1px solid black",
     width: "100%",
-    height: "100%",
+    height: heightLeft/2,
   },
   GMteamCharacters: {
     width: "100%",
