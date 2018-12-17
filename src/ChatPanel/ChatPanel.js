@@ -114,7 +114,7 @@ class ChatPanel extends PureComponent {
     if (prevProps.chatInput !== this.props.chatInput) {
       this.chatInputRef.focus();
     }
-    if (prevProps.chatHistory.length !== this.props.chatHistory.length) {
+    if (prevProps.chatHistory !== this.props.chatHistory) {
       this.scrollToBottom();
     }
   }
@@ -138,11 +138,14 @@ class ChatPanel extends PureComponent {
 
   generateChat = chatHistory => {
     const table = [];
-    chatHistory.map((row, index) => {
-      if (row.viewers && this.isAViewer(row.viewers)) {
-        table.push(<ChatRow key={`chat-row-${index}`} {...row} />);
-      } else if (!row.viewers) {
-        table.push(<ChatRow key={`chat-row-${index}`} {...row} />);
+    Object.keys(chatHistory).map(key => {
+      if (
+        chatHistory[key].viewers &&
+        this.isAViewer(chatHistory[key].viewers)
+      ) {
+        table.push(<ChatRow key={`chat-row-${key}`} {...chatHistory[key]} />);
+      } else if (!chatHistory[key].viewers) {
+        table.push(<ChatRow key={`chat-row-${key}`} {...chatHistory[key]} />);
       }
       return null;
     });

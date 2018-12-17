@@ -1,39 +1,39 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 
-import ItemDescriptionPanel from "./ItemDescriptionPanel/ItemDescriptionPanel";
-import MerchantPanel from "./MerchantPanel/MerchantPanel";
-import ItemPanel from "./ItemPanel/ItemPanel";
-import QuestPanel from "./QuestPanel/QuestPanel";
-import { heightLeft, widthLeft } from "./Utils/StyleConstants";
-import TempImage from "./TempImage";
-import EnhancementWeaponsPanel from "./EnhancementWeaponsPanel/EnhancementWeaponsPanel";
-import ShopHeaderBlacksmith from "./ShopHeader/ShopHeaderBlacksmith";
-import ShopHeaderEnhancements from "./ShopHeader/ShopHeaderEnhancements";
-import ShopHeaderDefault from "./ShopHeader/ShopHeaderDefault";
-import EnhancersPanel from "./EnhancersPanel/EnhancersPanel";
-import firebase from "firebase";
-import Cadre from "./Utils/Cadre";
+import ItemDescriptionPanel from './ItemDescriptionPanel/ItemDescriptionPanel';
+import MerchantPanel from './MerchantPanel/MerchantPanel';
+import ItemPanel from './ItemPanel/ItemPanel';
+import QuestPanel from './QuestPanel/QuestPanel';
+import { heightLeft, widthLeft } from './Utils/StyleConstants';
+import TempImage from './TempImage';
+import EnhancementWeaponsPanel from './EnhancementWeaponsPanel/EnhancementWeaponsPanel';
+import ShopHeaderBlacksmith from './ShopHeader/ShopHeaderBlacksmith';
+import ShopHeaderEnhancements from './ShopHeader/ShopHeaderEnhancements';
+import ShopHeaderDefault from './ShopHeader/ShopHeaderDefault';
+import EnhancersPanel from './EnhancersPanel/EnhancersPanel';
+import firebase from 'firebase';
+import Cadre from './Utils/Cadre';
 
 const styledPlayerMapContainer = {
-  float: "left",
+  float: 'left',
   width: `${widthLeft}px`,
   height: `${heightLeft}px`,
-  display: "inline-block",
-  position: "relative",
+  display: 'inline-block',
+  position: 'relative',
 };
 
 const styledPanelContainer = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
-  display: "inline-block",
-  float: "left",
-  position: "relative",
+  display: 'inline-block',
+  float: 'left',
+  position: 'relative',
 };
 
 class PlayerMapPanel extends Component {
   state = {
-    currentTab: "items",
+    currentTab: 'items',
     showEnhancers: false,
     choosedItem: null,
     choosedEnhancer1: null,
@@ -46,7 +46,7 @@ class PlayerMapPanel extends Component {
     if (nextProps.currentMerchant !== this.props.currentMerchant) {
       this.setState(state => ({
         ...state,
-        currentTab: "items",
+        currentTab: 'items',
         showEnhancers: false,
         choosedItem: null,
         choosedEnhancer1: null,
@@ -60,21 +60,22 @@ class PlayerMapPanel extends Component {
     ) {
       if (
         choosedItem !== null &&
-        typeof nextProps.itemsList[choosedItem.index] === "undefined"
+        typeof nextProps.itemsList[choosedItem.index] === 'undefined'
       ) {
         this.setState(
           state => ({
             ...state,
             choosedItem: null,
+            showEnhancers: false,
           }),
           () => {
             this.calculateEnhancePrice();
-          },
+          }
         );
       }
       if (
         choosedEnhancer1 !== null &&
-        typeof nextProps.itemsList[choosedEnhancer1.index] === "undefined"
+        typeof nextProps.itemsList[choosedEnhancer1.index] === 'undefined'
       ) {
         this.setState(
           state => ({
@@ -83,12 +84,12 @@ class PlayerMapPanel extends Component {
           }),
           () => {
             this.calculateEnhancePrice();
-          },
+          }
         );
       }
       if (
         choosedEnhancer2 !== null &&
-        typeof nextProps.itemsList[choosedEnhancer2.index] === "undefined"
+        typeof nextProps.itemsList[choosedEnhancer2.index] === 'undefined'
       ) {
         this.setState(
           state => ({
@@ -97,7 +98,7 @@ class PlayerMapPanel extends Component {
           }),
           () => {
             this.calculateEnhancePrice();
-          },
+          }
         );
       }
     }
@@ -119,7 +120,7 @@ class PlayerMapPanel extends Component {
           isItemDescriptionShowed: false,
           itemDescribed: 0,
         });
-      },
+      }
     );
   };
 
@@ -148,11 +149,11 @@ class PlayerMapPanel extends Component {
       }
     }
 
-    if (currentTab === "enhancements") {
+    if (currentTab === 'enhancements') {
       enhancePrice =
         Math.ceil(
           enhancePrice *
-            (0.75 + parseInt(merchants[currentMerchant].level * 0.1, 10)),
+            (0.75 + parseInt(merchants[currentMerchant].level * 0.1, 10))
         ) +
         15 +
         Math.ceil(3 * parseInt(merchants[currentMerchant].level, 10));
@@ -160,7 +161,7 @@ class PlayerMapPanel extends Component {
       enhancePrice =
         Math.ceil(
           enhancePrice *
-            (1.25 + parseInt(merchants[currentMerchant].level * 0.1, 10)),
+            (1.25 + parseInt(merchants[currentMerchant].level * 0.1, 10))
         ) +
         30 +
         Math.ceil(7 * parseInt(merchants[currentMerchant].level, 10));
@@ -177,11 +178,10 @@ class PlayerMapPanel extends Component {
         ...state,
         showEnhancers: true,
         choosedItem: { item, index, isFromMerchant },
-        itemIndex: index,
       }),
       () => {
         this.calculateEnhancePrice();
-      },
+      }
     );
   };
 
@@ -196,7 +196,7 @@ class PlayerMapPanel extends Component {
         }),
         () => {
           this.calculateEnhancePrice();
-        },
+        }
       );
     } else {
       this.setState(
@@ -207,7 +207,7 @@ class PlayerMapPanel extends Component {
         }),
         () => {
           this.calculateEnhancePrice();
-        },
+        }
       );
     }
   };
@@ -223,7 +223,7 @@ class PlayerMapPanel extends Component {
         }),
         () => {
           this.calculateEnhancePrice();
-        },
+        }
       );
     } else {
       this.setState(
@@ -234,7 +234,7 @@ class PlayerMapPanel extends Component {
         }),
         () => {
           this.calculateEnhancePrice();
-        },
+        }
       );
     }
   };
@@ -261,15 +261,15 @@ class PlayerMapPanel extends Component {
 
     let newWeapon = choosedItem.item.name ? choosedItem.item.name : choosedItem;
     if (choosedEnhancer1 !== null) {
-      newWeapon += " (" + choosedEnhancer1.item.name + ")";
+      newWeapon += ' (' + choosedEnhancer1.item.name + ')';
     }
     if (choosedEnhancer2 !== null) {
-      newWeapon += " (" + choosedEnhancer2.item.name + ")";
+      newWeapon += ' (' + choosedEnhancer2.item.name + ')';
     }
-    if (currentTab === "enhancements") {
-      newWeapon += " (T)";
+    if (currentTab === 'enhancements') {
+      newWeapon += ' (T)';
     } else {
-      newWeapon += " (P)";
+      newWeapon += ' (P)';
     }
 
     const newItemsTab = character.weapons ? [...character.weapons] : [];
@@ -341,7 +341,7 @@ class PlayerMapPanel extends Component {
       () => {
         firebase
           .database()
-          .ref("stories/" + currentStory + "/characters/" + uid + "/character")
+          .ref('stories/' + currentStory + '/characters/' + uid + '/character')
           .set({
             ...character,
             gold: character.gold - enhancePrice,
@@ -351,7 +351,7 @@ class PlayerMapPanel extends Component {
           .then(() => {
             firebase
               .database()
-              .ref("stories/" + currentStory + "/merchants/" + currentMerchant)
+              .ref('stories/' + currentStory + '/merchants/' + currentMerchant)
               .set(merchants[currentMerchant]);
             this.setState(state => ({
               ...state,
@@ -366,7 +366,7 @@ class PlayerMapPanel extends Component {
             // Handle Errors here.
             triggerError(error);
           });
-      },
+      }
     );
   };
 
@@ -419,7 +419,7 @@ class PlayerMapPanel extends Component {
             />
             {isItemShowed ? (
               <div style={styledPanelContainer}>
-                {merchants[currentMerchant].job === "Forgeron" ? (
+                {merchants[currentMerchant].job === 'Forgeron' ? (
                   <ShopHeaderBlacksmith
                     changeTab={this.changeTab}
                     currentTab={currentTab}
@@ -433,7 +433,7 @@ class PlayerMapPanel extends Component {
                 ) : (
                   <ShopHeaderDefault />
                 )}
-                {currentTab === "items" && (
+                {currentTab === 'items' && (
                   <ItemPanel
                     currentMerchant={currentMerchant}
                     character={character}
@@ -442,7 +442,7 @@ class PlayerMapPanel extends Component {
                     doSetState={doSetState}
                   />
                 )}
-                {currentTab === "enhancements" && (
+                {currentTab === 'enhancements' && (
                   <EnhancementWeaponsPanel
                     currentMerchant={currentMerchant}
                     character={character}
@@ -452,7 +452,7 @@ class PlayerMapPanel extends Component {
                     itemsList={itemsList}
                   />
                 )}
-                {currentTab === "blacksmith" && (
+                {currentTab === 'blacksmith' && (
                   <EnhancementWeaponsPanel
                     currentMerchant={currentMerchant}
                     character={character}
@@ -468,10 +468,10 @@ class PlayerMapPanel extends Component {
                 style={{
                   width: `${widthLeft / 2}px`,
                   height: `${heightLeft / 2}px`,
-                  display: "inline-block",
-                  float: "left",
-                  textAlign: "left",
-                  position: "relative",
+                  display: 'inline-block',
+                  float: 'left',
+                  textAlign: 'left',
+                  position: 'relative',
                   paddingHorizontal: 10,
                 }}
               >
@@ -505,10 +505,10 @@ class PlayerMapPanel extends Component {
                 style={{
                   width: `${widthLeft / 2 - 20}px`,
                   height: `${heightLeft / 2}px`,
-                  display: "inline-block",
-                  float: "left",
-                  textAlign: "left",
-                  position: "relative",
+                  display: 'inline-block',
+                  float: 'left',
+                  textAlign: 'left',
+                  position: 'relative',
                   paddingHorizontal: 10,
                 }}
               >

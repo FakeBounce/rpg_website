@@ -615,13 +615,10 @@ class App extends Component {
       .database()
       .ref('/stories/' + this.state.currentStory + '/chat')
       .limitToLast(50)
-      .on('child_added', snapshot => {
-        const tempChat = [...this.state.chatHistory, snapshot.val()];
-        tempChat.splice(0, 1);
-
+      .on('value', snapshot => {
         this.setState(state => ({
           ...state,
-          chatHistory: [...tempChat],
+          chatHistory: snapshot.val(),
         }));
       });
   };

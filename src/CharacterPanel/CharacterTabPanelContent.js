@@ -48,24 +48,27 @@ class CharacterTabPanelContent extends Component {
   onValidate = () => {
     const { newValue } = this.state;
     const { character, tab, tabName } = this.props;
-    const obj = [...tab];
-    obj.push(newValue);
 
-    firebase
-      .database()
-      .ref(
-        'stories/' +
-          0 +
-          '/characters/' +
-          character.userUid +
-          '/character/' +
-          tabName.toLowerCase()
-      )
-      .set(obj)
-      .catch(error => {
-        // Handle Errors here.
-        console.log('Error', error);
-      });
+    if (newValue !== '') {
+      const obj = [...tab];
+      obj.push(newValue);
+
+      firebase
+        .database()
+        .ref(
+          'stories/' +
+            0 +
+            '/characters/' +
+            character.userUid +
+            '/character/' +
+            tabName.toLowerCase()
+        )
+        .set(obj)
+        .catch(error => {
+          // Handle Errors here.
+          console.log('Error', error);
+        });
+    }
   };
 
   onRemove = i => {

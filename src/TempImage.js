@@ -19,8 +19,8 @@ const styledTempSelect = {
 class TempImage extends Component {
   state = {
     tempImage: 'noTown.jpg',
+    bestiaryList: [],
   };
-  bestiaryList = [];
 
   componentDidMount() {
     const { currentStory, isGameMaster } = this.props;
@@ -39,7 +39,10 @@ class TempImage extends Component {
         .ref('stories/' + currentStory + '/bestiary')
         .once('value')
         .then(snapshot => {
-          this.bestiaryList = snapshot.val();
+          this.setState(state => ({
+            ...state,
+            bestiaryList: snapshot.val(),
+          }));
         });
     }
   }
@@ -58,7 +61,7 @@ class TempImage extends Component {
 
   render() {
     const { isGameMaster } = this.props;
-    const { tempImage } = this.state;
+    const { tempImage, bestiaryList } = this.state;
 
     return (
       <Fragment>
@@ -77,7 +80,7 @@ class TempImage extends Component {
                 </option>
               );
             })}
-            {this.bestiaryList.map(obj => {
+            {bestiaryList.map(obj => {
               return (
                 <option key={obj.name} value={'bestiary/' + obj.image}>
                   {obj.name}

@@ -14,6 +14,7 @@ import MapZoom from './MapZoom';
 import MapArrows from './MapArrows';
 import Tile from './Tile';
 import TileGM from './TileGM';
+import MapGrid from './MapGrid';
 
 const styledMap = {
   width: `${mapWidth}px`,
@@ -22,94 +23,6 @@ const styledMap = {
 };
 
 class MapGenerator extends PureComponent {
-  generateTable = mapToRender => {
-    const { currentZoom } = this.props;
-    const table = [];
-    mapToRender.map((row, index) => {
-      table.push(
-        <div
-          key={`table-row-${index}`}
-          className="row"
-          style={{
-            width: `${(totalRows * gridDimension * currentZoom) / 10 +
-              totalRows}px`,
-            height: `${(gridDimension * currentZoom) / 10}px`,
-          }}
-        >
-          {this.createGrid(index, row)}
-        </div>
-      );
-      return null;
-    });
-    return table;
-  };
-
-  createGrid = (positionX, rowToRender) => {
-    const {
-      isGameMaster,
-      isOnPlayerView,
-      textureToApply,
-      tilesTypes,
-      currentZoom,
-      doSetState,
-      towns,
-    } = this.props;
-    const table = [];
-    rowToRender.map((row, index) => {
-      table.push(
-        isGameMaster && !isOnPlayerView ? (
-          <TileGM
-            key={`row-${index}`}
-            currentZoom={currentZoom}
-            doSetState={doSetState}
-            positionX={positionX}
-            row={row}
-            setTexture={this.setTexture}
-            showInfos={this.showInfos}
-            textureToApply={textureToApply}
-            tilesTypes={tilesTypes}
-            towns={towns}
-            index={index}
-          />
-        ) : (
-          <Tile
-            key={`row-${index}`}
-            cancelTownList={this.cancelTownList}
-            currentZoom={currentZoom}
-            row={row}
-            showTownList={this.showTownList}
-            tilesTypes={tilesTypes}
-            towns={towns}
-          />
-        )
-      );
-      return null;
-    });
-    return table;
-  };
-
-  showInfos = tileInfo => {
-    this.props.doSetState({
-      currentTile: tileInfo,
-    });
-  };
-
-  showTownList = town => {
-    this.props.doSetState({
-      isTownShowed: true,
-      merchantsList: town.merchantsList || [],
-      questsList: town.questsList || [],
-    });
-  };
-
-  cancelTownList = () => {
-    this.props.doSetState({
-      isTownShowed: false,
-      merchantsList: [],
-      questsList: [],
-    });
-  };
-
   setTexture = (x, y) => {
     const {
       stories,
@@ -186,6 +99,9 @@ class MapGenerator extends PureComponent {
       currentY,
       currentZoom,
       loadCurrentPosition,
+      isGameMaster,
+      isOnPlayerView,
+      tilesTypes,
     } = this.props;
 
     return (
@@ -206,7 +122,19 @@ class MapGenerator extends PureComponent {
             top: (-gridDimension * currentY * currentZoom) / 10,
           }}
         >
-          {map.length > 0 && towns.length > 0 && this.generateTable(map)}
+          {map.length > 0 &&
+            towns.length > 0 && (
+              <MapGrid
+                isGameMaster={isGameMaster}
+                currentZoom={currentZoom}
+                doSetState={doSetState}
+                isOnPlayerView={isOnPlayerView}
+                map={map}
+                setTexture={this.setTexture}
+                tilesTypes={tilesTypes}
+                towns={towns}
+              />
+            )}
         </div>
       </div>
     );
