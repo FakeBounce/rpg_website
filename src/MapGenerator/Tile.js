@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import "./Grid.css";
 import Town from "./Town";
 
 import { gridDimension } from "../Utils/StyleConstants";
 
-class Tile extends Component {
+class Tile extends PureComponent {
   render() {
     const {
       row,

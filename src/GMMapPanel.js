@@ -153,13 +153,7 @@ class GMMapPanel extends Component {
       hydrateMerchants,
       items,
       merchants,
-      musicName,
-      musicVolume,
-      noiseName,
-      noiseVolume,
-      onChangeMusics,
       quests,
-      resetSounds,
       stories,
       storyCharacters,
       textureToApply,
@@ -168,6 +162,7 @@ class GMMapPanel extends Component {
       triggerError,
     } = this.props;
     const { isOnQuest, isOnMap, isOnSpell, hasHydrated } = this.state;
+
     return (
       <div style={styledMiddlePanel}>
         <div style={styledMapSide}>

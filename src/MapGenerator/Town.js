@@ -1,20 +1,26 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ReactTooltip from "react-tooltip";
-import { cursorPointer } from "../Utils/StyleConstants";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
+import { cursorPointer } from '../Utils/StyleConstants';
 
 const styledItem = {
-  display: "inline-block",
+  display: 'inline-block',
   cursor: cursorPointer,
-  width: "100%",
-  height: "100%",
+  width: '100%',
+  height: '100%',
 };
 const styledIcon = {
-  width: "100%",
-  height: "100%",
+  width: '100%',
+  height: '100%',
 };
 
-class Town extends Component {
+class Town extends PureComponent {
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isCurrent && this.props.isCurrent) {
+      nextProps.cancelTownList();
+    }
+  }
+
   render() {
     const { town, showTownList, cancelTownList, isCurrent } = this.props;
     return (
@@ -24,7 +30,7 @@ class Town extends Component {
         data-tip={town.name}
       >
         <img
-          src={"./map/town-size-" + town.size + ".jpg"}
+          src={'./map/town-size-' + town.size + '.jpg'}
           style={styledIcon}
           alt={town.name}
         />
