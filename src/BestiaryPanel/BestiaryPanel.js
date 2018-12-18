@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { heightLeft } from '../Utils/StyleConstants';
+import {
+  heightLeft,
+  widthLeftBestiary,
+  widthListPanelBestiary,
+} from '../Utils/StyleConstants';
 import { sortAlphabetical, sortReversedAlphabetical } from '../Utils/Functions';
 import BestiaryHeader from './BestiaryHeader';
 import BestiaryList from './BestiaryList';
@@ -12,6 +16,9 @@ import BestiaryForm from './BestiaryForm';
 const styledBestiaryPanel = {
   height: heightLeft,
   width: '100%',
+  position: 'relative',
+  backgroundColor: '#34495e',
+  color: 'white',
 };
 
 class BestiaryPanel extends Component {
@@ -234,6 +241,17 @@ class BestiaryPanel extends Component {
 
     return (
       <div style={styledBestiaryPanel}>
+        <img
+          src={'./common/fiche.png'}
+          style={{
+            position: 'absolute',
+            top: 25,
+            left: widthListPanelBestiary,
+            width: `${widthLeftBestiary}px`,
+            height: `${heightLeft - 25}px`,
+          }}
+          alt="Cadre bestiaire"
+        />
         <BestiaryHeader
           selectedOrderByType={selectedOrderByType}
           selectedOrderBy={selectedOrderBy}

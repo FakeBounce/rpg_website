@@ -34,16 +34,16 @@ class BestiaryList extends Component {
     } = this.props;
 
     return (
-      <div style={styledPreview}>
+      <div style={styledPreview} className="scrollbar">
         {filteredBestiary.map((b, i) => {
           if (b.seen || isGameMaster) {
             return (
               <div
                 style={{
-                  height: isGameMaster ? 75 : 50,
+                  height: 50,
                   position: 'relative',
                   cursor: cursorPointer,
-                  borderBottom: isGameMaster ? '1px solid black' : 'none'
+                  borderBottom: isGameMaster ? '1px solid black' : 'none',
                 }}
                 onClick={() => selectBeast(i)}
               >
@@ -53,23 +53,22 @@ class BestiaryList extends Component {
                   alt={b.image}
                 />
                 {b.name}
-                {isGameMaster && `(${b.seen ? 'Seen' : 'Unknown'})`}
-                {
-                  isGameMaster &&
+                {isGameMaster && ` (${b.seen ? 'S' : 'U'})`}
+                {isGameMaster && (
                   <ButtonLarge
                     style={{
                       position: 'absolute',
                       right: 0,
                       bottom: 0,
                       zIndex: 1,
-                      maxWidth: isGameMaster ? 150 :  100,
+                      maxWidth: 50,
                       cursor: cursorPointer,
                     }}
                     onClick={() => toggleSeenBeast(i)}
                   >
-                    Toggle Seen
+                    TS
                   </ButtonLarge>
-                }
+                )}
               </div>
             );
           }

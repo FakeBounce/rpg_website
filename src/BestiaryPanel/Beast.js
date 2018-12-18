@@ -15,24 +15,28 @@ const styledImage = {
 
 const styledContainer = {
   position: 'relative',
-  width: widthLeftBestiary,
+  width: widthLeftBestiary - 140,
   float: 'left',
   display: 'inline-block',
-  padding: 15,
+  padding:"20px 70px",
 };
 const styledText = {
   position: 'relative',
   float: 'left',
-  width: widthTextBestiary - 30,
-  display: 'inline-block',
+  width: widthTextBestiary - 200,
+  display:'inline-block',
+  paddingLeft: 15,
+  paddingRight: 45,
   marginTop: 30,
 };
 const styledParagraph = {
   position: 'relative',
   float: 'left',
-  width: widthTextBestiary - 30,
-  display: 'inline-block',
+  width: widthTextBestiary - 200,
+  display:'inline-block',
   marginTop: 20,
+  paddingLeft: 15,
+  paddingRight: 45,
 };
 const styledTitle = {
   fontSize: 22,

@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { heightLeft, widthLeftBestiary } from '../Utils/StyleConstants';
+import {
+  heightLeft,
+  widthLeft,
+  widthLeftBestiary,
+} from '../Utils/StyleConstants';
 import Beast from './Beast';
 import PNJ from './PNJ';
 
@@ -12,6 +16,7 @@ const styledBeast = {
   overflowY: 'auto',
   display: 'inline-block',
   float: 'left',
+  position: 'relative',
 };
 
 class BestiaryProfile extends Component {

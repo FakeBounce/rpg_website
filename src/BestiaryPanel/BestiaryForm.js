@@ -128,6 +128,8 @@ class BestiaryForm extends Component {
         style={{
           height: heightLeft,
           width: '100%',
+          color: "white",
+          position: "relative"
         }}
       >
         <div style={{ height: 25 }}>New Monster</div>
