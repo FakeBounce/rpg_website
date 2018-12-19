@@ -1,27 +1,27 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
-import { spellModeList, spellTypeList } from "./Utils/Constants";
+import { spellModeList, spellTypeList } from './Utils/Constants';
 
 const styledSpellContainer = {
-  position: "relative",
-  float: "left",
-  display: "inline-block",
-  overflowY: "auto",
+  position: 'relative',
+  float: 'left',
+  display: 'inline-block',
+  overflowY: 'auto',
 };
 
 const noSpell = {
-  name: "No spell",
-  mode: "None",
-  rarity: "0",
-  type: "None",
+  name: 'No spell',
+  mode: 'None',
+  rarity: '0',
+  type: 'None',
 };
 
 class SpellGenerator extends PureComponent {
   state = {
     generatedSpell: null,
-    generatedSpellType: "Feu",
-    generatedSpellMode: "Offensif",
+    generatedSpellType: 'Feu',
+    generatedSpellMode: 'Offensif',
     rollValue: 50,
   };
 
@@ -40,13 +40,13 @@ class SpellGenerator extends PureComponent {
     if (items && items.spells) {
       const filteredSpells = [];
       Object.keys(items.spells).map(key => {
-        if (items.spells[key]["random"] === "TRUE") {
+        if (items.spells[key]['random'] === 'TRUE') {
           filteredSpells.push(items.spells[key]);
         }
         return null;
       });
 
-      if (generatedSpellMode === "Failed") {
+      if (generatedSpellMode === 'Failed') {
         let targetedSpells = [];
 
         //Reducing spell ranges to intensify fail roll, the higher the fail the higher the rarity of the failed spell
@@ -58,7 +58,7 @@ class SpellGenerator extends PureComponent {
         });
         const choosedSpell = parseInt(
           Math.random() * targetedSpells.length,
-          10,
+          10
         );
         if (targetedSpells.length > 0) {
           this.setState(state => ({
@@ -116,24 +116,39 @@ class SpellGenerator extends PureComponent {
             chancesCount += chances[i];
           }
         }
-
         const randomRaritySpell = [];
-        targetedSpells.map(fs => {
-          if (parseInt(fs.rarity, 10) === raritySelected) {
-            randomRaritySpell.push(fs);
+        let tempRarity = raritySelected;
+        while (randomRaritySpell.length === 0 && tempRarity > minimumRange) {
+          targetedSpells.map(fs => {
+            if (parseInt(fs.rarity, 10) === tempRarity) {
+              randomRaritySpell.push(fs);
+            }
+            return null;
+          });
+          tempRarity -= 1;
+        }
+
+        if (randomRaritySpell.length === 0) {
+          let tempRarity = raritySelected;
+          while (randomRaritySpell.length === 0 && tempRarity <= spellRange) {
+            targetedSpells.map(fs => {
+              if (parseInt(fs.rarity, 10) === tempRarity) {
+                randomRaritySpell.push(fs);
+              }
+              return null;
+            });
+            tempRarity += 1;
           }
-          return null;
-        });
+        }
 
-        const choosedSpell = parseInt(
-          Math.random() * randomRaritySpell.length,
-          10,
-        );
-
-        if (targetedSpells.length > 0) {
+        if (randomRaritySpell.length > 0) {
+          const choosedSpell = parseInt(
+            Math.random() * randomRaritySpell.length,
+            10
+          );
           this.setState(state => ({
             ...state,
-            generatedSpell: targetedSpells[choosedSpell],
+            generatedSpell: randomRaritySpell[choosedSpell],
           }));
         } else {
           this.setState(state => ({
@@ -167,7 +182,7 @@ class SpellGenerator extends PureComponent {
         <select
           value={generatedSpellType}
           onChange={e => {
-            this.onChange("generatedSpellType", e.target.value);
+            this.onChange('generatedSpellType', e.target.value);
           }}
         >
           {spellTypeList.map(stl => {
@@ -181,7 +196,7 @@ class SpellGenerator extends PureComponent {
         <select
           value={generatedSpellMode}
           onChange={e => {
-            this.onChange("generatedSpellMode", e.target.value);
+            this.onChange('generatedSpellMode', e.target.value);
           }}
         >
           {spellModeList.map(stl => {
@@ -196,10 +211,10 @@ class SpellGenerator extends PureComponent {
           onClick={this.generateSpell}
           style={{
             background: `url('/common/button2.png') no-repeat`,
-            backgroundSize: "cover",
+            backgroundSize: 'cover',
             height: 25,
-            color: "white",
-            padding: "5px 15px",
+            color: 'white',
+            padding: '5px 15px',
           }}
         >
           Generate spell

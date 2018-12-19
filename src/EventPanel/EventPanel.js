@@ -9,7 +9,7 @@ import { heightLeft } from '../Utils/StyleConstants';
 
 const styledEventContainer = {
   width: '50%',
-  height: `${heightLeft / 2 - 26}px`,
+  height: `${heightLeft / 2}px`,
   position: 'relative',
   float: 'left',
   display: 'inline-block',

@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { towns } from "../Utils/Constants";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { towns } from '../Utils/Constants';
 
 const styledBoxHeader = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-  float: "left",
-  display: "inline-block",
-  position: "relative",
+  width: '100%',
+  height: '20px',
+  marginBottom: '5px',
+  textAlign: 'left',
+  float: 'left',
+  display: 'inline-block',
+  position: 'relative',
 };
 
 class MapEditionTileInfos extends Component {
@@ -28,20 +28,21 @@ class MapEditionTileInfos extends Component {
           <div>
             environment : {currentTile.environment}
             <br />
-            hasFog : {currentTile.hasFog}
+            hasFog : {currentTile.hasFog ? 'True' : 'False'}
             <br />
-            hasTown : {currentTile.hasTown}
+            hasTown : {currentTile.hasTown ? currentTile.hasTown : 'False'}
             <input
               type="number"
               name="townToAssign"
               value={townToAssign}
               onChange={e => onChange(parseInt(e.target.value, 10))}
             />
-            {
-              currentTile.hasTown > -1 && <div>
+            {currentTile.hasTown > -1 && (
+              <div>
                 Town name : {towns[currentTile.hasTown].name}
-                <br /></div>
-            }
+                <br />
+              </div>
+            )}
             <button onClick={() => toggleHasTown}>Validate</button>
             <br />
             isCurrent : {currentTile.isCurrent}

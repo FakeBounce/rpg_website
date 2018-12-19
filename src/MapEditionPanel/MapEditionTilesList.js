@@ -1,26 +1,27 @@
-import React, { Component } from "react";
-import { gridDimension } from "../Utils/StyleConstants";
+import React, { Component } from 'react';
+import { gridDimension } from '../Utils/StyleConstants';
 
-import PropTypes from "prop-types";
-import MapEditionTile from "./MapEditionTile";
+import PropTypes from 'prop-types';
+import MapEditionTile from './MapEditionTile';
 
 const styledMapButtons = {
-  border: "1px solid blue",
-  width: "100%",
+  border: '1px solid blue',
+  width: '100%',
   height: `${gridDimension * 2 + 1}px`,
-  display: "inline-block",
-  float: "left",
+  display: 'inline-block',
+  float: 'left',
+  position: 'relative',
 };
 
 class MapEditionTilesList extends Component {
   loadTexture = gridType => {
-    if (gridType === "Fog") {
+    if (gridType === 'Fog') {
       this.props.doSetState({
         textureToApply: {
           hasFog: true,
         },
       });
-    } else if (gridType === "NoFog") {
+    } else if (gridType === 'NoFog') {
       this.props.doSetState({
         textureToApply: {
           hasFog: false,
@@ -37,10 +38,10 @@ class MapEditionTilesList extends Component {
 
   getGridSelected = grid => {
     const { tilesTypes } = this.props;
-    let bg = "";
+    let bg = '';
 
     if (grid.hasFog) {
-      bg = tilesTypes["Fog"];
+      bg = tilesTypes['Fog'];
     } else {
       Object.keys(tilesTypes).map(key => {
         if (key === grid.environment) {

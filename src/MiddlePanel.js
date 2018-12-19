@@ -85,21 +85,23 @@ class MiddlePanel extends Component {
           towns={towns}
           triggerError={triggerError}
         />
-        <ChatPanel
-          character={character}
-          chatHistory={chatHistory}
-          chatInput={chatInput}
-          currentStory={currentStory}
-          doSetState={doSetState}
-          gameMaster={gameMaster}
-          isGameMaster={isGameMaster}
-          onChange={onChange}
-          pseudo={pseudo}
-          storyCharacters={storyCharacters}
-          triggerError={triggerError}
-          uid={uid}
-          users={users}
-        />
+        {((isGameMaster && isOnPlayerView) || !isGameMaster) && (
+          <ChatPanel
+            character={character}
+            chatHistory={chatHistory}
+            chatInput={chatInput}
+            currentStory={currentStory}
+            doSetState={doSetState}
+            gameMaster={gameMaster}
+            isGameMaster={isGameMaster}
+            onChange={onChange}
+            pseudo={pseudo}
+            storyCharacters={storyCharacters}
+            triggerError={triggerError}
+            uid={uid}
+            users={users}
+          />
+        )}
         {isGameMaster &&
           !isOnPlayerView && (
             <GMMapPanel
@@ -169,16 +171,17 @@ class MiddlePanel extends Component {
             users={users}
           />
         )}
-        {isGameMaster && !isOnPlayerView && (
-          <SoundPanel
-            musicName={musicName}
-            noiseName={noiseName}
-            musicVolume={musicVolume}
-            noiseVolume={noiseVolume}
-            resetSounds={resetSounds}
-            onChangeMusics={onChangeMusics}
-          />
-        )}
+        {isGameMaster &&
+          !isOnPlayerView && (
+            <SoundPanel
+              musicName={musicName}
+              noiseName={noiseName}
+              musicVolume={musicVolume}
+              noiseVolume={noiseVolume}
+              resetSounds={resetSounds}
+              onChangeMusics={onChangeMusics}
+            />
+          )}
       </div>
     );
   }

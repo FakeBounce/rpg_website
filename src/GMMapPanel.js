@@ -31,7 +31,7 @@ const styledMiddlePanel = {
 
 const styledContainer = {
   width: `${widthLeft / 2}px`,
-  height: `${heightLeft / 2 - 20}px`,
+  height: `${heightLeft / 2}px`,
   overflow: 'auto',
   display: 'inline-block',
   float: 'left',
@@ -150,29 +150,21 @@ class GMMapPanel extends Component {
 
     return (
       <div style={styledMiddlePanel}>
+        <MapEditionPanel
+          changeCurrentScale={changeCurrentScale}
+          currentScale={currentScale}
+          currentTile={currentTile}
+          doSetState={doSetState}
+          tilesTypes={tilesTypes}
+          textureToApply={textureToApply}
+          currentStory={currentStory}
+          stories={stories}
+        />
         <div style={styledMapSide}>
-          <PanelToggle
-            toggleIsOnMap={this.toggleIsOnMap}
-            toggleIsOnSpell={this.toggleIsOnSpell}
-          />
-          {isOnSpell ? (
-            <div style={styledContainer}>
-              <SpellGenerator items={items} />
-            </div>
-          ) : (
-            isOnMap && (
-              <MapEditionPanel
-                changeCurrentScale={changeCurrentScale}
-                currentScale={currentScale}
-                currentTile={currentTile}
-                doSetState={doSetState}
-                tilesTypes={tilesTypes}
-                textureToApply={textureToApply}
-                currentStory={currentStory}
-                stories={stories}
-              />
-            )
-          )}
+          <div style={styledContainer}>
+            Générateur de sorts : <br />
+            <SpellGenerator items={items} />
+          </div>
         </div>
         <EventPanel
           items={items}

@@ -5,7 +5,12 @@ import firebase from 'firebase';
 import MapEditionTileInfos from './MapEditionTileInfos';
 import MapEditionTilesList from './MapEditionTilesList';
 import MapEditionScale from './MapEditionScale';
-import { gridLength } from '../Utils/StyleConstants';
+import {
+  gridLength,
+  heightHeader,
+  heightLeft,
+  widthLeft,
+} from '../Utils/StyleConstants';
 
 class MapEditionPanel extends Component {
   state = {
@@ -103,7 +108,16 @@ class MapEditionPanel extends Component {
     } = this.props;
     const { townToAssign } = this.state;
     return (
-      <div>
+      <div
+        style={{
+          width: widthLeft / 2,
+          position: 'absolute',
+          height: heightLeft / 2,
+          top: heightLeft / 2,
+          left: -widthLeft/2,
+          textAlign:'left',
+        }}
+      >
         <MapEditionTilesList
           tilesTypes={tilesTypes}
           doSetState={doSetState}
