@@ -1,26 +1,28 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import EventViewers from "./EventViewers";
-import EventItemForm from "./EventItemForm";
-import EventGoldForm from "./EventGoldForm";
-import EventTypeSelector from "./EventTypeSelector";
-import { heightLeft } from "../Utils/StyleConstants";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import EventViewers from './EventViewers';
+import EventItemForm from './EventItemForm';
+import EventGoldForm from './EventGoldForm';
+import EventTypeSelector from './EventTypeSelector';
+import { heightLeft } from '../Utils/StyleConstants';
 
 const styledEventContainer = {
+  width: '50%',
   height: `${heightLeft / 2 - 26}px`,
-  position: "relative",
-  float: "left",
-  display: "inline-block",
-  overflowY: "auto",
+  position: 'relative',
+  float: 'left',
+  display: 'inline-block',
+  overflowY: 'auto',
+  alignItems: 'center',
 };
 
 class EventPanel extends Component {
   state = {
-    eventType: "",
+    eventType: '',
     goldEvent: 0,
     quantityEvent: 0,
-    descriptionEvent: "",
+    descriptionEvent: '',
     itemEvent: {},
     viewers: [],
   };
@@ -54,7 +56,7 @@ class EventPanel extends Component {
     const obj = {};
     obj[name] = value;
 
-    if (name === "eventType") {
+    if (name === 'eventType') {
       this.setState(state => ({
         ...state,
         ...obj,
@@ -81,17 +83,17 @@ class EventPanel extends Component {
       viewers,
     } = this.state;
     const newEventHistory = [...eventHistory];
-    if (eventType === "gold" || eventType === "debt") {
+    if (eventType === 'gold' || eventType === 'debt') {
       newEventHistory.push({
         type: eventType,
         gold: parseInt(goldEvent, 10),
-        goldLeft: eventType === "gold" ? parseInt(goldEvent, 10) : 0,
+        goldLeft: eventType === 'gold' ? parseInt(goldEvent, 10) : 0,
         description: descriptionEvent,
         isActive: true,
         hasViewed: [gameMaster],
         viewers: viewers.length === 0 ? null : viewers,
       });
-    } else if (eventType === "item") {
+    } else if (eventType === 'item') {
       newEventHistory.push({
         type: eventType,
         item: itemEvent,
@@ -102,7 +104,7 @@ class EventPanel extends Component {
         hasViewed: [gameMaster],
         viewers: viewers.length === 0 ? null : viewers,
       });
-    } else if (eventType === "draw") {
+    } else if (eventType === 'draw') {
       newEventHistory.push({
         type: eventType,
         isActive: true,
@@ -113,7 +115,7 @@ class EventPanel extends Component {
 
     firebase
       .database()
-      .ref("stories/" + currentStory + "/events")
+      .ref('stories/' + currentStory + '/events')
       .set(newEventHistory)
       .catch(error => {
         // Handle Errors here.
@@ -121,7 +123,7 @@ class EventPanel extends Component {
       });
     firebase
       .database()
-      .ref("stories/" + currentStory + "/currentEvent")
+      .ref('stories/' + currentStory + '/currentEvent')
       .set(newEventHistory.length - 1)
       .catch(error => {
         // Handle Errors here.
@@ -142,7 +144,7 @@ class EventPanel extends Component {
     return (
       <div style={styledEventContainer}>
         <EventTypeSelector eventType={eventType} onChange={this.onChange} />
-        {(eventType === "gold" || eventType === "debt") && (
+        {(eventType === 'gold' || eventType === 'debt') && (
           <EventGoldForm
             goldEvent={goldEvent}
             descriptionEvent={descriptionEvent}
@@ -150,7 +152,7 @@ class EventPanel extends Component {
             eventType={eventType}
           />
         )}
-        {eventType === "item" && (
+        {eventType === 'item' && (
           <EventItemForm
             items={items}
             descriptionEvent={descriptionEvent}
@@ -159,10 +161,7 @@ class EventPanel extends Component {
             onChange={this.onChange}
           />
         )}
-        {eventType === "draw" && (
-          <Fragment>
-          </Fragment>
-        )}
+        {eventType === 'draw' && <Fragment />}
         <EventViewers
           storyCharacters={storyCharacters}
           gameMaster={gameMaster}

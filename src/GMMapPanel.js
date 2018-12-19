@@ -159,38 +159,28 @@ class GMMapPanel extends Component {
             <div style={styledContainer}>
               <SpellGenerator items={items} />
             </div>
-          ) : isOnMap ? (
-            <MapEditionPanel
-              changeCurrentScale={changeCurrentScale}
-              currentScale={currentScale}
-              currentTile={currentTile}
-              doSetState={doSetState}
-              tilesTypes={tilesTypes}
-              textureToApply={textureToApply}
-              currentStory={currentStory}
-              stories={stories}
-            />
           ) : (
-            <EventPanel
-              items={items}
-              currentStory={currentStory}
-              eventHistory={eventHistory}
-              storyCharacters={storyCharacters}
-              gameMaster={gameMaster}
-            />
+            isOnMap && (
+              <MapEditionPanel
+                changeCurrentScale={changeCurrentScale}
+                currentScale={currentScale}
+                currentTile={currentTile}
+                doSetState={doSetState}
+                tilesTypes={tilesTypes}
+                textureToApply={textureToApply}
+                currentStory={currentStory}
+                stories={stories}
+              />
+            )
           )}
         </div>
-        <div style={styledMapSide}>
-          <TeamPanel
-            storyCharacters={storyCharacters}
-            exchangeWithTeamMember={() => {}}
-            chatWithTeamMember={this.chatWithTeamMember}
-            goldWithTeamMember={this.goldWithTeamMember}
-            modifyCurrentCharacter={this.modifyCurrentCharacter}
-            isGameMaster={true}
-            gameMaster={gameMaster}
-          />
-        </div>
+        <EventPanel
+          items={items}
+          currentStory={currentStory}
+          eventHistory={eventHistory}
+          storyCharacters={storyCharacters}
+          gameMaster={gameMaster}
+        />
         {currentTown > -1 && (
           <TownPanel
             currentTown={currentTown}

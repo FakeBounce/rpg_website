@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 const styledSemiBoxHeader = {
-  width: "33%",
+  width: "50%",
   height: "20px",
   marginBottom: "5px",
   textAlign: "center",
@@ -23,15 +23,6 @@ class PanelToggle extends Component {
           }}
         >
           Modifier la carte
-        </div>
-        <div
-          style={styledSemiBoxHeader}
-          onClick={() => {
-            toggleIsOnMap(false);
-            toggleIsOnSpell(false);
-          }}
-        >
-          Ajouter un event
         </div>
         <div style={styledSemiBoxHeader} onClick={() => toggleIsOnSpell(true)}>
           Générateur de sorts

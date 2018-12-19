@@ -38,6 +38,7 @@ class MapGenerator extends PureComponent {
       path = key;
       return null;
     });
+    console.log('set texture', path, textureToApply);
     updates['/' + parseInt(x, 10) + '/' + parseInt(y, 10) + '/' + path] =
       textureToApply[path];
     for (let i = 0; i <= currentScale - 1; i++) {
@@ -101,6 +102,7 @@ class MapGenerator extends PureComponent {
       loadCurrentPosition,
       isGameMaster,
       isOnPlayerView,
+      textureToApply,
       tilesTypes,
     } = this.props;
 
@@ -131,6 +133,7 @@ class MapGenerator extends PureComponent {
                 isOnPlayerView={isOnPlayerView}
                 map={map}
                 setTexture={this.setTexture}
+                textureToApply={textureToApply}
                 tilesTypes={tilesTypes}
                 towns={towns}
               />
