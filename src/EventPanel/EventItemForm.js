@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import EventItem from './EventItem';
 import { sortAlphabetical } from '../Utils/Functions';
+import SelectMapper from '../Utils/SelectMapper';
+import { bonusList, itemEventTypes } from '../Utils/Constants';
 
 const styledItemList = {
   width: '100%',
@@ -14,7 +16,10 @@ const styledItemList = {
 
 class EventItemForm extends PureComponent {
   state = {
+    orderedItems: [],
     filteredItems: [],
+    filterText: '',
+    filterType: '',
   };
 
   componentDidMount() {
@@ -33,15 +38,74 @@ class EventItemForm extends PureComponent {
     this.setState(state => ({
       ...state,
       filteredItems,
+      orderedItems: [...filteredItems],
     }));
   }
 
+  onChangeFilter = (name, value) => {
+    this.setState(
+      state => ({
+        ...state,
+        [name]: value,
+      }),
+      () => {
+        this.filterItems();
+      }
+    );
+  };
+
+  onChangeSelect = value => {
+    this.setState(
+      state => ({
+        ...state,
+        filterType: value,
+      }),
+      () => {
+        this.filterItems();
+      }
+    );
+  };
+
+  filterItems = () => {
+    const { filterText, filterType, orderedItems } = this.state;
+    const tempFilter = [];
+    orderedItems.map(item => {
+      if (
+        item.name.indexOf(filterText) !== -1 &&
+        (filterType !== '' && item.itemType === filterType)
+      ) {
+        tempFilter.push(item);
+      }
+    });
+    this.setState(state => ({
+      ...state,
+      filteredItems: [...tempFilter],
+    }));
+  };
+
   render() {
     const { descriptionEvent, quantityEvent, itemEvent, onChange } = this.props;
-    const { filteredItems } = this.state;
+    const { filteredItems, filterText, filterType } = this.state;
 
+    console.log('filteredItems', filteredItems);
     return (
       <div>
+        <div>
+          Filter :
+          <input
+            type="text"
+            value={filterText}
+            name="filterText"
+            onChange={e => {
+              this.onChangeFilter(e.target.name, e.target.value);
+            }}
+          />
+          <SelectMapper
+            mapArray={itemEventTypes}
+            value={filterType}
+            onChange={this.onChangeSelect}
+          />
+        </div>
         <div style={styledItemList}>
           {filteredItems.map(i => {
             return (

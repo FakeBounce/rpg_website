@@ -41,6 +41,15 @@ export const priceRanges = {
   },
 };
 
+export const itemEventTypes = [
+  '',
+  'consumables',
+  'weapons',
+  'artefacts',
+  'spells',
+  'stones',
+];
+
 export const itemQuantities = {
   consumables: 3,
   weapons: 3,
