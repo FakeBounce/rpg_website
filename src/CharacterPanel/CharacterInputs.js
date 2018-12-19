@@ -50,6 +50,7 @@ const statusList = [
   "Burned",
   "Sleepy",
   "Under control",
+  "Unconscious",
   "Dead",
 ];
 
