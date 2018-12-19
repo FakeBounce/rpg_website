@@ -44,7 +44,6 @@ class GMMapPanel extends Component {
     isOnMap: true,
     isOnSpell: false,
     townToAssign: -1,
-    hasHydrated: false,
   };
 
   toggleRightPanel = bool => {
@@ -75,19 +74,6 @@ class GMMapPanel extends Component {
       ...state,
       ...obj,
     }));
-  };
-
-  hasHydrated = () => {
-    this.setState(state => ({
-      ...state,
-      hasHydrated: true,
-    }));
-    setTimeout(() => {
-      this.setState(state => ({
-        ...state,
-        hasHydrated: false,
-      }));
-    }, 3000);
   };
 
   chatWithTeamMember = pseudo => {
@@ -150,7 +136,6 @@ class GMMapPanel extends Component {
       doSetState,
       eventHistory,
       gameMaster,
-      hydrateMerchants,
       items,
       merchants,
       quests,
@@ -173,16 +158,6 @@ class GMMapPanel extends Component {
           {isOnSpell ? (
             <div style={styledContainer}>
               <SpellGenerator items={items} />
-              <ButtonLarge
-                style={{ marginTop: 30 }}
-                onClick={() => {
-                  hydrateMerchants();
-                  this.hasHydrated();
-                }}
-              >
-                Hydrate merchants
-              </ButtonLarge>
-              {hasHydrated ? 'OK' : ''}
             </div>
           ) : isOnMap ? (
             <MapEditionPanel
@@ -255,7 +230,6 @@ GMMapPanel.propTypes = {
   doSetState: PropTypes.func.isRequired,
   eventHistory: PropTypes.array.isRequired,
   gameMaster: PropTypes.string.isRequired,
-  hydrateMerchants: PropTypes.string.isRequired,
   items: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   musicName: PropTypes.string.isRequired,

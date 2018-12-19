@@ -56,6 +56,7 @@ class GameScreen extends Component {
       doSetState,
       eventHistory,
       gameMaster,
+      hydrateMerchants,
       isGameMaster,
       isOnBestiary,
       musicMute,
@@ -85,6 +86,7 @@ class GameScreen extends Component {
           eventTitle={
             isEventHidden ? 'Toggle event (Is hidden)' : 'Toggle event'
           }
+          hydrateMerchants={hydrateMerchants}
           isGameMaster={isGameMaster}
           musicMute={musicMute}
           selectAnotherCharacter={selectAnotherCharacter}
@@ -145,12 +147,14 @@ class GameScreen extends Component {
 
 GameScreen.propTypes = {
   accessChatHelp: PropTypes.func.isRequired,
+  bestiary: PropTypes.array.isRequired,
   character: PropTypes.object.isRequired,
   currentEvent: PropTypes.number.isRequired,
   currentStory: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
   eventHistory: PropTypes.array.isRequired,
   gameMaster: PropTypes.string.isRequired,
+  hydrateMerchants: PropTypes.func.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
   isOnBestiary: PropTypes.bool.isRequired,
   musicMute: PropTypes.bool.isRequired,
@@ -160,12 +164,11 @@ GameScreen.propTypes = {
   signOut: PropTypes.func.isRequired,
   stories: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
-  toggleMusic: PropTypes.func.isRequired,
   toggleBestiary: PropTypes.func.isRequired,
+  toggleMusic: PropTypes.func.isRequired,
   togglePlayerView: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
-  bestiary: PropTypes.array.isRequired,
 };
 
 export default GameScreen;

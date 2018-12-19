@@ -21,6 +21,12 @@ const styledToggleEvent = {
   right: 167,
 };
 
+const styledHydrateEvent = {
+  position: 'absolute',
+  top: 100,
+  right: 167,
+};
+
 const styledTogglingAbsolute = {
   position: 'absolute',
   top: 100,
@@ -66,12 +72,30 @@ const styledSound = {
 };
 
 class Header extends Component {
+  state = {
+    hasHydrated: false,
+  };
+
+  hasHydrated = () => {
+    this.setState(state => ({
+      ...state,
+      hasHydrated: true,
+    }));
+    setTimeout(() => {
+      this.setState(state => ({
+        ...state,
+        hasHydrated: false,
+      }));
+    }, 3000);
+  };
+
   render() {
     const {
       accessChatHelp,
       bestiaryTitle,
       chatHelpTitle,
       eventTitle,
+      hydrateMerchants,
       isGameMaster,
       musicMute,
       selectAnotherCharacter,
@@ -83,6 +107,7 @@ class Header extends Component {
       togglePlayerView,
       uid,
     } = this.props;
+    const { hasHydrated } = this.state;
 
     return (
       <div style={styledHeader}>
@@ -132,6 +157,18 @@ class Header extends Component {
             {eventTitle}
           </ButtonLarge>
         )}
+        {isGameMaster && (
+          <ButtonLarge
+            onClick={() => {
+              this.hasHydrated();
+              hydrateMerchants();
+            }}
+            style={styledHydrateEvent}
+          >
+            Hydrate merchants
+            {hasHydrated ? ' OK' : ''}
+          </ButtonLarge>
+        )}
       </div>
     );
   }
@@ -142,6 +179,7 @@ Header.propTypes = {
   bestiaryTitle: PropTypes.string.isRequired,
   chatHelpTitle: PropTypes.string.isRequired,
   eventTitle: PropTypes.string.isRequired,
+  hydrateMerchants: PropTypes.func.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
   musicMute: PropTypes.bool.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,

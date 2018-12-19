@@ -49,10 +49,10 @@ V2.9.2
 5)  Mettre un système d'échange entre joueurs - OK
 6)  Ajouter un onglet "Forger" ou "Enchanter" pour les marchands - OK
 7)  Mieux gérer les panneaux du GM
-8)  Mettre du style sur le bestiaire
+8)  Mettre du style sur le bestiaire - OK
 9)  Voir si on peut gérer le son vocal/musique
 10) Faire de l'édition de bestiaire
-11) Ajouter djimenir en ville
+11) Ajouter djimenir en tant que ville
 
 v2.10.0
 12) Mettre context
