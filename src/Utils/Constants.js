@@ -503,6 +503,7 @@ export const defaultState = {
   isMusicFirst: false,
   isMusicTransition: false,
   isOnBestiary: false,
+  isOnMerchantList: false,
   isOnPlayerView: false,
   isQuestShowed: false,
   isTownShowed: false,

@@ -100,6 +100,16 @@ class App extends Component {
       ...state,
       isOnBestiary: !state.isOnBestiary,
       onChatHelp: false,
+      isOnMerchantList: false,
+    }));
+  };
+
+  toggleMerchantList = () => {
+    this.setState(state => ({
+      ...state,
+      isOnMerchantList: !state.isOnMerchantList,
+      onChatHelp: false,
+      isOnBestiary: false,
     }));
   };
 
@@ -662,67 +672,32 @@ class App extends Component {
 
   render() {
     const {
-      bestiary,
-      character,
       characterCreation,
-      characterId,
       characters,
-      chatHistory,
-      chatInput,
-      currentEvent,
-      currentMerchant,
-      currentQuest,
-      currentScale,
+      characterId,
       currentStory,
-      currentTile,
-      currentTown,
-      currentX,
-      currentY,
-      currentZoom,
       email,
       error,
-      eventHistory,
-      gameMaster,
       isAuth,
       isGameMaster,
-      isItemDescriptionShowed,
-      isItemShowed,
       isMusicFirst,
-      isOnPlayerView,
-      isQuestShowed,
-      isOnBestiary,
-      isTownShowed,
-      items,
-      itemsList,
-      itemToDescribe,
-      map,
-      merchants,
-      merchantsList,
       musicMute,
       musicNameFirst,
       musicNameSecond,
       musicStatusFirst,
       musicStatusSecond,
-      musicVolume,
       musicVolumeFirst,
       musicVolumeSecond,
       noiseMute,
       noiseName,
       noiseStatus,
       noiseVolume,
-      onChatHelp,
       password,
       pseudo,
       pseudoInput,
-      quests,
-      questsList,
       stories,
-      storyCharacters,
-      textureToApply,
-      tilesTypes,
-      towns,
       uid,
-      users,
+      ...rest
     } = this.state;
 
     return (
@@ -786,63 +761,32 @@ class App extends Component {
               accessChatHelp={this.accessChatHelp}
               bestiary={bestiary}
               buyItem={this.buyItem}
-              character={character}
-              chatHistory={chatHistory}
-              chatInput={chatInput}
-              currentEvent={currentEvent}
-              currentMerchant={currentMerchant}
-              currentQuest={currentQuest}
-              currentScale={currentScale}
+              characters={characters}
               currentStory={currentStory}
-              currentTile={currentTile}
-              currentTown={currentTown}
-              currentX={currentX}
-              currentY={currentY}
-              currentZoom={currentZoom}
               doSetState={this.doSetState}
-              eventHistory={eventHistory}
-              gameMaster={gameMaster}
               generateTable={this.generateTable}
               hydrateMerchants={this.hydrateMerchants}
               isGameMaster={isGameMaster}
-              isItemDescriptionShowed={isItemDescriptionShowed}
-              isItemShowed={isItemShowed}
-              isOnBestiary={isOnBestiary}
-              isOnPlayerView={isOnPlayerView}
-              isQuestShowed={isQuestShowed}
-              isTownShowed={isTownShowed}
-              items={items}
-              itemsList={itemsList}
-              itemToDescribe={itemToDescribe}
               loadCurrentPosition={this.loadCurrentPosition}
-              map={map}
-              merchants={merchants}
-              merchantsList={merchantsList}
               musicMute={musicMute}
               musicName={isMusicFirst ? musicNameFirst : musicNameSecond}
-              musicVolume={musicVolume}
               noiseName={noiseName}
               noiseVolume={noiseVolume}
               onChange={this.onChange}
               onChangeMusics={this.onChangeMusics}
-              onChatHelp={onChatHelp}
               pseudo={pseudo}
               quests={quests}
-              questsList={questsList}
               resetSounds={this.resetSounds}
               selectAnotherCharacter={this.selectAnotherCharacter}
               signOut={this.signOut}
               stories={stories}
-              storyCharacters={storyCharacters}
-              textureToApply={textureToApply}
-              tilesTypes={tilesTypes}
-              toggleMusic={this.toggleMusic}
               toggleBestiary={this.toggleBestiary}
+              toggleMerchantList={this.toggleMerchantList}
+              toggleMusic={this.toggleMusic}
               togglePlayerView={this.togglePlayerView}
-              towns={towns}
               triggerError={this.triggerError}
               uid={uid}
-              users={users}
+              {...rest}
             />
           )}
         <SoundPlayer

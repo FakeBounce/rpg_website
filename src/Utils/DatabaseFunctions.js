@@ -278,6 +278,7 @@ export const listenTowns = (currentStory, doSetState) => {
     .database()
     .ref("/stories/" + currentStory + "/towns")
     .on("value", snapshot => {
+      console.log("towns",snapshot.val());
       doSetState({
         towns: snapshot.val(),
       });

@@ -7,6 +7,7 @@ import Header from './Utils/Header';
 import MiddlePanel from './MiddlePanel';
 import EventModal from './EventModal/EventModal';
 import BestiaryPanel from './BestiaryPanel/BestiaryPanel';
+import TownsHistoryPanel from './TownsHistoryPanel/TownsHistoryPanel';
 
 class GameScreen extends Component {
   state = {
@@ -59,7 +60,9 @@ class GameScreen extends Component {
       hydrateMerchants,
       isGameMaster,
       isOnBestiary,
+      isOnMerchantList,
       musicMute,
+      merchants,
       onChatHelp,
       pseudo,
       selectAnotherCharacter,
@@ -68,10 +71,12 @@ class GameScreen extends Component {
       storyCharacters,
       toggleMusic,
       toggleBestiary,
+      toggleMerchantList,
       togglePlayerView,
       triggerError,
       uid,
       bestiary,
+      towns,
       ...rest
     } = this.props;
 
@@ -93,6 +98,7 @@ class GameScreen extends Component {
           signOut={signOut}
           title={stories[currentStory].name}
           toggleBestiary={toggleBestiary}
+          toggleMerchantList={toggleMerchantList}
           toggleMusic={toggleMusic}
           togglePlayerView={togglePlayerView}
           toggleEvent={this.toggleEvent}
@@ -121,6 +127,8 @@ class GameScreen extends Component {
             doSetState={doSetState}
             currentStory={currentStory}
           />
+        ) : isOnMerchantList && towns.length > 0 && merchants.length > 0 ? (
+          <TownsHistoryPanel merchants={merchants} towns={towns} />
         ) : onChatHelp ? (
           <ChatCommandsPanel />
         ) : (
@@ -131,9 +139,11 @@ class GameScreen extends Component {
             eventHistory={eventHistory}
             gameMaster={gameMaster}
             isGameMaster={isGameMaster}
+            merchants={merchants}
             pseudo={pseudo}
             stories={stories}
             storyCharacters={storyCharacters}
+            towns={towns}
             triggerError={triggerError}
             uid={uid}
             {...rest}
@@ -157,6 +167,8 @@ GameScreen.propTypes = {
   hydrateMerchants: PropTypes.func.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
   isOnBestiary: PropTypes.bool.isRequired,
+  isOnMerchantList: PropTypes.bool.isRequired,
+  merchants: PropTypes.array.isRequired,
   musicMute: PropTypes.bool.isRequired,
   onChatHelp: PropTypes.bool.isRequired,
   pseudo: PropTypes.string.isRequired,
@@ -165,8 +177,10 @@ GameScreen.propTypes = {
   stories: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   toggleBestiary: PropTypes.func.isRequired,
+  toggleMerchantList: PropTypes.func.isRequired,
   toggleMusic: PropTypes.func.isRequired,
   togglePlayerView: PropTypes.func.isRequired,
+  towns: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
 };

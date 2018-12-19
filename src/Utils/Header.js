@@ -27,6 +27,12 @@ const styledHydrateEvent = {
   right: 167,
 };
 
+const styledMerchantsAbsolute = {
+  position: 'absolute',
+  top: 0,
+  right: 167,
+};
+
 const styledTogglingAbsolute = {
   position: 'absolute',
   top: 100,
@@ -102,6 +108,7 @@ class Header extends Component {
       signOut,
       title,
       toggleBestiary,
+      toggleMerchantList,
       toggleEvent,
       toggleMusic,
       togglePlayerView,
@@ -146,6 +153,9 @@ class Header extends Component {
           <ButtonLarge style={styledTogglingAbsolute} onClick={toggleBestiary}>
             {bestiaryTitle}
           </ButtonLarge>
+          <ButtonLarge style={styledMerchantsAbsolute} onClick={toggleMerchantList}>
+            Merchants
+          </ButtonLarge>
         </div>
         {isGameMaster && (
           <ButtonLarge style={styledToggling} onClick={togglePlayerView}>
@@ -187,6 +197,7 @@ Header.propTypes = {
   title: PropTypes.string.isRequired,
   toggleBestiary: PropTypes.func.isRequired,
   toggleEvent: PropTypes.func.isRequired,
+  toggleMerchantList: PropTypes.func.isRequired,
   toggleMusic: PropTypes.func.isRequired,
   togglePlayerView: PropTypes.func.isRequired,
   uid: PropTypes.bool.isRequired,
