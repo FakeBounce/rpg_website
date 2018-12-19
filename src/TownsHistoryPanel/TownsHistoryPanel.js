@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Item from '../ItemPanel/Item';
 
 class TownsHistoryPanel extends Component {
   state = {
@@ -34,6 +35,7 @@ class TownsHistoryPanel extends Component {
   };
 
   render() {
+    const { character } = this.props;
     const { merchantsOrdered, showedMerchant } = this.state;
     return (
       <div>
@@ -49,7 +51,17 @@ class TownsHistoryPanel extends Component {
         })}
         {showedMerchant.items &&
           Object.keys(showedMerchant.items).map(iKey => {
-            return <div>{showedMerchant.items[iKey].name}</div>;
+            return (
+              <Item
+                index={iKey}
+                showItemDescription={() => {}}
+                isHidden={
+                  character.education <
+                  parseInt(showedMerchant.items[iKey].rarity, 10) * 9
+                }
+                {...showedMerchant.items[iKey]}
+              />
+            );
           })}
       </div>
     );
@@ -57,6 +69,7 @@ class TownsHistoryPanel extends Component {
 }
 
 TownsHistoryPanel.propTypes = {
+  character: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   towns: PropTypes.array.isRequired,
 };

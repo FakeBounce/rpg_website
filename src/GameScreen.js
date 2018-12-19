@@ -128,7 +128,7 @@ class GameScreen extends Component {
             currentStory={currentStory}
           />
         ) : isOnMerchantList && towns.length > 0 && merchants.length > 0 ? (
-          <TownsHistoryPanel merchants={merchants} towns={towns} />
+          <TownsHistoryPanel merchants={merchants} towns={towns}  character={character}/>
         ) : onChatHelp ? (
           <ChatCommandsPanel />
         ) : (
