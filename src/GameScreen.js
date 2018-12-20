@@ -12,6 +12,9 @@ import TownsHistoryPanel from './TownsHistoryPanel/TownsHistoryPanel';
 class GameScreen extends Component {
   state = {
     isEventHidden: false,
+    isOnBestiary: false,
+    onChatHelp: false,
+    isOnMerchantList: false,
   };
 
   canReadEvent = () => {
@@ -48,9 +51,35 @@ class GameScreen extends Component {
     }));
   };
 
+  toggleBestiary = () => {
+    this.setState(state => ({
+      ...state,
+      isOnBestiary: !state.isOnBestiary,
+      onChatHelp: false,
+      isOnMerchantList: false,
+    }));
+  };
+
+  toggleMerchantList = () => {
+    this.setState(state => ({
+      ...state,
+      isOnMerchantList: !state.isOnMerchantList,
+      onChatHelp: false,
+      isOnBestiary: false,
+    }));
+  };
+
+  accessChatHelp = () => {
+    this.setState(state => ({
+      ...state,
+      onChatHelp: !state.onChatHelp,
+      isOnBestiary: false,
+      isOnMerchantList: false,
+    }));
+  };
+
   render() {
     const {
-      accessChatHelp,
       character,
       currentEvent,
       currentStory,
@@ -59,19 +88,14 @@ class GameScreen extends Component {
       gameMaster,
       hydrateMerchants,
       isGameMaster,
-      isOnBestiary,
-      isOnMerchantList,
       musicMute,
       merchants,
-      onChatHelp,
       pseudo,
       selectAnotherCharacter,
       signOut,
       stories,
       storyCharacters,
       toggleMusic,
-      toggleBestiary,
-      toggleMerchantList,
       togglePlayerView,
       triggerError,
       uid,
@@ -80,28 +104,31 @@ class GameScreen extends Component {
       ...rest
     } = this.props;
 
-    const { isEventHidden } = this.state;
+    const {
+      isEventHidden,
+      isOnBestiary,
+      isOnMerchantList,
+      onChatHelp,
+    } = this.state;
 
     return (
       <div>
         <Header
-          accessChatHelp={accessChatHelp}
+          accessChatHelp={this.accessChatHelp}
           chatHelpTitle={onChatHelp ? 'Return to map' : 'Access chat help'}
           bestiaryTitle={isOnBestiary ? 'Return to map' : 'Bestiary'}
           eventTitle={
             isEventHidden ? 'Toggle event (Is hidden)' : 'Toggle event'
           }
-          merchantTitle={
-            isOnMerchantList ? 'Return to map' : 'Merchants list'
-          }
+          merchantTitle={isOnMerchantList ? 'Return to map' : 'Merchants list'}
           hydrateMerchants={hydrateMerchants}
           isGameMaster={isGameMaster}
           musicMute={musicMute}
           selectAnotherCharacter={selectAnotherCharacter}
           signOut={signOut}
           title={stories[currentStory].name}
-          toggleBestiary={toggleBestiary}
-          toggleMerchantList={toggleMerchantList}
+          toggleBestiary={this.toggleBestiary}
+          toggleMerchantList={this.toggleMerchantList}
           toggleMusic={toggleMusic}
           togglePlayerView={togglePlayerView}
           toggleEvent={this.toggleEvent}
@@ -131,7 +158,11 @@ class GameScreen extends Component {
             currentStory={currentStory}
           />
         ) : isOnMerchantList && towns.length > 0 && merchants.length > 0 ? (
-          <TownsHistoryPanel merchants={merchants} towns={towns}  character={character}/>
+          <TownsHistoryPanel
+            merchants={merchants}
+            towns={towns}
+            character={character}
+          />
         ) : onChatHelp ? (
           <ChatCommandsPanel />
         ) : (
@@ -159,7 +190,6 @@ class GameScreen extends Component {
 }
 
 GameScreen.propTypes = {
-  accessChatHelp: PropTypes.func.isRequired,
   bestiary: PropTypes.array.isRequired,
   character: PropTypes.object.isRequired,
   currentEvent: PropTypes.number.isRequired,
@@ -169,18 +199,13 @@ GameScreen.propTypes = {
   gameMaster: PropTypes.string.isRequired,
   hydrateMerchants: PropTypes.func.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
-  isOnBestiary: PropTypes.bool.isRequired,
-  isOnMerchantList: PropTypes.bool.isRequired,
   merchants: PropTypes.array.isRequired,
   musicMute: PropTypes.bool.isRequired,
-  onChatHelp: PropTypes.bool.isRequired,
   pseudo: PropTypes.string.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
   stories: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
-  toggleBestiary: PropTypes.func.isRequired,
-  toggleMerchantList: PropTypes.func.isRequired,
   toggleMusic: PropTypes.func.isRequired,
   togglePlayerView: PropTypes.func.isRequired,
   towns: PropTypes.array.isRequired,

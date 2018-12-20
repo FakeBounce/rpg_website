@@ -21,11 +21,9 @@ import {
   listenNoise,
   listenQuests,
   listenTowns,
-  listenUsers,
   loadAllItems,
   loadCurrentPosition,
   // loadMerchantsOnce,
-  loadStories,
   loadTilesTypes,
   // populateTilesTypes,
   // resetEvents,
@@ -93,24 +91,6 @@ class App extends Component {
       this.doSetState,
       false
     );
-  };
-
-  toggleBestiary = () => {
-    this.setState(state => ({
-      ...state,
-      isOnBestiary: !state.isOnBestiary,
-      onChatHelp: false,
-      isOnMerchantList: false,
-    }));
-  };
-
-  toggleMerchantList = () => {
-    this.setState(state => ({
-      ...state,
-      isOnMerchantList: !state.isOnMerchantList,
-      onChatHelp: false,
-      isOnBestiary: false,
-    }));
   };
 
   toggleMusic = () => {
@@ -304,14 +284,6 @@ class App extends Component {
     const { currentStory } = this.state;
     listenEvents(currentStory, this.doSetState);
     listenCurrentEvent(currentStory, this.doSetState);
-  };
-
-  loadUsers = () => {
-    listenUsers(this.doSetState);
-  };
-
-  loadStories = () => {
-    loadStories(this.doSetState);
   };
 
   loadMusic = () => {
@@ -633,14 +605,6 @@ class App extends Component {
       });
   };
 
-  accessChatHelp = () => {
-    this.setState(state => ({
-      ...state,
-      onChatHelp: !state.onChatHelp,
-      isOnBestiary: false,
-    }));
-  };
-
   doSetState = (obj, cb = null) => {
     this.setState(
       state => ({
@@ -711,8 +675,6 @@ class App extends Component {
           <IsNotAuth
             doSetState={this.doSetState}
             email={email}
-            loadStories={this.loadStories}
-            loadUsers={this.loadUsers}
             onChange={this.onChange}
             password={password}
             triggerError={this.triggerError}

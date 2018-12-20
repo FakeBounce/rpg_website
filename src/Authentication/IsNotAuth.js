@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import ButtonLarge from '../Utils/ButtonLarge';
 import Logs from './Logs';
+import { listenUsers, loadStories } from '../Utils/DatabaseFunctions';
 
 class IsNotAuth extends Component {
   handleKeyPress = event => {
@@ -12,14 +13,7 @@ class IsNotAuth extends Component {
   };
 
   signIn = () => {
-    const {
-      email,
-      password,
-      triggerError,
-      doSetState,
-      loadUsers,
-      loadStories,
-    } = this.props;
+    const { email, password, triggerError, doSetState } = this.props;
 
     firebase
       .auth()
@@ -37,8 +31,8 @@ class IsNotAuth extends Component {
                 uid: firebase.auth().currentUser.uid,
               },
               () => {
-                loadUsers();
-                loadStories();
+                this.loadUsers();
+                this.loadStories();
               }
             );
           });
@@ -85,6 +79,14 @@ class IsNotAuth extends Component {
       });
   };
 
+  loadUsers = () => {
+    listenUsers(this.props.doSetState);
+  };
+
+  loadStories = () => {
+    loadStories(this.props.doSetState);
+  };
+
   render() {
     const { email, password, onChange } = this.props;
 
@@ -126,8 +128,6 @@ IsNotAuth.propTypes = {
   onChange: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
-  loadUsers: PropTypes.func.isRequired,
-  loadStories: PropTypes.func.isRequired,
 };
 
 export default IsNotAuth;

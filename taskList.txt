@@ -48,7 +48,7 @@ V2.9.2
     - Mettre un bouton pour ajouter un monstre - OK
 5)  Mettre un système d'échange entre joueurs - OK
 6)  Ajouter un onglet "Forger" ou "Enchanter" pour les marchands - OK
-7)  Mieux gérer les panneaux du GM
+7)  Mieux gérer les panneaux du GM - OK
 8)  Mettre du style sur le bestiaire - OK
 9)  Voir si on peut gérer le son vocal/musique
 10) Faire de l'édition de bestiaire
@@ -70,8 +70,8 @@ v2.13.1
 v2.15.1
 19) Ajouter en image de fond le bestiaire - OK
 20) Ajouter les quêtes déjà vues
-21) Ajouter les items déjà vus (Marchand, prix, ville)
-22) Faire un compteur de réussite/fail et attribuer des bonus en fonction
+21) Ajouter les items déjà vus (Marchand, prix, ville) - OK
+22) Faire un compteur de réussite/fail et attribuer des bonus en fonction - NO
 
 
 BDD : https://rpgwebsite-8a535.firebaseio.com/
