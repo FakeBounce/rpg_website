@@ -103,6 +103,7 @@ class Header extends Component {
       eventTitle,
       hydrateMerchants,
       isGameMaster,
+      merchantTitle,
       musicMute,
       selectAnotherCharacter,
       signOut,
@@ -154,7 +155,7 @@ class Header extends Component {
             {bestiaryTitle}
           </ButtonLarge>
           <ButtonLarge style={styledMerchantsAbsolute} onClick={toggleMerchantList}>
-            Merchants
+            {merchantTitle}
           </ButtonLarge>
         </div>
         {isGameMaster && (
@@ -191,6 +192,7 @@ Header.propTypes = {
   eventTitle: PropTypes.string.isRequired,
   hydrateMerchants: PropTypes.func.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
+  merchantTitle: PropTypes.string.isRequired,
   musicMute: PropTypes.bool.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,

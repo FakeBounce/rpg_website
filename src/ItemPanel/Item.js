@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import "./Item.css";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import './Item.css';
+import PropTypes from 'prop-types';
 
 class Item extends Component {
   render() {
@@ -13,24 +13,26 @@ class Item extends Component {
       price,
       showItemDescription,
       isHidden,
+      noPrice,
     } = this.props;
     return (
       <div className="item" onClick={() => showItemDescription(index)}>
         <img
-          src={iconPath || "./" + itemType + "/" + icon}
-          alt={" "}
+          src={iconPath || './' + itemType + '/' + icon}
+          alt={' '}
           className="item-icon"
         />
-        <div className="item-text">{isHidden ? "???" : name}</div>
-        <div className="item-price">{price}g</div>
+        <div className="item-text">{isHidden ? '???' : name}</div>
+        {!noPrice && <div className="item-price">{price}g</div>}
       </div>
     );
   }
 }
 
 Item.defaultProps = {
-  type: "",
-  description: "",
+  type: '',
+  description: '',
+  noPrice: false,
 };
 
 Item.propTypes = {
@@ -44,6 +46,7 @@ Item.propTypes = {
   price: PropTypes.number.isRequired,
   showItemDescription: PropTypes.func.isRequired,
   isHidden: PropTypes.bool.isRequired,
+  noPrice: PropTypes.bool,
 };
 
 export default Item;

@@ -91,6 +91,9 @@ class GameScreen extends Component {
           eventTitle={
             isEventHidden ? 'Toggle event (Is hidden)' : 'Toggle event'
           }
+          merchantTitle={
+            isOnMerchantList ? 'Return to map' : 'Merchants list'
+          }
           hydrateMerchants={hydrateMerchants}
           isGameMaster={isGameMaster}
           musicMute={musicMute}
