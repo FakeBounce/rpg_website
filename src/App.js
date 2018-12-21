@@ -31,6 +31,8 @@ import {
   setQuests,
   populateBestiary,
   loadChat,
+  listenUsers,
+  loadStories,
 } from './Utils/DatabaseFunctions';
 import {
   hydrateStoryArtefacts,
@@ -290,6 +292,14 @@ class App extends Component {
     const { currentStory } = this.state;
     listenMusic(currentStory, this.doSetState);
     listenNoise(currentStory, this.doSetState);
+  };
+
+  loadUsers = () => {
+    listenUsers(this.doSetState);
+  };
+
+  loadStories = () => {
+    loadStories(this.doSetState);
   };
 
   stopNoise = () => {
@@ -678,6 +688,8 @@ class App extends Component {
             onChange={this.onChange}
             password={password}
             triggerError={this.triggerError}
+            loadStories={this.loadStories}
+            loadUsers={this.loadUsers}
           />
         )}
 

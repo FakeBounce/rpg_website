@@ -9,35 +9,38 @@ const styledListContainer = {
   borderRight: '1px solid white',
   display: 'inline-block',
   float: 'left',
-  overflowY:'auto',
-  overflowX:'hidden',
+  overflowY: 'auto',
+  overflowX: 'hidden',
 };
 
 class TownsHistoryList extends Component {
   render() {
-    const { merchantsOrdered, showCity, showMerchant } = this.props;
+    const { townsOrdered, showCity, showMerchant, showQuest } = this.props;
     return (
       <div style={styledListContainer} className="scrollbar">
-        {Object.keys(merchantsOrdered).map((townKey, i) => {
-          return (
-            <TownsHistoryListTown
-              townKey={townKey}
-              showCity={showCity}
-              index={i}
-              showMerchant={showMerchant}
-              merchantsOrdered={merchantsOrdered}
-            />
-          );
-        })}
+        {townsOrdered &&
+          Object.keys(townsOrdered).map((townKey, i) => {
+            return (
+              <TownsHistoryListTown
+                townKey={townKey}
+                showCity={showCity}
+                index={i}
+                showMerchant={showMerchant}
+                showQuest={showQuest}
+                townsOrdered={townsOrdered}
+              />
+            );
+          })}
       </div>
     );
   }
 }
 
 TownsHistoryList.propTypes = {
-  merchantsOrdered: PropTypes.array.isRequired,
+  townsOrdered: PropTypes.array.isRequired,
   showCity: PropTypes.func.isRequired,
   showMerchant: PropTypes.func.isRequired,
+  showQuest: PropTypes.func.isRequired,
 };
 
 export default TownsHistoryList;

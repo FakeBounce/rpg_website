@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TownsHistoryListMerchant from './TownsHistoryListMerchant';
 import TownsHistoryListHeader from './TownsHistoryListHeader';
+import TownsHistoryListMerchants from './TownsHistoryListMerchants';
+import TownsHistoryListQuests from './TownsHistoryListQuests';
 
 const styledTownContainer = { width: '100%' };
 
 class TownsHistoryListTown extends Component {
   render() {
     const {
-      merchantsOrdered,
+      townsOrdered,
       showCity,
       showMerchant,
+      showQuest,
       index,
       townKey,
     } = this.props;
@@ -21,23 +23,24 @@ class TownsHistoryListTown extends Component {
           showCity={showCity}
           townKey={townKey}
         />
-        {merchantsOrdered[townKey].map(m => {
-          return (
-            <TownsHistoryListMerchant
-              showMerchant={showMerchant}
-              merchant={m}
-            />
-          );
-        })}
+        <TownsHistoryListMerchants
+          town={townsOrdered[townKey]}
+          showMerchant={showMerchant}
+        />
+        <TownsHistoryListQuests
+          town={townsOrdered[townKey]}
+          showQuest={showQuest}
+        />
       </div>
     );
   }
 }
 
 TownsHistoryListTown.propTypes = {
-  merchantsOrdered: PropTypes.array.isRequired,
+  townsOrdered: PropTypes.array.isRequired,
   showCity: PropTypes.func.isRequired,
   showMerchant: PropTypes.func.isRequired,
+  showQuest: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
   townKey: PropTypes.string.isRequired,
 };

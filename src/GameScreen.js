@@ -91,6 +91,7 @@ class GameScreen extends Component {
       musicMute,
       merchants,
       pseudo,
+      quests,
       selectAnotherCharacter,
       signOut,
       stories,
@@ -159,9 +160,10 @@ class GameScreen extends Component {
           />
         ) : isOnMerchantList && towns.length > 0 && merchants.length > 0 ? (
           <TownsHistoryPanel
-            merchants={merchants}
-            towns={towns}
             character={character}
+            merchants={merchants}
+            quests={quests}
+            towns={towns}
           />
         ) : onChatHelp ? (
           <ChatCommandsPanel />
@@ -175,6 +177,7 @@ class GameScreen extends Component {
             isGameMaster={isGameMaster}
             merchants={merchants}
             pseudo={pseudo}
+            quests={quests}
             stories={stories}
             storyCharacters={storyCharacters}
             towns={towns}
@@ -202,6 +205,7 @@ GameScreen.propTypes = {
   merchants: PropTypes.array.isRequired,
   musicMute: PropTypes.bool.isRequired,
   pseudo: PropTypes.string.isRequired,
+  quests: PropTypes.array.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
   stories: PropTypes.array.isRequired,

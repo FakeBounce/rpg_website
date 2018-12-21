@@ -32,7 +32,7 @@ class TownQuest extends Component {
           {q.name}
         </div>
         <button style={styledTownListDiscover} onClick={() => validateQuest(i)}>
-          {q.validated ? 'Complete' : 'Validate'}
+          {q.validated ? 'V' : 'NV'}
         </button>
       </div>
     );

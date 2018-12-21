@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Item from '../ItemPanel/Item';
-import { heightLeft, widthLeftBestiary } from '../Utils/StyleConstants';
+import { heightLeft } from '../Utils/StyleConstants';
 import TownsHistoryList from './TownsHistoryList';
 import TownsHistorySoloMerchant from './TownsHistorySoloMerchant';
 import TownsHistoryCity from './TownsHistoryCity';
+import TownsHistoryQuest from './TownsHistoryQuest';
 
 const styledTownsHistoryContainer = {
   height: heightLeft,
@@ -13,63 +13,45 @@ const styledTownsHistoryContainer = {
   backgroundColor: '#34495e',
   color: 'white',
 };
-const styledCityColumn = {
-  width: widthLeftBestiary - 1,
-  height: heightLeft,
-  display: 'inline-block',
-  position: 'relative',
-  float: 'left',
-};
-const styledTownColumn = {
-  width: widthLeftBestiary / 6 - 1,
-  height: heightLeft,
-  display: 'inline-block',
-  position: 'relative',
-  float: 'left',
-  borderRight: '1px solid white',
-};
-const styledMerchantHeader = {
-  width: '100%',
-  height: 25,
-  borderBottom: '1px solid white',
-  position: 'relative',
-};
-const styledMerchantList = {
-  width: '100%',
-  height: heightLeft - 26,
-  position: 'relative',
-  overflowY: 'auto',
-  overflowX: 'hidden',
-};
 
 class TownsHistoryPanel extends Component {
   state = {
-    merchantsOrdered: {},
+    townsOrdered: {},
     showedMerchant: {},
+    showedQuest: {},
     showedTown: {},
   };
 
   componentDidMount() {
-    const { merchants, towns } = this.props;
-    const tempMerchants = {};
+    const { merchants, quests, towns } = this.props;
+    const tempMandQ = {};
     towns.map(t => {
+      tempMandQ[t.name] = { merchants: [], quests: [] };
+      let merchantsNumber = 0;
+      let questsNumber = 0;
       if (t.merchantsList && t.merchantsList.length > 0) {
-        tempMerchants[t.name] = [];
-        let merchantsNumber = 0;
         t.merchantsList.map(mIndex => {
           if (merchants[mIndex].isDiscovered) {
-            tempMerchants[t.name].push(merchants[mIndex]);
+            tempMandQ[t.name].merchants.push(merchants[mIndex]);
             merchantsNumber += 1;
           }
         });
-        if (merchantsNumber === 0) {
-          delete tempMerchants[t.name];
-        }
+      }
+      if (t.questsList && t.questsList.length > 0) {
+        t.questsList.map(qIndex => {
+          if (quests[qIndex].town && quests[qIndex].town > -1) {
+            tempMandQ[t.name].quests.push(quests[qIndex]);
+            questsNumber += 1;
+          }
+        });
+      }
+      if (merchantsNumber === 0 && questsNumber === 0) {
+        delete tempMandQ[t.name];
       }
     });
     this.setState(state => ({
       ...state,
-      merchantsOrdered: { ...tempMerchants },
+      townsOrdered: { ...tempMandQ },
     }));
   }
 
@@ -78,6 +60,16 @@ class TownsHistoryPanel extends Component {
       ...state,
       showedMerchant: { ...m },
       showedTown: {},
+      showedQuest: {},
+    }));
+  };
+
+  showQuest = q => {
+    this.setState(state => ({
+      ...state,
+      showedQuest: { ...q },
+      showedTown: {},
+      showedMerchant: {},
     }));
   };
 
@@ -91,6 +83,7 @@ class TownsHistoryPanel extends Component {
     });
     this.setState(state => ({
       ...state,
+      showedQuest: {},
       showedMerchant: {},
       showedTown: { ...showedTown },
     }));
@@ -98,21 +91,27 @@ class TownsHistoryPanel extends Component {
 
   render() {
     const { character, merchants } = this.props;
-    const { merchantsOrdered, showedMerchant, showedTown } = this.state;
+    const {
+      townsOrdered,
+      showedMerchant,
+      showedTown,
+      showedQuest,
+    } = this.state;
     return (
       <div style={styledTownsHistoryContainer}>
         <TownsHistoryList
-          merchantsOrdered={merchantsOrdered}
+          townsOrdered={townsOrdered}
           showMerchant={this.showMerchant}
+          showQuest={this.showQuest}
           showCity={this.showCity}
         />
-        {showedMerchant.items &&
-          !showedTown.name && (
-            <TownsHistorySoloMerchant
-              character={character}
-              showedMerchant={showedMerchant}
-            />
-          )}
+        {showedMerchant.items && (
+          <TownsHistorySoloMerchant
+            character={character}
+            showedMerchant={showedMerchant}
+          />
+        )}
+        {showedQuest.name && <TownsHistoryQuest showedQuest={showedQuest} />}
         {showedTown.name && (
           <TownsHistoryCity
             character={character}
@@ -128,6 +127,7 @@ class TownsHistoryPanel extends Component {
 TownsHistoryPanel.propTypes = {
   character: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
+  quests: PropTypes.array.isRequired,
   towns: PropTypes.array.isRequired,
 };
 

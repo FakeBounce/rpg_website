@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { cursorPointer, widthListPanelBestiary } from "../Utils/StyleConstants";
+import { cursorPointer, widthListPanelBestiary } from '../Utils/StyleConstants';
 
 const styledMerchant = {
   width: '100%',
-  height: 45,
   position: 'relative',
   display: 'inline-block',
   cursor: cursorPointer,
+  marginTop: 5,
+  marginBottom: 5,
 };
 const styledImage = {
   width: 25,
@@ -15,7 +16,11 @@ const styledImage = {
   display: 'inline-block',
   float: 'right',
 };
-const styledText = { width:widthListPanelBestiary - 31, height: 25, display: 'inline-block', float: 'left' };
+const styledText = {
+  width: widthListPanelBestiary - 31,
+  display: 'inline-block',
+  float: 'left',
+};
 
 class TownsHistoryListMerchant extends Component {
   render() {
@@ -24,7 +29,9 @@ class TownsHistoryListMerchant extends Component {
       <div style={styledMerchant} onClick={() => showMerchant(merchant)}>
         <img style={styledImage} src={`./merchants/${merchant.icon}`} />
         <div style={styledText}>
-          {merchant.name}, {merchant.job} (Quality : {merchant.level})
+          {merchant.name}, {merchant.job}
+          <br />
+          (Quality : {merchant.level})
         </div>
       </div>
     );

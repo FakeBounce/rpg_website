@@ -39,6 +39,7 @@ class StoryQuestList extends Component {
               {q.name}
               {typeof q.town !== "undefined" &&
                 q.town > -1 && <span>({towns[q.town].name})</span>}
+              {q.validated && <span>(V)</span>}
             </div>
           );
         })}
