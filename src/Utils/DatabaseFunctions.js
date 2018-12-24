@@ -110,7 +110,7 @@ export const resetEvents = id => {
 export const loadAllItems = (doSetState, currentStory = -1, cb = () => {}) => {
   firebase
     .database()
-    .ref("/items")
+    .ref("stories/0/items")
     .once("value")
     .then(snapshot => {
       doSetState({

@@ -80,7 +80,13 @@ class App extends Component {
     // loadMerchantsOnce(currentStory, this.doSetState)
     listenMerchants(currentStory, this.doSetState);
     loadAllItems(this.doSetState, currentStory, () => {
-      // hydrateAllMerchants(this.state.currentStory, this.state.merchants, this.state.items, this.doSetState, false);
+      // hydrateAllMerchants(
+      //   this.state.currentStory,
+      //   this.state.merchants,
+      //   this.state.items,
+      //   this.doSetState,
+      //   true
+      // );
     }); // And listen to artefacts on callback
     // resetStoryMerchants(currentStory, this.doSetState);
   };
@@ -91,7 +97,7 @@ class App extends Component {
       this.state.merchants,
       this.state.items,
       this.doSetState,
-      false
+      true
     );
   };
 
@@ -199,10 +205,8 @@ class App extends Component {
               item.isAcquired = true;
 
               // Hydrate artefacts list
-              const newArtefactsList = [...artefacts];
-              newArtefactsList.push(item);
-              artefacts.push(item);
-              hydrateStoryArtefacts(currentStory, newArtefactsList);
+              artefacts[item.key] = item;
+              hydrateStoryArtefacts(currentStory, artefacts);
             }
 
             firebase

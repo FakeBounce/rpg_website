@@ -52,18 +52,14 @@ export const hydrateAllMerchants = (
   doSetState,
   hard = false
 ) => {
-  const artefactsLeft = { ...items.artefacts };
   Object.keys(merchants).map(key => {
-    hydrateMerchant(artefactsLeft, merchants[key], items, hard);
+    hydrateMerchant(items.artefacts, merchants[key], items, hard);
     return null;
   });
 
-  const newItems = { ...items };
-  newItems.artefacts = { ...artefactsLeft };
-
   doSetState({
     merchants,
-    items: newItems,
+    items,
   });
 
   // Hydrate DB artefacts
@@ -72,7 +68,7 @@ export const hydrateAllMerchants = (
     .ref('stories/' + currentStory + '/merchants')
     .set(merchants)
     .then(() => {
-      hydrateStoryArtefacts(currentStory, artefactsLeft);
+      hydrateStoryArtefacts(currentStory, items.artefacts);
     })
     .catch(error => {
       // Handle Errors here.
@@ -89,9 +85,16 @@ export const hydrateMerchant = (
   if (totalHydrate) {
     // Get back artefacts from merchant
     merchant.items &&
-      merchant.items.map(i => {
-        if (i.itemType === 'artefacts') {
-          artefactsLeft.push(i);
+      Object.keys(merchant.items).map(key => {
+        if (merchant.items[key].itemType === 'artefacts') {
+          delete merchant.items[key].price;
+          delete merchant.items[key].quantity;
+          console.log(
+            'merchant.items[key]',
+            merchant.items[key].isAcquired,
+            merchant.items[key].name
+          );
+          artefactsLeft[merchant.items[key].key] = merchant.items[key];
         }
         return null;
       });
@@ -111,13 +114,15 @@ export const hydrateMerchant = (
     const artefactList = getArtefactsForMerchant(artefactsLeft, merchant);
 
     // Concats items lists
-    merchant.items = consumableList
-      .concat(enhancementList)
-      .concat(stoneList)
-      .concat(runeList)
-      .concat(weaponList)
-      .concat(spellList)
-      .concat(artefactList);
+    merchant.items = {
+      ...weaponList,
+      ...consumableList,
+      ...enhancementList,
+      ...spellList,
+      ...runeList,
+      ...stoneList,
+      ...artefactList,
+    };
   } else {
     // Get items from each category
     const weaponList = getItemsFromCategory('weapons', merchant, items, 0);
@@ -247,9 +252,9 @@ export const getArtefactsForMerchant = (artefactsCurrentList, merchant) => {
   let randomItem = 0;
   let itemsToGet = parseInt(merchant['artefacts'], 10);
   for (let i = 0; i < itemsToGet; i++) {
-    randomItem = Math.floor(Math.random() * artefactsCurrentList.length);
+    randomItem = randomProperty(artefactsCurrentList);
     if (!artefactsCurrentList[randomItem].isAcquired) {
-      const newItem = { ...artefactsCurrentList[randomItem] };
+      const newItem = { ...artefactsCurrentList[randomItem], key: randomItem };
       newItem.rarity = parseInt(newItem.rarity, 10);
       newItem.quantity = 1;
       newItem.itemType = 'artefacts';
@@ -260,7 +265,7 @@ export const getArtefactsForMerchant = (artefactsCurrentList, merchant) => {
         priceRange +
         Math.ceil(Math.random() * priceRange + 1);
       itemList.push(newItem);
-      artefactsCurrentList.splice(randomItem, 1);
+      delete artefactsCurrentList[randomItem];
     }
   }
   return itemList;
@@ -275,4 +280,9 @@ export const hydrateStoryArtefacts = (currentStory, artefactsLeft) => {
       // Handle Errors here.
       triggerError(error);
     });
+};
+
+const randomProperty = obj => {
+  var keys = Object.keys(obj);
+  return keys[(keys.length * Math.random()) << 0];
 };
