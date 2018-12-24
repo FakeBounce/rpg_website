@@ -4,12 +4,21 @@ import { heightLeft, widthLeft } from './Utils/StyleConstants';
 import { tempoImagesList } from './Utils/Constants';
 import firebase from 'firebase';
 
-const styledTempImage = {
+const styledTempContainer = {
   float: 'left',
   width: `${widthLeft}px`,
   height: `${heightLeft}px`,
-  display: 'inline-block',
   position: 'relative',
+  backgroundColor: '#34495e',
+};
+const styledTempImage = {
+  maxWidth: `${widthLeft}px`,
+  maxHeight: `${heightLeft}px`,
+  display: 'inline-block',
+  position: 'absolute',
+  left: '50%',
+  top: '50%',
+  transform: 'translate(-50%,-50%)',
 };
 const styledTempSelect = {
   position: 'absolute',
@@ -64,7 +73,7 @@ class TempImage extends Component {
     const { tempImage, bestiaryList } = this.state;
 
     return (
-      <Fragment>
+      <div style={styledTempContainer}>
         {isGameMaster && (
           <select
             value={tempImage}
@@ -90,7 +99,7 @@ class TempImage extends Component {
           </select>
         )}
         <img src={'./' + tempImage} style={styledTempImage} alt={tempImage} />
-      </Fragment>
+      </div>
     );
   }
 }
