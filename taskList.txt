@@ -69,7 +69,7 @@ v2.13.1
 
 v2.15.1
 19) Ajouter en image de fond le bestiaire - OK
-20) Ajouter les quêtes déjà vues
+20) Ajouter les quêtes déjà vues - OK
 21) Ajouter les items déjà vus (Marchand, prix, ville) - OK
 22) Faire un compteur de réussite/fail et attribuer des bonus en fonction - NO
 

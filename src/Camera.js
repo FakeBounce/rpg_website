@@ -1,28 +1,27 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import ButtonLarge from "./Utils/ButtonLarge";
-import { cursorPointer, heightHeader } from "./Utils/StyleConstants";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import ButtonLarge from './Utils/ButtonLarge';
+import { cursorPointer, heightHeader } from './Utils/StyleConstants';
 
 const styledVideo = {
   width: 175,
   height: heightHeader,
-  float: "left",
-  position: "relative",
+  float: 'left',
+  position: 'relative',
 };
 
 const styledCall = {
-  position: "absolute",
+  position: 'absolute',
   left: 0,
   top: 0,
 };
 
 const styledMuteImg = {
-  position: "absolute",
-  float: "left",
-  width: 15,
-  height: 15,
-  right: 0,
+  position: 'absolute',
+  float: 'left',
+  zIndex: 10,
+  left: 0,
   bottom: 0,
   cursor: cursorPointer,
 };
@@ -36,16 +35,16 @@ class Camera extends Component {
       isDisabled: false,
       friendsMute: {},
     };
-    this.database = firebase.database().ref("camera");
+    this.database = firebase.database().ref('camera');
     this.yourId = props.uid;
     this.servers = {
       iceServers: [
-        { urls: "stun:stun.services.mozilla.com" },
-        { urls: "stun:stun.l.google.com:19302" },
+        { urls: 'stun:stun.services.mozilla.com' },
+        { urls: 'stun:stun.l.google.com:19302' },
         {
-          urls: "turn:numb.viagenie.ca",
-          credential: "webrtc",
-          username: "test@mail.com",
+          urls: 'turn:numb.viagenie.ca',
+          credential: 'webrtc',
+          username: 'test@mail.com',
         },
       ],
     };
@@ -54,12 +53,13 @@ class Camera extends Component {
     this.friendsVideoLocal = {};
     this.friendsVideoRemote = {};
     this.yourVideo = null;
+    this.localStream = null;
   }
 
   sendMessage = (data, type, id = this.yourId) => {
     const msg = firebase
       .database()
-      .ref("camera/" + id)
+      .ref('camera/' + id)
       .push({ message: data, type, sender: this.yourId });
     msg.remove();
   };
@@ -67,9 +67,9 @@ class Camera extends Component {
   sendIce = (data, id, isRemote = false) => {
     const msg = firebase
       .database()
-      .ref("camera/" + id)
+      .ref('camera/' + id)
       .push({
-        type: "ice",
+        type: 'ice',
         isRemote,
         message: JSON.stringify(data),
         sender: this.yourId,
@@ -85,7 +85,7 @@ class Camera extends Component {
 
     firebase
       .database()
-      .ref("camera/" + this.yourId + "/isConnected")
+      .ref('camera/' + this.yourId + '/isConnected')
       .set(true);
 
     navigator.mediaDevices
@@ -93,23 +93,24 @@ class Camera extends Component {
       .then(stream => (this.yourVideo.srcObject = stream))
       .then(stream => {
         window.localStream = stream;
+        this.localStream = stream;
 
         firebase
           .database()
-          .ref("/camera")
-          .once("value")
+          .ref('/camera')
+          .once('value')
           .then(snapshot => {
             Object.keys(snapshot.val()).map(key => {
               if (key !== this.yourId) {
                 this.friendsVideoLocal[key] = new RTCPeerConnection(
-                  this.servers,
+                  this.servers
                 );
 
                 //Adding ice candidates
                 this.friendsVideoLocal[key].onicecandidate = e => {
                   e.candidate
                     ? this.sendIce(e.candidate, key)
-                    : console.log("Sent all ice, local, offer, " + key);
+                    : console.log('Sent all ice, local, offer, ' + key);
                 };
 
                 window.localStream
@@ -117,8 +118,8 @@ class Camera extends Component {
                   .forEach(track =>
                     this.friendsVideoLocal[key].addTrack(
                       track,
-                      window.localStream,
-                    ),
+                      window.localStream
+                    )
                   );
                 this.friendsVideoLocal[key]
                   .createOffer({
@@ -126,21 +127,21 @@ class Camera extends Component {
                     offerToReceiveVideo: 1,
                   })
                   .then(offer =>
-                    this.setDescriptionsFromOffer(offer, key, "askingOffer"),
+                    this.setDescriptionsFromOffer(offer, key, 'askingOffer')
                   );
               }
               return null;
             });
           })
           .catch(error => {
-            console.log("error", error);
+            console.log('error', error);
           });
 
         firebase
           .database()
-          .ref("camera/" + this.yourId)
-          .on("child_added", snapshot => {
-            if (snapshot.val().type === "askingOffer") {
+          .ref('camera/' + this.yourId)
+          .on('child_added', snapshot => {
+            if (snapshot.val().type === 'askingOffer') {
               const msg = JSON.parse(snapshot.val().message);
               this.friendsVideoRemote[
                 snapshot.val().sender
@@ -153,7 +154,7 @@ class Camera extends Component {
                 e.candidate
                   ? this.sendIce(e.candidate, snapshot.val().sender, true)
                   : console.log(
-                      "Sent all ice, remote, answer, " + snapshot.val().sender,
+                      'Sent all ice, remote, answer, ' + snapshot.val().sender
                     );
               };
 
@@ -164,10 +165,10 @@ class Camera extends Component {
               this.friendsVideoRemote[snapshot.val().sender]
                 .setRemoteDescription(new RTCSessionDescription(msg.sdp))
                 .then(() =>
-                  this.friendsVideoRemote[snapshot.val().sender].createAnswer(),
+                  this.friendsVideoRemote[snapshot.val().sender].createAnswer()
                 )
                 .then(answer =>
-                  this.setDescriptionsFromAnswer(answer, snapshot.val().sender),
+                  this.setDescriptionsFromAnswer(answer, snapshot.val().sender)
                 );
               this.friendsVideoLocal[
                 snapshot.val().sender
@@ -180,7 +181,7 @@ class Camera extends Component {
                 e.candidate
                   ? this.sendIce(e.candidate, snapshot.val().sender)
                   : console.log(
-                      "Sent all ice, local, offer, " + snapshot.val().sender,
+                      'Sent all ice, local, offer, ' + snapshot.val().sender
                     );
               };
 
@@ -189,8 +190,8 @@ class Camera extends Component {
                 .forEach(track =>
                   this.friendsVideoLocal[snapshot.val().sender].addTrack(
                     track,
-                    window.localStream,
-                  ),
+                    window.localStream
+                  )
                 );
               this.friendsVideoLocal[snapshot.val().sender]
                 .createOffer({
@@ -201,11 +202,11 @@ class Camera extends Component {
                   this.setDescriptionsFromOffer(
                     offer,
                     snapshot.val().sender,
-                    "offer",
-                  ),
+                    'offer'
+                  )
                 );
             }
-            if (snapshot.val().type === "offer") {
+            if (snapshot.val().type === 'offer') {
               const msg = JSON.parse(snapshot.val().message);
               this.friendsVideoRemote[
                 snapshot.val().sender
@@ -218,7 +219,7 @@ class Camera extends Component {
                 e.candidate
                   ? this.sendIce(e.candidate, snapshot.val().sender, true)
                   : console.log(
-                      "Sent all ice, remote, answer, " + snapshot.val().sender,
+                      'Sent all ice, remote, answer, ' + snapshot.val().sender
                     );
               };
 
@@ -229,27 +230,27 @@ class Camera extends Component {
               this.friendsVideoRemote[snapshot.val().sender]
                 .setRemoteDescription(new RTCSessionDescription(msg.sdp))
                 .then(() =>
-                  this.friendsVideoRemote[snapshot.val().sender].createAnswer(),
+                  this.friendsVideoRemote[snapshot.val().sender].createAnswer()
                 )
                 .then(answer =>
-                  this.setDescriptionsFromAnswer(answer, snapshot.val().sender),
+                  this.setDescriptionsFromAnswer(answer, snapshot.val().sender)
                 );
             }
-            if (snapshot.val().type === "answer") {
+            if (snapshot.val().type === 'answer') {
               const msg = JSON.parse(snapshot.val().message);
               this.friendsVideoLocal[
                 snapshot.val().sender
               ].setRemoteDescription(new RTCSessionDescription(msg.sdp));
             }
-            if (snapshot.val().type === "ice") {
+            if (snapshot.val().type === 'ice') {
               const msg = JSON.parse(snapshot.val().message);
               if (snapshot.val().isRemote) {
                 this.friendsVideoLocal[snapshot.val().sender]
                   .addIceCandidate(new RTCIceCandidate(msg))
                   .then(() => {
                     console.log(
-                      "Added local ice candidates for sender " +
-                        snapshot.val().sender,
+                      'Added local ice candidates for sender ' +
+                        snapshot.val().sender
                     );
                   });
               } else {
@@ -257,8 +258,8 @@ class Camera extends Component {
                   .addIceCandidate(new RTCIceCandidate(msg))
                   .then(() => {
                     console.log(
-                      "Added remote ice candidates for sender " +
-                        snapshot.val().sender,
+                      'Added remote ice candidates for sender ' +
+                        snapshot.val().sender
                     );
                   });
               }
@@ -274,7 +275,7 @@ class Camera extends Component {
           sdp: this.friendsVideoLocal[sender].localDescription,
         }),
         type,
-        sender,
+        sender
       );
     });
   };
@@ -285,8 +286,8 @@ class Camera extends Component {
         JSON.stringify({
           sdp: this.friendsVideoRemote[sender].localDescription,
         }),
-        "answer",
-        sender,
+        'answer',
+        sender
       );
     });
   };
@@ -316,6 +317,17 @@ class Camera extends Component {
     }));
   };
 
+  closeLocalstream = () => {
+    if (window.localStream) {
+      window.localStream.getVideoTracks()[0].stop();
+      window.localStream.getAudioTracks()[0].stop();
+      this.setState(state => ({
+        ...state,
+        isDisabled: false,
+      }));
+    }
+  };
+
   render() {
     const { isDisabled, friendsMute, friendsVideoRemote } = this.state;
 
@@ -330,6 +342,12 @@ class Camera extends Component {
             autoPlay
             muted
           />
+
+          {!isDisabled && (
+            <ButtonLarge onClick={this.closeLocalstream} style={styledMuteImg}>
+              Hang up
+            </ButtonLarge>
+          )}
         </div>
         {Object.keys(friendsVideoRemote).map(key => {
           return (
@@ -345,8 +363,8 @@ class Camera extends Component {
                 onClick={() => this.muteSomeone(key)}
                 src={
                   friendsMute[key]
-                    ? "./common/soundMuted.png"
-                    : "./common/soundUnmuted.png"
+                    ? './common/soundMuted.png'
+                    : './common/soundUnmuted.png'
                 }
                 style={styledMuteImg}
                 alt="sound muted or not"
