@@ -2,10 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import ButtonLarge from './Utils/ButtonLarge';
-import { cursorPointer, heightHeader } from './Utils/StyleConstants';
+import { heightHeader } from './Utils/StyleConstants';
 
+const styledVideoContainer = {
+  width: (window.innerWidth - 300) / 7 - 7,
+  height: heightHeader,
+  float: 'left',
+  position: 'relative',
+  marginLeft: 7,
+};
 const styledVideo = {
-  width: 175,
+  width: (window.innerWidth - 300) / 7 - 17,
   height: heightHeader,
   float: 'left',
   position: 'relative',
@@ -13,17 +20,35 @@ const styledVideo = {
 
 const styledCall = {
   position: 'absolute',
-  left: 0,
-  top: 0,
+  left: 6,
+  top: 15,
+  width: (window.innerWidth - 300) / 7 - 17
 };
 
 const styledMuteImg = {
   position: 'absolute',
   float: 'left',
+  width: 41,
+  height: 22,
   zIndex: 10,
   left: 0,
   bottom: 0,
-  cursor: cursorPointer,
+  color: 'white',
+};
+
+const styledCameraCadre = {
+  height: heightHeader,
+  width: (window.innerWidth - 300) / 7,
+  position: 'relative',
+  float: 'left',
+};
+
+const styledCadresContainer = {
+  position: 'absolute',
+  left: 0,
+  top: 0,
+  height: heightHeader,
+  width: window.innerWidth,
 };
 
 class Camera extends Component {
@@ -54,6 +79,10 @@ class Camera extends Component {
     this.friendsVideoRemote = {};
     this.yourVideo = null;
     this.localStream = null;
+  }
+
+  componentWillUnmount() {
+    this.closeLocalstream();
   }
 
   sendMessage = (data, type, id = this.yourId) => {
@@ -319,8 +348,9 @@ class Camera extends Component {
 
   closeLocalstream = () => {
     if (window.localStream) {
-      window.localStream.getVideoTracks()[0].stop();
-      window.localStream.getAudioTracks()[0].stop();
+      window.localStream.getTracks().forEach(track => {
+        track.stop();
+      });
       this.setState(state => ({
         ...state,
         isDisabled: false,
@@ -333,7 +363,46 @@ class Camera extends Component {
 
     return (
       <div>
-        <div style={styledVideo}>
+        <div
+          style={styledCadresContainer}
+        >
+          <img
+            src={'./common/info2.png'}
+            alt="cadre"
+            style={styledCameraCadre}
+          />
+          <img
+            src={'./common/info2.png'}
+            alt="cadre"
+            style={styledCameraCadre}
+          />
+          <img
+            src={'./common/info2.png'}
+            alt="cadre"
+            style={styledCameraCadre}
+          />
+          <img
+            src={'./common/info2.png'}
+            alt="cadre"
+            style={styledCameraCadre}
+          />
+          <img
+            src={'./common/info2.png'}
+            alt="cadre"
+            style={styledCameraCadre}
+          />
+          <img
+            src={'./common/info2.png'}
+            alt="cadre"
+            style={styledCameraCadre}
+          />
+          <img
+            src={'./common/info2.png'}
+            alt="cadre"
+            style={styledCameraCadre}
+          />
+        </div>
+        <div style={styledVideoContainer}>
           <video
             ref={audio => {
               this.yourVideo = audio;
@@ -342,16 +411,15 @@ class Camera extends Component {
             autoPlay
             muted
           />
-
-          {!isDisabled && (
+          {isDisabled && (
             <ButtonLarge onClick={this.closeLocalstream} style={styledMuteImg}>
-              Hang up
+              X
             </ButtonLarge>
           )}
         </div>
         {Object.keys(friendsVideoRemote).map(key => {
           return (
-            <div style={styledVideo}>
+            <div style={styledVideoContainer}>
               <video
                 src={friendsVideoRemote[key]}
                 autoPlay

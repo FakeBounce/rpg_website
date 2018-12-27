@@ -7,36 +7,35 @@ import ButtonLarge from './ButtonLarge';
 const styledSignOut = {
   display: 'block',
   position: 'relative',
+  width: 150,
 };
 
 const styledToggling = {
   position: 'absolute',
   top: 50,
-  right: 167,
+  right: 150,
+  width: 150,
 };
 
 const styledToggleEvent = {
   position: 'absolute',
   top: 75,
-  right: 167,
+  right: 150,
+  width: 150,
 };
 
 const styledHydrateEvent = {
   position: 'absolute',
   top: 100,
-  right: 167,
-};
-
-const styledMerchantsAbsolute = {
-  position: 'absolute',
-  top: 0,
-  right: 167,
+  right: 150,
+  width: 150,
 };
 
 const styledTogglingAbsolute = {
   position: 'absolute',
   top: 100,
   right: 0,
+  width: 150,
 };
 
 const styledBoxHeader = {
@@ -55,6 +54,7 @@ const styledHeaderRight = {
   position: 'absolute',
   right: 0,
   top: 0,
+  width: 150,
 };
 
 const styledHeaderLeft = {
@@ -69,6 +69,7 @@ const styledHeader = {
   height: `${heightHeader}px`,
   backgroundImage: `url(./common/dravos_header.jpg)`,
   backgroundSize: 'cover',
+  // backgroundColor: '#34495e',
 };
 
 const styledSound = {
@@ -122,7 +123,6 @@ class Header extends Component {
         <div style={styledHeaderLeft}>
           <Camera uid={uid} />
         </div>
-        <div style={styledBoxHeader}>{title}</div>
         <div style={styledHeaderRight}>
           <ButtonLarge style={styledSignOut} onClick={signOut}>
             Sign Out
@@ -134,7 +134,7 @@ class Header extends Component {
               () => {}
             }
           >
-            Select another character
+            Select a character
           </ButtonLarge>
           <ButtonLarge style={styledSignOut} onClick={toggleMusic}>
             Toggle music
@@ -154,7 +154,7 @@ class Header extends Component {
           <ButtonLarge style={styledTogglingAbsolute} onClick={toggleBestiary}>
             {bestiaryTitle}
           </ButtonLarge>
-          <ButtonLarge style={styledMerchantsAbsolute} onClick={toggleMerchantList}>
+          <ButtonLarge style={styledSignOut} onClick={toggleMerchantList}>
             {merchantTitle}
           </ButtonLarge>
         </div>
