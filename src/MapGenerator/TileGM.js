@@ -20,6 +20,8 @@ class TileGM extends PureComponent {
       towns,
     } = this.props;
 
+    console.count('Mabite')
+
     return (
       <div
         className={`grid ${row.isCurrent && "is-current"}`}

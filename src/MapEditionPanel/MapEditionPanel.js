@@ -46,16 +46,16 @@ class MapEditionPanel extends Component {
             'maps/' +
               stories[currentStory].map +
               '/' +
-              currentTile.y +
+            newTile.y +
               '/' +
-              currentTile.x
+            newTile.x
           )
           .set(newTile)
           .then(() => {
             doSetState({
               currentTile: { ...newTile },
-              currentY: currentTile.y - gridLength/2,
-              currentX: currentTile.x - gridLength/2,
+              currentY: newTile.y - gridLength/2,
+              currentX: newTile.x - gridLength/2,
             });
             if (newTile.isCurrent) {
               firebase

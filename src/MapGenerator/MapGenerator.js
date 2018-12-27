@@ -117,13 +117,15 @@ class MapGenerator extends PureComponent {
           style={{
             width: totalRows * gridDimension,
             height: totalColumn * gridDimension,
-            left: (-gridDimension * currentX * currentZoom) / 10,
-            top: (-gridDimension * currentY * currentZoom) / 10,
+            left: 0,
+            top: 0,
           }}
         >
           {map.length > 0 &&
             towns.length > 0 && (
               <MapGrid
+                currentX={currentX}
+                currentY={currentY}
                 isGameMaster={isGameMaster}
                 currentZoom={currentZoom}
                 doSetState={doSetState}
