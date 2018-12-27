@@ -22,6 +22,7 @@ class TownsHistoryList extends Component {
           Object.keys(townsOrdered).map((townKey, i) => {
             return (
               <TownsHistoryListTown
+                key={'town-list-' + townKey}
                 townKey={townKey}
                 showCity={showCity}
                 index={i}
@@ -37,7 +38,7 @@ class TownsHistoryList extends Component {
 }
 
 TownsHistoryList.propTypes = {
-  townsOrdered: PropTypes.array.isRequired,
+  townsOrdered: PropTypes.object.isRequired,
   showCity: PropTypes.func.isRequired,
   showMerchant: PropTypes.func.isRequired,
   showQuest: PropTypes.func.isRequired,

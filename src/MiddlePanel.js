@@ -159,7 +159,6 @@ class MiddlePanel extends Component {
         {(!isGameMaster || isOnPlayerView) && (
           <RightPanel
             character={character}
-            chatHistory={chatHistory}
             chatInput={chatInput}
             currentStory={currentStory}
             doSetState={doSetState}
@@ -190,13 +189,14 @@ class MiddlePanel extends Component {
 }
 
 MiddlePanel.defaultProps = {
+  items: null,
   textureToApply: null,
 };
 
 MiddlePanel.propTypes = {
   buyItem: PropTypes.func.isRequired,
   character: PropTypes.object.isRequired,
-  chatHistory: PropTypes.array.isRequired,
+  chatHistory: PropTypes.object.isRequired,
   chatInput: PropTypes.string.isRequired,
   currentMerchant: PropTypes.number.isRequired,
   currentQuest: PropTypes.number.isRequired,
@@ -216,8 +216,8 @@ MiddlePanel.propTypes = {
   isOnPlayerView: PropTypes.bool.isRequired,
   isQuestShowed: PropTypes.bool.isRequired,
   isTownShowed: PropTypes.bool.isRequired,
-  items: PropTypes.object.isRequired,
-  itemsList: PropTypes.object.isRequired,
+  items: PropTypes.object,
+  itemsList: PropTypes.array.isRequired,
   itemToDescribe: PropTypes.object.isRequired,
   loadCurrentPosition: PropTypes.func.isRequired,
   map: PropTypes.array.isRequired,

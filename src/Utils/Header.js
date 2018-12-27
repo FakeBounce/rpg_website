@@ -38,16 +38,16 @@ const styledTogglingAbsolute = {
   width: 150,
 };
 
-const styledBoxHeader = {
-  width: '75%',
-  height: '20px',
-  marginBottom: '5px',
-  textAlign: 'center',
-  fontSize: '36px',
-  paddingTop: '25px',
-  color: 'white',
-  marginLeft: '25%',
-};
+// const styledBoxHeader = {
+//   width: '75%',
+//   height: '20px',
+//   marginBottom: '5px',
+//   textAlign: 'center',
+//   fontSize: '36px',
+//   paddingTop: '25px',
+//   color: 'white',
+//   marginLeft: '25%',
+// };
 
 const styledHeaderRight = {
   height: heightHeader,
@@ -106,9 +106,9 @@ class Header extends Component {
       isGameMaster,
       merchantTitle,
       musicMute,
-      selectAnotherCharacter,
+      // selectAnotherCharacter,
       signOut,
-      title,
+      // title,
       toggleBestiary,
       toggleMerchantList,
       toggleEvent,
@@ -202,7 +202,7 @@ Header.propTypes = {
   toggleMerchantList: PropTypes.func.isRequired,
   toggleMusic: PropTypes.func.isRequired,
   togglePlayerView: PropTypes.func.isRequired,
-  uid: PropTypes.bool.isRequired,
+  uid: PropTypes.string.isRequired,
 };
 
 export default Header;

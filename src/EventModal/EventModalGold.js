@@ -82,7 +82,7 @@ class EventModalGold extends Component {
 
 EventModalGold.propTypes = {
   isGameMaster: PropTypes.bool.isRequired,
-  event: PropTypes.number.isRequired,
+  event: PropTypes.object.isRequired,
   numberWanted: PropTypes.number.isRequired,
   closeEvent: PropTypes.func.isRequired,
   takeNothing: PropTypes.func.isRequired,

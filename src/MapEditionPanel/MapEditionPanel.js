@@ -7,7 +7,6 @@ import MapEditionTilesList from './MapEditionTilesList';
 import MapEditionScale from './MapEditionScale';
 import {
   gridLength,
-  heightHeader,
   heightLeft,
   widthLeft,
 } from '../Utils/StyleConstants';
@@ -41,16 +40,6 @@ class MapEditionPanel extends Component {
       )
       .set(null)
       .then(() => {
-        console.log(
-          'path',
-          'maps/' +
-            stories[currentStory].map +
-            '/' +
-            (currentY + gridLength / 2) +
-            '/' +
-            (currentX + gridLength / 2) +
-            '/isCurrent'
-        );
         firebase
           .database()
           .ref(

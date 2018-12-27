@@ -46,7 +46,7 @@ Story.propTypes = {
   chooseStory: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  totalStories: PropTypes.string.isRequired,
+  totalStories: PropTypes.number.isRequired,
 };
 
 export default Story;

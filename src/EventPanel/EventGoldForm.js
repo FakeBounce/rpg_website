@@ -12,7 +12,7 @@ class EventGoldForm extends Component {
           value={goldEvent}
           name="goldEvent"
           onChange={e => {
-            onChange(e.target.name, e.target.value);
+            onChange(e.target.name, parseInt(e.target.value, 10));
           }}
         />
         <input

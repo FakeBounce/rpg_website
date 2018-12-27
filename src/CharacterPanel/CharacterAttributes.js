@@ -1,10 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  cursorPointer,
-  heightLeft,
-  imageSize,
-} from '../Utils/StyleConstants';
+import { cursorPointer, heightLeft, imageSize } from '../Utils/StyleConstants';
 import { attributes } from '../Utils/Constants';
 import firebase from 'firebase';
 import ButtonLarge from '../Utils/ButtonLarge';
@@ -105,6 +101,7 @@ class CharacterAttributes extends PureComponent {
             <div
               style={isGameMaster ? styledAttributeGM : styledAttribute}
               onClick={() => this.onClick(a, character[a])}
+              key={'character-attribute-' + a}
             >
               {label} :{' '}
               {isGameMaster && currentAttribute === a ? (

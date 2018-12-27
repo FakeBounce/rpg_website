@@ -35,6 +35,7 @@ class TownsHistoryPanel extends Component {
             tempMandQ[t.name].merchants.push(merchants[mIndex]);
             merchantsNumber += 1;
           }
+          return null;
         });
       }
       if (t.questsList && t.questsList.length > 0) {
@@ -43,11 +44,13 @@ class TownsHistoryPanel extends Component {
             tempMandQ[t.name].quests.push(quests[qIndex]);
             questsNumber += 1;
           }
+          return null;
         });
       }
       if (merchantsNumber === 0 && questsNumber === 0) {
         delete tempMandQ[t.name];
       }
+      return null;
     });
     this.setState(state => ({
       ...state,
@@ -80,6 +83,7 @@ class TownsHistoryPanel extends Component {
       if (t.name === city) {
         showedTown = t;
       }
+      return null;
     });
     this.setState(state => ({
       ...state,

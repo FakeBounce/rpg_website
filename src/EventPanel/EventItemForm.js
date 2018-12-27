@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import EventItem from './EventItem';
 import { sortAlphabetical } from '../Utils/Functions';
 import SelectMapper from '../Utils/SelectMapper';
-import { bonusList, itemEventTypes } from '../Utils/Constants';
+import { itemEventTypes } from '../Utils/Constants';
 
 const styledItemList = {
   width: '100%',
@@ -28,7 +28,10 @@ class EventItemForm extends PureComponent {
     Object.keys(items).map(ikey => {
       if (ikey !== 'runes' && ikey !== 'enhancements') {
         Object.keys(items[ikey]).map(key => {
-          return filteredItems.push({ ...items[ikey][key], itemType: ikey });
+          return filteredItems.push({
+            ...items[ikey][key],
+            itemType: ikey,
+          });
         });
       }
       return null;
@@ -72,10 +75,12 @@ class EventItemForm extends PureComponent {
     orderedItems.map(item => {
       if (
         item.name.indexOf(filterText) !== -1 &&
-        (filterType !== '' && item.itemType === filterType)
+        ((filterType !== '' && item.itemType === filterType) ||
+          filterType === '')
       ) {
         tempFilter.push(item);
       }
+      return null;
     });
     this.setState(state => ({
       ...state,
@@ -87,7 +92,6 @@ class EventItemForm extends PureComponent {
     const { descriptionEvent, quantityEvent, itemEvent, onChange } = this.props;
     const { filteredItems, filterText, filterType } = this.state;
 
-    console.log('filteredItems', filteredItems);
     return (
       <div>
         <div>
@@ -110,10 +114,16 @@ class EventItemForm extends PureComponent {
           {filteredItems.map(i => {
             return (
               <EventItem
-                key={`event-item-${i.itemType}-${i.name}`}
+                key={`event-item-${i.itemType}-${i.name}-${i.type}`}
                 itemEvent={itemEvent}
                 onChange={onChange}
-                i={i}
+                i={{
+                  ...i,
+                  name:
+                    i.itemType === 'spells'
+                      ? i.name + ' (' + i.type + ')'
+                      : i.name,
+                }}
                 ikey={i.itemType}
               />
             );

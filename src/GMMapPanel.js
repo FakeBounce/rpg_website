@@ -6,11 +6,7 @@ import EventPanel from './EventPanel/EventPanel';
 import MapEditionPanel from './MapEditionPanel/MapEditionPanel';
 import StoryQuestsAndMerchantsPanel from './StoryQuestsAndMerchantsPanel/StoryQuestsAndMerchantsPanel';
 import TownPanel from './TownPanel/TownPanel';
-import PanelToggle from './PanelToggle';
 import SpellGenerator from './SpellGenerator';
-import ButtonLarge from './Utils/ButtonLarge';
-import TeamPanel from './TeamCharacters/TeamPanel';
-import firebase from 'firebase';
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -41,29 +37,12 @@ const styledContainer = {
 class GMMapPanel extends Component {
   state = {
     isOnQuest: true,
-    isOnMap: true,
-    isOnSpell: false,
-    townToAssign: -1,
   };
 
   toggleRightPanel = bool => {
     this.setState(state => ({
       ...state,
       isOnQuest: bool,
-    }));
-  };
-
-  toggleIsOnMap = bool => {
-    this.setState(state => ({
-      ...state,
-      isOnMap: bool,
-    }));
-  };
-
-  toggleIsOnSpell = bool => {
-    this.setState(state => ({
-      ...state,
-      isOnSpell: bool,
     }));
   };
 
@@ -74,56 +53,6 @@ class GMMapPanel extends Component {
       ...state,
       ...obj,
     }));
-  };
-
-  chatWithTeamMember = pseudo => {
-    if (pseudo === 'GM') {
-      this.props.doSetState({
-        chatInput: `/gmw `,
-      });
-    } else {
-      this.props.doSetState({
-        chatInput: `/w ${pseudo} `,
-      });
-    }
-  };
-
-  goldWithTeamMember = pseudo => {
-    if (pseudo === 'GM') {
-      this.props.doSetState({
-        chatInput: `/goldgm `,
-      });
-    } else {
-      this.props.doSetState({
-        chatInput: `/gold ${pseudo} `,
-      });
-    }
-  };
-
-  modifyCurrentCharacter = uid => {
-    const { currentStory, isGameMaster, doSetState } = this.props;
-
-    if (isGameMaster) {
-      firebase
-        .database()
-        .ref(
-          'stories/' +
-            currentStory +
-            '/characters/' +
-            this.props.uid +
-            '/character'
-        )
-        .off();
-      firebase
-        .database()
-        .ref('stories/' + currentStory + '/characters/' + uid + '/character')
-        .on('value', snapshot => {
-          doSetState({
-            uid,
-            character: snapshot.val(),
-          });
-        });
-    }
   };
 
   render() {
@@ -148,7 +77,7 @@ class GMMapPanel extends Component {
       towns,
       triggerError,
     } = this.props;
-    const { isOnQuest, isOnMap, isOnSpell, hasHydrated } = this.state;
+    const { isOnQuest } = this.state;
 
     return (
       <div style={styledMiddlePanel}>
@@ -204,6 +133,7 @@ class GMMapPanel extends Component {
 }
 
 GMMapPanel.defaultProps = {
+  items: null,
   textureToApply: null,
 };
 
@@ -218,7 +148,7 @@ GMMapPanel.propTypes = {
   doSetState: PropTypes.func.isRequired,
   eventHistory: PropTypes.array.isRequired,
   gameMaster: PropTypes.string.isRequired,
-  items: PropTypes.object.isRequired,
+  items: PropTypes.object,
   merchants: PropTypes.array.isRequired,
   musicName: PropTypes.string.isRequired,
   musicVolume: PropTypes.number.isRequired,

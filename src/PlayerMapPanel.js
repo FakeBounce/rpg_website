@@ -531,7 +531,7 @@ PlayerMapPanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
   isItemShowed: PropTypes.bool.isRequired,
-  itemsList: PropTypes.object.isRequired,
+  itemsList: PropTypes.array.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,
   itemToDescribe: PropTypes.object.isRequired,
   isTownShowed: PropTypes.bool.isRequired,

@@ -19,6 +19,7 @@ class TownsHistoryMerchantColumnList extends Component {
         {Object.keys(merchants[currentMerchant].items).map(iKey => {
           return (
             <Item
+              key={'town-list-column-merchant-item-' + iKey}
               index={iKey}
               showItemDescription={() => {}}
               noPrice
@@ -38,7 +39,7 @@ class TownsHistoryMerchantColumnList extends Component {
 TownsHistoryMerchantColumnList.propTypes = {
   character: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
-  currentMerchant: PropTypes.object.isRequired,
+  currentMerchant: PropTypes.number.isRequired,
 };
 
 export default TownsHistoryMerchantColumnList;

@@ -110,7 +110,7 @@ export const resetEvents = id => {
 export const loadAllItems = (doSetState, currentStory = -1, cb = () => {}) => {
   firebase
     .database()
-    .ref('stories/0/items')
+    .ref('items')
     .once('value')
     .then(snapshot => {
       doSetState({
@@ -273,7 +273,6 @@ export const listenTowns = (currentStory, doSetState) => {
     .database()
     .ref('/stories/' + currentStory + '/towns')
     .on('value', snapshot => {
-      console.log('towns', snapshot.val());
       doSetState({
         towns: snapshot.val(),
       });
@@ -380,13 +379,8 @@ export const loadChat = (currentStory, doSetState) => {
     .limitToLast(50)
     .once('value')
     .then(snapshot => {
-      const chat = [];
-      Object.keys(snapshot.val()).map(key => {
-        chat.push(snapshot.val()[key]);
-        return null;
-      });
       doSetState({
-        chatHistory: chat,
+        chatHistory: snapshot.val(),
       });
     })
     .catch(error => {

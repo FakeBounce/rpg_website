@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import {
   heightLeft,
-  widthLeft,
   widthLeftBestiary,
 } from '../Utils/StyleConstants';
 import Beast from './Beast';

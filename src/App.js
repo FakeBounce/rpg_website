@@ -605,7 +605,7 @@ class App extends Component {
   };
 
   createChat = () => {
-    loadChat(this.state.currentStory, this.doSetState);
+    // loadChat(this.state.currentStory, this.doSetState);
 
     firebase
       .database()

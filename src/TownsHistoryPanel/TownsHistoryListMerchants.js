@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import TownsHistoryListMerchant from './TownsHistoryListMerchant';
 import TownsHistoryListMerchantsHeader from './TownsHistoryListMerchantsHeader';
 
-const styledTownContainer = { width: '100%' };
-
 class TownsHistoryListMerchants extends Component {
   render() {
     const { town, showMerchant } = this.props;
@@ -14,6 +12,7 @@ class TownsHistoryListMerchants extends Component {
         {town.merchants.map(m => {
           return (
             <TownsHistoryListMerchant
+              key={'town-list-merchant-' + m.name}
               showMerchant={showMerchant}
               merchant={m}
             />

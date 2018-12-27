@@ -175,8 +175,12 @@ class EventPanel extends Component {
   }
 }
 
+EventPanel.defaultProps = {
+  items: null,
+};
+
 EventPanel.propTypes = {
-  items: PropTypes.object.isRequired,
+  items: PropTypes.object,
   currentStory: PropTypes.number.isRequired,
   eventHistory: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,

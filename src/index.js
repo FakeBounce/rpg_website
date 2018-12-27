@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import firebase from "firebase";
 import App from './App';
-import registerServiceWorker, { unregister } from "./registerServiceWorker";
+import { unregister } from "./registerServiceWorker";
 
 var config = {
     apiKey: "AIzaSyA7Uk2daoLGmxUlJp07uEvXu826Q3_uXdc",

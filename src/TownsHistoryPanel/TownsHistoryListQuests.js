@@ -10,7 +10,13 @@ class TownsHistoryListQuests extends Component {
       <Fragment>
         {town.quests.length > 0 && <TownsHistoryListQuestsHeader />}
         {town.quests.map(q => {
-          return <TownsHistoryListQuest showQuest={showQuest} quest={q} />;
+          return (
+            <TownsHistoryListQuest
+              key={'town-list-quest-' + q.name}
+              showQuest={showQuest}
+              quest={q}
+            />
+          );
         })}
       </Fragment>
     );

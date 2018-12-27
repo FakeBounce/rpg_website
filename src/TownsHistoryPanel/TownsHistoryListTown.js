@@ -37,7 +37,7 @@ class TownsHistoryListTown extends Component {
 }
 
 TownsHistoryListTown.propTypes = {
-  townsOrdered: PropTypes.array.isRequired,
+  townsOrdered: PropTypes.object.isRequired,
   showCity: PropTypes.func.isRequired,
   showMerchant: PropTypes.func.isRequired,
   showQuest: PropTypes.func.isRequired,

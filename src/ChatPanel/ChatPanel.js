@@ -745,6 +745,7 @@ class ChatPanel extends PureComponent {
           {chatDices.map(d => {
             return (
               <img
+                key={d.tip}
                 src={d.image}
                 alt={d.alt}
                 style={styles.ChatDice}
@@ -817,7 +818,7 @@ ChatPanel.propTypes = {
   character: PropTypes.object.isRequired,
   pseudo: PropTypes.string.isRequired,
   chatInput: PropTypes.string.isRequired,
-  chatHistory: PropTypes.array.isRequired,
+  chatHistory: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,

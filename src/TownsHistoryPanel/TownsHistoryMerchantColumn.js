@@ -34,7 +34,7 @@ class TownsHistoryMerchantColumn extends Component {
 TownsHistoryMerchantColumn.propTypes = {
   character: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
-  currentMerchant: PropTypes.object.isRequired,
+  currentMerchant: PropTypes.number.isRequired,
 };
 
 export default TownsHistoryMerchantColumn;

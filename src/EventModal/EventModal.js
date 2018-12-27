@@ -572,6 +572,7 @@ class EventModal extends PureComponent {
         <div style={styledEventTitle}>EVENEMENT !</div>
         {eventHistory[currentEvent].type !== "draw" && (
           <EventModalViewers
+            gameMaster={gameMaster}
             isGameMaster={isGameMaster}
             currentEvent={currentEvent}
             eventHistory={eventHistory}
@@ -637,11 +638,13 @@ class EventModal extends PureComponent {
             {storyCharacters.map(sc => {
               return sc.userUid === gameMaster ? (
                 <Draw
+                  key={"gm-drawer-"+sc.userUid}
                   name={"GameMaster"}
                   disabled={uid !== gameMaster}
                 />
               ) : (
                 <Draw
+                  key={"drawer-"+sc.userUid}
                   uid={sc.userUid}
                   disabled={uid !== sc.userUid}
                   name={sc.name}

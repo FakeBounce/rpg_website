@@ -21,6 +21,7 @@ class TownsHistoryCity extends Component {
         {showedTown.merchantsList.map(m => {
           return (
             <TownsHistoryMerchantColumn
+              key={'town-list-city-merchant-' + m}
               character={character}
               merchants={merchants}
               currentMerchant={m}

@@ -31,14 +31,15 @@ class Item extends Component {
 
 Item.defaultProps = {
   type: '',
+  iconPath: '',
   description: '',
   noPrice: false,
 };
 
 Item.propTypes = {
-  index: PropTypes.number.isRequired,
+  index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   icon: PropTypes.string.isRequired,
-  iconPath: PropTypes.string.isRequired,
+  iconPath: PropTypes.string,
   itemType: PropTypes.string.isRequired,
   type: PropTypes.string,
   description: PropTypes.string,

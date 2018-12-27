@@ -232,8 +232,12 @@ class SpellGenerator extends PureComponent {
   }
 }
 
+SpellGenerator.defaultProps = {
+  items: null,
+};
+
 SpellGenerator.propTypes = {
-  items: PropTypes.object.isRequired,
+  items: PropTypes.object,
 };
 
 export default SpellGenerator;

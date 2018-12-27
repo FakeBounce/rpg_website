@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Item from '../ItemPanel/Item';
-import { heightLeft, widthLeftBestiary } from '../Utils/StyleConstants';
+import { heightLeft } from '../Utils/StyleConstants';
 
 const styledListContainer = {
   width: '100%',
@@ -22,6 +22,7 @@ class TownsHistorySoloMerchantList extends Component {
         {Object.keys(showedMerchant.items).map(iKey => {
           return (
             <Item
+              key={'town-list-merchant-item-'+iKey}
               index={iKey}
               showItemDescription={() => {}}
               noPrice

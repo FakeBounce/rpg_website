@@ -1,32 +1,33 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 const styledBoxHeader = {
-  width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
-  float: "left",
-  position: "relative",
-  display: "inline-block",
+  width: '100%',
+  height: '20px',
+  marginBottom: '5px',
+  textAlign: 'center',
+  float: 'left',
+  position: 'relative',
+  display: 'inline-block',
 };
 
 const styledViewer = {
   height: 20,
   marginLeft: 20,
   marginRight: 20,
-  textAlign: "center",
-  position: "relative",
-  display: "inline-block",
+  textAlign: 'center',
+  position: 'relative',
+  display: 'inline-block',
 };
 
 const styledNoViewer = {
-  border: "1px solid red",
+  border: '1px solid red',
 };
 
 class EventModalViewers extends Component {
   render() {
     const {
+      gameMaster,
       isGameMaster,
       currentEvent,
       eventHistory,
@@ -48,38 +49,48 @@ class EventModalViewers extends Component {
                 return null;
               });
               if (isAViewer) {
+                if (sc.userUid !== gameMaster) {
+                  return (
+                    <div
+                      key={'viewer-' + sc.userUid}
+                      onClick={() => removeViewerFromEvent(sc.userUid)}
+                      style={styledViewer}
+                    >
+                      {sc.name}
+                    </div>
+                  );
+                }
+              } else if (isGameMaster) {
+                if (sc.userUid !== gameMaster) {
+                  return (
+                    <div
+                      key={'viewer-' + sc.userUid}
+                      onClick={() => addViewerToEvent(sc.userUid)}
+                      style={{
+                        ...styledViewer,
+                        ...styledNoViewer,
+                      }}
+                    >
+                      {sc.name}
+                    </div>
+                  );
+                }
+              }
+              return null;
+            })
+          : storyCharacters.map(sc => {
+              if (sc.userUid !== gameMaster) {
                 return (
                   <div
                     onClick={() => removeViewerFromEvent(sc.userUid)}
                     style={styledViewer}
-                  >
-                    {sc.name}
-                  </div>
-                );
-              } else if (isGameMaster) {
-                return (
-                  <div
-                    onClick={() => addViewerToEvent(sc.userUid)}
-                    style={{
-                      ...styledViewer,
-                      ...styledNoViewer,
-                    }}
+                    key={'character-viewer-' + sc.userUid}
                   >
                     {sc.name}
                   </div>
                 );
               }
               return null;
-            })
-          : storyCharacters.map(sc => {
-              return (
-                <div
-                  onClick={() => removeViewerFromEvent(sc.userUid)}
-                  style={styledViewer}
-                >
-                  {sc.name}
-                </div>
-              );
             })}
         {`)`}
       </div>
@@ -88,6 +99,7 @@ class EventModalViewers extends Component {
 }
 
 EventModalViewers.propTypes = {
+  gameMaster: PropTypes.string.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
   currentEvent: PropTypes.number.isRequired,
   eventHistory: PropTypes.array.isRequired,

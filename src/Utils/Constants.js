@@ -470,7 +470,7 @@ export const defaultState = {
   characterCreation: false,
   characterId: 0,
   characters: {},
-  chatHistory: [],
+  chatHistory: {},
   chatInput: '',
   currentEvent: -1,
   currentMerchant: -1,

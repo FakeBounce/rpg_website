@@ -4,7 +4,6 @@ import { cursorPointer } from "../Utils/StyleConstants";
 
 const styledItem = {
   width: "100%",
-  height: 20,
   display: "inline-block",
   float: "left",
   position: "relative",

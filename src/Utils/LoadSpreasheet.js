@@ -141,15 +141,10 @@ class LoadSpreasheet extends Component {
         };
         spreadSheetMerchants[currentList] = merchantsRow;
 
-        this.setState(
-          state => ({
-            ...state,
-            spreadSheet: spreadSheetMerchants,
-          }),
-          () => {
-            console.log('state', this.state.spreadSheet);
-          }
-        );
+        this.setState(state => ({
+          ...state,
+          spreadSheet: spreadSheetMerchants,
+        }));
       })
       .catch(e => this.props.triggerError(e));
   };

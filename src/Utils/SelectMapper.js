@@ -27,11 +27,11 @@ class SelectMapper extends Component {
 
 SelectMapper.defaultProps = {
   style: {},
-}
+};
 
 SelectMapper.propTypes = {
   mapArray: PropTypes.array.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   style: PropTypes.object,
 };

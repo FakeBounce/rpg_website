@@ -4,7 +4,7 @@ import firebase from 'firebase';
 import CanvasDraw from 'react-canvas-draw';
 import { mapWidth, widthLeft } from './Utils/StyleConstants';
 
-const defaultWidth = (widthLeft + mapWidth) / 2 - 10;
+const defaultWidth = (widthLeft + mapWidth) / 2 - 10 + 2;
 const otherWidth = ((widthLeft + mapWidth) / 2 - 10) / 2;
 
 class Draw extends Component {
@@ -30,7 +30,18 @@ class Draw extends Component {
       .ref('stories/' + 0 + '/draw/' + this.props.uid)
       .on('value', snapshot => {
         if (this.canvas) {
-          this.canvas.loadSaveData(snapshot.val(), false);
+          if (typeof snapshot.val() === 'string') {
+            this.canvas.loadSaveData(snapshot.val(), false);
+          } else {
+            firebase
+              .database()
+              .ref('stories/' + 0 + '/draw/' + this.props.uid)
+              .set('{"lines":[],"width":400,"height":400}')
+              .catch(error => {
+                // Handle Errors here.
+                this.triggerError(error);
+              });
+          }
         }
       });
   }

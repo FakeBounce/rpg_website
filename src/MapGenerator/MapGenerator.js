@@ -12,8 +12,6 @@ import {
 } from '../Utils/StyleConstants';
 import MapZoom from './MapZoom';
 import MapArrows from './MapArrows';
-import Tile from './Tile';
-import TileGM from './TileGM';
 import MapGrid from './MapGrid';
 
 const styledMap = {
@@ -38,7 +36,6 @@ class MapGenerator extends PureComponent {
       path = key;
       return null;
     });
-    console.log('set texture', path, textureToApply);
     updates['/' + parseInt(x, 10) + '/' + parseInt(y, 10) + '/' + path] =
       textureToApply[path];
     for (let i = 0; i <= currentScale - 1; i++) {
