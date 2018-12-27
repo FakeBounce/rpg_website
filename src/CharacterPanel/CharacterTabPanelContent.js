@@ -6,7 +6,7 @@ import ButtonLarge from '../Utils/ButtonLarge';
 
 const styles = {
   tabPanelItem: {
-    width: `${widthRightPanelLeft - 20}px`,
+    width: `${widthRightPanelLeft - 6}px`,
     paddingHorizontal: 5,
     position: 'relative',
     float: 'left',

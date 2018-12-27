@@ -10,7 +10,7 @@ import {
   widthLeft,
 } from '../Utils/StyleConstants';
 import ButtonLarge from '../Utils/ButtonLarge';
-import { bonusList, chatDices } from '../Utils/Constants';
+import { bonusList, chatDices, colors } from '../Utils/Constants';
 import SelectMapper from '../Utils/SelectMapper';
 import FileUploader from '../CharacterCreation/FileUploader';
 
@@ -81,8 +81,11 @@ const styles = {
   ChatPanel: {
     width: widthLeft / 2,
     position: 'absolute',
-    height: heightLeft / 2,
-    top: heightLeft / 2 + heightHeader,
+    height: heightLeft / 2 + 4,
+    top: heightLeft / 2 + heightHeader - 2,
+    backgroundColor: colors.background,
+    color: colors.text,
+    fontSize: 15,
   },
   ChatImageContainer: {
     width: 20,
@@ -732,7 +735,7 @@ class ChatPanel extends PureComponent {
 
     return (
       <div style={styles.ChatPanel}>
-        <div style={styles.Historic}>
+        <div style={styles.Historic} className="scrollbar">
           {this.generateChat(chatHistory)}
           <div
             style={{ float: 'left', clear: 'both' }}

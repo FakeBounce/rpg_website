@@ -35,6 +35,7 @@ const styles = {
     textAlign: 'center',
     fontSize: 12,
     marginTop: -12,
+    color: 'black',
   },
 };
 
@@ -59,11 +60,7 @@ class HealthBar extends Component {
 
         {health > -1 &&
           maxHealth > -1 && (
-            <div
-              style={{
-                ...styles.text,
-              }}
-            >
+            <div style={styles.text}>
               {health} / {maxHealth}
             </div>
           )}

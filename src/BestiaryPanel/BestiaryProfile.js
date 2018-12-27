@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  heightLeft,
-  widthLeftBestiary,
-} from '../Utils/StyleConstants';
+import { heightLeft, widthLeftBestiary } from '../Utils/StyleConstants';
 import Beast from './Beast';
 import PNJ from './PNJ';
 
@@ -22,7 +19,7 @@ class BestiaryProfile extends Component {
   render() {
     const { isGameMaster, uid, beast } = this.props;
     return (
-      <div style={styledBeast}>
+      <div style={styledBeast} className="scrollbar">
         {beast.monster ? (
           <Beast
             name={beast.name}

@@ -7,7 +7,7 @@ import firebase from 'firebase';
 const styledTempContainer = {
   float: 'left',
   width: `${widthLeft}px`,
-  height: `${heightLeft}px`,
+  height: `${heightLeft+2}px`,
   position: 'relative',
   backgroundColor: '#34495e',
 };

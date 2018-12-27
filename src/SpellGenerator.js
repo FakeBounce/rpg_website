@@ -169,7 +169,7 @@ class SpellGenerator extends PureComponent {
     } = this.state;
 
     return (
-      <div style={styledSpellContainer}>
+      <div style={styledSpellContainer} className="scrollbar">
         <input
           type="number"
           placeholder="Valeur du dé"

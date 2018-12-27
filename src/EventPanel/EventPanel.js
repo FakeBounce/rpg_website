@@ -142,7 +142,7 @@ class EventPanel extends Component {
       viewers,
     } = this.state;
     return (
-      <div style={styledEventContainer}>
+      <div style={styledEventContainer} className="scrollbar">
         <EventTypeSelector eventType={eventType} onChange={this.onChange} />
         {(eventType === 'gold' || eventType === 'debt') && (
           <EventGoldForm

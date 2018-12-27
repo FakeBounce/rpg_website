@@ -110,7 +110,7 @@ class EventItemForm extends PureComponent {
             onChange={this.onChangeSelect}
           />
         </div>
-        <div style={styledItemList}>
+        <div style={styledItemList} className="scrollbar">
           {filteredItems.map(i => {
             return (
               <EventItem

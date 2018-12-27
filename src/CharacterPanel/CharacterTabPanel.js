@@ -26,7 +26,7 @@ class CharacterTabPanel extends Component {
     const { character, infoTab, onItemUse, isGameMaster } = this.props;
 
     return (
-      <div style={styles.tabPanel}>
+      <div style={styles.tabPanel} className="scrollbar">
         {infoTab === 'Weapons' && (
           <CharacterTabPanelContent
             tab={character.weapons || []}

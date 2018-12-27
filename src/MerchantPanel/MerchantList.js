@@ -19,7 +19,7 @@ class MerchantList extends Component {
     const { merchantsList, merchants, currentMerchant, showItems } = this.props;
 
     return (
-      <div style={styledItemContainer}>
+      <div style={styledItemContainer} className="scrollbar">
         {merchantsList.map(index => {
           return (
             <Merchant

@@ -4,12 +4,15 @@ import PropTypes from 'prop-types';
 import CharacterAttributes from './CharacterAttributes';
 import CharacterOtherInfos from './CharacterOtherInfos';
 import CharacterHeader from './CharacterHeader';
+import { colors } from '../Utils/Constants';
 
 const styles = {
   CharPanel: {
     borderBottom: '1px solid black',
     width: '100%',
     height: '50%',
+    backgroundColor: colors.background,
+    color: colors.text,
   },
   CharacterBox: { position: 'relative', height: '100%' },
 };

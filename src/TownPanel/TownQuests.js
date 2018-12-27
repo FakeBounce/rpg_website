@@ -37,7 +37,7 @@ class TownQuests extends Component {
         <div onClick={() => toggleRightPanel(true)} style={styledBoxHeader}>
           Quests
         </div>
-        <div style={styledSemiContainer}>
+        <div style={styledSemiContainer} className="scrollbar">
           {quests.map((q, i) => {
             if (q.town === currentTown) {
               return (
