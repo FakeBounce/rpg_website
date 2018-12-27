@@ -133,6 +133,8 @@ class GMMapPanel extends Component {
       currentStory,
       currentTile,
       currentTown,
+      currentX,
+      currentY,
       doSetState,
       eventHistory,
       gameMaster,
@@ -154,6 +156,8 @@ class GMMapPanel extends Component {
           changeCurrentScale={changeCurrentScale}
           currentScale={currentScale}
           currentTile={currentTile}
+          currentX={currentX}
+          currentY={currentY}
           doSetState={doSetState}
           tilesTypes={tilesTypes}
           textureToApply={textureToApply}
@@ -209,6 +213,8 @@ GMMapPanel.propTypes = {
   currentStory: PropTypes.number.isRequired,
   currentTile: PropTypes.object.isRequired,
   currentTown: PropTypes.number.isRequired,
+  currentX: PropTypes.number.isRequired,
+  currentY: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
   eventHistory: PropTypes.array.isRequired,
   gameMaster: PropTypes.string.isRequired,

@@ -110,6 +110,8 @@ class MiddlePanel extends Component {
               currentStory={currentStory}
               currentTile={currentTile}
               currentTown={currentTown}
+              currentX={currentX}
+              currentY={currentY}
               doSetState={doSetState}
               eventHistory={eventHistory}
               gameMaster={gameMaster}

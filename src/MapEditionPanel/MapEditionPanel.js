@@ -18,7 +18,14 @@ class MapEditionPanel extends Component {
   };
 
   toggleIsCurrent = () => {
-    const { stories, currentStory, currentTile, doSetState } = this.props;
+    const {
+      stories,
+      currentStory,
+      currentTile,
+      doSetState,
+      currentX,
+      currentY,
+    } = this.props;
     const newTile = { ...currentTile };
     newTile.isCurrent = !newTile.isCurrent;
     firebase
@@ -27,33 +34,63 @@ class MapEditionPanel extends Component {
         'maps/' +
           stories[currentStory].map +
           '/' +
-          currentTile.y +
+          (currentY + gridLength / 2) +
           '/' +
-          currentTile.x
+          (currentX + gridLength / 2) +
+          '/isCurrent'
       )
-      .set(newTile)
+      .set(null)
       .then(() => {
-        doSetState({
-          currentTile: { ...newTile },
-        });
-        if (newTile.isCurrent) {
-          firebase
-            .database()
-            .ref('stories/' + currentStory + '/currentX')
-            .set(parseInt(newTile.x, 10) - gridLength / 2)
-            .catch(error => {
-              // Handle Errors here.
-              this.props.triggerError(error);
+        console.log(
+          'path',
+          'maps/' +
+            stories[currentStory].map +
+            '/' +
+            (currentY + gridLength / 2) +
+            '/' +
+            (currentX + gridLength / 2) +
+            '/isCurrent'
+        );
+        firebase
+          .database()
+          .ref(
+            'maps/' +
+              stories[currentStory].map +
+              '/' +
+              currentTile.y +
+              '/' +
+              currentTile.x
+          )
+          .set(newTile)
+          .then(() => {
+            doSetState({
+              currentTile: { ...newTile },
+              currentY: currentTile.y - gridLength/2,
+              currentX: currentTile.x - gridLength/2,
             });
-          firebase
-            .database()
-            .ref('stories/' + currentStory + '/currentY')
-            .set(parseInt(newTile.y, 10) - gridLength / 2)
-            .catch(error => {
-              // Handle Errors here.
-              this.props.triggerError(error);
-            });
-        }
+            if (newTile.isCurrent) {
+              firebase
+                .database()
+                .ref('stories/' + currentStory + '/currentX')
+                .set(parseInt(newTile.x, 10) - gridLength / 2)
+                .catch(error => {
+                  // Handle Errors here.
+                  this.props.triggerError(error);
+                });
+              firebase
+                .database()
+                .ref('stories/' + currentStory + '/currentY')
+                .set(parseInt(newTile.y, 10) - gridLength / 2)
+                .catch(error => {
+                  // Handle Errors here.
+                  this.props.triggerError(error);
+                });
+            }
+          })
+          .catch(error => {
+            // Handle Errors here.
+            this.props.triggerError(error);
+          });
       })
       .catch(error => {
         // Handle Errors here.
@@ -114,8 +151,8 @@ class MapEditionPanel extends Component {
           position: 'absolute',
           height: heightLeft / 2,
           top: heightLeft / 2,
-          left: -widthLeft/2,
-          textAlign:'left',
+          left: -widthLeft / 2,
+          textAlign: 'left',
         }}
       >
         <MapEditionTilesList
@@ -144,6 +181,8 @@ MapEditionPanel.defaultProps = {
 };
 
 MapEditionPanel.propTypes = {
+  currentX: PropTypes.number.isRequired,
+  currentY: PropTypes.number.isRequired,
   stories: PropTypes.array.isRequired,
   currentStory: PropTypes.number.isRequired,
   textureToApply: PropTypes.object,
