@@ -10,7 +10,7 @@ class Tile extends PureComponent {
     const {
       row,
       tilesTypes,
-      towns,
+      town,
       currentZoom,
       showTownList,
       cancelTownList,
@@ -36,9 +36,9 @@ class Tile extends PureComponent {
             }}
           />
         )}
-        {row.hasTown > -1 && (
+        {town && (
           <Town
-            town={towns[row.hasTown]}
+            town={town}
             showTownList={showTownList}
             cancelTownList={cancelTownList}
             isCurrent={row.isCurrent || false}
@@ -49,13 +49,17 @@ class Tile extends PureComponent {
   }
 }
 
+Tile.defaultProps = {
+  town: null,
+};
+
 Tile.propTypes = {
   cancelTownList: PropTypes.func.isRequired,
   currentZoom: PropTypes.number.isRequired,
   row: PropTypes.object.isRequired,
   showTownList: PropTypes.func.isRequired,
   tilesTypes: PropTypes.object.isRequired,
-  towns: PropTypes.array.isRequired,
+  town: PropTypes.object,
 };
 
 export default Tile;

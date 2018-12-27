@@ -1,9 +1,9 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import "./Grid.css";
-import Town from "./Town";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import './Grid.css';
+import Town from './Town';
 
-import { gridDimension } from "../Utils/StyleConstants";
+import { gridDimension } from '../Utils/StyleConstants';
 
 class TileGM extends PureComponent {
   render() {
@@ -17,14 +17,12 @@ class TileGM extends PureComponent {
       showInfos,
       textureToApply,
       tilesTypes,
-      towns,
+      town,
     } = this.props;
-
-    console.count('Mabite')
 
     return (
       <div
-        className={`grid ${row.isCurrent && "is-current"}`}
+        className={`grid ${row.isCurrent && 'is-current'}`}
         style={{
           backgroundColor: tilesTypes[row.environment].backgroundColor,
           width: `${(gridDimension * currentZoom) / 10 -
@@ -37,9 +35,9 @@ class TileGM extends PureComponent {
           else showInfos(row);
         }}
       >
-        {row.hasTown > -1 && (
+        {town && (
           <Town
-            town={towns[row.hasTown]}
+            town={town}
             showTownList={() => {
               doSetState({
                 currentTown: row.hasTown,
@@ -64,6 +62,7 @@ class TileGM extends PureComponent {
 }
 
 TileGM.defaultProps = {
+  town: null,
   textureToApply: null,
 };
 
@@ -76,7 +75,7 @@ TileGM.propTypes = {
   showInfos: PropTypes.func.isRequired,
   textureToApply: PropTypes.object,
   tilesTypes: PropTypes.object.isRequired,
-  towns: PropTypes.array.isRequired,
+  town: PropTypes.object,
   index: PropTypes.number.isRequired,
 };
 

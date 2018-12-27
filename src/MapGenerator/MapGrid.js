@@ -65,7 +65,7 @@ class MapGrid extends PureComponent {
               showInfos={this.showInfos}
               textureToApply={textureToApply}
               tilesTypes={tilesTypes}
-              towns={towns}
+              town={row.hasTown > -1 ? towns[row.hasTown] : null}
               index={index}
             />
           ) : (
@@ -76,7 +76,7 @@ class MapGrid extends PureComponent {
               row={row}
               showTownList={this.showTownList}
               tilesTypes={tilesTypes}
-              towns={towns}
+              town={row.hasTown > -1 ? towns[row.hasTown] : null}
             />
           )
         );
@@ -109,9 +109,12 @@ class MapGrid extends PureComponent {
   };
 
   render() {
-    const { map } = this.props;
+    const { map, currentX, currentY } = this.props;
 
-    return this.generateTable(map);
+    if (currentX > -1 && currentY > -1) {
+      return this.generateTable(map);
+    }
+    return null;
   }
 }
 
