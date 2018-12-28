@@ -200,17 +200,21 @@ class ChatPanel extends PureComponent {
     if (splittedString.length > 1) {
       hasWhisperAction = true;
       Object.keys(users).map(key => {
-        if (splittedString[1].split(users[key].pseudo).length > 1) {
+        if (
+          users[key].pseudo &&
+          splittedString[1].indexOf(users[key].pseudo) > -1
+        ) {
+          const textToSend = splittedString[1]
+            .split(users[key].pseudo)[1]
+            .trim();
           this.sendChatInput({
-            message: `@${realPseudo}, you say to @${users[key].pseudo} :${
-              splittedString[1].split(users[key].pseudo)[1]
-            }`,
+            message: `@${realPseudo}, you say to @${
+              users[key].pseudo
+            } :${textToSend}`,
             viewers: [pseudo],
           });
           this.sendChatInput({
-            message: `@${realPseudo} tells you secretly :${
-              splittedString[1].split(users[key].pseudo)[1]
-            }`,
+            message: `@${realPseudo} tells you secretly :${textToSend}`,
             viewers: [users[key].pseudo],
           });
         }
