@@ -195,7 +195,7 @@ class BestiaryPanel extends Component {
 
   toggleSeenBeast = index => {
     const { filteredBestiary } = this.state;
-    const { bestiary } = this.props;
+    const { bestiary, currentStory } = this.props;
     const tempBestiary = [...bestiary];
     const tempFilteredBestiary = [...filteredBestiary];
 
@@ -212,12 +212,23 @@ class BestiaryPanel extends Component {
 
     firebase
       .database()
-      .ref('stories/' + 0 + '/bestiary')
+      .ref('stories/' + currentStory + '/bestiary')
       .set(tempBestiary)
       .catch(error => {
         // Handle Errors here.
         this.triggerError(error);
       });
+    if(tempFilteredBestiary[index].seen)
+    {
+      firebase
+        .database()
+        .ref('stories/' + currentStory + '/tempoImage')
+        .set("bestiary/"+tempFilteredBestiary[index].image)
+        .catch(error => {
+          // Handle Errors here.
+          console.log('Error', error);
+        });
+    }
   };
 
   displayMonsterForm = () => {

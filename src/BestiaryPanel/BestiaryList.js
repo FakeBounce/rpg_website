@@ -86,7 +86,7 @@ class BestiaryList extends Component {
             onClick={displayMonsterForm}
           >
             <img
-              src={'./common/unknown_image_black.png'}
+              src={'./common/unknown_image_white.png'}
               style={styledImage}
               alt={'Unknown'}
             />

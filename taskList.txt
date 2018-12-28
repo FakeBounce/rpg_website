@@ -73,8 +73,11 @@ v2.15.1
 21) Ajouter les items déjà vus (Marchand, prix, ville) - OK
 22) Faire un compteur de réussite/fail et attribuer des bonus en fonction - NO
 
-v2.24.3
+v2.24.2
 23) Pouvoir afficher/cacher des joueurs de l'équipe
+
+v2.24.3
+24) Ajouter les stats dans le bestiaire
 
 
 BDD : https://rpgwebsite-8a535.firebaseio.com/

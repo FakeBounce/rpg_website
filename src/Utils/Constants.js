@@ -936,6 +936,8 @@ export const colors = {
   textSeen: 'yellow',
   borders: '#f3f3f3',
   selected: 'red',
+  beastSelected: 'red',
+  PNJSelected: 'red',
   GMSelected: 'purple',
 };
 

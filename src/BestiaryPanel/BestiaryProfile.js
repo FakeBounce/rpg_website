@@ -28,9 +28,11 @@ class BestiaryProfile extends Component {
             text2={beast[uid].text2 || isGameMaster ? beast.text2 : ''}
             text3={beast[uid].text3 || isGameMaster ? beast.text3 : ''}
             text4={beast[uid].text4 || isGameMaster ? beast.text4 : ''}
-            dangerosity={beast[uid].dangerosity ? beast.dangerosity : ''}
-            taille={beast[uid].taille ? beast.taille : ''}
-            poids={beast[uid].poids ? beast.poids : ''}
+            dangerosity={
+              beast[uid].dangerosity || isGameMaster ? beast.dangerosity : ''
+            }
+            taille={beast[uid].taille || isGameMaster ? beast.taille : ''}
+            poids={beast[uid].poids || isGameMaster ? beast.poids : ''}
           />
         ) : (
           <PNJ
@@ -40,9 +42,9 @@ class BestiaryProfile extends Component {
             text2={beast[uid].text2 || isGameMaster ? beast.text2 : ''}
             text3={beast[uid].text3 || isGameMaster ? beast.text3 : ''}
             text4={beast[uid].text4 || isGameMaster ? beast.text4 : ''}
-            age={beast[uid].age ? beast.age : ''}
-            taille={beast[uid].taille ? beast.taille : ''}
-            poids={beast[uid].poids ? beast.poids : ''}
+            age={beast[uid].age || isGameMaster ? beast.age : ''}
+            taille={beast[uid].taille || isGameMaster ? beast.taille : ''}
+            poids={beast[uid].poids || isGameMaster ? beast.poids : ''}
           />
         )}
       </div>
