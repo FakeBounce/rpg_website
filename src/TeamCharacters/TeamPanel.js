@@ -62,7 +62,7 @@ class TeamPanel extends PureComponent {
           <TeamCharacter
             icon="./common/gameMaster.jpg"
             name="Game Master"
-            status="FURIOUS"
+            status="GUILEFUL"
             gold={999999}
             health={9999}
             maxHealth={9999}

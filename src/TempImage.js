@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { heightLeft, widthLeft } from './Utils/StyleConstants';
 import { tempoImagesList } from './Utils/Constants';
@@ -7,7 +7,7 @@ import firebase from 'firebase';
 const styledTempContainer = {
   float: 'left',
   width: `${widthLeft}px`,
-  height: `${heightLeft+2}px`,
+  height: `${heightLeft + 2}px`,
   position: 'relative',
   backgroundColor: '#34495e',
 };
@@ -25,7 +25,7 @@ const styledTempSelect = {
   zIndex: 1,
 };
 
-class TempImage extends Component {
+class TempImage extends PureComponent {
   state = {
     tempImage: 'noTown.jpg',
     bestiaryList: [],

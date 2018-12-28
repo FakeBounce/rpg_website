@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { heightLeft } from "../Utils/StyleConstants";
+import { heightLeft } from '../Utils/StyleConstants';
 
 const styles = {
   ChatRow: {
@@ -17,7 +17,7 @@ const styles = {
   },
 };
 
-class ChatRow extends Component {
+class ChatRow extends PureComponent {
   render() {
     const { pseudo, message, image } = this.props;
 

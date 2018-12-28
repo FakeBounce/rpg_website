@@ -2,103 +2,20 @@ import React, { PureComponent } from 'react';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-import ChatRow from './ChatRow';
-import {
-  cursorPointer,
-  heightHeader,
-  heightLeft,
-  widthLeft,
-} from '../Utils/StyleConstants';
-import ButtonLarge from '../Utils/ButtonLarge';
-import { bonusList, chatDices, colors } from '../Utils/Constants';
-import SelectMapper from '../Utils/SelectMapper';
-import FileUploader from '../CharacterCreation/FileUploader';
+import { heightHeader, heightLeft, widthLeft } from '../Utils/StyleConstants';
+import { colors } from '../Utils/Constants';
+import ChatBar from './ChatBar';
+import ChatDicesRow from './ChatDicesRow';
+import ChatHistory from './ChatHistory';
 
-const styles = {
-  Historic: {
-    width: widthLeft / 2,
-    height: `${heightLeft / 2 - (25 + 5) - 25}px`,
-    float: 'left',
-    display: 'inline-block',
-    overflowY: 'auto',
-  },
-  ChatBox: {
-    width: widthLeft / 2,
-    height: '20px',
-    float: 'left',
-    display: 'inline-block',
-    marginTop: '5px',
-  },
-  ChatInput: {
-    width: widthLeft / 2 - 51,
-    height: '20px',
-    float: 'left',
-    display: 'inline-block',
-    marginLeft: 20,
-  },
-  ChatButton: {
-    width: 25,
-    height: '26px',
-    float: 'left',
-    display: 'inline-block',
-    textAlign: 'center',
-    padding: '0px',
-  },
-  ChatButtonGMActive: {
-    width: 40,
-    height: 26,
-    float: 'right',
-    display: 'inline-block',
-    textAlign: 'center',
-    padding: '0px',
-    backgroundColor: 'purple',
-    color: 'white',
-  },
-  ChatButtonGM: {
-    width: 40,
-    height: 26,
-    float: 'right',
-    display: 'inline-block',
-    textAlign: 'center',
-    padding: '0px',
-  },
-  ChatDices: {
-    width: widthLeft / 2,
-    height: '25px',
-    float: 'left',
-    display: 'inline-block',
-    position: 'relative',
-  },
-  ChatDice: {
-    padding: '1px 5px',
-    width: '23px',
-    height: '23px',
-    float: 'left',
-    display: 'inline-block',
-    position: 'relative',
-    cursor: cursorPointer,
-  },
-  ChatPanel: {
-    width: widthLeft / 2,
-    position: 'absolute',
-    height: heightLeft / 2 + 4,
-    top: heightLeft / 2 + heightHeader - 2,
-    backgroundColor: colors.background,
-    color: colors.text,
-    fontSize: 15,
-  },
-  ChatImageContainer: {
-    width: 20,
-    height: 25,
-    position: 'absolute',
-    bottom: 3,
-    left: 0,
-  },
-  ChatSelect: {
-    display: 'inline-block',
-    float: 'left',
-    width: 40,
-  },
+const styledChatPanel = {
+  width: widthLeft / 2,
+  position: 'absolute',
+  height: heightLeft / 2 + 4,
+  top: heightLeft / 2 + heightHeader - 2,
+  backgroundColor: colors.background,
+  color: colors.text,
+  fontSize: 15,
 };
 
 class ChatPanel extends PureComponent {
@@ -106,21 +23,6 @@ class ChatPanel extends PureComponent {
     gmCommands: false,
     bonus: 0,
   };
-  messagesEnd = null;
-  chatInputRef = null;
-
-  componentDidMount() {
-    this.scrollToBottom();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.chatInput !== this.props.chatInput) {
-      this.chatInputRef.focus();
-    }
-    if (prevProps.chatHistory !== this.props.chatHistory) {
-      this.scrollToBottom();
-    }
-  }
 
   onChangeDice = value => {
     this.setState(state => ({
@@ -129,42 +31,22 @@ class ChatPanel extends PureComponent {
     }));
   };
 
-  scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+  toggleGMCommands = () => {
+    this.setState(state => ({
+      ...state,
+      gmCommands: !state.gmCommands,
+    }));
+  };
+
+  launchCommand = command => {
+    const { gmCommands } = this.state;
+    this.attributeAction(command, gmCommands);
   };
 
   handleKeyPress = event => {
     if (event.key === 'Enter') {
       this.talkInChat();
     }
-  };
-
-  generateChat = chatHistory => {
-    const table = [];
-    Object.keys(chatHistory).map(key => {
-      if (
-        chatHistory[key].viewers &&
-        this.isAViewer(chatHistory[key].viewers)
-      ) {
-        table.push(<ChatRow key={`chat-row-${key}`} {...chatHistory[key]} />);
-      } else if (!chatHistory[key].viewers) {
-        table.push(<ChatRow key={`chat-row-${key}`} {...chatHistory[key]} />);
-      }
-      return null;
-    });
-    return table;
-  };
-
-  isAViewer = viewersTab => {
-    const { pseudo, isGameMaster } = this.props;
-    let canSeeMessage = false;
-
-    viewersTab.map(viewer => {
-      if (viewer === 'gm' && isGameMaster) canSeeMessage = true;
-      if (viewer === pseudo) canSeeMessage = true;
-      return null;
-    });
-    return canSeeMessage;
   };
 
   talkInChat = () => {
@@ -662,23 +544,6 @@ class ChatPanel extends PureComponent {
       });
   };
 
-  launchCommand = command => {
-    this.props.doSetState(
-      {
-        error: '',
-        chatInput: (this.state.gmCommands ? '/gm' : '/') + command,
-      },
-      () => this.talkInChat()
-    );
-  };
-
-  toggleGMCommands = () => {
-    this.setState(state => ({
-      ...state,
-      gmCommands: !state.gmCommands,
-    }));
-  };
-
   onDrop = picture => {
     const { triggerError, chatInput, doSetState, currentStory } = this.props;
     const newPostKey = firebase
@@ -730,81 +595,37 @@ class ChatPanel extends PureComponent {
   };
 
   render() {
-    const { chatInput, chatHistory, onChange } = this.props;
+    const {
+      chatInput,
+      chatHistory,
+      onChange,
+      gameMaster,
+      pseudo,
+      doSetState,
+    } = this.props;
     const { gmCommands, bonus } = this.state;
 
     return (
-      <div style={styles.ChatPanel}>
-        <div style={styles.Historic} className="scrollbar">
-          {this.generateChat(chatHistory)}
-          <div
-            style={{ float: 'left', clear: 'both' }}
-            ref={el => {
-              this.messagesEnd = el;
-            }}
-          />
-        </div>
-        <div style={styles.ChatDices}>
-          {chatDices.map(d => {
-            return (
-              <img
-                key={d.tip}
-                src={d.image}
-                alt={d.alt}
-                style={styles.ChatDice}
-                onClick={() => this.launchCommand(d.attribute)}
-                data-tip={d.tip}
-              />
-            );
-          })}
-          <SelectMapper
-            mapArray={bonusList}
-            value={bonus}
-            onChange={this.onChangeDice}
-            style={styles.ChatSelect}
-          />
-          <button
-            style={gmCommands ? styles.ChatButtonGMActive : styles.ChatButtonGM}
-            onClick={this.toggleGMCommands}
-          >
-            GM
-          </button>
-        </div>
-        <div style={styles.ChatBox}>
-          <div style={styles.ChatImageContainer}>
-            <FileUploader
-              onDrop={this.onDrop}
-              buttonText="+"
-              fileContainerStyle={{ padding: 0, margin: 0, display: 'block' }}
-              buttonStyles={{
-                width: 20,
-                padding: 0,
-                margin: 0,
-                border: '1px solid #3f4257',
-                cursor: cursorPointer,
-              }}
-              withIcon={false}
-              label=""
-            />
-          </div>
-          <input
-            type="text"
-            name="chatInput"
-            placeholder="Chat !"
-            value={chatInput}
-            onChange={e => {
-              onChange(e.target.name, e.target.value);
-            }}
-            style={styles.ChatInput}
-            onKeyPress={this.handleKeyPress}
-            ref={input => {
-              this.chatInputRef = input;
-            }}
-          />
-          <ButtonLarge style={styles.ChatButton} onClick={this.talkInChat}>
-            OK
-          </ButtonLarge>
-        </div>
+      <div style={styledChatPanel}>
+        <ChatHistory
+          gameMaster={gameMaster}
+          pseudo={pseudo}
+          chatHistory={chatHistory}
+        />
+        <ChatDicesRow
+          bonus={bonus}
+          gmCommands={gmCommands}
+          launchCommand={this.launchCommand}
+          onChangeDice={this.onChangeDice}
+          toggleGMCommands={this.toggleGMCommands}
+        />
+        <ChatBar
+          chatInput={chatInput}
+          onChange={onChange}
+          talkInChat={this.talkInChat}
+          onDrop={this.onDrop}
+          handleKeyPress={this.handleKeyPress}
+        />
         <ReactTooltip />
       </div>
     );

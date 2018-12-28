@@ -815,50 +815,50 @@ export const bonusList = [-30, -20, -10, 0, 10, 20, 30];
 
 export const chatDices = [
   {
-    attribute: 'stre',
-    image: './common/dice_red.jpg',
+    attribute: 'strength',
+    image: './common/dice_red.png',
     alt: 'Strength dice',
     tip: 'Strength',
   },
   {
-    attribute: 'dext',
-    image: './common/dice_green.jpg',
+    attribute: 'dexterity',
+    image: './common/dice_green.png',
     alt: 'Dexterity dice',
     tip: 'Dexterity',
   },
   {
-    attribute: 'perc',
-    image: './common/dice_orange.jpg',
+    attribute: 'perception',
+    image: './common/dice_orange.png',
     alt: 'Perception dice',
     tip: 'Perception',
   },
   {
-    attribute: 'magi',
-    image: './common/dice_purple.jpg',
+    attribute: 'magic',
+    image: './common/dice_purple.png',
     alt: 'Magic dice',
     tip: 'Magic',
   },
   {
-    attribute: 'cons',
-    image: './common/dice_blue.jpg',
+    attribute: 'constitution',
+    image: './common/dice_blue.png',
     alt: 'Constitution dice',
     tip: 'Constitution',
   },
   {
-    attribute: 'char',
+    attribute: 'charisma',
     image: './common/dice_black.png',
     alt: 'Charisma dice',
     tip: 'Charisma',
   },
   {
     attribute: 'luck',
-    image: './common/dice_yellow.jpg',
+    image: './common/dice_yellow.png',
     alt: 'Luck dice',
     tip: 'Luck',
   },
   {
-    attribute: 'educ',
-    image: './common/dice_white.jpg',
+    attribute: 'education',
+    image: './common/dice_white.png',
     alt: 'Education dice',
     tip: 'Education',
   },
@@ -891,47 +891,58 @@ export const initialBestiaryForm = {
 
 export const chatCommands = [
   {
-    name: "/dX, /diceX",
-    action: "Launch dice X, returning random number between 1 and X",
+    name: '/dX, /diceX',
+    action: 'Launch dice X, returning random number between 1 and X',
   },
   {
-    name: "/gmdX, /gmdiceX",
+    name: '/gmdX, /gmdiceX',
     action:
-      "Launch dice X, returning random number between 1 and X. Only GM and you can see it.",
+      'Launch dice X, returning random number between 1 and X. Only GM and you can see it.',
   },
   {
-    name: "/strength, /str, /force, /for...",
+    name: '/strength, /str, /force, /for...',
     action:
-      "Launch dice 100 corresponding to attribute. Says if succeeded or failed.",
+      'Launch dice 100 corresponding to attribute. Says if succeeded or failed.',
   },
   {
-    name: "/w Player Message",
-    action: "Send Message to Player only.",
+    name: '/w Player Message',
+    action: 'Send Message to Player only.',
   },
   {
-    name: "/gmw Message",
-    action: "Send Message to GM only.",
+    name: '/gmw Message',
+    action: 'Send Message to GM only.',
   },
   {
-    name: "/tmw Message",
+    name: '/tmw Message',
     action: "Send Message to team only (GM can't see it).",
   },
   {
-    name: "/gold Player X",
-    action: "Send Gold to Player only.",
+    name: '/gold Player X',
+    action: 'Send Gold to Player only.',
   },
   {
-    name: "/goldgm X",
-    action: "Send X Gold to GM only.",
+    name: '/goldgm X',
+    action: 'Send X Gold to GM only.',
   },
   {
-    name: "/goldtm X",
-    action: "Send X Gold to team.",
+    name: '/goldtm X',
+    action: 'Send X Gold to team.',
   },
 ];
 
 export const colors = {
   background: '#34495e',
   text: 'white',
-  borders:'white',
-}
+  borders: 'white',
+};
+
+export const statusList = [
+  'OK',
+  'Poisoned',
+  'Paralyzed',
+  'Burned',
+  'Sleepy',
+  'Under control',
+  'Unconscious',
+  'Dead',
+];

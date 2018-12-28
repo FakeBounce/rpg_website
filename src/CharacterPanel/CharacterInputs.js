@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ButtonLarge from "../Utils/ButtonLarge";
+import { statusList } from "../Utils/Constants";
 
 const styles = {
   lifeInput: {
@@ -42,17 +43,6 @@ const styles = {
     padding: 0,
   },
 };
-
-const statusList = [
-  "OK",
-  "Poisoned",
-  "Paralyzed",
-  "Burned",
-  "Sleepy",
-  "Under control",
-  "Unconscious",
-  "Dead",
-];
 
 class CharacterInputs extends Component {
   render() {
