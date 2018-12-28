@@ -19,9 +19,7 @@ class ChatHistory extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.chatHistory !== this.props.chatHistory) {
-      this.scrollToBottom();
-    }
+    this.scrollToBottom();
   }
 
   scrollToBottom = () => {

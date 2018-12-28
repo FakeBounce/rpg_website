@@ -44,6 +44,7 @@ class BestiaryList extends Component {
                   position: 'relative',
                   cursor: cursorPointer,
                   borderBottom: isGameMaster ? '1px solid black' : 'none',
+                  color: isGameMaster && b.seen ? 'yellow' : 'white',
                 }}
                 onClick={() => selectBeast(i)}
               >
