@@ -89,11 +89,6 @@ export const hydrateMerchant = (
         if (merchant.items[key].itemType === 'artefacts') {
           delete merchant.items[key].price;
           delete merchant.items[key].quantity;
-          console.log(
-            'merchant.items[key]',
-            merchant.items[key].isAcquired,
-            merchant.items[key].name
-          );
           artefactsLeft[merchant.items[key].key] = merchant.items[key];
         }
         return null;

@@ -151,7 +151,7 @@ class Header extends Component {
           <ButtonLarge style={styledSignOut} onClick={accessChatHelp}>
             {chatHelpTitle}
           </ButtonLarge>
-          <ButtonLarge style={styledTogglingAbsolute} onClick={toggleBestiary}>
+          <ButtonLarge style={styledSignOut} onClick={toggleBestiary}>
             {bestiaryTitle}
           </ButtonLarge>
           <ButtonLarge style={styledSignOut} onClick={toggleMerchantList}>

@@ -50,7 +50,7 @@ V2.9.2
 6)  Ajouter un onglet "Forger" ou "Enchanter" pour les marchands - OK
 7)  Mieux gérer les panneaux du GM - OK
 8)  Mettre du style sur le bestiaire - OK
-9)  Voir si on peut gérer le son vocal/musique
+9)  Voir si on peut gérer le son vocal/musique - OK
 10) Faire de l'édition de bestiaire
 11) Ajouter djimenir en tant que ville
 

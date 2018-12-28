@@ -1,5 +1,5 @@
 export const widthRightPanel = 400;
-export const heightHeader = 125;
+export const heightHeader = 150;
 export const heightCameras = 0;
 export const imageSize = 100;
 export const widthRightPanelLeft = widthRightPanel - imageSize;

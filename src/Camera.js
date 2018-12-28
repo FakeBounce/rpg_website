@@ -12,7 +12,7 @@ const styledVideoContainer = {
   marginLeft: 7,
 };
 const styledVideo = {
-  width: (window.innerWidth - 300) / 7 - 17,
+  width: (window.innerWidth - 300) / 7 - 12,
   height: heightHeader,
   float: 'left',
   position: 'relative',
@@ -22,7 +22,7 @@ const styledCall = {
   position: 'absolute',
   left: 6,
   top: 15,
-  width: (window.innerWidth - 300) / 7 - 17
+  width: (window.innerWidth - 300) / 7 - 12,
 };
 
 const styledMuteImg = {
@@ -327,12 +327,13 @@ class Camera extends Component {
 
       const tempRemoteVideos = { ...this.state.friendsVideoRemote };
       tempRemoteVideos[index] = window.URL.createObjectURL(e.streams[0]);
-      const tempMutes = { ...this.state.friendsMute };
-      tempMutes[index] = false;
       this.setState(state => ({
         ...state,
         friendsVideoRemote: { ...tempRemoteVideos },
-        friendsMute: { ...tempMutes },
+        // friendsVideoRemoteVolume: {
+        //   ...state.friendsVideoRemoteVolume,
+        //   [index]: 1,
+        // },
       }));
     }
   };
@@ -363,9 +364,7 @@ class Camera extends Component {
 
     return (
       <div>
-        <div
-          style={styledCadresContainer}
-        >
+        <div style={styledCadresContainer}>
           <img
             src={'./common/info2.png'}
             alt="cadre"
@@ -425,6 +424,7 @@ class Camera extends Component {
                 autoPlay
                 style={styledVideo}
                 muted={friendsMute[key]}
+                controls
               />
 
               <img
