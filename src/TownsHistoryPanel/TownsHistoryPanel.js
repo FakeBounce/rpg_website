@@ -5,13 +5,14 @@ import TownsHistoryList from './TownsHistoryList';
 import TownsHistorySoloMerchant from './TownsHistorySoloMerchant';
 import TownsHistoryCity from './TownsHistoryCity';
 import TownsHistoryQuest from './TownsHistoryQuest';
+import { colors } from '../Utils/Constants';
 
 const styledTownsHistoryContainer = {
   height: heightLeft,
   width: '100%',
   position: 'relative',
-  backgroundColor: '#34495e',
-  color: 'white',
+  backgroundColor: colors.background,
+  color: colors.text,
 };
 
 class TownsHistoryPanel extends Component {

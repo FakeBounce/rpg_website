@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { heightLeft, widthLeft } from './Utils/StyleConstants';
-import { tempoImagesList } from './Utils/Constants';
+import { colors, tempoImagesList } from "./Utils/Constants";
 import firebase from 'firebase';
 
 const styledTempContainer = {
@@ -9,7 +9,7 @@ const styledTempContainer = {
   width: `${widthLeft}px`,
   height: `${heightLeft + 2}px`,
   position: 'relative',
-  backgroundColor: '#34495e',
+  backgroundColor: colors.background,
 };
 const styledTempImage = {
   maxWidth: `${widthLeft}px`,

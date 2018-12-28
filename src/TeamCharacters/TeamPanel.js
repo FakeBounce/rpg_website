@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import TeamCharacter from './TeamCharacter';
 import { widthRightPanel, heightLeft } from '../Utils/StyleConstants';
 import TeamHeader from './TeamHeader';
-import { colors } from "../Utils/Constants";
+import { colors } from '../Utils/Constants';
 
 const styles = {
   TeamPanel: {
@@ -76,10 +76,7 @@ class TeamPanel extends PureComponent {
           />
 
           {storyCharacters.map(storyCharacter => {
-            if (
-              storyCharacter.userUid !== gameMaster &&
-              storyCharacter.userPseudo !== 'Tadlos'
-            ) {
+            if (storyCharacter.userUid !== gameMaster) {
               return (
                 <TeamCharacter
                   key={storyCharacter.name}

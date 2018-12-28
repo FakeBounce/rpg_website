@@ -12,13 +12,14 @@ import BestiaryList from './BestiaryList';
 import BestiaryProfile from './BestiaryProfile';
 import firebase from 'firebase';
 import BestiaryForm from './BestiaryForm';
+import { colors } from "../Utils/Constants";
 
 const styledBestiaryPanel = {
   height: heightLeft,
   width: '100%',
   position: 'relative',
-  backgroundColor: '#34495e',
-  color: 'white',
+  backgroundColor: colors.background,
+  color: colors.text,
 };
 
 class BestiaryPanel extends Component {

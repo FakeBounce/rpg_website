@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { spellModeList, spellTypeList } from './Utils/Constants';
+import { spellModeList, spellTypeList, colors } from './Utils/Constants';
 
 const styledSpellContainer = {
   position: 'relative',
@@ -213,7 +213,7 @@ class SpellGenerator extends PureComponent {
             background: `url('/common/button2.png') no-repeat`,
             backgroundSize: 'cover',
             height: 25,
-            color: 'white',
+            color: colors.text,
             padding: '5px 15px',
           }}
         >

@@ -3,6 +3,7 @@ import { gridDimension, widthLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import MapEditionTileIcon from "./MapEditionTileIcon";
+import { colors } from "../Utils/Constants";
 
 const styledGrid = {
   border: "1px solid pink",
@@ -26,7 +27,7 @@ class MapEditionTile extends Component {
             tileKey === "Fog"
               ? "black"
               : tileKey === "NoFog"
-                ? "white"
+                ? colors.text
                 : tile.backgroundColor,
         }}
         onClick={() => action()}

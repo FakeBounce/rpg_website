@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { widthLeft } from '../Utils/StyleConstants';
+import { colors } from "../Utils/Constants";
 
 const styledTabs = {
   width: `${widthLeft / 2}px`,
@@ -7,7 +8,7 @@ const styledTabs = {
   position: 'absolute',
   top: 0,
   left: 0,
-  color: 'white',
+  color: colors.text,
   zIndex: 1,
 };
 

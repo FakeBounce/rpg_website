@@ -11,12 +11,13 @@ import ExchangeExit from './ExchangeExit';
 import Cadre from '../Utils/Cadre';
 import ExchangeContent from './ExchangeContent';
 import ExchangeHeader from './ExchangeHeader';
+import { colors } from '../Utils/Constants';
 
 const styledExchangeContainer = {
   position: 'absolute',
   right: widthRightPanel,
   top: heightHeader,
-  color: 'white',
+  color: colors.text,
   width: widthExchangeBox,
   height: heightExchangeBox,
   zIndex: 2,

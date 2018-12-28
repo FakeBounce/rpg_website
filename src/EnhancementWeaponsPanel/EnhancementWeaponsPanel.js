@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { heightLeft, widthLeft } from '../Utils/StyleConstants';
 import Cadre from '../Utils/Cadre';
 import EnhancementWeaponsContent from './EnhancementWeaponsContent';
+import { colors } from "../Utils/Constants";
 
 const styledEnhancementWeaponsContainer = {
   width: `${widthLeft / 2}px`,
@@ -13,7 +14,7 @@ const styledEnhancementWeaponsContainer = {
   textAlign: 'left',
   position: 'relative',
   paddingHorizontal: 10,
-  color: 'white',
+  color: colors.text,
 };
 
 class EnhancementWeaponsPanel extends Component {

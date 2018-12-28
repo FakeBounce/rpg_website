@@ -932,8 +932,11 @@ export const chatCommands = [
 
 export const colors = {
   background: '#34495e',
-  text: 'white',
-  borders: 'white',
+  text: '#f3f3f3',
+  textSeen: 'yellow',
+  borders: '#f3f3f3',
+  selected: 'red',
+  GMSelected: 'purple',
 };
 
 export const statusList = [

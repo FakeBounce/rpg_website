@@ -5,6 +5,7 @@ import {
   widthLeftBestiary,
   widthTextBestiary,
 } from '../Utils/StyleConstants';
+import { colors } from "../Utils/Constants";
 
 const styledImage = {
   position: 'relative',
@@ -41,7 +42,7 @@ const styledParagraph = {
 const styledTitle = {
   fontSize: 22,
   fontWeight: 'bolder',
-  color: 'white',
+  color: colors.text,
 };
 
 class PNJ extends Component {

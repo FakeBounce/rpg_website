@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { heightLeft, widthLeft } from '../Utils/StyleConstants';
+import { colors } from '../Utils/Constants';
 import Cadre from '../Utils/Cadre';
 import EnhanceButton from './EnhanceButton';
 import EnhancerItems from './EnhancerItems';
@@ -14,7 +15,7 @@ const styledEnhancersContainer = {
   textAlign: 'left',
   position: 'relative',
   paddingHorizontal: 15,
-  color: 'white',
+  color: colors.text,
 };
 
 class EnhancersPanel extends Component {

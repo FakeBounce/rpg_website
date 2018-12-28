@@ -31,13 +31,6 @@ const styledHydrateEvent = {
   width: 150,
 };
 
-const styledTogglingAbsolute = {
-  position: 'absolute',
-  top: 100,
-  right: 0,
-  width: 150,
-};
-
 // const styledBoxHeader = {
 //   width: '75%',
 //   height: '20px',
@@ -69,7 +62,7 @@ const styledHeader = {
   height: `${heightHeader}px`,
   backgroundImage: `url(./common/dravos_header.jpg)`,
   backgroundSize: 'cover',
-  // backgroundColor: '#34495e',
+  // backgroundColor: colors.background,
 };
 
 const styledSound = {

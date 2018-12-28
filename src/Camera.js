@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import ButtonLarge from './Utils/ButtonLarge';
 import { heightHeader } from './Utils/StyleConstants';
+import { colors } from './Utils/Constants';
 
 const styledVideoContainer = {
   width: (window.innerWidth - 300) / 7 - 7,
@@ -33,7 +34,7 @@ const styledMuteImg = {
   zIndex: 10,
   left: 0,
   bottom: 0,
-  color: 'white',
+  color: colors.text,
 };
 
 const styledCameraCadre = {

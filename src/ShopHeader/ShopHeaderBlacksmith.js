@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cursorPointer, widthLeft } from '../Utils/StyleConstants';
+import { colors } from '../Utils/Constants';
 
 const styledTabs = {
   width: `${widthLeft / 2}px`,
@@ -17,7 +18,7 @@ const styledTripleTab = {
   display: 'inline-block',
   position: 'relative',
   cursor: cursorPointer,
-  color: 'white',
+  color: colors.text,
 };
 
 const styledTripleTabSelected = {

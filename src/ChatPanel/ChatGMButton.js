@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { colors } from '../Utils/Constants';
 
 const styledChatButtonGMActive = {
   width: 40,
@@ -8,8 +9,8 @@ const styledChatButtonGMActive = {
   display: 'inline-block',
   textAlign: 'center',
   padding: '0px',
-  backgroundColor: 'purple',
-  color: 'white',
+  backgroundColor: colors.GMSelected,
+  color: colors.text,
 };
 
 const styledChatButtonGM = {

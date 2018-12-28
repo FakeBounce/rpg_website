@@ -7,6 +7,7 @@ import {
   widthListPanelBestiary,
 } from '../Utils/StyleConstants';
 import ButtonLarge from '../Utils/ButtonLarge';
+import { colors } from '../Utils/Constants';
 
 const styledImage = {
   position: 'relative',
@@ -44,7 +45,7 @@ class BestiaryList extends Component {
                   position: 'relative',
                   cursor: cursorPointer,
                   borderBottom: isGameMaster ? '1px solid black' : 'none',
-                  color: isGameMaster && b.seen ? 'yellow' : 'white',
+                  color: isGameMaster && b.seen ? colors.textSeen : colors.text,
                 }}
                 onClick={() => selectBeast(i)}
               >
