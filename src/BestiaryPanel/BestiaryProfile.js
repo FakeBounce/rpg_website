@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { heightLeft, widthLeftBestiary } from '../Utils/StyleConstants';
 import Beast from './Beast';
 import PNJ from './PNJ';
+import ButtonLarge from '../Utils/ButtonLarge';
 
 const styledBeast = {
   width: widthLeftBestiary,
@@ -17,9 +18,20 @@ const styledBeast = {
 
 class BestiaryProfile extends Component {
   render() {
-    const { isGameMaster, uid, beast } = this.props;
+    const { isGameMaster, uid, beast, editBeast } = this.props;
     return (
       <div style={styledBeast} className="scrollbar">
+        <ButtonLarge
+          onClick={editBeast}
+          style={{
+            position: 'absolute',
+            right: 60,
+            top: 32,
+            zIndex: 5,
+          }}
+        >
+          Edit
+        </ButtonLarge>
         {beast.monster ? (
           <Beast
             name={beast.name}
@@ -56,6 +68,7 @@ BestiaryProfile.propTypes = {
   isGameMaster: PropTypes.bool.isRequired,
   uid: PropTypes.string.isRequired,
   beast: PropTypes.object.isRequired,
+  editBeast: PropTypes.func.isRequired,
 };
 
 export default BestiaryProfile;

@@ -12,7 +12,7 @@ import BestiaryList from './BestiaryList';
 import BestiaryProfile from './BestiaryProfile';
 import firebase from 'firebase';
 import BestiaryForm from './BestiaryForm';
-import { colors } from "../Utils/Constants";
+import { colors } from '../Utils/Constants';
 
 const styledBestiaryPanel = {
   height: heightLeft,
@@ -27,16 +27,20 @@ class BestiaryPanel extends Component {
     selectedFilter: 'All',
     selectedOrderBy: 'Default',
     selectedOrderByType: 'None',
-    filteredBestiary: [...this.props.bestiary],
+    filteredBestiary: { ...this.props.bestiary },
     selectedBeast: -1,
     isOnForm: false,
+    isOnEditForm: false,
   };
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.bestiary.length !== nextProps.bestiary.length) {
+    if (
+      Object.keys(this.props.bestiary).length !==
+      Object.keys(nextProps.bestiary).length
+    ) {
       this.setState(state => ({
         ...state,
-        filteredBestiary: [...nextProps.bestiary],
+        filteredBestiary: { ...nextProps.bestiary },
       }));
     }
   }
@@ -47,23 +51,23 @@ class BestiaryPanel extends Component {
       this.setState(state => ({
         ...state,
         selectedFilter: value,
-        filteredBestiary: [...bestiary],
+        filteredBestiary: { ...bestiary },
         selectedBeast: -1,
       }));
     } else {
-      const tempBestiary = [];
+      const tempBestiary = {};
       if (value === 'Monster') {
-        bestiary.map(b => {
-          if (b.monster) {
-            tempBestiary.push(b);
+        Object.keys(bestiary).map(bKey => {
+          if (bestiary[bKey].monster) {
+            tempBestiary[bKey] = { ...bestiary[bKey], key: bKey };
           }
           return null;
         });
       }
       if (value === 'PNJ') {
-        bestiary.map(b => {
-          if (!b.monster) {
-            tempBestiary.push(b);
+        Object.keys(bestiary).map(bKey => {
+          if (!bestiary[bKey].monster) {
+            tempBestiary[bKey] = { ...bestiary[bKey], key: bKey };
           }
           return null;
         });
@@ -71,13 +75,14 @@ class BestiaryPanel extends Component {
       this.setState(state => ({
         ...state,
         selectedFilter: value,
-        filteredBestiary: [...tempBestiary],
+        filteredBestiary: { ...tempBestiary },
         selectedBeast: -1,
       }));
     }
   };
 
   onChangeOrderByType = value => {
+    const { filteredBestiary, selectedOrderBy, selectedFilter } = this.state;
     if (value === 'None') {
       this.setState(
         state => ({
@@ -85,40 +90,49 @@ class BestiaryPanel extends Component {
           selectedOrderByType: value,
         }),
         () => {
-          this.onChangeFilter(this.state.selectedFilter);
-          if (this.state.selectedOrderBy !== 'Default') {
-            this.onChangeOrderBy(this.state.selectedOrderBy);
+          this.onChangeFilter(selectedFilter);
+          if (selectedOrderBy !== 'Default') {
+            this.onChangeOrderBy(selectedOrderBy);
           }
         }
       );
     } else {
-      const tempBestiary = [...this.state.filteredBestiary];
+      const tempBestiary = {};
+
       if (value === 'Monster') {
-        tempBestiary.sort((a, b) => {
-          if (!a.monster && b.monster) {
-            return -1;
-          }
-          if (a.monster && !b.monster) {
-            return 1;
-          }
-          return 0;
-        });
+        Object.keys(filteredBestiary)
+          .sort((a, b) => {
+            if (!filteredBestiary[a].monster && filteredBestiary[b].monster) {
+              return 1;
+            }
+            if (filteredBestiary[a].monster && !filteredBestiary[b].monster) {
+              return -1;
+            }
+            return 0;
+          })
+          .forEach(key => {
+            tempBestiary[key] = filteredBestiary[key];
+          });
       }
       if (value === 'PNJ') {
-        tempBestiary.sort((a, b) => {
-          if (!a.monster && b.monster) {
-            return 1;
-          }
-          if (a.monster && !b.monster) {
-            return -1;
-          }
-          return 0;
-        });
+        Object.keys(filteredBestiary)
+          .sort((a, b) => {
+            if (!filteredBestiary[a].monster && filteredBestiary[b].monster) {
+              return -1;
+            }
+            if (filteredBestiary[a].monster && !filteredBestiary[b].monster) {
+              return 1;
+            }
+            return 0;
+          })
+          .forEach(key => {
+            tempBestiary[key] = filteredBestiary[key];
+          });
       }
       this.setState(state => ({
         ...state,
         selectedOrderByType: value,
-        filteredBestiary: [...tempBestiary],
+        filteredBestiary: tempBestiary,
         selectedBeast: -1,
       }));
     }
@@ -126,6 +140,12 @@ class BestiaryPanel extends Component {
 
   onChangeOrderBy = value => {
     const { uid } = this.props;
+    const {
+      selectedFilter,
+      selectedOrderBy,
+      selectedOrderByType,
+      filteredBestiary,
+    } = this.state;
     if (value === 'Default') {
       this.setState(
         state => ({
@@ -133,46 +153,90 @@ class BestiaryPanel extends Component {
           selectedOrderBy: value,
         }),
         () => {
-          this.onChangeFilter(this.state.selectedFilter);
-          if (this.state.selectedOrderBy !== 'All') {
-            this.onChangeOrderByType(this.state.selectedOrderByType);
+          this.onChangeFilter(selectedFilter);
+          if (selectedOrderBy !== 'All') {
+            this.onChangeOrderByType(selectedOrderByType);
           }
         }
       );
     } else {
-      const tempBestiary = [...this.state.filteredBestiary];
+      const tempBestiary = {};
       if (value === 'Alphabetical') {
-        sortAlphabetical(tempBestiary);
+        Object.keys(filteredBestiary)
+          .sort((a, b) => {
+            if (filteredBestiary[a].name > filteredBestiary[b].name) {
+              return 1;
+            }
+            if (filteredBestiary[a].name < filteredBestiary[b].name) {
+              return -1;
+            }
+            return 0;
+          })
+          .forEach(key => {
+            tempBestiary[key] = filteredBestiary[key];
+          });
       }
       if (value === 'Reversed alphabetical') {
-        sortReversedAlphabetical(tempBestiary);
+        Object.keys(filteredBestiary)
+          .sort((a, b) => {
+            if (filteredBestiary[a].name > filteredBestiary[b].name) {
+              return -1;
+            }
+            if (filteredBestiary[a].name < filteredBestiary[b].name) {
+              return 1;
+            }
+            return 0;
+          })
+          .forEach(key => {
+            tempBestiary[key] = filteredBestiary[key];
+          });
       }
       if (value === 'Knowledge') {
-        tempBestiary.sort((a, b) => {
-          if (Object.keys(a[uid]).length > Object.keys(b[uid]).length) {
-            return 1;
-          }
-          if (Object.keys(a[uid]).length < Object.keys(b[uid]).length) {
-            return -1;
-          }
-          return 0;
-        });
+        Object.keys(filteredBestiary)
+          .sort((a, b) => {
+            if (
+              Object.keys(filteredBestiary[a][uid]).length >
+              Object.keys(filteredBestiary[b][uid]).length
+            ) {
+              return 1;
+            }
+            if (
+              Object.keys(filteredBestiary[a][uid]).length <
+              Object.keys(filteredBestiary[b][uid]).length
+            ) {
+              return -1;
+            }
+            return 0;
+          })
+          .forEach(key => {
+            tempBestiary[key] = filteredBestiary[key];
+          });
       }
       if (value === 'Reversed knowledge') {
-        tempBestiary.sort((a, b) => {
-          if (Object.keys(a[uid]).length > Object.keys(b[uid]).length) {
-            return 1;
-          }
-          if (Object.keys(a[uid]).length < Object.keys(b[uid]).length) {
-            return -1;
-          }
-          return 0;
-        });
+        Object.keys(filteredBestiary)
+          .sort((a, b) => {
+            if (
+              Object.keys(filteredBestiary[a][uid]).length >
+              Object.keys(filteredBestiary[b][uid]).length
+            ) {
+              return -1;
+            }
+            if (
+              Object.keys(filteredBestiary[a][uid]).length <
+              Object.keys(filteredBestiary[b][uid]).length
+            ) {
+              return 1;
+            }
+            return 0;
+          })
+          .forEach(key => {
+            tempBestiary[key] = filteredBestiary[key];
+          });
       }
       this.setState(state => ({
         ...state,
         selectedOrderBy: value,
-        filteredBestiary: [...tempBestiary],
+        filteredBestiary: { ...tempBestiary },
         selectedBeast: -1,
       }));
     }
@@ -183,6 +247,14 @@ class BestiaryPanel extends Component {
       ...state,
       selectedBeast: i,
       isOnForm: false,
+      isOnEditForm: false,
+    }));
+  };
+
+  editBeast = () => {
+    this.setState(state => ({
+      ...state,
+      isOnEditForm: true,
     }));
   };
 
@@ -196,18 +268,16 @@ class BestiaryPanel extends Component {
   toggleSeenBeast = index => {
     const { filteredBestiary } = this.state;
     const { bestiary, currentStory } = this.props;
-    const tempBestiary = [...bestiary];
-    const tempFilteredBestiary = [...filteredBestiary];
+    const tempBestiary = { ...bestiary };
+    const tempFilteredBestiary = { ...filteredBestiary };
 
-    tempBestiary.map((b, i) => {
-      if (b.name === tempFilteredBestiary[index].name) {
-        tempFilteredBestiary[index].seen = tempBestiary[i].seen = !b.seen;
-      }
-      return null;
-    });
+    tempFilteredBestiary[index].seen = tempBestiary[index].seen = !tempBestiary[
+      index
+    ].seen;
+
     this.setState(state => ({
       ...state,
-      filteredBestiary: [...tempFilteredBestiary],
+      filteredBestiary: { ...tempFilteredBestiary },
     }));
 
     firebase
@@ -218,12 +288,11 @@ class BestiaryPanel extends Component {
         // Handle Errors here.
         this.triggerError(error);
       });
-    if(tempFilteredBestiary[index].seen)
-    {
+    if (tempFilteredBestiary[index].seen) {
       firebase
         .database()
         .ref('stories/' + currentStory + '/tempoImage')
-        .set("bestiary/"+tempFilteredBestiary[index].image)
+        .set('bestiary/' + tempFilteredBestiary[index].image)
         .catch(error => {
           // Handle Errors here.
           console.log('Error', error);
@@ -235,6 +304,7 @@ class BestiaryPanel extends Component {
     this.setState(state => ({
       ...state,
       isOnForm: true,
+      isOnEditForm: false,
       selectedBeast: -1,
     }));
   };
@@ -248,9 +318,10 @@ class BestiaryPanel extends Component {
       filteredBestiary,
       selectedBeast,
       isOnForm,
+      isOnEditForm,
     } = this.state;
     const { bestiary, doSetState, currentStory } = this.props;
-
+    console.log('selectedBeast', selectedBeast, filteredBestiary);
     return (
       <div style={styledBestiaryPanel}>
         <img
@@ -286,13 +357,22 @@ class BestiaryPanel extends Component {
             currentStory={currentStory}
           />
         )}
-        {selectedBeast !== -1 && (
-          <BestiaryProfile
-            isGameMaster={isGameMaster}
-            uid={uid}
-            beast={filteredBestiary[selectedBeast]}
-          />
-        )}
+        {selectedBeast !== -1 &&
+          (isOnEditForm ? (
+            <BestiaryForm
+              bestiary={bestiary}
+              doSetState={doSetState}
+              currentStory={currentStory}
+              beast={filteredBestiary[selectedBeast]}
+            />
+          ) : (
+            <BestiaryProfile
+              isGameMaster={isGameMaster}
+              uid={uid}
+              beast={filteredBestiary[selectedBeast]}
+              editBeast={this.editBeast}
+            />
+          ))}
       </div>
     );
   }

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   widthImageBestiary,
@@ -42,7 +42,14 @@ const styledParagraph = {
 const styledMensurations = {
   position: 'relative',
   float: 'left',
-  width: widthTextBestiary - 200,
+  width: (widthTextBestiary - 200) / 3,
+  display: 'inline-block',
+  marginTop: 20,
+};
+const styledInfos = {
+  position: 'relative',
+  float: 'left',
+  width: (widthTextBestiary - 200) / 3,
   display: 'inline-block',
   marginTop: 20,
 };
@@ -92,13 +99,13 @@ class PNJ extends Component {
           )}
           {age && <div style={styledMensurations}>Age : {age} ans</div>}
           {taille && (
-            <div>
+            <div style={styledInfos}>
               Taille : {taille}
               cm
             </div>
           )}
           {poids && (
-            <div>
+            <div style={styledInfos}>
               Poids : {poids}
               kg
             </div>

@@ -42,7 +42,14 @@ const styledParagraph = {
 const styledMensurations = {
   position: 'relative',
   float: 'left',
-  width: widthTextBestiary - 200,
+  width: (widthTextBestiary - 200) / 3,
+  display: 'inline-block',
+  marginTop: 20,
+};
+const styledInfos = {
+  position: 'relative',
+  float: 'left',
+  width: (widthTextBestiary - 200) / 3,
   display: 'inline-block',
   marginTop: 20,
 };
@@ -93,13 +100,13 @@ class Beast extends Component {
             <div style={styledMensurations}>Dangerosité : {dangerosity}</div>
           )}
           {taille !== '' && (
-            <div>
+            <div style={styledInfos}>
               Taille : {taille}
               cm
             </div>
           )}
           {poids !== '' && (
-            <div>
+            <div style={styledInfos}>
               Poids : {poids}
               kg
             </div>

@@ -36,8 +36,8 @@ class BestiaryList extends Component {
 
     return (
       <div style={styledPreview} className="scrollbar">
-        {filteredBestiary.map((b, i) => {
-          if (b.seen || isGameMaster) {
+        {Object.keys(filteredBestiary).map(bKey => {
+          if (filteredBestiary[bKey].seen || isGameMaster) {
             return (
               <div
                 style={{
@@ -45,17 +45,21 @@ class BestiaryList extends Component {
                   position: 'relative',
                   cursor: cursorPointer,
                   borderBottom: isGameMaster ? '1px solid black' : 'none',
-                  color: isGameMaster && b.seen ? colors.textSeen : colors.text,
+                  color:
+                    isGameMaster && filteredBestiary[bKey].seen
+                      ? colors.textSeen
+                      : colors.text,
                 }}
-                onClick={() => selectBeast(i)}
+                onClick={() => selectBeast(bKey)}
               >
                 <img
-                  src={'./bestiary/' + b.image}
+                  src={'./bestiary/' + filteredBestiary[bKey].image}
                   style={styledImage}
-                  alt={b.image}
+                  alt={filteredBestiary[bKey].image}
                 />
-                {b.name}
-                {isGameMaster && ` (${b.seen ? 'S' : 'U'})`}
+                {filteredBestiary[bKey].name}
+                {isGameMaster &&
+                  ` (${filteredBestiary[bKey].seen ? 'S' : 'U'})`}
                 {isGameMaster && (
                   <ButtonLarge
                     style={{
@@ -66,7 +70,7 @@ class BestiaryList extends Component {
                       maxWidth: 50,
                       cursor: cursorPointer,
                     }}
-                    onClick={() => toggleSeenBeast(i)}
+                    onClick={() => toggleSeenBeast(bKey)}
                   >
                     TS
                   </ButtonLarge>

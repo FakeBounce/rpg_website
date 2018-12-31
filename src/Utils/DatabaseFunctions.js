@@ -565,18 +565,18 @@ export const populateBestiary = (currentStory, doSetState) => {
         .ref('stories/' + currentStory + '/characters')
         .once('value')
         .then(snapshot => {
-          const tempBestiary = [...sn.val()];
+          const tempBestiary = { ...sn.val() };
           const tempCharacters = { ...snapshot.val() };
           Object.keys(tempCharacters).map(key => {
-            tempBestiary.map((b, i) => {
-              if (!b[key]) {
+            Object.keys(tempBestiary).map(bKey => {
+              if (!tempBestiary[bKey][key]) {
                 let cpt = 0;
                 const maxRoll =
                   (tempCharacters[key].character.userPseudo === 'Danjors' ||
                     tempCharacters[key].character.userPseudo === 'Rangrim') &&
-                  b.monster
+                  tempBestiary[bKey].monster
                     ? parseInt(tempCharacters[key].character.education, 10) + 20
-                    : b.monster ||
+                    : tempBestiary[bKey].monster ||
                       (tempCharacters[key].character.userPseudo === 'Danjors' ||
                         tempCharacters[key].character.userPseudo === 'Rangrim')
                       ? parseInt(tempCharacters[key].character.education, 10) -
@@ -605,7 +605,7 @@ export const populateBestiary = (currentStory, doSetState) => {
                     statsKnown['text4'] = true;
                   }
                   if (cpt >= 5) {
-                    if (b.monster) {
+                    if (tempBestiary[bKey].monster) {
                       statsKnown['dangerosity'] = true;
                     } else {
                       statsKnown['age'] = true;
@@ -618,10 +618,7 @@ export const populateBestiary = (currentStory, doSetState) => {
                     statsKnown['poids'] = true;
                   }
                 }
-                tempBestiary[i] = {
-                  ...tempBestiary[i],
-                  [key]: { ...statsKnown },
-                };
+                tempBestiary[bKey][key] = { ...statsKnown };
               }
               return null;
             });

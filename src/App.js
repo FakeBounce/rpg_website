@@ -41,6 +41,7 @@ import {
   // hydrateMerchant,
 } from './Utils/MerchantsFunctions';
 import LoadSpreasheet from './Utils/LoadSpreasheet';
+import { gridLength } from './Utils/StyleConstants';
 
 class App extends Component {
   constructor(props) {
@@ -72,6 +73,24 @@ class App extends Component {
           ...state,
           bestiary: snapshot.val(),
         }));
+
+        // const test = {};
+        // snapshot.val().map(b => {
+        //   const newPostKey = firebase
+        //     .database()
+        //     .ref('/stories/' + 0 + '/bestiary/')
+        //     .push().key;
+        //   test[newPostKey] = { ...b };
+        // });
+        //
+        // firebase
+        //   .database()
+        //   .ref('stories/' + 0 + '/bestiary')
+        //   .set(test)
+        //   .catch(error => {
+        //     // Handle Errors here.
+        //     this.triggerError(error);
+        //   });
       });
   }
 

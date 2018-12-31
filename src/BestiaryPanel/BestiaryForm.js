@@ -1,7 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { cursorPointer, heightLeft } from '../Utils/StyleConstants';
+import {
+  cursorPointer,
+  heightLeft,
+  widthLeftBestiary,
+} from '../Utils/StyleConstants';
 import firebase from 'firebase';
 import FileUploader from '../CharacterCreation/FileUploader';
 import ButtonLarge from '../Utils/ButtonLarge';
@@ -9,7 +13,23 @@ import { initialBestiaryForm } from '../Utils/Constants';
 import { populateBestiary } from '../Utils/DatabaseFunctions';
 
 class BestiaryForm extends Component {
-  state = initialBestiaryForm;
+  state =
+    this.props.beast !== null
+      ? {
+          name: this.props.beast.name || '',
+          monster: this.props.beast.monster || true,
+          image: this.props.beast.image || '',
+          text1: this.props.beast.text1 || '',
+          text2: this.props.beast.text2 || '',
+          text3: this.props.beast.text3 || '',
+          text4: this.props.beast.text4 || '',
+          age: this.props.beast.age || '',
+          taille: this.props.beast.taille || '',
+          poids: this.props.beast.poids || '',
+          known: this.props.beast.known || false,
+          dangerosity: this.props.beast.dangerosity || '',
+        }
+      : initialBestiaryForm;
 
   onChange = (name, value) => {
     this.setState(state => ({
@@ -127,9 +147,10 @@ class BestiaryForm extends Component {
       <div
         style={{
           height: heightLeft,
-          width: '100%',
-          color: "white",
-          position: "relative"
+          width: widthLeftBestiary,
+          color: 'white',
+          position: 'relative',
+          float:'left',
         }}
       >
         <div style={{ height: 25 }}>New Monster</div>
@@ -162,7 +183,7 @@ class BestiaryForm extends Component {
           label=""
         />
         {image !== '' && (
-          <img src={'./bestiary/' + image} style={{ width: 100 }} alt={image}/>
+          <img src={'./bestiary/' + image} style={{ width: 100 }} alt={image} />
         )}
         <div onClick={() => this.onChange('known', !known)}>
           {known ? 'Is known' : 'Is unknown'}
@@ -255,10 +276,15 @@ class BestiaryForm extends Component {
   }
 }
 
+BestiaryForm.defaultProps = {
+  beast: null,
+};
+
 BestiaryForm.propTypes = {
   bestiary: PropTypes.array.isRequired,
   currentStory: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
+  beast: PropTypes.object,
 };
 
 export default BestiaryForm;

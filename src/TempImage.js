@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { heightLeft, widthLeft } from './Utils/StyleConstants';
-import { colors, tempoImagesList } from "./Utils/Constants";
+import { colors, tempoImagesList } from './Utils/Constants';
 import firebase from 'firebase';
 
 const styledTempContainer = {
@@ -28,7 +28,7 @@ const styledTempSelect = {
 class TempImage extends PureComponent {
   state = {
     tempImage: 'noTown.jpg',
-    bestiaryList: [],
+    bestiaryList: null,
   };
 
   componentDidMount() {
@@ -89,13 +89,17 @@ class TempImage extends PureComponent {
                 </option>
               );
             })}
-            {bestiaryList.map(obj => {
-              return (
-                <option key={obj.name} value={'bestiary/' + obj.image}>
-                  {obj.name}
-                </option>
-              );
-            })}
+            {bestiaryList !== null &&
+              Object.keys(bestiaryList).map(bKey => {
+                return (
+                  <option
+                    key={bestiaryList[bKey].name}
+                    value={'bestiary/' + bestiaryList[bKey].image}
+                  >
+                    {bestiaryList[bKey].name}
+                  </option>
+                );
+              })}
           </select>
         )}
         <img src={'./' + tempImage} style={styledTempImage} alt={tempImage} />
