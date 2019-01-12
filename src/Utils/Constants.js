@@ -419,10 +419,17 @@ export const musics = [
   'Combat_stressant',
   'Combat_tendu',
   'Combat_tranquille',
+  'Combat_colisee_1',
+  'Combat_colisee_2',
+  'Combat_colisee_3',
+  'Death',
   'Drame',
   'Duel_intense',
   'Embuscade',
+  'Foret_dark',
+  'Foret_sombre',
   'Foret_mysterieux',
+  'Foret_exploration',
   'Paisible',
   'Place_publique',
   'Port_joyeux',
@@ -806,6 +813,10 @@ export const bestiary = [
 ];
 
 export const tempoImagesList = [
+  { path: 'common/noTown.jpg', name: 'Camping' },
+  { path: 'common/dark_forest.jpg', name: 'Dark Forest' },
+  { path: 'common/angel.jpg', name: 'Angel' },
+  { path: 'common/demon.jpg', name: 'Demon' },
   { path: 'common/noTown.jpg', name: 'Camping' },
   { path: 'common/desert.jpg', name: 'Deset tempest' },
   { path: 'common/cavern.jpg', name: 'Cavern' },

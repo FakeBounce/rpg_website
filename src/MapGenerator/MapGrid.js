@@ -1,15 +1,16 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import './Grid.css';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import "./Grid.css";
 
-import { gridDimension, gridLength, totalRows } from '../Utils/StyleConstants';
-import Tile from './Tile';
-import TileGM from './TileGM';
+import { gridDimension, gridLength, totalRows } from "../Utils/StyleConstants";
+import Tile from "./Tile";
+import TileGM from "./TileGM";
 
 class MapGrid extends PureComponent {
   generateTable = mapToRender => {
     const table = [];
     const { currentZoom, currentY } = this.props;
+    console.log("generating");
     mapToRender.map((row, index) => {
       if (
         index <= currentY + (gridLength * 10) / currentZoom / 2 &&
@@ -26,7 +27,7 @@ class MapGrid extends PureComponent {
             }}
           >
             {this.createGrid(index, row)}
-          </div>
+          </div>,
         );
       }
       return null;
@@ -51,7 +52,7 @@ class MapGrid extends PureComponent {
       if (
         index <= currentX + (gridLength * 10) / currentZoom / 2 &&
         index >=
-          currentX - (gridLength * 10) / currentZoom / 2 - (11 - currentZoom)
+          currentX - (gridLength * 10) / currentZoom / 2 - (12 - currentZoom)
       ) {
         table.push(
           isGameMaster && !isOnPlayerView ? (
@@ -78,7 +79,7 @@ class MapGrid extends PureComponent {
               tilesTypes={tilesTypes}
               town={row.hasTown > -1 ? towns[row.hasTown] : null}
             />
-          )
+          ),
         );
       }
       return null;
@@ -111,10 +112,7 @@ class MapGrid extends PureComponent {
   render() {
     const { map, currentX, currentY } = this.props;
 
-    if (currentX > -1 && currentY > -1) {
-      return this.generateTable(map);
-    }
-    return null;
+    return this.generateTable(map);
   }
 }
 

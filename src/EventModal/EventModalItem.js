@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import ButtonLarge from "../Utils/ButtonLarge";
 
 const styledEventActionContainer = {
   width: "100%",
@@ -39,9 +40,9 @@ class EventModalItem extends Component {
     return (
       <div style={styledEventActionContainer}>
         {eventHistory[currentEvent].quantityLeft > 1 && (
-          <button style={styledEventAction} onClick={takeAllItems}>
+          <ButtonLarge style={styledEventAction} onClick={takeAllItems}>
             Take all
-          </button>
+          </ButtonLarge>
         )}
         {eventHistory[currentEvent].quantityLeft > 1 && (
           <div style={styledEventAction}>
@@ -57,34 +58,34 @@ class EventModalItem extends Component {
               }}
             />
             {eventHistory[currentEvent].item.name}
-            <button onClick={takeXItem}>Confirm</button>
+            <ButtonLarge onClick={takeXItem}>Confirm</ButtonLarge>
           </div>
         )}
         {eventHistory[currentEvent].quantityLeft > 1 && (
-          <button style={styledEventAction} onClick={onlyOneItem}>
+          <ButtonLarge style={styledEventAction} onClick={onlyOneItem}>
             Take only 1
-          </button>
+          </ButtonLarge>
         )}
         {eventHistory[currentEvent].quantityLeft === 1 && (
-          <button style={styledEventAction} onClick={lastItem}>
+          <ButtonLarge style={styledEventAction} onClick={lastItem}>
             Take it
-          </button>
+          </ButtonLarge>
         )}
         {eventHistory[currentEvent].quantityLeft > 0 && (
-          <button style={styledEventAction} onClick={takeNothing}>
+          <ButtonLarge style={styledEventAction} onClick={takeNothing}>
             Not interested
-          </button>
+          </ButtonLarge>
         )}
         {eventHistory[currentEvent].quantityLeft === 0 &&
           !isGameMaster && (
-            <button style={styledEventAction} onClick={closeEvent}>
+            <ButtonLarge style={styledEventAction} onClick={closeEvent}>
               Close Event
-            </button>
+            </ButtonLarge>
           )}
         {isGameMaster && (
-          <button style={styledEventAction} onClick={closeEvent}>
+          <ButtonLarge style={styledEventAction} onClick={closeEvent}>
             Delete Event
-          </button>
+          </ButtonLarge>
         )}
       </div>
     );

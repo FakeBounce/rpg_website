@@ -1,15 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import PropTypes from 'prop-types';
-import firebase from 'firebase';
-import MapEditionTileInfos from './MapEditionTileInfos';
-import MapEditionTilesList from './MapEditionTilesList';
-import MapEditionScale from './MapEditionScale';
-import {
-  gridLength,
-  heightLeft,
-  widthLeft,
-} from '../Utils/StyleConstants';
+import PropTypes from "prop-types";
+import firebase from "firebase";
+import MapEditionTileInfos from "./MapEditionTileInfos";
+import MapEditionTilesList from "./MapEditionTilesList";
+import MapEditionScale from "./MapEditionScale";
+import { gridLength, heightLeft, widthLeft } from "../Utils/StyleConstants";
 
 class MapEditionPanel extends Component {
   state = {
@@ -30,46 +26,46 @@ class MapEditionPanel extends Component {
     firebase
       .database()
       .ref(
-        'maps/' +
+        "maps/" +
           stories[currentStory].map +
-          '/' +
-          (currentY + gridLength / 2) +
-          '/' +
-          (currentX + gridLength / 2) +
-          '/isCurrent'
+          "/" +
+          currentY +
+          "/" +
+          currentX +
+          "/isCurrent",
       )
       .set(null)
       .then(() => {
         firebase
           .database()
           .ref(
-            'maps/' +
+            "maps/" +
               stories[currentStory].map +
-              '/' +
-            newTile.y +
-              '/' +
-            newTile.x
+              "/" +
+              newTile.y +
+              "/" +
+              newTile.x,
           )
           .set(newTile)
           .then(() => {
             doSetState({
               currentTile: { ...newTile },
-              currentY: newTile.y - gridLength/2,
-              currentX: newTile.x - gridLength/2,
+              currentY: newTile.y,
+              currentX: newTile.x,
             });
             if (newTile.isCurrent) {
               firebase
                 .database()
-                .ref('stories/' + currentStory + '/currentX')
-                .set(parseInt(newTile.x, 10) - gridLength / 2)
+                .ref("stories/" + currentStory + "/currentX")
+                .set(parseInt(newTile.x, 10))
                 .catch(error => {
                   // Handle Errors here.
                   this.props.triggerError(error);
                 });
               firebase
                 .database()
-                .ref('stories/' + currentStory + '/currentY')
-                .set(parseInt(newTile.y, 10) - gridLength / 2)
+                .ref("stories/" + currentStory + "/currentY")
+                .set(parseInt(newTile.y, 10))
                 .catch(error => {
                   // Handle Errors here.
                   this.props.triggerError(error);
@@ -95,12 +91,12 @@ class MapEditionPanel extends Component {
     firebase
       .database()
       .ref(
-        'maps/' +
+        "maps/" +
           stories[currentStory].map +
-          '/' +
+          "/" +
           currentTile.y +
-          '/' +
-          currentTile.x
+          "/" +
+          currentTile.x,
       )
       .set(newTile)
       .then(() => {
@@ -137,11 +133,11 @@ class MapEditionPanel extends Component {
       <div
         style={{
           width: widthLeft / 2,
-          position: 'absolute',
+          position: "absolute",
           height: heightLeft / 2,
           top: heightLeft / 2,
           left: -widthLeft / 2,
-          textAlign: 'left',
+          textAlign: "left",
         }}
       >
         <MapEditionTilesList

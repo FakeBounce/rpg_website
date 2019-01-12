@@ -321,7 +321,7 @@ class BestiaryPanel extends Component {
       isOnEditForm,
     } = this.state;
     const { bestiary, doSetState, currentStory } = this.props;
-    console.log('selectedBeast', selectedBeast, filteredBestiary);
+
     return (
       <div style={styledBestiaryPanel}>
         <img

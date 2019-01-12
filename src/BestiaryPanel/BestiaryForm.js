@@ -1,33 +1,33 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 
 import {
   cursorPointer,
   heightLeft,
   widthLeftBestiary,
-} from '../Utils/StyleConstants';
-import firebase from 'firebase';
-import FileUploader from '../CharacterCreation/FileUploader';
-import ButtonLarge from '../Utils/ButtonLarge';
-import { initialBestiaryForm } from '../Utils/Constants';
-import { populateBestiary } from '../Utils/DatabaseFunctions';
+} from "../Utils/StyleConstants";
+import firebase from "firebase";
+import FileUploader from "../CharacterCreation/FileUploader";
+import ButtonLarge from "../Utils/ButtonLarge";
+import { initialBestiaryForm } from "../Utils/Constants";
+import { populateBestiary } from "../Utils/DatabaseFunctions";
 
 class BestiaryForm extends Component {
   state =
     this.props.beast !== null
       ? {
-          name: this.props.beast.name || '',
+          name: this.props.beast.name || "",
           monster: this.props.beast.monster || true,
-          image: this.props.beast.image || '',
-          text1: this.props.beast.text1 || '',
-          text2: this.props.beast.text2 || '',
-          text3: this.props.beast.text3 || '',
-          text4: this.props.beast.text4 || '',
-          age: this.props.beast.age || '',
-          taille: this.props.beast.taille || '',
-          poids: this.props.beast.poids || '',
+          image: this.props.beast.image || "",
+          text1: this.props.beast.text1 || "",
+          text2: this.props.beast.text2 || "",
+          text3: this.props.beast.text3 || "",
+          text4: this.props.beast.text4 || "",
+          age: this.props.beast.age || "",
+          taille: this.props.beast.taille || "",
+          poids: this.props.beast.poids || "",
           known: this.props.beast.known || false,
-          dangerosity: this.props.beast.dangerosity || '',
+          dangerosity: this.props.beast.dangerosity || "",
         }
       : initialBestiaryForm;
 
@@ -89,8 +89,12 @@ class BestiaryForm extends Component {
     } = this.state;
     const { bestiary, doSetState, currentStory } = this.props;
 
-    const tempBestiary = [...bestiary];
-    tempBestiary.push({
+    const newPostKey = firebase
+      .database()
+      .ref("stories/" + currentStory + "/bestiary")
+      .push().key;
+
+    bestiary[newPostKey] = {
       name,
       monster,
       image,
@@ -104,12 +108,12 @@ class BestiaryForm extends Component {
       known,
       dangerosity,
       seen: false,
-    });
+    };
 
     firebase
       .database()
-      .ref('stories/' + currentStory + '/bestiary')
-      .set(tempBestiary)
+      .ref("stories/" + currentStory + "/bestiary")
+      .set(bestiary)
       .then(() => {
         this.setState(
           state => ({
@@ -117,13 +121,13 @@ class BestiaryForm extends Component {
           }),
           () => {
             populateBestiary(0, doSetState);
-          }
+          },
         );
       })
       .catch(error => {
         // Handle Errors here.
         // this.triggerError(error);
-        console.log('error', error);
+        console.log("error", error);
       });
   };
 
@@ -148,9 +152,9 @@ class BestiaryForm extends Component {
         style={{
           height: heightLeft,
           width: widthLeftBestiary,
-          color: 'white',
-          position: 'relative',
-          float:'left',
+          color: "white",
+          position: "relative",
+          float: "left",
         }}
       >
         <div style={{ height: 25 }}>New Monster</div>
@@ -170,26 +174,26 @@ class BestiaryForm extends Component {
             width: 20,
             padding: 0,
             margin: 0,
-            display: 'inline-block',
+            display: "inline-block",
           }}
           buttonStyles={{
             width: 20,
             padding: 0,
             margin: 0,
-            border: '1px solid #3f4257',
+            border: "1px solid #3f4257",
             cursor: cursorPointer,
           }}
           withIcon={false}
           label=""
         />
-        {image !== '' && (
-          <img src={'./bestiary/' + image} style={{ width: 100 }} alt={image} />
+        {image !== "" && (
+          <img src={"./bestiary/" + image} style={{ width: 100 }} alt={image} />
         )}
-        <div onClick={() => this.onChange('known', !known)}>
-          {known ? 'Is known' : 'Is unknown'}
+        <div onClick={() => this.onChange("known", !known)}>
+          {known ? "Is known" : "Is unknown"}
         </div>
-        <div onClick={() => this.onChange('monster', !monster)}>
-          {monster ? 'Is a monster' : 'Is a NPC'}
+        <div onClick={() => this.onChange("monster", !monster)}>
+          {monster ? "Is a monster" : "Is a NPC"}
         </div>
         Text1 :
         <input

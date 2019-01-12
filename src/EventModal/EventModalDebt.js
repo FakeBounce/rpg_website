@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ButtonLarge from "../Utils/ButtonLarge";
 
 const styledEventActionContainer = {
   width: '100%',
@@ -37,12 +38,12 @@ class EventModalDebt extends Component {
       <div style={styledEventActionContainer}>
         {event.goldLeft < event.gold && (
           <div>
-            <button style={styledEventAction} onClick={giveAllGold}>
+            <ButtonLarge style={styledEventAction} onClick={giveAllGold}>
               Give all
-            </button>
-            <button onClick={giveEquivalentGold} style={styledEventAction}>
+            </ButtonLarge>
+            <ButtonLarge onClick={giveEquivalentGold} style={styledEventAction}>
               Give your equal part
-            </button>
+            </ButtonLarge>
             <div style={styledEventAction}>
               Give
               <input
@@ -56,20 +57,20 @@ class EventModalDebt extends Component {
                 }}
               />
               gold
-              <button onClick={giveXGold}>Confirm</button>
+              <ButtonLarge onClick={giveXGold}>Confirm</ButtonLarge>
             </div>
           </div>
         )}
         {event.goldLeft === event.gold &&
           !isGameMaster && (
-            <button style={styledEventAction} onClick={closeEvent}>
+            <ButtonLarge style={styledEventAction} onClick={closeEvent}>
               Close Event
-            </button>
+            </ButtonLarge>
           )}
         {isGameMaster && (
-          <button style={styledEventAction} onClick={closeEvent}>
+          <ButtonLarge style={styledEventAction} onClick={closeEvent}>
             Delete Event
-          </button>
+          </ButtonLarge>
         )}
       </div>
     );

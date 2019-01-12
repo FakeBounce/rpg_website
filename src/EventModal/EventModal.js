@@ -17,6 +17,8 @@ import EventModalDescription from "./EventModalDescription";
 import EventModalViewers from "./EventModalViewers";
 import EventModalDebt from "./EventModalDebt";
 import Draw from "../Draw";
+import { colors } from "../Utils/Constants";
+import ButtonLarge from "../Utils/ButtonLarge";
 
 const styledEventModal = {
   position: "absolute",
@@ -25,9 +27,10 @@ const styledEventModal = {
   left: `${widthRightPanel / 2}px`,
   width: `${widthLeft + mapWidth}px`,
   height: `${heightHeader / 2 + heightCameras / 2 + heightLeft - 50}px`,
-  backgroundColor: "white",
   border: "2px solid brown",
   borderRadius: 40,
+  backgroundColor: colors.background,
+  color: colors.text,
 };
 
 const styledEventTitle = {
@@ -652,9 +655,9 @@ class EventModal extends PureComponent {
               );
             })}
             {isGameMaster && (
-              <button style={styledEventAction} onClick={this.closeEvent}>
+              <ButtonLarge style={styledEventAction} onClick={this.closeEvent}>
                 Delete Event
-              </button>
+              </ButtonLarge>
             )}
           </Fragment>
         )}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ButtonLarge from "../Utils/ButtonLarge";
 
 const styledEventActionContainer = {
   width: '100%',
@@ -38,12 +39,12 @@ class EventModalGold extends Component {
       <div style={styledEventActionContainer}>
         {event.goldLeft > 0 && (
           <div>
-            <button style={styledEventAction} onClick={takeAllGold}>
+            <ButtonLarge style={styledEventAction} onClick={takeAllGold}>
               Take all
-            </button>
-            <button onClick={takeEquivalentGold} style={styledEventAction}>
+            </ButtonLarge>
+            <ButtonLarge onClick={takeEquivalentGold} style={styledEventAction}>
               Take your equal part
-            </button>
+            </ButtonLarge>
             <div style={styledEventAction}>
               Take
               <input
@@ -57,23 +58,23 @@ class EventModalGold extends Component {
                 }}
               />
               gold
-              <button onClick={takeXGold}>Confirm</button>
+              <ButtonLarge onClick={takeXGold}>Confirm</ButtonLarge>
             </div>
-            <button style={styledEventAction} onClick={takeNothing}>
+            <ButtonLarge style={styledEventAction} onClick={takeNothing}>
               Don't take any gold
-            </button>
+            </ButtonLarge>
           </div>
         )}
         {event.goldLeft === 0 &&
           !isGameMaster && (
-            <button style={styledEventAction} onClick={closeEvent}>
+            <ButtonLarge style={styledEventAction} onClick={closeEvent}>
               Close Event
-            </button>
+            </ButtonLarge>
           )}
         {isGameMaster && (
-          <button style={styledEventAction} onClick={closeEvent}>
+          <ButtonLarge style={styledEventAction} onClick={closeEvent}>
             Delete Event
-          </button>
+          </ButtonLarge>
         )}
       </div>
     );
