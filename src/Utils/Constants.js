@@ -471,6 +471,10 @@ export const noises = [
   "Tonnerre",
 ];
 export const songs = [
+  "Ambiance_d",
+  "Ambiance_e",
+  "Ambiance_g",
+  "Ambiance_p",
   "Amour_SortFocus",
   "BostVitesse",
   "Cacophonie",
@@ -482,6 +486,7 @@ export const songs = [
   "Peur_MalusDegat",
   "Serenite_BostMagie",
   "Tristesse_MalusResistance",
+  "Victoire",
   "Vigilant_BostAgilite",
   "Vol_de_vie",
 ];
