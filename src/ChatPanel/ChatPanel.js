@@ -1,16 +1,16 @@
-import React, { PureComponent } from 'react';
-import firebase from 'firebase';
-import PropTypes from 'prop-types';
-import ReactTooltip from 'react-tooltip';
-import { heightHeader, heightLeft, widthLeft } from '../Utils/StyleConstants';
-import { colors } from '../Utils/Constants';
-import ChatBar from './ChatBar';
-import ChatDicesRow from './ChatDicesRow';
-import ChatHistory from './ChatHistory';
+import React, { PureComponent } from "react";
+import firebase from "firebase";
+import PropTypes from "prop-types";
+import ReactTooltip from "react-tooltip";
+import { heightHeader, heightLeft, widthLeft } from "../Utils/StyleConstants";
+import { colors } from "../Utils/Constants";
+import ChatBar from "./ChatBar";
+import ChatDicesRow from "./ChatDicesRow";
+import ChatHistory from "./ChatHistory";
 
 const styledChatPanel = {
   width: widthLeft / 2,
-  position: 'absolute',
+  position: "absolute",
   height: heightLeft / 2 + 4,
   top: heightLeft / 2 + heightHeader - 2,
   backgroundColor: colors.background,
@@ -22,6 +22,7 @@ class ChatPanel extends PureComponent {
   state = {
     gmCommands: false,
     bonus: 0,
+    isTalking: "",
   };
 
   onChangeDice = value => {
@@ -44,7 +45,7 @@ class ChatPanel extends PureComponent {
   };
 
   handleKeyPress = event => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       this.talkInChat();
     }
   };
@@ -52,18 +53,18 @@ class ChatPanel extends PureComponent {
   talkInChat = () => {
     const { chatInput, pseudo } = this.props;
     let noMagicWord = true;
-    if (chatInput !== '') {
+    if (chatInput !== "") {
       if (chatInput.length >= 3) {
-        if (this.diceAction('/d')) {
+        if (this.diceAction("/d")) {
           noMagicWord = false;
         }
-        if (this.diceAction('/dice')) {
+        if (this.diceAction("/dice")) {
           noMagicWord = false;
         }
-        if (this.diceAction('/gmd', ['gm', pseudo])) {
+        if (this.diceAction("/gmd", ["gm", pseudo])) {
           noMagicWord = false;
         }
-        if (this.diceAction('/gmdice', ['gm', pseudo])) {
+        if (this.diceAction("/gmdice", ["gm", pseudo])) {
           noMagicWord = false;
         }
         if (this.whisperPlayerAction()) {
@@ -86,101 +87,101 @@ class ChatPanel extends PureComponent {
         }
       }
       switch (chatInput) {
-        case '/strength':
-        case '/stre':
-        case '/force':
-        case '/forc':
+        case "/strength":
+        case "/stre":
+        case "/force":
+        case "/forc":
           noMagicWord = false;
-          this.attributeAction('strength');
+          this.attributeAction("strength");
           break;
-        case '/dexterity':
-        case '/dext':
-        case '/dextérité':
-        case '/dexterite':
+        case "/dexterity":
+        case "/dext":
+        case "/dextérité":
+        case "/dexterite":
           noMagicWord = false;
-          this.attributeAction('dexterity');
+          this.attributeAction("dexterity");
           break;
-        case '/luck':
-        case '/chance':
-        case '/chan':
+        case "/luck":
+        case "/chance":
+        case "/chan":
           noMagicWord = false;
-          this.attributeAction('luck');
+          this.attributeAction("luck");
           break;
-        case '/charisma':
-        case '/char':
-        case '/charisme':
+        case "/charisma":
+        case "/char":
+        case "/charisme":
           noMagicWord = false;
-          this.attributeAction('charisma');
+          this.attributeAction("charisma");
           break;
-        case '/education':
-        case '/educ':
-        case '/éducation':
+        case "/education":
+        case "/educ":
+        case "/éducation":
           noMagicWord = false;
-          this.attributeAction('education');
+          this.attributeAction("education");
           break;
-        case '/perception':
-        case '/perc':
+        case "/perception":
+        case "/perc":
           noMagicWord = false;
-          this.attributeAction('perception');
+          this.attributeAction("perception");
           break;
-        case '/constitution':
-        case '/cons':
+        case "/constitution":
+        case "/cons":
           noMagicWord = false;
-          this.attributeAction('constitution');
+          this.attributeAction("constitution");
           break;
-        case '/magic':
-        case '/magi':
-        case '/magie':
+        case "/magic":
+        case "/magi":
+        case "/magie":
           noMagicWord = false;
-          this.attributeAction('magic');
+          this.attributeAction("magic");
           break;
-        case '/gmstrength':
-        case '/gmstre':
-        case '/gmforce':
-        case '/gmforc':
+        case "/gmstrength":
+        case "/gmstre":
+        case "/gmforce":
+        case "/gmforc":
           noMagicWord = false;
-          this.attributeAction('strength', true);
+          this.attributeAction("strength", true);
           break;
-        case '/gmdexterity':
-        case '/gmdext':
-        case '/gmdextérité':
-        case '/gmdexterite':
+        case "/gmdexterity":
+        case "/gmdext":
+        case "/gmdextérité":
+        case "/gmdexterite":
           noMagicWord = false;
-          this.attributeAction('dexterity', true);
+          this.attributeAction("dexterity", true);
           break;
-        case '/gmluck':
-        case '/gmchance':
-        case '/gmchan':
+        case "/gmluck":
+        case "/gmchance":
+        case "/gmchan":
           noMagicWord = false;
-          this.attributeAction('luck', true);
+          this.attributeAction("luck", true);
           break;
-        case '/gmcharisma':
-        case '/gmchar':
-        case '/gmcharisme':
+        case "/gmcharisma":
+        case "/gmchar":
+        case "/gmcharisme":
           noMagicWord = false;
-          this.attributeAction('charisma', true);
+          this.attributeAction("charisma", true);
           break;
-        case '/gmeducation':
-        case '/gmeduc':
-        case '/gméducation':
+        case "/gmeducation":
+        case "/gmeduc":
+        case "/gméducation":
           noMagicWord = false;
-          this.attributeAction('education', true);
+          this.attributeAction("education", true);
           break;
-        case '/gmperception':
-        case '/gmperc':
+        case "/gmperception":
+        case "/gmperc":
           noMagicWord = false;
-          this.attributeAction('perception', true);
+          this.attributeAction("perception", true);
           break;
-        case '/gmconstitution':
-        case '/gmcons':
+        case "/gmconstitution":
+        case "/gmcons":
           noMagicWord = false;
-          this.attributeAction('constitution', true);
+          this.attributeAction("constitution", true);
           break;
-        case '/gmmagic':
-        case '/gmmagi':
-        case '/gmmagie':
+        case "/gmmagic":
+        case "/gmmagi":
+        case "/gmmagie":
           noMagicWord = false;
-          this.attributeAction('magic', true);
+          this.attributeAction("magic", true);
           break;
         default:
           break;
@@ -194,8 +195,8 @@ class ChatPanel extends PureComponent {
 
   whisperPlayerAction = () => {
     const { chatInput, pseudo, users, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? 'GM' : pseudo;
-    const splittedString = chatInput.trim().split('/w ');
+    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const splittedString = chatInput.trim().split("/w ");
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
       hasWhisperAction = true;
@@ -207,16 +208,25 @@ class ChatPanel extends PureComponent {
           const textToSend = splittedString[1]
             .split(users[key].pseudo)[1]
             .trim();
-          this.sendChatInput({
-            message: `@${realPseudo}, you say to @${
-              users[key].pseudo
-            } :${textToSend}`,
-            viewers: [pseudo],
-          });
-          this.sendChatInput({
-            message: `@${realPseudo} tells you secretly :${textToSend}`,
-            viewers: [users[key].pseudo],
-          });
+
+          this.setState(
+            state => ({
+              ...state,
+              isTalking: "/w " + users[key].pseudo + " ",
+            }),
+            () => {
+              this.sendChatInput({
+                message: `@${realPseudo}, you say to @${
+                  users[key].pseudo
+                } :${textToSend}`,
+                viewers: [pseudo],
+              });
+              this.sendChatInput({
+                message: `@${realPseudo} tells you secretly :${textToSend}`,
+                viewers: [users[key].pseudo],
+              });
+            },
+          );
         }
         return null;
       });
@@ -226,55 +236,74 @@ class ChatPanel extends PureComponent {
 
   whisperGMAction = () => {
     const { chatInput, pseudo, users, gameMaster, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? 'GM' : pseudo;
-    const splittedString = chatInput.trim().split('/gmw ');
+    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const splittedString = chatInput.trim().split("/gmw ");
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
       hasWhisperAction = true;
-      Object.keys(users).map(key => {
-        if (key === gameMaster) {
-          this.sendChatInput({
-            message: `@${realPseudo}, you say to GM :${splittedString[1]}`,
-            viewers: [pseudo],
+      this.setState(
+        state => ({
+          ...state,
+          isTalking: "/gmw ",
+        }),
+        () => {
+          Object.keys(users).map(key => {
+            if (key === gameMaster) {
+              this.sendChatInput({
+                message: `@${realPseudo}, you say to GM :${splittedString[1]}`,
+                viewers: [pseudo],
+              });
+              this.sendChatInput({
+                message: `@${realPseudo} tells GM secretly :${
+                  splittedString[1]
+                }`,
+                viewers: [users[key].pseudo],
+              });
+            }
+            return null;
           });
-          this.sendChatInput({
-            message: `@${realPseudo} tells GM secretly :${splittedString[1]}`,
-            viewers: [users[key].pseudo],
-          });
-        }
-        return null;
-      });
+        },
+      );
     }
     return hasWhisperAction;
   };
 
   whisperTeamAction = () => {
     const { chatInput, pseudo, users, gameMaster, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? 'GM' : pseudo;
-    const splittedString = chatInput.trim().split('/tmw ');
+    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const splittedString = chatInput.trim().split("/tmw ");
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
       hasWhisperAction = true;
-      const team = [];
+      this.setState(
+        state => ({
+          ...state,
+          isTalking: "/tmw ",
+        }),
+        () => {
+          const team = [];
 
-      Object.keys(users).map(key => {
-        if (!key === gameMaster) {
-          team.push(users[key].pseudo);
-        }
-        return null;
-      });
+          Object.keys(users).map(key => {
+            if (!key === gameMaster) {
+              team.push(users[key].pseudo);
+            }
+            return null;
+          });
 
-      this.sendChatInput({
-        message: `@${realPseudo} tells to team :${splittedString[1]}`,
-        viewers: team,
-      });
+          this.sendChatInput({
+            message: `@${realPseudo} tells to team :${splittedString[1]}`,
+            viewers: team,
+          });
+        },
+      );
     }
+
     return hasWhisperAction;
   };
 
   diceAction = (limiter, viewers = null) => {
     const { chatInput, pseudo, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? 'GM' : pseudo;
+    const realPseudo = isGameMaster ? "GM" : pseudo;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
@@ -283,7 +312,7 @@ class ChatPanel extends PureComponent {
     if (isnum) {
       this.sendChatInput({
         message: `@${realPseudo} launched a D${splittedString}. Result : ${Math.floor(
-          Math.random() * parseInt(splittedString, 10) + 1
+          Math.random() * parseInt(splittedString, 10) + 1,
         )}`,
         viewers,
       });
@@ -300,12 +329,12 @@ class ChatPanel extends PureComponent {
       currentStory,
       isGameMaster,
     } = this.props;
-    const realPseudo = isGameMaster ? 'GM' : pseudo;
+    const realPseudo = isGameMaster ? "GM" : pseudo;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
-      .split(' ');
-    if (splittedString.length === 2 && splittedString[0] === '/goldgm') {
+      .split(" ");
+    if (splittedString.length === 2 && splittedString[0] === "/goldgm") {
       const isnum = /^\d+$/.test(splittedString[1]);
       if (isnum) {
         if (
@@ -320,11 +349,11 @@ class ChatPanel extends PureComponent {
           firebase
             .database()
             .ref(
-              'stories/' +
+              "stories/" +
                 currentStory +
-                '/characters/' +
+                "/characters/" +
                 uid +
-                '/character/gold'
+                "/character/gold",
             )
             .set(parseInt(character.gold, 10) - parseInt(splittedString[1], 10))
             .catch(error => {
@@ -349,12 +378,12 @@ class ChatPanel extends PureComponent {
       currentStory,
       isGameMaster,
     } = this.props;
-    const realPseudo = isGameMaster ? 'GM' : pseudo;
+    const realPseudo = isGameMaster ? "GM" : pseudo;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
-      .split(' ');
-    if (splittedString.length === 3 && splittedString[0] === '/gold') {
+      .split(" ");
+    if (splittedString.length === 3 && splittedString[0] === "/gold") {
       let playerIsInTeam = false;
       storyCharacters.map(sc => {
         if (sc.userPseudo.toLowerCase() === splittedString[1].toLowerCase()) {
@@ -383,14 +412,14 @@ class ChatPanel extends PureComponent {
             firebase
               .database()
               .ref(
-                'stories/' +
+                "stories/" +
                   currentStory +
-                  '/characters/' +
+                  "/characters/" +
                   uid +
-                  '/character/gold'
+                  "/character/gold",
               )
               .set(
-                parseInt(character.gold, 10) - parseInt(splittedString[2], 10)
+                parseInt(character.gold, 10) - parseInt(splittedString[2], 10),
               )
               .catch(error => {
                 // Handle Errors here.
@@ -400,15 +429,15 @@ class ChatPanel extends PureComponent {
             firebase
               .database()
               .ref(
-                'stories/' +
+                "stories/" +
                   currentStory +
-                  '/characters/' +
+                  "/characters/" +
                   playerIsInTeam.userUid +
-                  '/character/gold'
+                  "/character/gold",
               )
               .set(
                 parseInt(playerIsInTeam.gold, 10) +
-                  parseInt(splittedString[2], 10)
+                  parseInt(splittedString[2], 10),
               )
               .catch(error => {
                 // Handle Errors here.
@@ -432,14 +461,14 @@ class ChatPanel extends PureComponent {
       gameMaster,
       isGameMaster,
     } = this.props;
-    const realPseudo = isGameMaster ? 'GM' : pseudo;
+    const realPseudo = isGameMaster ? "GM" : pseudo;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
-      .split(' ');
+      .split(" ");
     if (
       splittedString.length === 2 &&
-      (splittedString[0] === '/goldtm' || splittedString[0] === '/goldteam')
+      (splittedString[0] === "/goldtm" || splittedString[0] === "/goldteam")
     ) {
       if (storyCharacters.length > 2) {
         const isnum = /^\d+$/.test(splittedString[1]);
@@ -451,7 +480,7 @@ class ChatPanel extends PureComponent {
             const goldLeft =
               parseInt(splittedString[1], 10) % (storyCharacters.length - 2);
             const goldForEach = Math.floor(
-              parseInt(splittedString[1], 10) / (storyCharacters.length - 2)
+              parseInt(splittedString[1], 10) / (storyCharacters.length - 2),
             );
 
             this.sendChatInput({
@@ -463,11 +492,11 @@ class ChatPanel extends PureComponent {
             let updates = {};
             storyCharacters.map(sc => {
               if (sc.userUid !== gameMaster && sc.userPseudo !== pseudo) {
-                updates['/' + sc.userUid + '/character/gold'] =
+                updates["/" + sc.userUid + "/character/gold"] =
                   parseInt(sc.gold, 10) + goldForEach;
               }
               if (sc.userPseudo === pseudo) {
-                updates['/' + sc.userUid + '/character/gold'] =
+                updates["/" + sc.userUid + "/character/gold"] =
                   parseInt(sc.gold, 10) -
                   parseInt(splittedString[1], 10) +
                   goldLeft;
@@ -477,7 +506,7 @@ class ChatPanel extends PureComponent {
 
             firebase
               .database()
-              .ref('stories/' + currentStory + '/characters')
+              .ref("stories/" + currentStory + "/characters")
               .update(updates)
               .catch(error => {
                 // Handle Errors here.
@@ -494,16 +523,16 @@ class ChatPanel extends PureComponent {
   attributeAction = (attribute, isGm = false) => {
     const { pseudo, character, isGameMaster } = this.props;
     const { gmCommands, bonus } = this.state;
-    const realPseudo = isGameMaster ? 'GM' : pseudo;
+    const realPseudo = isGameMaster ? "GM" : pseudo;
     const dice = Math.floor(Math.random() * parseInt(100, 10) + 1);
-    let message = '';
-    let bonusMessage = '';
+    let message = "";
+    let bonusMessage = "";
 
     if (bonus > 0) {
-      bonusMessage = ' (+' + bonus + ')';
+      bonusMessage = " (+" + bonus + ")";
     }
     if (bonus < 0) {
-      bonusMessage = ' (' + bonus + ')';
+      bonusMessage = " (" + bonus + ")";
     }
 
     if (dice < 6) {
@@ -521,7 +550,7 @@ class ChatPanel extends PureComponent {
     if (isGm || gmCommands) {
       this.sendChatInput({
         message,
-        viewers: ['gm', pseudo],
+        viewers: ["gm", pseudo],
       });
     } else {
       this.sendChatInput({
@@ -530,17 +559,25 @@ class ChatPanel extends PureComponent {
     }
   };
 
-  sendChatInput = input => {
+  sendChatInput = (input, talking = this.state.isTalking) => {
     const { currentStory, doSetState, triggerError } = this.props;
     firebase
       .database()
-      .ref('/stories/' + currentStory + '/chat/')
+      .ref("/stories/" + currentStory + "/chat/")
       .push(input)
       .then(() => {
-        doSetState({
-          error: '',
-          chatInput: '',
-        });
+        doSetState(
+          {
+            error: "",
+            chatInput: talking,
+          },
+          () => {
+            this.setState(state => ({
+              ...state,
+              isTalking: "",
+            }));
+          },
+        );
       })
       .catch(error => {
         // Handle Errors here.
@@ -552,13 +589,13 @@ class ChatPanel extends PureComponent {
     const { triggerError, chatInput, doSetState, currentStory } = this.props;
     const newPostKey = firebase
       .database()
-      .ref('/stories/' + currentStory + '/chat/')
+      .ref("/stories/" + currentStory + "/chat/")
       .push().key;
     const path =
-      'images/chat/' +
+      "images/chat/" +
       newPostKey +
-      '_image.' +
-      picture[picture.length - 1].name.split('.')[1];
+      "_image." +
+      picture[picture.length - 1].name.split(".")[1];
 
     firebase
       .storage()
@@ -574,7 +611,7 @@ class ChatPanel extends PureComponent {
           .then(url => {
             firebase
               .database()
-              .ref('/stories/' + currentStory + '/chat/' + newPostKey)
+              .ref("/stories/" + currentStory + "/chat/" + newPostKey)
               .set({
                 message: chatInput,
                 imagePath: path,
@@ -582,8 +619,8 @@ class ChatPanel extends PureComponent {
               })
               .then(() => {
                 doSetState({
-                  error: '',
-                  chatInput: '',
+                  error: "",
+                  chatInput: "",
                 });
               })
               .catch(error => {

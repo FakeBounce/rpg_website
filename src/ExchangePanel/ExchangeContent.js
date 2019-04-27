@@ -1,23 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from "react";
 
-import PropTypes from 'prop-types';
-import { widthExchangeBox, heightExchangeBox } from '../Utils/StyleConstants';
-import ExchangeItems from './ExchangeItems';
-import ExchangeWeapons from './ExchangeWeapons';
+import PropTypes from "prop-types";
+import { widthExchangeBox, heightExchangeBox } from "../Utils/StyleConstants";
+import ExchangeItems from "./ExchangeItems";
+import ExchangeWeapons from "./ExchangeWeapons";
 
 const styledItemContainer = {
-  position: 'absolute',
+  position: "absolute",
   left: 20,
   top: 20,
   width: widthExchangeBox - 40,
   height: heightExchangeBox - 40,
   zIndex: 2,
-  overflowY: 'auto',
-  overflowX: 'hidden',
+  overflowY: "auto",
+  overflowX: "hidden",
 };
 
 const styledSeparator = { marginBottom: 10 };
-const styledSeparator2 = { marginTop: 20, display: 'inline-block' };
+const styledSeparator2 = { marginTop: 20, display: "inline-block" };
 
 class ExchangeContent extends Component {
   render() {
@@ -25,11 +25,15 @@ class ExchangeContent extends Component {
 
     return (
       <div className="scrollbar" style={styledItemContainer}>
-        <div style={styledSeparator}>Weapons : </div>
-        <ExchangeWeapons
-          character={character}
-          onWeaponExchange={onWeaponExchange}
-        />
+        {character.weapons && (
+          <Fragment>
+            <div style={styledSeparator}>Weapons : </div>
+            <ExchangeWeapons
+              character={character}
+              onWeaponExchange={onWeaponExchange}
+            />
+          </Fragment>
+        )}
         <div style={styledSeparator2}>Items : </div>
         <ExchangeItems character={character} onItemExchange={onItemExchange} />
       </div>

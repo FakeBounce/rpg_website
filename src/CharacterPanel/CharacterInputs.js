@@ -47,6 +47,7 @@ const styles = {
 class CharacterInputs extends Component {
   render() {
     const {
+      character,
       gold,
       status,
       onChange,
@@ -55,7 +56,10 @@ class CharacterInputs extends Component {
       onGoldChange,
       damageTaken,
       isGameMaster,
+      toggleIsOnChar,
     } = this.props;
+
+    console.log("chara", character);
 
     return (
       <div>
@@ -107,12 +111,25 @@ class CharacterInputs extends Component {
             </ButtonLarge>
           </div>
         )}
+        {character.userUid === "UUCVe6qVn8ZHTrS1qa1ff4fK7i22" && (
+          <ButtonLarge
+            onClick={toggleIsOnChar}
+            style={{
+              position: "relative",
+              float: "right",
+              width: 124,
+            }}
+          >
+            Play music
+          </ButtonLarge>
+        )}
       </div>
     );
   }
 }
 
 CharacterInputs.propTypes = {
+  character: PropTypes.object.isRequired,
   status: PropTypes.string.isRequired,
   damageTaken: PropTypes.number.isRequired,
   gold: PropTypes.number.isRequired,
@@ -122,6 +139,7 @@ CharacterInputs.propTypes = {
   onLifeChange: PropTypes.func.isRequired,
   onStatusChange: PropTypes.func.isRequired,
   onGoldChange: PropTypes.func.isRequired,
+  toggleIsOnChar: PropTypes.func.isRequired,
 };
 
 export default CharacterInputs;

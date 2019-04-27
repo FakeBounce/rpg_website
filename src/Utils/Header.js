@@ -99,7 +99,7 @@ class Header extends Component {
       isGameMaster,
       merchantTitle,
       musicMute,
-      // selectAnotherCharacter,
+      selectAnotherCharacter,
       signOut,
       // title,
       toggleBestiary,
@@ -123,8 +123,8 @@ class Header extends Component {
           <ButtonLarge
             style={styledSignOut}
             onClick={
-              //selectAnotherCharacter
-              () => {}
+              selectAnotherCharacter
+              // () => {}
             }
           >
             Select a character

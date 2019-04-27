@@ -34,6 +34,7 @@ class CharacterOtherInfos extends Component {
       onItemUse,
       damageTaken,
       isGameMaster,
+      toggleIsOnChar,
     } = this.props;
 
     return (
@@ -57,6 +58,7 @@ class CharacterOtherInfos extends Component {
           onLifeChange={onLifeChange}
           onStatusChange={onStatusChange}
           onGoldChange={onGoldChange}
+          toggleIsOnChar={toggleIsOnChar}
         />
       </div>
     );
@@ -76,6 +78,7 @@ CharacterOtherInfos.propTypes = {
   onStatusChange: PropTypes.func.isRequired,
   onGoldChange: PropTypes.func.isRequired,
   onItemUse: PropTypes.func.isRequired,
+  toggleIsOnChar: PropTypes.func.isRequired,
 };
 
 export default CharacterOtherInfos;

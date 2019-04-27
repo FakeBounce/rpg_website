@@ -1,20 +1,20 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from "react";
 
-import PropTypes from 'prop-types';
-import CharacterAttributes from './CharacterAttributes';
-import CharacterOtherInfos from './CharacterOtherInfos';
-import CharacterHeader from './CharacterHeader';
-import { colors } from '../Utils/Constants';
+import PropTypes from "prop-types";
+import CharacterAttributes from "./CharacterAttributes";
+import CharacterOtherInfos from "./CharacterOtherInfos";
+import CharacterHeader from "./CharacterHeader";
+import { colors } from "../Utils/Constants";
 
 const styles = {
   CharPanel: {
-    borderBottom: '1px solid black',
-    width: '100%',
-    height: '50%',
+    borderBottom: "1px solid black",
+    width: "100%",
+    height: "50%",
     backgroundColor: colors.background,
     color: colors.text,
   },
-  CharacterBox: { position: 'relative', height: '100%' },
+  CharacterBox: { position: "relative", height: "100%" },
 };
 
 class CharacterPanel extends PureComponent {
@@ -32,6 +32,7 @@ class CharacterPanel extends PureComponent {
       onStatusChange,
       onItemUse,
       onGoldChange,
+      toggleIsOnChar,
       triggerError,
       uid,
       currentStory,
@@ -69,6 +70,7 @@ class CharacterPanel extends PureComponent {
             onStatusChange={onStatusChange}
             onItemUse={onItemUse}
             onGoldChange={onGoldChange}
+            toggleIsOnChar={toggleIsOnChar}
           />
         </div>
       </div>
@@ -89,6 +91,7 @@ CharacterPanel.propTypes = {
   onStatusChange: PropTypes.func.isRequired,
   onItemUse: PropTypes.func.isRequired,
   onGoldChange: PropTypes.func.isRequired,
+  toggleIsOnChar: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
   currentStory: PropTypes.number.isRequired,

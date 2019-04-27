@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import PropTypes from 'prop-types';
-import firebase from 'firebase';
-import TeamPanel from './TeamCharacters/TeamPanel';
-import {
-  widthRightPanel,
-  heightHeader,
-} from './Utils/StyleConstants';
-import CharacterPanel from './CharacterPanel/CharacterPanel';
-import ExchangePanel from './ExchangePanel/ExchangePanel';
+import PropTypes from "prop-types";
+import firebase from "firebase";
+import TeamPanel from "./TeamCharacters/TeamPanel";
+import { widthRightPanel, heightHeader } from "./Utils/StyleConstants";
+import CharacterPanel from "./CharacterPanel/CharacterPanel";
+import ExchangePanel from "./ExchangePanel/ExchangePanel";
+import SoundPanel from "./SoundPanel/SoundPanel";
+import SongPanel from "./SongPanel/SongPanel";
+import { listenSong } from "./Utils/DatabaseFunctions";
 
 const styles = {
   RightPanel: {
-    position: 'absolute',
+    position: "absolute",
     top: `${heightHeader}px`,
     right: 0,
-    borderLeft: '1px solid black',
+    borderLeft: "1px solid black",
     width: `${widthRightPanel}px`,
     height: `${window.innerHeight - heightHeader}px`,
   },
@@ -23,15 +23,30 @@ const styles = {
 
 class RightPanel extends Component {
   state = {
-    status: this.props.character.status ? this.props.character.status : 'OK',
-    infoTab: 'Weapons',
+    status: this.props.character.status ? this.props.character.status : "OK",
+    infoTab: "Weapons",
     damageTaken: 0,
     gold: 0,
     currentExchangeCharacter: null,
+    isOnChar: true,
+    songName: "",
+    songStatus: "PAUSED",
+    songVolume: 50,
+  };
+
+  componentDidMount() {
+    listenSong(this.props.currentStory, this.doSetState);
+  }
+
+  doSetState = obj => {
+    this.setState(state => ({
+      ...state,
+      ...obj,
+    }));
   };
 
   chatWithTeamMember = pseudo => {
-    if (pseudo === 'GM') {
+    if (pseudo === "GM") {
       this.props.doSetState({
         chatInput: `/gmw `,
       });
@@ -43,7 +58,7 @@ class RightPanel extends Component {
   };
 
   goldWithTeamMember = pseudo => {
-    if (pseudo === 'GM') {
+    if (pseudo === "GM") {
       this.props.doSetState({
         chatInput: `/goldgm `,
       });
@@ -95,7 +110,7 @@ class RightPanel extends Component {
     firebase
       .database()
       .ref(
-        'stories/' + currentStory + '/characters/' + uid + '/character/health'
+        "stories/" + currentStory + "/characters/" + uid + "/character/health",
       )
       .set(parseInt(healthLeft, 10))
       .catch(error => {
@@ -111,7 +126,7 @@ class RightPanel extends Component {
     firebase
       .database()
       .ref(
-        'stories/' + currentStory + '/characters/' + uid + '/character/status'
+        "stories/" + currentStory + "/characters/" + uid + "/character/status",
       )
       .set(status)
       .catch(error => {
@@ -149,7 +164,7 @@ class RightPanel extends Component {
 
       firebase
         .database()
-        .ref('stories/' + currentStory + '/characters/' + uid + '/character')
+        .ref("stories/" + currentStory + "/characters/" + uid + "/character")
         .set(newCharacter)
         .catch(error => {
           // Handle Errors here.
@@ -184,11 +199,11 @@ class RightPanel extends Component {
     firebase
       .database()
       .ref(
-        'stories/' +
+        "stories/" +
           currentStory +
-          '/characters/' +
+          "/characters/" +
           currentExchangeCharacter.userUid +
-          '/character/items'
+          "/character/items",
       )
       .set(newCharacterItems)
       .then(() => {
@@ -201,12 +216,7 @@ class RightPanel extends Component {
   };
 
   onWeaponExchange = (i, givableItem) => {
-    const {
-      character,
-      currentStory,
-      uid,
-      triggerError,
-    } = this.props;
+    const { character, currentStory, uid, triggerError } = this.props;
     const { currentExchangeCharacter } = this.state;
 
     const newCharacterItems = currentExchangeCharacter.weapons
@@ -218,11 +228,11 @@ class RightPanel extends Component {
     firebase
       .database()
       .ref(
-        'stories/' +
+        "stories/" +
           currentStory +
-          '/characters/' +
+          "/characters/" +
           currentExchangeCharacter.userUid +
-          '/character/weapons'
+          "/character/weapons",
       )
       .set(newCharacterItems)
       .then(() => {
@@ -232,7 +242,7 @@ class RightPanel extends Component {
 
         firebase
           .database()
-          .ref('stories/' + currentStory + '/characters/' + uid + '/character')
+          .ref("stories/" + currentStory + "/characters/" + uid + "/character")
           .set(character)
           .catch(error => {
             // Handle Errors here.
@@ -262,7 +272,7 @@ class RightPanel extends Component {
       firebase
         .database()
         .ref(
-          'stories/' + currentStory + '/characters/' + uid + '/character/gold'
+          "stories/" + currentStory + "/characters/" + uid + "/character/gold",
         )
         .set(goldToSet)
         .catch(error => {
@@ -279,17 +289,17 @@ class RightPanel extends Component {
       firebase
         .database()
         .ref(
-          'stories/' +
+          "stories/" +
             currentStory +
-            '/characters/' +
+            "/characters/" +
             this.props.uid +
-            '/character'
+            "/character",
         )
         .off();
       firebase
         .database()
-        .ref('stories/' + currentStory + '/characters/' + uid + '/character')
-        .on('value', snapshot => {
+        .ref("stories/" + currentStory + "/characters/" + uid + "/character")
+        .on("value", snapshot => {
           doSetState({
             uid,
             character: snapshot.val(),
@@ -305,6 +315,34 @@ class RightPanel extends Component {
     }));
   };
 
+  resetSongs = () => {
+    const { currentStory } = this.props;
+    firebase
+      .database()
+      .ref("/stories/" + currentStory + "/song")
+      .set({
+        songVolume: 50,
+        songName: "",
+        songStatus: "STOPPED",
+      })
+      .catch(error => {
+        this.triggerError(error);
+      });
+  };
+
+  changeCurrentNoise = n => {
+    const { onChangeMusics } = this.props;
+    onChangeMusics("songName", n);
+    onChangeMusics("songStatus", "PLAYING");
+  };
+
+  toggleIsOnChar = () => {
+    this.setState(state => ({
+      ...state,
+      isOnChar: !state.isOnChar,
+    }));
+  };
+
   render() {
     const {
       uid,
@@ -314,6 +352,7 @@ class RightPanel extends Component {
       storyCharacters,
       triggerError,
       currentStory,
+      onChangeMusics,
     } = this.props;
 
     const {
@@ -322,27 +361,41 @@ class RightPanel extends Component {
       damageTaken,
       gold,
       currentExchangeCharacter,
+      isOnChar,
+      songName,
+      songVolume,
     } = this.state;
 
     return (
       <div style={styles.RightPanel}>
-        <CharacterPanel
-          character={character}
-          damageTaken={damageTaken}
-          gold={gold}
-          infoTab={infoTab}
-          isGameMaster={isGameMaster}
-          onChange={this.onChange}
-          onChangeTab={this.onChangeTab}
-          onGoldChange={this.onGoldChange}
-          onItemUse={this.onItemUse}
-          onLifeChange={this.onLifeChange}
-          onStatusChange={this.onStatusChange}
-          status={status}
-          triggerError={triggerError}
-          uid={uid}
-          currentStory={currentStory}
-        />
+        {isOnChar ? (
+          <CharacterPanel
+            character={character}
+            damageTaken={damageTaken}
+            gold={gold}
+            infoTab={infoTab}
+            isGameMaster={isGameMaster}
+            onChange={this.onChange}
+            onChangeTab={this.onChangeTab}
+            onGoldChange={this.onGoldChange}
+            onItemUse={this.onItemUse}
+            onLifeChange={this.onLifeChange}
+            onStatusChange={this.onStatusChange}
+            toggleIsOnChar={this.toggleIsOnChar}
+            status={status}
+            triggerError={triggerError}
+            uid={uid}
+            currentStory={currentStory}
+          />
+        ) : (
+          <SongPanel
+            resetSongs={this.resetSongs}
+            songName={songName}
+            songVolume={songVolume}
+            onChangeSongs={onChangeMusics}
+            toggleIsOnChar={this.toggleIsOnChar}
+          />
+        )}
         {currentExchangeCharacter !== null && (
           <ExchangePanel
             closeExchange={this.closeExchange}
@@ -378,6 +431,7 @@ RightPanel.propTypes = {
   storyCharacters: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
+  onChangeMusics: PropTypes.func.isRequired,
 };
 
 export default RightPanel;

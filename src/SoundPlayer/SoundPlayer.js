@@ -10,6 +10,9 @@ class SoundPlayer extends PureComponent {
       noiseStatus,
       noiseMute,
       noiseVolume,
+      songName,
+      songStatus,
+      songVolume,
       musicVolumeFirst,
       musicStatusFirst,
       musicNameFirst,
@@ -17,6 +20,7 @@ class SoundPlayer extends PureComponent {
       musicNameSecond,
       musicStatusSecond,
       stopNoise,
+      stopSong,
     } = this.props;
 
     return (
@@ -48,6 +52,15 @@ class SoundPlayer extends PureComponent {
             autoLoad
           />
         )}
+        {songName !== "" && (
+          <Sound
+            url={`./songs/${songName}.mp3`}
+            playStatus={songStatus}
+            volume={musicMute ? 0 : songVolume}
+            onFinishedPlaying={stopSong}
+            autoLoad
+          />
+        )}
       </div>
     );
   }
@@ -66,6 +79,10 @@ SoundPlayer.propTypes = {
   noiseStatus: PropTypes.string.isRequired,
   noiseVolume: PropTypes.number.isRequired,
   stopNoise: PropTypes.func.isRequired,
+  songName: PropTypes.string.isRequired,
+  songStatus: PropTypes.string.isRequired,
+  songVolume: PropTypes.number.isRequired,
+  stopSong: PropTypes.func.isRequired,
 };
 
 export default SoundPlayer;
