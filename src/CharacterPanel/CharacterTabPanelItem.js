@@ -100,7 +100,7 @@ class CharacterTabPanelItem extends Component {
                   }}
                 />
                 <div style={styles.itemName}>
-                  {character.education < item.rarity * 9 ? "???" : item.name}
+                  {item.name}
                 </div>
                 <ButtonLarge
                   style={styles.itemButton}
