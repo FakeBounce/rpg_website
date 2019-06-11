@@ -140,7 +140,7 @@ class Camera extends PureComponent {
                   this.servers,
                 );
 
-                //Adding ice candidates
+                // Adding ice candidates
                 this.friendsVideoLocal[key].onicecandidate = e => {
                   e.candidate
                     ? this.sendIce(e.candidate, key)

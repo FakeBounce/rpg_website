@@ -25,6 +25,7 @@ class ItemPanel extends PureComponent {
         itemDescribed: i,
       },
       () => {
+        // Mandatory ?
         firebase
           .database()
           .ref('stories/0/merchants/' + currentMerchant + '/items/' + i)
