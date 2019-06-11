@@ -42,7 +42,7 @@ Insérer les données
 V2.9.2
 0)  Mettre à jours la liste de sorts avec des invocations - OK
 1)  Checker l'event dessin - OK
-2)  Ajouter des salons de discussions vocals
+2)  Ajouter des salons de discussions vocals - ??
 3)  Mettre du style sur l'achat d'objets - OK
 4)  - Mettre un bouton pour rafraîchir les marchands - OK
     - Mettre un bouton pour ajouter un monstre - OK
@@ -51,20 +51,20 @@ V2.9.2
 7)  Mieux gérer les panneaux du GM - OK
 8)  Mettre du style sur le bestiaire - OK
 9)  Voir si on peut gérer le son vocal/musique - OK
-10) Faire de l'édition de bestiaire
+10) Faire de l'édition de bestiaire - OK
 11) Ajouter djimenir en tant que ville
 
 v2.10.0
 12) Mettre context
-13) Revoir le découpage des composants dans tous les fichiers
-14) Revoir le style dans tous les fichiers
+13) Revoir le découpage des composants dans tous les fichiers - OK
+14) Revoir le style dans tous les fichiers - OK
 15) Revoir les composants "Fonctions", essayer de déclarer
 les fonctions au plus bas niveau de composant possible
 16) Pouvoir modifier les attribut du personnage GM - OK
 17) Pouvoir revenir au personnage GM sans devoir quitter la page - OK
 
 v2.13.1
-18) Urgent : Pour éviter les erreurs, ne plus travailler sur des index locaux (uniquement id, et listen)
+18) Urgent : Pour éviter les erreurs, ne plus travailler sur des index locaux (uniquement id, et listen) - OK?
 - Revoir hydrateAll en forced
 
 v2.15.1
@@ -77,7 +77,49 @@ v2.24.2
 23) Pouvoir afficher/cacher des joueurs de l'équipe
 
 v2.24.3
-24) Ajouter les stats dans le bestiaire
+24) Ajouter les stats dans le bestiaire - OK
+
+v3.0.0
+25) Ajouter la stat mental + barre de mental (1/5 points en mental)
+26) Mettre des effets sur les potions
+ - Et un message dans le chat
+27) Mettre des effets de dots
+28) Ajouter un effet style borderlands pour la présentation d'une nouvelle entrée bestiaire
+29) Ajouter un système d'arme équipée (pour les boosts, du style le bras de rangrim)
+ - Bras de Rangrim : -20 force, +20 magie
+ - Arme sanglante de Suzuki : +2force/kill, -2volonté/kill
+30) Revoir le placement des Panels
+ - Carte à droite ? avec perso et chat à gauche
+ - Remplir le champ du milieu si vide
+ - Cacher la carte pour certains events ?
+31) Ajouter une description des objets dans le MerchantHistory
+32) Revoir la partie GM en design
+33) Ajouter une partie GM avec des noms de gens, taverne...
+34) Ajouter des titres de prestige
+35) Ajouter des types d'armes
+36) Ajouter un poids max d'inventaire
+37) Ajouter flèches/Carreaux aux marchands
+38) Revoir le système de changement de perso
+39) Ajouter un changement d'histoire
+40) Régler les crash cam
+41) Régler les crash marchands
+42) Ajouter des indications sur les enchants P/T
+43) Ajouter le type d'objet dans les marchands (eg: Type: enchantement)
+44) Pouvoir désactiver un joueur de l'équipe
+45) Remplacer les pseudos par les noms de personnages dans le chat/events
+46) Ajouter des zones en images (égoûts, villes, plaines...)
+47) Ajouter des fiches persos stylées (cadre -> zoom + stuff)
+48) Ajouter une fonction GM "Mort" ou "Inactif",
+ - Tue un perso
+ - Bloque ses actions d'achats/utilisation mais pas d'échange
+ - Image grisée
+49) Mettre un évènement de reprise -> Perte ou gain d'argent ? Seulement si nouveau perso
+50) Débloquer le changement de perso si mort/inactif
+51) Prévoir des évènements
+52) Prévoir une barre de buffs
+53) Rajouter dégâts mental sur les sorts
+54) Ajouter un nombre d'aventuriers, qui baisse/monte avec les morts/alliés
+ (Pour les events de partage or, objets, etc)
 
 
 BDD : https://rpgwebsite-8a535.firebaseio.com/

@@ -1,0 +1,188 @@
+Groupe d'aventuriers
+- Un shapeshifter. Se transforme en chouette, ours...
+- Un Mage sombre (nécro, malédictions)
+- Un Manipulateur (malédictions, psyché, charisme)
+- Automate ? Insensible mental, magique
+
+Egouts interminables. Une fois entrés dedans, des ennemis arrivent sans arrêt.
+Fuir ou combattre ?
+
+Penser à ajouter du prestige, autorisation de passer n'importe ou
+Reconaissance, aimabilité des gens (donne bonus charisme en gros)
+
+Charisme affecte aggro ?
+
+Refaire la scène du teaser, puis enchaîner sur "un mois plus tard..."
+Faire un jet de dé/Event pour enlever un peu d'argent
+
+Quête: Retrouver Laslow Crossbow, disparût juste avant le champ de bataille
+
+
+*********************************
+Quête: Enfant enlevé
+
+Femme en pleure et son mari ont vu leur enfant se faire enlever sous leurs yeux.
+Ils habitent une petite baraque dans un coin mal famé de la ville.
+L'endroit est sale, peu de passant.
+Quelques pousseurs de murs autours de tonneaux posés dehors.
+
+Un groupe s'approche pour demander ce que vous faites par ici.
+Ils ont des regards menaçants et commencent à entourer le groupe.
+
+Si ils savent que c'est pour voir le mari, ils laissent passer.
+Sinon, ils tentent de les dérober pendant le coup de pression.
+Pire des cas, ils attaquent. Ils fuient si plus de la moitié sont tombés.
+
+Une fois arrivé devant la maison, la porte peut montrer des signes d'effraction.
+Femme en pleurs, mari désespéré.
+
+Ils racontent qu'ils se promenaient avec leur enfant quand un brigand
+a attraper le gamin sous le bras et s'est éclipsé dans les ruelles.
+Les ruelles étant dangereuses ils ont préféré ne pas s'y aventurer.
+
+On pourrait voir que le mari à des blessures au visage si l'on remarque la trace
+de magie sur sa joue.
+
+La maison est pauvre, sur un étage, peu de meubles, quelques bûches sur le feu.
+
+Personne ne semble savoir qui a pu faire ça.
+Ils demandent de retrouver le gamin contre beaucoup d'argent.
+(Héritage de la grand mère, un collier magnifique
+revendu pour que la famille survive)
+Ils vous conseillent la taverne des brigands pour débuter.
+
+Avant de sortir de la maison, on peut entendre un bruit venant de la chambre.
+La fenêtre est ouverte. Le couple n'as "rien entendu".
+
+En faisant un tour dans la maison, il n'y a pas de pièce pour enfant ni de jouets.
+
+En interrogeant l'esprit ou après torture un bandit de la rue/bar peut indiquer
+que le Baron pourrait avoir fait ça.
+Sinon en discutant avec le Barman on peut faire des affaires. Il vend les informations.
+Il indique aussi le Baron pour 50pièces, l'endroit pour 150pièces.
+Il joue sur les mots: "Vous voulez savoir si je connais l'endroit ? 30P.
+-> Oui je le sais. Par contre pour vous dire où, ça fera 150P."
+Ils ont une tatouage distinctif, un couteau sous la gorge.
+Le barman ne reconnait pas le nom du couple.
+Il se demande si ils sont nouveaux
+
+Il indique une ancienne garnison militaire, abandonnée par l'armée et récupérée
+par des bandits comme refuge.
+
+Un groupe de bandits traînent devant, avec un tonneau enflammé,
+des bouteilles d'alcool et un jeu de carte.
+
+Deux bandits se cachent sur le toit opposé avec des arcs.
+
+Les bandits ont bien le tatouage sur l'avant droit.
+
+A l'intérieur, un bâtiment en ruine.
+Si accompagné par les brigands, les yeux sont bandés.
+La moitié des murs effondrés sur le sol.
+Il faut passer quelques salles vides pour arriver dans la salle d'arme.
+Toutes les encoches d'armes sont vides.
+Quelques une sont au sol, il faut les enjamber.
+Au fond, deux armures lourdes vident "protègent" un mur.
+Elles ne bougent que si le sort est toujours actif lors de l'entrée dans la salle.
+
+Le mur est scellé magiquement, impossible de le briser sans pierre de puissance.
+Il faut effectuer un symbole avec la main pour ouvrir la porte.
+
+Dedans, des escaliers en colimaçon, relativement large (3.5m de large).
+
+En bas se trouve une grande salle, bien allumée,
+dont les murs sont les parois des égoûts.
+Pas mal de tables, une ambiance qu'on entend de loin.
+La salle est comme surélevée.
+On entend/sent l'eau des égoûts derrière la salle.
+
+La salle devait servir de base lorsqu'il ont creusés les égoûts.
+Tout le monde se tait à l'arrivée des aventuriers.
+
+Un chemin des égoûts ou l'eau ne passe que très peu semble faire une porte de sortie.
+
+Le chef des bandits est assis au fond d'une grande table, dans un gros siège
+bien rembouré.
+Les masques sont enlevés.
+A côté du Baron se trouve une personne avec un sceau sur la tête,
+et un bandit qui le tien.
+
+C'est le mari.
+
+Le Baron le remercie de les avoir attirés ici, il dit que sa dette est remboursé.
+
+Il n'y a jamais eu d'enfant.
+
+Le mari part, le Baron s'apprête a vous faire les poches
+*********************************
+
+
+
+**********************************
+
+Volonté : Utiliser pour contrer les attaques mentales ou pour survivre.
+
+Quelques : 2-4
+Beaucoup : 5-9
+
+Perte de volonté / Résistance à un sort
+ Critique: Sort bloqué et le personnage devient insensible à ce sort ou regain des points
+ Réussite: Sort bloqué, perte de peu de volonté
+ Echec: Perte de beaucoup de volonté, sort réussi
+ Echec critique: Perte de toute la volonté, sort réussi
+
+Perte de volonté / Encaisser un coup puissant (15+ pv)
+ Sur un jet réussit : Perte de quelques points
+ Sur un jet critique : Perte de beaucoup de points
+
+Perte de volonté / Encaisser un coup mortel (30+ pv max)
+ Sur un jet réussit : Pertes de beaucoup de points
+ Sur un jet critique : Perte de tous les points + terrifié par la mort
+
+Perte de volonté / Fuir au combat
+ Perte de quelques points
+
+Perte-Gain de volonté / Mort d'un allié proche
+ Sur un critique : Gain du maximum de volonté, inébranlable
+ Sur réussite : Rien ne se passe
+ Sur un échec : Perte de quelques points
+ Sur un échec critique : Perte de toute volonté, pleure son ami. Actions impossibles.
+
+Perte-Gain de volonté / Mort d'un allié
+ Sur un critique : Gain de beaucoup de points
+ Sur réussite : Rien ne se passe
+ Sur un échec : Perte de 1 point
+ Sur un échec critique : Perte beaucoup de volonté. Devient distrait la prochaine action.
+
+Gain de volonté / Sur un critique
+ Sur un critique décisif : Gain de beaucoup de points
+ Sur un critique classique : Gain de quelques points
+
+Gain de volonté / Gagner un combat
+ Sur un perfect : Gain de quelques points
+ Avec blessures minimes : Gain de 1point
+ Avec blessures lourdes : Max 1 volonté.
+
+Gain de volonté / Réussir une quête
+ Sur une petite quête : Gain d'1 point
+ Sur une quête moyenne : Gain de quelques points
+ Sur une quête difficile : Gain de beaucoup de points
+
+Gain de volonté / Manger-Se reposer
+ Gain de 1point - quelques points
+
+Gain de volonté / Soin
+ Sur un soin faible (1-10) : 1 point
+ Sur un soin moyen (11-30) : Quelques points
+ Sur un soin complet (31+) : Beaucoup de points
+
+
+Si les conditions sont remplies, un personnage au seuil de la mort avec de la volonté peut :
+ - Lancer un sort ( Main / Cerveau / Bouche non endommagés )
+ - Attaquer normalement ( Tout attaque possible dans l'état du corps )
+
+Un jet de volonté sera demander avant chaque action, tout jet de volonté raté
+fait descendre la volonté d'un point. Un corps dans un état critique fait baisser
+la volonté en continu.
+
+**************************************

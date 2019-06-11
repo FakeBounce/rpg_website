@@ -574,14 +574,15 @@ export const defaultState = {
 };
 
 export const attributes = [
-  "strength",
-  "dexterity",
-  "magic",
-  "constitution",
-  "perception",
-  "charisma",
-  "education",
-  "luck",
+  'strength', // Puissance physique. Porter, pousser, frappe imprécise, encaisser avec un bouclier, utilisation d'armes lourdes
+  'dexterity', // Souplesse et technique. Esquive, saut, lancer d'objets/tirs
+  'magic', // Utilisation de sorts ou d'objets magiques connus
+  'constitution',  // Résistance physique. Résistance aux altérations, points de vies
+  'willpower', // Résistance mentale. Résistance aux contrôles, sondes ou autre interaction avec l'esprit. Permet de bouger même si le corps ne le permet pas
+  'perception', // Vue, ouïe, toucher, instinct, anticipation.
+  'charisma', // Prestance, persuasion. Se fait plus ou moins remarquer
+  'education', // Utilisation d'objets magiques, connaissance du monde
+  'luck', // Tout et n'importe quoi
 ];
 
 export const eventList = ["nothing", "gold", "item", "debt", "draw"];
@@ -978,12 +979,15 @@ export const colors = {
 };
 
 export const statusList = [
-  "OK",
-  "Poisoned",
-  "Paralyzed",
-  "Burned",
-  "Sleepy",
-  "Under control",
-  "Unconscious",
-  "Dead",
+  'OK',
+  'Bleeding',
+  'Burned',
+  'Dead',
+  'Left',
+  'Frozen',
+  'Paralyzed',
+  'Poisoned',
+  'Sleepy',
+  'Unconscious',
+  'Under control',
 ];

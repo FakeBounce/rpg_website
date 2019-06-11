@@ -228,7 +228,7 @@ class App extends Component {
       }
     }
 
-    const newMerchantList = { ...itemsList };
+    const newMerchantList = itemsList;
     let isQuantityLeft = false;
     if (newMerchantList[itemDescribed].quantity > 1) {
       newMerchantList[itemDescribed].quantity =
@@ -287,6 +287,13 @@ class App extends Component {
       .then(() => {
         // Sign-out successful.
         this.setState(state => ({ ...defaultState }));
+
+        // Reset state for the next mount
+        localStorage.setItem(
+          'appState',
+          JSON.stringify(defaultState
+          )
+        );
 
         firebase
           .database()
@@ -656,6 +663,7 @@ class App extends Component {
         users: this.state.users,
       }),
     );
+
     let isGM = false;
 
     if (stories[i].gameMaster === uid) isGM = true;
