@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import Item from './Item';
 import PropTypes from 'prop-types';
@@ -15,7 +15,7 @@ const styledItemContainer = {
   width: `${widthLeft / 2 - 52}px`,
 };
 
-class ItemList extends Component {
+class ItemList extends PureComponent {
   render() {
     const { character, itemsList, showItemDescription } = this.props;
 

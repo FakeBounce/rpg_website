@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import './Item.css';
 import PropTypes from 'prop-types';
 
-class Item extends Component {
+class Item extends PureComponent {
   render() {
     const {
       index,

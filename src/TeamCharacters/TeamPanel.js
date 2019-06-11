@@ -1,15 +1,15 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import TeamCharacter from './TeamCharacter';
-import { widthRightPanel, heightLeft } from '../Utils/StyleConstants';
-import TeamHeader from './TeamHeader';
-import { colors } from '../Utils/Constants';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import TeamCharacter from "./TeamCharacter";
+import { widthRightPanel, heightLeft } from "../Utils/StyleConstants";
+import TeamHeader from "./TeamHeader";
+import { colors } from "../Utils/Constants";
 
 const styles = {
   TeamPanel: {
-    borderBottom: '1px solid black',
-    width: '100%',
-    height: '50%',
+    borderBottom: "1px solid black",
+    width: "100%",
+    height: "50%",
     backgroundColor: colors.background,
     color: colors.text,
   },
@@ -17,26 +17,26 @@ const styles = {
     width: `${widthRightPanel}px`,
     height: `${heightLeft / 2 - 25}px`,
     marginTop: 25,
-    position: 'relative',
-    float: 'left',
-    display: 'inline-block',
-    overflowY: 'auto',
+    position: "relative",
+    float: "left",
+    display: "inline-block",
+    overflowY: "auto",
   },
   GMTeamPanel: {
-    borderBottom: '1px solid black',
-    width: '100%',
+    borderBottom: "1px solid black",
+    width: "100%",
     height: heightLeft / 2,
     backgroundColor: colors.background,
     color: colors.text,
   },
   GMteamCharacters: {
-    width: '100%',
+    width: "100%",
     height: `${heightLeft / 2 - 25}px`,
     marginTop: 25,
-    position: 'relative',
-    float: 'left',
-    display: 'inline-block',
-    overflowY: 'auto',
+    position: "relative",
+    float: "left",
+    display: "inline-block",
+    overflowY: "auto",
   },
 };
 
@@ -69,14 +69,17 @@ class TeamPanel extends PureComponent {
             isGM
             exchangeWithTeamMember={() => {}}
             chatWithTeamMember={() => {
-              chatWithTeamMember('GM');
+              chatWithTeamMember("GM");
               modifyCurrentCharacter(gameMaster);
             }}
-            goldWithTeamMember={() => goldWithTeamMember('GM')}
+            goldWithTeamMember={() => goldWithTeamMember("GM")}
           />
 
           {storyCharacters.map(storyCharacter => {
-            if (storyCharacter.userUid !== gameMaster) {
+            if (
+              storyCharacter.userUid !== gameMaster &&
+              storyCharacter.userUid !== "0xH2fYPl08czXqUASY4fvSO76cZ2"
+            ) {
               return (
                 <TeamCharacter
                   key={storyCharacter.name}

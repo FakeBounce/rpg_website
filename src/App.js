@@ -549,16 +549,40 @@ class App extends Component {
           ...obj,
         }),
         () => {
-          this.debouncedSavingMusic();
+          if (name === "songName") {
+            this.debouncedSavingSound();
+          } else {
+            this.debouncedSavingMusic();
+          }
         },
       );
     }
   };
 
+  debouncedSavingSound = debounce(() => this.saveSound(), 300, {
+    leading: true,
+    maxWait: 2000,
+  });
+
   debouncedSavingMusic = debounce(() => this.saveMusic(), 300, {
     leading: true,
     maxWait: 2000,
   });
+
+  saveSound = () => {
+    const { currentStory, songName, songStatus, songVolume } = this.state;
+    firebase
+      .database()
+      .ref("/stories/" + currentStory + "/song")
+      .set({
+        songName,
+        songStatus,
+        songVolume,
+      })
+      .catch(error => {
+        this.triggerError(error);
+      });
+  };
 
   saveMusic = () => {
     const {

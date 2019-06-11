@@ -56,7 +56,7 @@ class SoundPlayer extends PureComponent {
           <Sound
             url={`./songs/${songName}.mp3`}
             playStatus={songStatus}
-            volume={musicMute ? 0 : songVolume}
+            volume={musicMute ? 0 : songVolume/2}
             onFinishedPlaying={stopSong}
             autoLoad
           />

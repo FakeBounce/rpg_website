@@ -334,7 +334,7 @@ class EventModal extends PureComponent {
     } = this.props;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
-      let goldGiven = Math.floor(newEvent.gold / (storyCharacters.length - 1));
+      let goldGiven = Math.floor(newEvent.gold / (storyCharacters.length - 2));
       if (newEvent.goldLeft + goldGiven > newEvent.gold) {
         goldGiven = newEvent.gold - newEvent.goldLeft;
       }
@@ -418,7 +418,7 @@ class EventModal extends PureComponent {
     } = this.props;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
-      let goldTaken = Math.floor(newEvent.gold / (storyCharacters.length - 1));
+      let goldTaken = Math.floor(newEvent.gold / (storyCharacters.length - 2));
       if (newEvent.goldLeft - goldTaken < 0) {
         goldTaken = newEvent.goldLeft;
       }

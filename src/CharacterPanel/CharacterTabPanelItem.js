@@ -40,6 +40,15 @@ const styles = {
     margin: 0,
     textAlign: "center",
   },
+  discoverButton: {
+    width: 90,
+    height: 16,
+    padding: 0,
+    position: "absolute",
+    bottom: 0,
+    textAlign: "center",
+    left: 80,
+  },
 };
 
 class CharacterTabPanelItem extends Component {
@@ -81,6 +90,28 @@ class CharacterTabPanelItem extends Component {
       });
   };
 
+  discoverItem = (index, isDiscovered = false) => () => {
+    const { itemValue } = this.state;
+    const { character } = this.props;
+    const obj = [...character.items];
+    obj[index].isDiscovered = isDiscovered;
+
+    firebase
+      .database()
+      .ref(
+        "stories/" +
+          0 +
+          "/characters/" +
+          character.userUid +
+          "/character/items",
+      )
+      .set(obj)
+      .catch(error => {
+        // Handle Errors here.
+        console.log("Error", error);
+      });
+  };
+
   render() {
     const { character, onItemUse, isGameMaster } = this.props;
     const { itemValue } = this.state;
@@ -100,7 +131,9 @@ class CharacterTabPanelItem extends Component {
                   }}
                 />
                 <div style={styles.itemName}>
-                  {item.name}
+                  {character.education < item.rarity * 9 && !item.isDiscovered
+                    ? "???"
+                    : item.name}
                 </div>
                 <ButtonLarge
                   style={styles.itemButton}
@@ -108,6 +141,14 @@ class CharacterTabPanelItem extends Component {
                 >
                   Use ({item.quantity} left)
                 </ButtonLarge>
+                {isGameMaster && (
+                  <ButtonLarge
+                    style={styles.discoverButton}
+                    onClick={this.discoverItem(index, !item.isDiscovered)}
+                  >
+                    {item.isDiscovered ? "Uncover" : "Discover"}
+                  </ButtonLarge>
+                )}
               </div>
             );
           })}

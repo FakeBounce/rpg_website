@@ -82,6 +82,10 @@ class Camera extends PureComponent {
     this.localStream = null;
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state !== nextState;
+  }
+
   componentWillUnmount() {
     this.closeLocalstream();
   }
@@ -427,8 +431,7 @@ class Camera extends PureComponent {
                 muted={friendsMute[key]}
                 controls
                 ref={vid => {
-                  if(vid)
-                  {
+                  if (vid) {
                     vid.srcObject = friendsVideoRemote[key];
                   }
                 }}
