@@ -120,6 +120,8 @@ v3.0.0
 53) Rajouter dégâts mental sur les sorts
 54) Ajouter un nombre d'aventuriers, qui baisse/monte avec les morts/alliés
  (Pour les events de partage or, objets, etc)
+55) Ajouter une image sur les items inconnus dans l'inventaire
+56) Ajouter un bruit de dé pour les dés + son réussite/échec/critique
 
 
 BDD : https://rpgwebsite-8a535.firebaseio.com/
