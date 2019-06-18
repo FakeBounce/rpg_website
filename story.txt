@@ -186,3 +186,54 @@ fait descendre la volonté d'un point. Un corps dans un état critique fait bais
 la volonté en continu.
 
 **************************************
+
+Tu te réveilles difficilement, ta vue est floue, tu entends juste des vrombissement.
+Tu es assis contre quelque chose de dur, de froid.
+Peu à peu, ta vue se rétablie.
+
+Tu es dans un endroit sombre, tu arrive à distinguer des silhouettes qui s'entrechoquent.
+Au moment où tu essaye de bouger un de tes membres,
+tu sens une douleur fulgurante au niveau de tes côtes droites.
+
+Tu passes ta main gauche au niveau de la douleur, tu sens du liquide chaud au niveau de ton corps.
+Tu rapproche ta main de tes yeux, en te concentrant bien, tu arrive à y voir plus clair.
+Du sang.
+En jetant un rapide coup d'oeil à la blessure, tu aperçois un objet métallique enfoncé dans ton corps.
+ça a l'air de te clouer à ce que tu penses être un mur derrière toi.
+
+Tu commences à jeter un coup d'oeil rapide sur ton flanc droit, pour essayer de comprendre ce qu'il se passe.
+Le vrombissement s'essoufle, tu commence à entendre des fracas de tous les côtés.
+
+Ot'sil'la va lar'gur ! suivi d'une déflagration.
+Tu vois un mage qui t'as l'air familier, mais impossible de te souvenir qui.
+Il est en plein affrontement avec une vague de squelettes armés jusqu'au dents.
+
+Tu jette un coup d'oeil en face de toi, deux grandes figures ont l'air
+d'en protéger une plus petite.
+Deux guerrier de plaque, avec des armes démesurées,
+des boucliers semi-ovales teintés de violet, dont tu perçois leurs yeux rougeatres.
+Deux squelettes énormes, environ 3mètres, protégeant un troisième squelette
+habillé légèrement de tissu décousus, équipé d'un grand bâton, aussi grand que lui,
+qui devient de plus en plus illuminé.
+Il a l'air d'être en train d'incanter...
+quand tu vois un chouette énorme bousculer un des deux guerriers,
+perturbant la concentration du mage.
+
+Une silhouette apparaît soudain au dessus de toi, une femme cornue aux airs familiers,
+qui vient tirer d'un coup l'objet qui te restraignait.
+Tu sens une douleur atroce puis rapidement elle s'estompe.
+La femme à les yeux brilliant, tu l'entends chuchoter des paroles inconnues.
+Elle passe la main devant ton visage, et tu commence à te rappeler.
+// @TODO: Revoir le pourquoi
+Oui, c'est ça. Tu étais venu récupérer un trésor dans un tombeau quand cette armée
+de squelette vous a assaillit. Les autres sont tes coéquipiers, X, X et X,
+un groupe de fortune que tu as rencontré il y a quelques semaines lors d'une chasse.
+
+Vous aviez décidé de faire un bout de chemin ensemble,
+lorsque cette fameuse opportunité s'est présenté à vous.
+La dernière dont tu te souviens, c'est qu'un des squelettes géant t'as envoyé une lance
+de façon si rapide que tu n'as pas pu esquiver.
+
+"Hey, arrête de glander, on a besoin de toi là ! Debout !"
+
+**************************************
