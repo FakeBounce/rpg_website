@@ -17,7 +17,6 @@ class CharacterCreationAttributes extends Component {
       <div>
         <div style={styledBoxHeader}>Attributes :</div>
         {namedAttributes.map(a => {
-          console.log("a", a, attributes[a]);
           return (
             <div key={`attribute-${a}`}>
               {a} :
