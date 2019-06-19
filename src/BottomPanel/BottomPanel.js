@@ -3,8 +3,8 @@ import { widthRightPanel, heightCameras } from "../Utils/StyleConstants";
 
 const styledBottomPanel = {
   position: "absolute",
-  bottom: "0px",
-  left: "0px",
+  bottom: 0,
+  left: 0,
   width: `${window.innerWidth - widthRightPanel}px`,
   height: `${heightCameras}px`,
 };

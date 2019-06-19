@@ -3,7 +3,7 @@
   "version": "2.9.1",
   "private": true,
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "firebase": "^5.4.2",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.2",
@@ -22,6 +22,18 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "prettier": "1.14.2"
+    "prettier": "^1.14.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

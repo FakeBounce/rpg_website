@@ -45,3 +45,12 @@ button, input, select {
 {
   background-color: #000000;
 }
+
+.centeredVertically
+{
+  margin: 0px;
+  position:absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}

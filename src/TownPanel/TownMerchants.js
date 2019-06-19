@@ -7,8 +7,8 @@ import TownMerchant from "./TownMerchant";
 
 const styledBoxHeader = {
   width: "100%",
-  height: "20px",
-  marginBottom: "5px",
+  height: 20,
+  marginBottom: 5,
   textAlign: "center",
   float: "left",
   display: "inline-block",

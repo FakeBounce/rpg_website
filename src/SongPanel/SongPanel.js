@@ -22,8 +22,8 @@ const styles = {
 
 const styledBoxHeaderMusic = {
   width: "100%",
-  height: "20px",
-  marginBottom: "5px",
+  height: 20,
+  marginBottom: 5,
   textAlign: "center",
   position: "absolute",
   display: "block",
@@ -32,20 +32,20 @@ const styledBoxHeaderMusic = {
 const styledMusicVolume = {
   width: "100%",
   position: "absolute",
-  height: "25px",
-  top: "20px",
+  height: 25,
+  top: 20,
 };
 const styledMusicContainer = {
   width: "100%",
   position: "absolute",
   height: `${(heightLeft-50)/2 - 100}px`,
-  top: "80px",
+  top: 80,
   overflowY: "auto",
 };
 
 const styledAudioFile = {
   width: "100%",
-  height: "30px",
+  height: 30,
   cursor: cursorPointer,
   borderBottom: "1px solid black",
 };

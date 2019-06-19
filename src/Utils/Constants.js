@@ -505,7 +505,7 @@ export const defaultState = {
   currentMerchant: -1,
   currentQuest: -1,
   currentScale: 1,
-  currentStory: -1,
+  currentStory: 1,
   currentTile: {},
   currentTown: -1,
   currentX: -1,

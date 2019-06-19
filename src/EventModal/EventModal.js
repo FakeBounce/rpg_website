@@ -35,7 +35,7 @@ const styledEventModal = {
 
 const styledEventTitle = {
   width: "100%",
-  height: "40px",
+  height: 40,
   marginTop: 15,
   marginBottom: 15,
   textAlign: "center",
