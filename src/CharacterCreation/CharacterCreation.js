@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import firebase from 'firebase';
-import FileUploader from './FileUploader';
-import { attributes } from '../Utils/Constants';
-import { cursorPointer } from '../Utils/StyleConstants';
-
-const styledBoxHeader = {
-  width: '100%',
-  height: '20px',
-  marginBottom: '5px',
-  textAlign: 'center',
-};
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import firebase from "firebase";
+import FileUploader from "./FileUploader";
+import { cursorPointer } from "../Utils/StyleConstants";
+import CharacterCreationItems from "./CharacterCreationItems";
+import CharacterCreationAbilites from "./CharacterCreationAbilites";
+import CharacterCreationWeapons from "./CharacterCreationWeapons";
+import CharacterCreationSkills from "./CharacterCreationSkills";
+import CharacterCreationAttributes from "./CharacterCreationAttributes";
 
 const styledItem = {
-  display: 'inline-block',
-  border: '1px solid green',
+  display: "inline-block",
+  border: "1px solid green",
   cursor: cursorPointer,
 };
 
@@ -23,22 +20,25 @@ class CharacterCreation extends Component {
     super(props);
 
     this.state = {
-      name: '',
-      icon: '',
-      iconPath: '',
-      description: '',
+      name: "",
+      icon: "",
+      iconPath: "",
+      description: "",
       skills: [],
       abilities: [],
       weapons: [],
       items: [],
-      strength: 50,
-      dexterity: 50,
-      luck: 50,
-      charisma: 50,
-      education: 50,
-      magic: 50,
-      perception: 50,
-      constitution: 50,
+      attributes: {
+        charisma: 50,
+        constitution: 50,
+        dexterity: 50,
+        education: 50,
+        luck: 50,
+        magic: 50,
+        perception: 50,
+        strength: 50,
+        willpower: 50,
+      },
       totalPointsleft: props.isAnUpdate ? this.calculatePointsLeft() : 0,
       ...props.character,
     };
@@ -47,19 +47,22 @@ class CharacterCreation extends Component {
   calculatePointsLeft = () => {
     const {
       character: {
-        strength,
-        dexterity,
-        luck,
-        charisma,
-        education,
-        magic,
-        perception,
-        constitution,
+        attributes: {
+          strength,
+          dexterity,
+          luck,
+          charisma,
+          education,
+          magic,
+          perception,
+          constitution,
+          willpower = 50,
+        },
       },
     } = this.props;
 
     return (
-      400 -
+      450 -
       strength -
       dexterity -
       luck -
@@ -67,128 +70,40 @@ class CharacterCreation extends Component {
       charisma -
       education -
       magic -
-      perception
+      perception -
+      willpower
     );
   };
 
   onChange = (name, value) => {
-    const {
-      strength,
-      dexterity,
-      luck,
-      charisma,
-      education,
-      magic,
-      perception,
-      constitution,
-    } = this.state;
     const obj = {};
-    let pointsLeft = 0;
-    obj[name] = name === 'name' || 'description' ? value : parseInt(value, 10);
-    switch (name) {
-      case 'strength':
-        pointsLeft =
-          400 -
-          value -
-          dexterity -
-          luck -
-          charisma -
-          education -
-          magic -
-          perception -
-          constitution;
-        break;
-      case 'dexterity':
-        pointsLeft =
-          400 -
-          strength -
-          value -
-          luck -
-          charisma -
-          education -
-          magic -
-          perception -
-          constitution;
-        break;
-      case 'luck':
-        pointsLeft =
-          400 -
-          strength -
-          dexterity -
-          value -
-          charisma -
-          education -
-          magic -
-          perception -
-          constitution;
-        break;
-      case 'charisma':
-        pointsLeft =
-          400 -
-          strength -
-          dexterity -
-          luck -
-          value -
-          education -
-          magic -
-          perception -
-          constitution;
-        break;
-      case 'education':
-        pointsLeft =
-          400 -
-          strength -
-          dexterity -
-          luck -
-          charisma -
-          value -
-          magic -
-          perception -
-          constitution;
-        break;
-      case 'magic':
-        pointsLeft =
-          400 -
-          strength -
-          dexterity -
-          luck -
-          charisma -
-          education -
-          value -
-          perception -
-          constitution;
-        break;
-      case 'perception':
-        pointsLeft =
-          400 -
-          strength -
-          dexterity -
-          luck -
-          charisma -
-          education -
-          magic -
-          value -
-          constitution;
-        break;
-      case 'constitution':
-        pointsLeft =
-          400 -
-          strength -
-          dexterity -
-          luck -
-          charisma -
-          education -
-          magic -
-          perception -
-          value;
-        break;
-      default:
-        pointsLeft = 0;
-        break;
-    }
+    obj[name] = name === "name" || "description" ? value : parseInt(value, 10);
+
     this.setState(state => ({
       ...state,
       ...obj,
+    }));
+  };
+
+  onChangeAttributes = (name, value) => {
+    const { attributes } = this.state;
+    const obj = {};
+    let pointsLeft = 450;
+
+    Object.keys(attributes).map(akey => {
+      if (akey !== name) {
+        pointsLeft -= attributes[akey];
+      } else {
+        pointsLeft -= value;
+      }
+    });
+
+    this.setState(state => ({
+      ...state,
+      attributes: {
+        ...state.attributes,
+        [name]: value,
+      },
       totalPointsleft: pointsLeft,
     }));
   };
@@ -209,7 +124,7 @@ class CharacterCreation extends Component {
       });
     } else {
       const obj = [...this.state.skills];
-      obj.push('');
+      obj.push("");
       this.setState(state => ({
         ...state,
         skills: obj,
@@ -250,7 +165,7 @@ class CharacterCreation extends Component {
 
   addAbility = () => {
     const obj = [...this.state.abilities];
-    obj.push('');
+    obj.push("");
     this.setState(state => ({
       ...state,
       abilities: obj,
@@ -311,7 +226,7 @@ class CharacterCreation extends Component {
     } else {
       const obj = [...this.state.items];
       obj.push({
-        name: '',
+        name: "",
         quantity: 1,
       });
       this.setState(state => ({
@@ -359,7 +274,7 @@ class CharacterCreation extends Component {
       });
     } else {
       const obj = [...this.state.weapons];
-      obj.push('');
+      obj.push("");
       this.setState(state => ({
         ...state,
         weapons: obj,
@@ -393,12 +308,12 @@ class CharacterCreation extends Component {
     const { uid, id, triggerError } = this.props;
     let storageRef = firebase.storage().ref();
     const path =
-      'images/' +
+      "images/" +
       uid +
-      '/character_' +
+      "/character_" +
       id +
-      '.' +
-      picture[picture.length - 1].name.split('.')[1];
+      "." +
+      picture[picture.length - 1].name.split(".")[1];
     storageRef
       .child(path)
       .put(picture[picture.length - 1])
@@ -429,8 +344,8 @@ class CharacterCreation extends Component {
         // File deleted successfully
         this.setState(state => ({
           ...state,
-          icon: '',
-          iconPath: '',
+          icon: "",
+          iconPath: "",
         }));
       })
       .catch(error => {
@@ -451,12 +366,12 @@ class CharacterCreation extends Component {
     } = this.props;
     if (totalPointsleft < 0) {
       triggerError({
-        message: 'Cannot exceed points limit !',
+        message: "Cannot exceed points limit !",
       });
-    } else if (name === '') {
-      triggerError({ message: 'Name cannot be empty !!' });
-    } else if (icon === '') {
-      triggerError({ message: 'Icon cannot be empty !' });
+    } else if (name === "") {
+      triggerError({ message: "Name cannot be empty !!" });
+    } else if (icon === "") {
+      triggerError({ message: "Icon cannot be empty !" });
     } else if (isAnUpdate) {
       const health =
         this.state.constitution !== character.constitution
@@ -494,6 +409,7 @@ class CharacterCreation extends Component {
       abilities,
       weapons,
       items,
+      attributes,
       totalPointsleft,
     } = this.state;
 
@@ -516,137 +432,47 @@ class CharacterCreation extends Component {
             this.onChange(e.target.name, e.target.value);
           }}
         />
-        {icon === '' && <FileUploader onDrop={this.onDrop} />}
-        {icon !== '' && (
+        {icon === "" && <FileUploader onDrop={this.onDrop} />}
+        {icon !== "" && (
           <div>
             <img
               src={icon}
-              style={{ maxWidth: '50px', maxHeight: '50px' }}
+              style={{ maxWidth: "50px", maxHeight: "50px" }}
               alt={`${name}`}
             />
             <button onClick={this.removePicture}>Remove picture</button>
           </div>
         )}
-        <div>
-          <div style={styledBoxHeader}>Attributes :</div>
-          {attributes.map(a => {
-            return (
-              <div key={`attribute-${a}`}>
-                {a} :
-                <input
-                  type="number"
-                  name={a}
-                  placeholder={a}
-                  value={this.state[a]}
-                  onChange={e => {
-                    this.onChange(e.target.name, e.target.value);
-                  }}
-                  min="1"
-                  max="75"
-                />
-              </div>
-            );
-          })}
-        </div>
-        <div>Total points left : {totalPointsleft}</div>
-        <div>
-          Skills :
-          {skills.map((skill, index) => {
-            return (
-              <div key={`skill-${index}`}>
-                <input
-                  type="text"
-                  placeholder={`Skill ${index + 1} + description if needed`}
-                  value={skill}
-                  onChange={e => {
-                    this.onChangeSkills(index, e.target.value);
-                  }}
-                />
-                <button onClick={() => this.removeSkill(index)}>
-                  Remove this skill
-                </button>
-              </div>
-            );
-          })}
-          {skills.length < 6 && (
-            <button onClick={this.addSkill}>Add a skill</button>
-          )}
-        </div>
-        <div>
-          Weapons :
-          {weapons.map((weapon, index) => {
-            return (
-              <div key={`weapon-${index}`}>
-                <input
-                  type="text"
-                  placeholder={`Weapon ${index + 1} + description if needed`}
-                  value={weapon}
-                  onChange={e => {
-                    this.onChangeWeapons(index, e.target.value);
-                  }}
-                />
-                <button onClick={() => this.removeWeapon(index)}>
-                  Remove this weapon
-                </button>
-              </div>
-            );
-          })}
-          {weapons.length < 2 && (
-            <button onClick={this.addWeapon}>Add a weapon</button>
-          )}
-        </div>
-        <div>
-          Abilities :
-          {abilities.map((ability, index) => {
-            return (
-              <div key={`ability-${index}`}>
-                <input
-                  type="text"
-                  placeholder={`Ability ${index + 1} + description if needed`}
-                  value={ability}
-                  onChange={e => {
-                    this.onChangeAbilities(index, e.target.value);
-                  }}
-                />
-                <button onClick={() => this.removeAbility(index)}>
-                  Remove this ability
-                </button>
-              </div>
-            );
-          })}
-          <button onClick={this.addAbility}>Add an ability</button>
-        </div>
-        <div>
-          Items :
-          {items.map((item, index) => {
-            return (
-              <div key={`item-${index}`}>
-                <input
-                  type="text"
-                  placeholder={`Item ${index + 1} + description if needed`}
-                  value={item.name}
-                  onChange={e => {
-                    this.onChangeItems(index, e.target.value);
-                  }}
-                />
-                <input
-                  type="number"
-                  placeholder="X"
-                  value={item.quantity ? item.quantity : 1}
-                  onChange={e => {
-                    this.onChangeItemsQuantity(index, e.target.value);
-                  }}
-                />
-                <button onClick={() => this.removeItem(index)}>
-                  Remove this item
-                </button>
-              </div>
-            );
-          })}
-          {items.length < 10 && (
-            <button onClick={this.addItem}>Add an item</button>
-          )}
-        </div>
+        <CharacterCreationAttributes
+          attributes={attributes}
+          onChange={this.onChangeAttributes}
+          totalPointsleft={totalPointsleft}
+        />
+        <CharacterCreationSkills
+          skills={skills}
+          onChangeSkills={this.onChangeSkills}
+          addSkill={this.addSkill}
+          removeSkill={this.removeSkill}
+        />
+        <CharacterCreationWeapons
+          weapons={weapons}
+          onChangeWeapons={this.onChangeWeapons}
+          removeWeapon={this.removeWeapon}
+          addWeapon={this.addWeapon}
+        />
+        <CharacterCreationAbilites
+          abilities={abilities}
+          onChangeAbilities={this.onChangeAbilities}
+          removeAbility={this.removeAbility}
+          addAbility={this.addAbility}
+        />
+        <CharacterCreationItems
+          items={items}
+          onChangeItems={this.onChangeItems}
+          onChangeItemsQuantity={this.onChangeItemsQuantity}
+          removeItem={this.removeItem}
+          addItem={this.addItem}
+        />
         <button onClick={this.validateBeforeCreate}>Validate</button>
       </div>
     );

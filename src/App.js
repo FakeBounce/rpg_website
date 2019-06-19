@@ -289,11 +289,7 @@ class App extends Component {
         this.setState(state => ({ ...defaultState }));
 
         // Reset state for the next mount
-        localStorage.setItem(
-          'appState',
-          JSON.stringify(defaultState
-          )
-        );
+        localStorage.setItem("appState", JSON.stringify(defaultState));
 
         firebase
           .database()
@@ -649,6 +645,8 @@ class App extends Component {
   chooseStory = i => {
     const { stories, uid } = this.state;
 
+    if (i === -1) return null;
+
     // Remember state for the next mount
     localStorage.setItem(
       "appState",
@@ -664,9 +662,7 @@ class App extends Component {
       }),
     );
 
-    let isGM = false;
-
-    if (stories[i].gameMaster === uid) isGM = true;
+    const isGM = stories[i].gameMaster === uid;
 
     if (
       typeof stories[i].characters !== "undefined" &&
@@ -832,76 +828,77 @@ class App extends Component {
           />
         )}
 
-        {isAuth &&
-          pseudo === "" && (
-            <HasNoNickname
-              doSetState={this.doSetState}
-              onChange={this.onChange}
-              pseudoInput={pseudoInput}
-              triggerError={this.triggerError}
-            />
-          )}
+        {/*{isAuth &&*/}
+        {/*  pseudo === "" && (*/}
+        {/*    <HasNoNickname*/}
+        {/*      doSetState={this.doSetState}*/}
+        {/*      onChange={this.onChange}*/}
+        {/*      pseudoInput={pseudoInput}*/}
+        {/*      triggerError={this.triggerError}*/}
+        {/*    />*/}
+        {/*  )}*/}
 
-        {isAuth &&
-          pseudo !== "" &&
-          currentStory === -1 && (
-            <StoriesPanel stories={stories} chooseStory={this.chooseStory} />
-          )}
+        {/*{isAuth &&*/}
+        {/*  pseudo !== "" &&*/}
+        {/*  currentStory === -1 && (*/}
+        {/*    <StoriesPanel stories={stories} chooseStory={this.chooseStory} />*/}
+        {/*  )}*/}
 
-        {!isGameMaster &&
-          isAuth &&
-          pseudo !== "" &&
-          currentStory > -1 &&
-          characterId === 0 && (
-            <CharacterSelection
-              characterCreation={characterCreation}
-              characters={characters}
-              chooseStory={this.chooseStory}
-              currentStory={currentStory}
-              doSetState={this.doSetState}
-              keepCharacter={this.keepCharacter}
-              pseudo={pseudo}
-              triggerError={this.triggerError}
-              uid={uid}
-            />
-          )}
+        {/*{!isGameMaster &&*/}
+        {/*  isAuth &&*/}
+        {/*  pseudo !== "" &&*/}
+        {/*  currentStory > -1 &&*/}
+        {/*  characterId === 0 && (*/}
+        <CharacterSelection
+          characterCreation={characterCreation}
+          characters={characters}
+          chooseStory={this.chooseStory}
+          currentStory={currentStory}
+          doSetState={this.doSetState}
+          keepCharacter={this.keepCharacter}
+          pseudo={pseudo}
+          signOut={this.signOut}
+          triggerError={this.triggerError}
+          uid={uid}
+        />
+        {/*)}*/}
 
-        {isAuth &&
-          pseudo !== "" &&
-          currentStory > -1 &&
-          (characterId > 0 || isGameMaster) && (
-            <GameScreen
-              accessChatHelp={this.accessChatHelp}
-              bestiary={bestiary}
-              buyItem={this.buyItem}
-              characters={characters}
-              currentStory={currentStory}
-              doSetState={this.doSetState}
-              generateTable={this.generateTable}
-              hydrateMerchants={this.hydrateMerchants}
-              isGameMaster={isGameMaster}
-              loadCurrentPosition={this.loadCurrentPosition}
-              musicMute={musicMute}
-              musicName={isMusicFirst ? musicNameFirst : musicNameSecond}
-              noiseName={noiseName}
-              noiseVolume={noiseVolume}
-              onChange={this.onChange}
-              onChangeMusics={this.onChangeMusics}
-              pseudo={pseudo}
-              quests={quests}
-              resetSounds={this.resetSounds}
-              selectAnotherCharacter={this.selectAnotherCharacter}
-              signOut={this.signOut}
-              stories={stories}
-              toggleBestiary={this.toggleBestiary}
-              toggleMerchantList={this.toggleMerchantList}
-              toggleMusic={this.toggleMusic}
-              togglePlayerView={this.togglePlayerView}
-              triggerError={this.triggerError}
-              uid={uid}
-              {...rest}
-            />
-          )}
+        {/*{isAuth &&*/}
+        {/*  pseudo !== "" &&*/}
+        {/*  currentStory > -1 &&*/}
+        {/*  (characterId > 0 || isGameMaster) && (*/}
+        {/*    <GameScreen*/}
+        {/*      accessChatHelp={this.accessChatHelp}*/}
+        {/*      bestiary={bestiary}*/}
+        {/*      buyItem={this.buyItem}*/}
+        {/*      characters={characters}*/}
+        {/*      currentStory={currentStory}*/}
+        {/*      doSetState={this.doSetState}*/}
+        {/*      generateTable={this.generateTable}*/}
+        {/*      hydrateMerchants={this.hydrateMerchants}*/}
+        {/*      isGameMaster={isGameMaster}*/}
+        {/*      loadCurrentPosition={this.loadCurrentPosition}*/}
+        {/*      musicMute={musicMute}*/}
+        {/*      musicName={isMusicFirst ? musicNameFirst : musicNameSecond}*/}
+        {/*      noiseName={noiseName}*/}
+        {/*      noiseVolume={noiseVolume}*/}
+        {/*      onChange={this.onChange}*/}
+        {/*      onChangeMusics={this.onChangeMusics}*/}
+        {/*      pseudo={pseudo}*/}
+        {/*      quests={quests}*/}
+        {/*      resetSounds={this.resetSounds}*/}
+        {/*      selectAnotherCharacter={this.selectAnotherCharacter}*/}
+        {/*      signOut={this.signOut}*/}
+        {/*      stories={stories}*/}
+        {/*      toggleBestiary={this.toggleBestiary}*/}
+        {/*      toggleMerchantList={this.toggleMerchantList}*/}
+        {/*      toggleMusic={this.toggleMusic}*/}
+        {/*      togglePlayerView={this.togglePlayerView}*/}
+        {/*      triggerError={this.triggerError}*/}
+        {/*      uid={uid}*/}
+        {/*      {...rest}*/}
+        {/*    />*/}
+        {/*  )}*/}
         <SoundPlayer
           musicMute={musicMute}
           musicNameFirst={musicNameFirst}

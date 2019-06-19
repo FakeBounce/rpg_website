@@ -4,19 +4,36 @@ import CharacterCreation from "../CharacterCreation/CharacterCreation";
 import PropTypes from "prop-types";
 import CharacterPreview from "./CharacterPreview";
 import firebase from "firebase";
+import ButtonLarge from "../Utils/ButtonLarge";
 
 const styledBoxHeader = {
   width: "100%",
-  height: "20px",
-  marginBottom: "5px",
-  textAlign: "center",
+  height: 60,
+  marginBottom: 5,
+  paddingTop: 10,
+  paddingBottom: 10,
 };
 
 const styledBoxBack = {
   width: 250,
-  height: "20px",
-  marginBottom: "25px",
+  height: 20,
+  marginBottom: 25,
   textAlign: "center",
+};
+
+const styledSideHeaders = {
+  width: "25%",
+  height: "100%",
+  display: "inline-block",
+  float: "left",
+};
+
+const styledCenterHeader = {
+  width: "50%",
+  height: "100%",
+  display: "inline-block",
+  float: "left",
+  position: "relative",
 };
 
 class CharacterSelection extends Component {
@@ -206,14 +223,21 @@ class CharacterSelection extends Component {
     );
   };
 
+  resetStory = () => {
+    const { chooseStory } = this.props;
+
+    chooseStory(-1);
+  };
+
   render() {
     const { isAnUpdate, updateCharacterId } = this.state;
     const {
-      uid,
-      characters,
       characterCreation,
-      triggerError,
+      characters,
       keepCharacter,
+      signOut,
+      triggerError,
+      uid,
     } = this.props;
 
     if (typeof characters[1] !== "undefined" && !characterCreation) {
@@ -230,9 +254,24 @@ class CharacterSelection extends Component {
       );
     } else {
       return (
-        <div>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+        >
           <div style={styledBoxHeader}>
-            {isAnUpdate ? "Update a character" : "Create a character"}
+            <div style={styledSideHeaders}>
+              <ButtonLarge onClick={this.resetStory}>
+                Select another story
+              </ButtonLarge>
+            </div>
+            <div style={styledCenterHeader}>
+              {isAnUpdate ? "Update a character" : "Create a character"}
+            </div>
+            <div style={styledSideHeaders}>
+              <ButtonLarge onClick={signOut}>Log out</ButtonLarge>
+            </div>
           </div>
           <CharacterCreation
             uid={uid}
@@ -254,15 +293,16 @@ class CharacterSelection extends Component {
 }
 
 CharacterSelection.propTypes = {
-  uid: PropTypes.string.isRequired,
-  pseudo: PropTypes.string.isRequired,
   characterCreation: PropTypes.bool.isRequired,
   characters: PropTypes.object.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
   chooseStory: PropTypes.func.isRequired,
   currentStory: PropTypes.number.isRequired,
+  doSetState: PropTypes.func.isRequired,
   keepCharacter: PropTypes.func.isRequired,
+  pseudo: PropTypes.string.isRequired,
+  signOut: PropTypes.func.isRequired,
+  triggerError: PropTypes.func.isRequired,
+  uid: PropTypes.string.isRequired,
 };
 
 export default CharacterSelection;

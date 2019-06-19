@@ -5,8 +5,8 @@ import {cursorPointer} from "../Utils/StyleConstants";
 
 const styledTownListItem = {
   width: "75%",
-  height: "20px",
-  marginBottom: "5px",
+  height: 20,
+  marginBottom: 5,
   textAlign: "center",
   float: "left",
   display: "inline-block",
@@ -16,7 +16,7 @@ const styledTownListItem = {
 
 const styledTownListDiscover = {
   width: "25%",
-  height: "20px",
+  height: 20,
   textAlign: "center",
   float: "left",
   display: "inline-block",

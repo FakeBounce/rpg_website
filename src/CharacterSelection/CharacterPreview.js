@@ -8,13 +8,13 @@ const styledItem = {
   cursor: cursorPointer,
 };
 const styledIcon = {
-  width: "30px",
-  height: "30px",
+  width: 30,
+  height: 30,
   float: "left",
   display: "inline-block",
 };
 const styledText = {
-  marginLeft: "5px",
+  marginLeft: 5,
   float: "left",
   display: "inline-block",
 };
