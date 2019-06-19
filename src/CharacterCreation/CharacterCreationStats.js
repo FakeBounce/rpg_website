@@ -6,6 +6,7 @@ import CharacterCreationWeapons from "./CharacterCreationWeapons";
 import CharacterCreationSkills from "./CharacterCreationSkills";
 import CharacterCreationAttributes from "./CharacterCreationAttributes";
 import CharacterCreationDescription from "./CharacterCreationDescription";
+import CharacterCreationStatsTabs from "./CharacterCreationStatsTabs";
 
 const styledCharacterStats = {
   width: "80%",
@@ -16,6 +17,21 @@ const styledCharacterStats = {
 };
 
 class CharacterCreationStats extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currentPanel: "attributes",
+    };
+  }
+
+  changePanel = panel => {
+    this.setState(state => ({
+      ...state,
+      currentPanel: panel,
+    }));
+  };
+
   render() {
     const {
       abilities,
@@ -41,43 +57,60 @@ class CharacterCreationStats extends Component {
       totalPointsleft,
       weapons,
     } = this.props;
+    const { currentPanel } = this.state;
 
     return (
       <div style={styledCharacterStats}>
-        <CharacterCreationAttributes
-          attributes={attributes}
-          onChange={onChangeAttributes}
-          totalPointsleft={totalPointsleft}
+        <CharacterCreationStatsTabs
+          currentPanel={currentPanel}
+          changePanel={this.changePanel}
         />
-        <CharacterCreationSkills
-          skills={skills}
-          onChangeSkills={onChangeSkills}
-          addSkill={addSkill}
-          removeSkill={removeSkill}
-        />
-        <CharacterCreationWeapons
-          weapons={weapons}
-          onChangeWeapons={onChangeWeapons}
-          removeWeapon={removeWeapon}
-          addWeapon={addWeapon}
-        />
-        <CharacterCreationAbilites
-          abilities={abilities}
-          onChangeAbilities={onChangeAbilities}
-          removeAbility={removeAbility}
-          addAbility={addAbility}
-        />
-        <CharacterCreationItems
-          items={items}
-          onChangeItems={onChangeItems}
-          onChangeItemsQuantity={onChangeItemsQuantity}
-          removeItem={removeItem}
-          addItem={addItem}
-        />
-        <CharacterCreationDescription
-          description={description}
-          onChange={onChange}
-        />
+        {currentPanel === "attributes" && (
+          <div>
+            <CharacterCreationAttributes
+              attributes={attributes}
+              onChange={onChangeAttributes}
+              totalPointsleft={totalPointsleft}
+            />
+            <CharacterCreationDescription
+              description={description}
+              onChange={onChange}
+            />
+          </div>
+        )}
+        {currentPanel === "skills" && (
+          <div>
+            <CharacterCreationSkills
+              skills={skills}
+              onChangeSkills={onChangeSkills}
+              addSkill={addSkill}
+              removeSkill={removeSkill}
+            />
+            <CharacterCreationAbilites
+              abilities={abilities}
+              onChangeAbilities={onChangeAbilities}
+              removeAbility={removeAbility}
+              addAbility={addAbility}
+            />
+          </div>
+        )}
+        {currentPanel === "items" && (
+          <div>
+            <CharacterCreationWeapons
+              weapons={weapons}
+              onChangeWeapons={onChangeWeapons}
+              removeWeapon={removeWeapon}
+              addWeapon={addWeapon}
+            />
+            <CharacterCreationItems
+              items={items}
+              onChangeItems={onChangeItems}
+              onChangeItemsQuantity={onChangeItemsQuantity}
+              removeItem={removeItem}
+              addItem={addItem}
+            />
+          </div>
+        )}
       </div>
     );
   }
