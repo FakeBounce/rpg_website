@@ -1,21 +1,25 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
-import FileUploader from "./FileUploader";
 import { cursorPointer } from "../Utils/StyleConstants";
-import CharacterCreationItems from "./CharacterCreationItems";
-import CharacterCreationAbilites from "./CharacterCreationAbilites";
-import CharacterCreationWeapons from "./CharacterCreationWeapons";
-import CharacterCreationSkills from "./CharacterCreationSkills";
-import CharacterCreationAttributes from "./CharacterCreationAttributes";
+import CharacterCreationImage from "./CharacterCreationImage";
+import CharacterCreationName from "./CharacterCreationName";
+import CharacterCreationStats from "./CharacterCreationStats";
+import CharacterCreationBox from "./CharacterCreationBox";
 
 const styledItem = {
   display: "inline-block",
   border: "1px solid green",
+  width: "80%",
+  position: "relative",
   cursor: cursorPointer,
 };
 
-class CharacterCreation extends Component {
+const styledCharacterBox = {
+  height: window.innerHeight - 75 - 50, // minus header and validation button
+};
+
+class CharacterCreationPanel extends Component {
   constructor(props) {
     super(props);
 
@@ -76,12 +80,9 @@ class CharacterCreation extends Component {
   };
 
   onChange = (name, value) => {
-    const obj = {};
-    obj[name] = name === "name" || "description" ? value : parseInt(value, 10);
-
     this.setState(state => ({
       ...state,
-      ...obj,
+      [name]: value,
     }));
   };
 
@@ -415,63 +416,34 @@ class CharacterCreation extends Component {
 
     return (
       <div style={styledItem}>
-        <input
-          type="text"
-          name="name"
-          placeholder="name"
-          value={name}
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
-          }}
-        />
-        <textarea
-          name="description"
-          placeholder="description"
-          value={description}
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
-          }}
-        />
-        {icon === "" && <FileUploader onDrop={this.onDrop} />}
-        {icon !== "" && (
-          <div>
-            <img
-              src={icon}
-              style={{ maxWidth: "50px", maxHeight: "50px" }}
-              alt={`${name}`}
-            />
-            <button onClick={this.removePicture}>Remove picture</button>
-          </div>
-        )}
-        <CharacterCreationAttributes
-          attributes={attributes}
-          onChange={this.onChangeAttributes}
-          totalPointsleft={totalPointsleft}
-        />
-        <CharacterCreationSkills
-          skills={skills}
-          onChangeSkills={this.onChangeSkills}
-          addSkill={this.addSkill}
-          removeSkill={this.removeSkill}
-        />
-        <CharacterCreationWeapons
-          weapons={weapons}
-          onChangeWeapons={this.onChangeWeapons}
-          removeWeapon={this.removeWeapon}
-          addWeapon={this.addWeapon}
-        />
-        <CharacterCreationAbilites
+        <CharacterCreationName name={name} onChange={this.onChange} />
+        <CharacterCreationBox
           abilities={abilities}
-          onChangeAbilities={this.onChangeAbilities}
-          removeAbility={this.removeAbility}
           addAbility={this.addAbility}
-        />
-        <CharacterCreationItems
+          addItem={this.addItem}
+          addSkill={this.addSkill}
+          addWeapon={this.addWeapon}
+          attributes={attributes}
+          description={description}
+          icon={icon}
           items={items}
+          name={name}
+          onChange={this.onChange}
+          onChangeAbilities={this.onChangeAbilities}
+          onChangeAttributes={this.onChangeAttributes}
           onChangeItems={this.onChangeItems}
           onChangeItemsQuantity={this.onChangeItemsQuantity}
+          onChangeSkills={this.onChangeSkills}
+          onChangeWeapons={this.onChangeWeapons}
+          onDrop={this.onDrop}
+          removeAbility={this.removeAbility}
           removeItem={this.removeItem}
-          addItem={this.addItem}
+          removePicture={this.removePicture}
+          removeSkill={this.removeSkill}
+          removeWeapon={this.removeWeapon}
+          skills={skills}
+          totalPointsleft={totalPointsleft}
+          weapons={weapons}
         />
         <button onClick={this.validateBeforeCreate}>Validate</button>
       </div>
@@ -479,11 +451,11 @@ class CharacterCreation extends Component {
   }
 }
 
-CharacterCreation.defaultProps = {
+CharacterCreationPanel.defaultProps = {
   character: {},
 };
 
-CharacterCreation.propTypes = {
+CharacterCreationPanel.propTypes = {
   uid: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   isAnUpdate: PropTypes.bool.isRequired,
@@ -493,4 +465,4 @@ CharacterCreation.propTypes = {
   triggerError: PropTypes.func.isRequired,
 };
 
-export default CharacterCreation;
+export default CharacterCreationPanel;
