@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import CharacterCreation from "../CharacterCreation/CharacterCreation";
+import CharacterCreationPanel from "../CharacterCreation/CharacterCreationPanel";
 import PropTypes from "prop-types";
 import CharacterPreview from "./CharacterPreview";
 import firebase from "firebase";
@@ -273,7 +273,7 @@ class CharacterSelection extends Component {
               <ButtonLarge onClick={signOut}>Log out</ButtonLarge>
             </div>
           </div>
-          <CharacterCreation
+          <CharacterCreationPanel
             uid={uid}
             id={
               isAnUpdate

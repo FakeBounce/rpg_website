@@ -44,6 +44,17 @@ import {
 import LoadSpreasheet from "./Utils/LoadSpreasheet";
 import { gridLength } from "./Utils/StyleConstants";
 
+const styledErrorPanel = {
+  position: "absolute",
+  bottom: 0,
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+  backgroundColor: "#FFFED0",
+  textAlign: "center",
+  color: "red",
+};
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -917,9 +928,7 @@ class App extends Component {
           songStatus={songStatus}
           songVolume={songVolume}
         />
-        <div style={{ position: "absolute", bottom: 0, textAlign: "center" }}>
-          {error}
-        </div>
+        <div style={styledErrorPanel}>{error}</div>
       </div>
     );
   }
