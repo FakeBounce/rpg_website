@@ -32,6 +32,13 @@
     display: inline-block;
 }
 
+.item-description-type{
+    text-align: left;
+    padding: 10px;
+    float: left;
+    display: inline-block;
+}
+
 .item-description-description{
     text-align: left;
     padding: 10px;

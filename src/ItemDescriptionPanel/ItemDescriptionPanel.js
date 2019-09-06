@@ -42,6 +42,7 @@ class ItemDescriptionPanel extends Component {
             className="item-description-icon"
           />
           <div className="item-description-text">{isHidden ? '???' : name}</div>
+          {/*<div className="item-description-type">{itemType}</div>*/}
           <div className="item-description-description">
             {isHidden ? "Can't be described" : description}
           </div>
