@@ -37,6 +37,28 @@ const styledMuteImg = {
   color: colors.text,
 };
 
+const styledCloseRoomImg = {
+  position: "absolute",
+  float: "left",
+  width: 41,
+  height: 22,
+  zIndex: 10,
+  left: 0,
+  bottom: 22,
+  color: colors.text,
+};
+
+const styledRoomImg = {
+  position: "absolute",
+  float: "left",
+  width: 41,
+  height: 22,
+  zIndex: 10,
+  left: 0,
+  bottom: 22,
+  color: colors.text,
+};
+
 const styledCameraCadre = {
   height: heightHeader,
   width: (window.innerWidth - 300) / 7,
@@ -60,6 +82,7 @@ class Camera extends PureComponent {
       friendsVideoRemote: {},
       isDisabled: false,
       friendsMute: {},
+      room: [],
     };
     this.database = firebase.database().ref("camera");
     this.yourId = props.uid;
@@ -80,6 +103,17 @@ class Camera extends PureComponent {
     this.friendsVideoRemote = {};
     this.yourVideo = null;
     this.localStream = null;
+  }
+
+  componentDidMount() {
+    firebase
+      .database()
+      .ref("camera/room")
+      .on("value", snapshot => {
+        doSetState({
+          room: snapshot.val(),
+        });
+      });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -330,8 +364,13 @@ class Camera extends PureComponent {
     if (this.friendsVideoRemote[index].srcObject !== e.streams[0]) {
       this.friendsVideoRemote[index].srcObject = e.streams[0];
 
+      // @TODO check that
+      this.friendsVideoRemote[index].onconnectionstatechange = state => {
+        console.log("state on change", state);
+      };
+
       const tempRemoteVideos = { ...this.state.friendsVideoRemote };
-      console.log("window.URL", window.URL);
+
       tempRemoteVideos[index] = e.streams[0];
       this.setState(state => ({
         ...state,
@@ -344,7 +383,7 @@ class Camera extends PureComponent {
     }
   };
 
-  muteSomeone = key => {
+  muteSomeone = key => () => {
     const newFriendsMute = { ...this.state.friendsMute };
     newFriendsMute[key] = !newFriendsMute[key];
     this.setState(state => ({
@@ -358,15 +397,47 @@ class Camera extends PureComponent {
       window.localStream.getTracks().forEach(track => {
         track.stop();
       });
-      this.setState(state => ({
-        ...state,
-        isDisabled: false,
-      }));
+      this.setState(
+        state => ({
+          ...state,
+          isDisabled: false,
+        }),
+        () => {
+          firebase
+            .database()
+            .ref("camera/" + this.yourId + "/isConnected")
+            .set(false);
+        },
+      );
     }
   };
 
+  createPrivateRoom = key => () => {
+    const { room } = this.state;
+    if (room.length > 0) {
+      const newRoom = [...room, key];
+      firebase
+        .database()
+        .ref("camera/room")
+        .set(newRoom);
+    } else {
+      firebase
+        .database()
+        .ref("camera/room")
+        .set([this.yourId, key]);
+    }
+  };
+
+  closePrivateRoom = () => {
+    firebase
+      .database()
+      .ref("camera/room")
+      .set([]);
+  };
+
   render() {
-    const { isDisabled, friendsMute, friendsVideoRemote } = this.state;
+    const { isDisabled, friendsMute, friendsVideoRemote, room } = this.state;
+    const { isGameMaster } = this.props;
 
     return (
       <div>
@@ -416,6 +487,15 @@ class Camera extends PureComponent {
             autoPlay
             muted
           />
+          {isGameMaster &&
+            room.length > 0 && (
+              <ButtonLarge
+                onClick={this.closePrivateRoom}
+                style={styledCloseRoomImg}
+              >
+                R
+              </ButtonLarge>
+            )}
           {isDisabled && (
             <ButtonLarge onClick={this.closeLocalstream} style={styledMuteImg}>
               X
@@ -428,7 +508,12 @@ class Camera extends PureComponent {
               <video
                 autoPlay
                 style={styledVideo}
-                muted={friendsMute[key]}
+                muted={
+                  friendsMute[key] ||
+                  (room.length > 0 &&
+                    room.indexOf(key) > -1 &&
+                    room.indexOf(this.yourId) === -1)
+                }
                 controls
                 ref={vid => {
                   if (vid) {
@@ -438,7 +523,7 @@ class Camera extends PureComponent {
               />
 
               <img
-                onClick={() => this.muteSomeone(key)}
+                onClick={this.muteSomeone(key)}
                 src={
                   friendsMute[key]
                     ? "./common/soundMuted.png"
@@ -447,6 +532,18 @@ class Camera extends PureComponent {
                 style={styledMuteImg}
                 alt="sound muted or not"
               />
+              {isGameMaster && (
+                <img
+                  onClick={this.createPrivateRoom(key)}
+                  src={
+                    room.indexOf([key]) > -1
+                      ? "./common/soundUnmuted.png"
+                      : "./common/soundMuted.png"
+                  }
+                  style={styledRoomImg}
+                  alt="sound muted or not"
+                />
+              )}
             </div>
           );
         })}
@@ -462,6 +559,7 @@ class Camera extends PureComponent {
 
 Camera.propTypes = {
   uid: PropTypes.string.isRequired,
+  isGameMaster: PropTypes.bool.isRequired,
 };
 
 export default Camera;

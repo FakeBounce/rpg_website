@@ -114,7 +114,7 @@ class Header extends Component {
     return (
       <div style={styledHeader}>
         <div style={styledHeaderLeft}>
-          <Camera uid={uid} />
+          <Camera uid={uid} isGameMaster={isGameMaster} />
         </div>
         <div style={styledHeaderRight}>
           <ButtonLarge style={styledSignOut} onClick={signOut}>
