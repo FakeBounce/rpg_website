@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
 import ButtonLarge from "./Utils/ButtonLarge";
@@ -74,7 +74,7 @@ const styledCadresContainer = {
   width: window.innerWidth,
 };
 
-class Camera extends PureComponent {
+class Camera extends Component {
   constructor(props) {
     super(props);
 
