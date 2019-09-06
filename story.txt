@@ -21,7 +21,7 @@ Quête: Retrouver Laslow Crossbow, disparût juste avant le champ de bataille
 *********************************
 Quête: Enfant enlevé
 
-Femme en pleure et son mari ont vu leur enfant se faire enlever sous leurs yeux.
+Femme en pleurs et son mari ont vu leur enfant se faire enlever sous leurs yeux.
 Ils habitent une petite baraque dans un coin mal famé de la ville.
 L'endroit est sale, peu de passant.
 Quelques pousseurs de murs autours de tonneaux posés dehors.
@@ -55,6 +55,7 @@ Avant de sortir de la maison, on peut entendre un bruit venant de la chambre.
 La fenêtre est ouverte. Le couple n'as "rien entendu".
 
 En faisant un tour dans la maison, il n'y a pas de pièce pour enfant ni de jouets.
+("Euh... vous comprenez, on est pauvre... on le laisse dormir avec nous pour l'instant"
 
 En interrogeant l'esprit ou après torture un bandit de la rue/bar peut indiquer
 que le Baron pourrait avoir fait ça.
@@ -74,7 +75,7 @@ des bouteilles d'alcool et un jeu de carte.
 
 Deux bandits se cachent sur le toit opposé avec des arcs.
 
-Les bandits ont bien le tatouage sur l'avant droit.
+Les bandits ont bien le tatouage sur l'avant bras droit.
 
 A l'intérieur, un bâtiment en ruine.
 Si accompagné par les brigands, les yeux sont bandés.
@@ -201,7 +202,7 @@ Du sang.
 En jetant un rapide coup d'oeil à la blessure, tu aperçois un objet métallique enfoncé dans ton corps.
 ça a l'air de te clouer à ce que tu penses être un mur derrière toi.
 
-Tu commences à jeter un coup d'oeil rapide sur ton flanc droit, pour essayer de comprendre ce qu'il se passe.
+Tu commences à jeter ton regard rapidement sur ton flanc droit, pour essayer de comprendre ce qu'il se passe.
 Le vrombissement s'essoufle, tu commence à entendre des fracas de tous les côtés.
 
 Ot'sil'la va lar'gur ! suivi d'une déflagration.
@@ -222,7 +223,7 @@ perturbant la concentration du mage.
 Une silhouette apparaît soudain au dessus de toi, une femme cornue aux airs familiers,
 qui vient tirer d'un coup l'objet qui te restraignait.
 Tu sens une douleur atroce puis rapidement elle s'estompe.
-La femme à les yeux brilliant, tu l'entends chuchoter des paroles inconnues.
+La femme à les yeux brilliant, tu l'entends chuchoter des paroles incompréhensibles.
 Elle passe la main devant ton visage, et tu commence à te rappeler.
 // @TODO: Revoir le pourquoi
 Oui, c'est ça. Tu étais venu récupérer un trésor dans un tombeau quand cette armée
