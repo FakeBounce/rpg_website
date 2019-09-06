@@ -238,3 +238,27 @@ de façon si rapide que tu n'as pas pu esquiver.
 "Hey, arrête de glander, on a besoin de toi là ! Debout !"
 
 **************************************
+
+
+Les morts ont envahis le royaume.
+Ils ont établis des bastions sur nos villes dévastées.
+Il nous reste une seule capitale, le dernier rempart.
+Si cette ville tombe, il y aura nulle part ou se cacher.
+
+Malheuresement, les troupes ne peuvent bouger en dehors de la ville.
+Prendre le risque de subir une attaque sur la ville sans le gros des troupes est impensable.
+On a besoin de vous pour menez des petites opérations de guérilla, afin de démanteler
+leur réseau.
+Il faut faire tomber les têtes de chaque commandant, peut importe la manière.
+Si ils ont pu monter une telle armée, c'est qu'ils ont acquérit des artefacts.
+Chaque commandant en possède un, les récupérer pourrait équilibrer la balance.
+
+Nous avons envoyer une troupe de messager chez les Gnolls, en espérant les faire réagir.
+
+Nous avons quelques forces résistantes, bloqués par les avant postes ennemis, qui peuvent agir
+si on leur donne les ordres.
+
+Il y a une possibilité, c'est d'attirer les Eldrazis sur les Morts.
+Pour ça il faut briser la barrière érigée après le combat contre Jenko.
+Mais c'est quitte ou double...
+les Eldrazis ne sont clairement pas contrôlable et on risquerait notre extinction plus rapidement que prévu.
