@@ -6,7 +6,6 @@ import TeamPanel from "./TeamCharacters/TeamPanel";
 import { widthRightPanel, heightHeader } from "./Utils/StyleConstants";
 import CharacterPanel from "./CharacterPanel/CharacterPanel";
 import ExchangePanel from "./ExchangePanel/ExchangePanel";
-import SoundPanel from "./SoundPanel/SoundPanel";
 import SongPanel from "./SongPanel/SongPanel";
 import { listenSong } from "./Utils/DatabaseFunctions";
 

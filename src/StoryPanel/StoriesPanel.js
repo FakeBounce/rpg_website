@@ -12,16 +12,6 @@ const styledStoryPanel = {
   textAlign: "center",
 };
 
-const styledStoryPanelCreation = {
-  width: "100%",
-  height: "100%",
-  textAlign: "center",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "start",
-  flexDirection: "column",
-};
-
 const styledMapSelect = {
   position: "relative",
   display: "inline-block",

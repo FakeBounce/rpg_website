@@ -5,7 +5,6 @@ import TownsHistoryMerchantHeader from "./TownsHistoryMerchantHeader";
 import TownsHistoryMerchantColumnList from "./TownsHistoryMerchantColumnList";
 import firebase from "firebase";
 import ItemDescriptionPanel from "../ItemDescriptionPanel/ItemDescriptionPanel";
-import Item from "../ItemPanel/Item";
 
 const styledTownColumn = {
   width: widthLeftBestiary / 3 - 3,

@@ -110,7 +110,7 @@ class MapGrid extends PureComponent {
   };
 
   render() {
-    const { map, currentX, currentY } = this.props;
+    const { map } = this.props;
 
     return this.generateTable(map);
   }

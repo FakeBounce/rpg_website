@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
 import { cursorPointer } from "../Utils/StyleConstants";
-import CharacterCreationImage from "./CharacterCreationImage";
 import CharacterCreationName from "./CharacterCreationName";
-import CharacterCreationStats from "./CharacterCreationStats";
 import CharacterCreationBox from "./CharacterCreationBox";
 
 const styledItem = {
@@ -13,10 +11,6 @@ const styledItem = {
   width: "80%",
   position: "relative",
   cursor: cursorPointer,
-};
-
-const styledCharacterBox = {
-  height: window.innerHeight - 75 - 50, // minus header and validation button
 };
 
 class CharacterCreationPanel extends Component {
@@ -88,7 +82,6 @@ class CharacterCreationPanel extends Component {
 
   onChangeAttributes = (name, value) => {
     const { attributes } = this.state;
-    const obj = {};
     let pointsLeft = 450;
 
     Object.keys(attributes).map(akey => {
@@ -97,6 +90,7 @@ class CharacterCreationPanel extends Component {
       } else {
         pointsLeft -= value;
       }
+      return null;
     });
 
     this.setState(state => ({

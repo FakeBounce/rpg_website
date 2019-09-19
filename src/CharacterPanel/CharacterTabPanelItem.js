@@ -91,7 +91,6 @@ class CharacterTabPanelItem extends Component {
   };
 
   discoverItem = (index, isDiscovered = false) => () => {
-    const { itemValue } = this.state;
     const { character } = this.props;
     const obj = [...character.items];
     obj[index].isDiscovered = isDiscovered;

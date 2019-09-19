@@ -2,7 +2,6 @@ import React, { PureComponent } from "react";
 import {
   cursorPointer,
   heightLeft,
-  widthRightPanel,
 } from "../Utils/StyleConstants";
 import { songs, colors } from "../Utils/Constants";
 
