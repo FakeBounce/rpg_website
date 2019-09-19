@@ -127,6 +127,7 @@ class TownsHistoryPanel extends Component {
             character={character}
             merchants={merchants}
             showedTown={showedTown}
+            currentStory={currentStory}
           />
         )}
       </div>

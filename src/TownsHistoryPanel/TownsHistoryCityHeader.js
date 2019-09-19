@@ -5,7 +5,7 @@ const styledCityHeader = {
   width: '100%',
   height: 25,
   borderBottom: '1px solid white',
-  position: 'relative',
+  position: 'absolute',
 };
 
 class TownsHistoryCityHeader extends Component {
