@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
 import GMMapPanel from "./GMMapPanel";
@@ -67,7 +67,7 @@ class MiddlePanel extends Component {
     } = this.props;
 
     return (
-      <div>
+      <Fragment>
         <MapGenerator
           currentScale={currentScale}
           currentStory={currentStory}
@@ -184,7 +184,7 @@ class MiddlePanel extends Component {
               onChangeMusics={onChangeMusics}
             />
           )}
-      </div>
+      </Fragment>
     );
   }
 }

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class Logs extends Component {
   render() {
     return (
-      <div>
+      <div className="scrollbar" style={{height: "90%", overflowY: "scroll"}}>
         <div className="commit"> FakeBounce, le 2018-12-11 : Added Enhancement Panel; Cannot enhance yet </div>
         <div className="commit"> FakeBounce, le 2018-12-11 : Added Exchange between player </div>
         <div className="commit"> FakeBounce, le 2018-12-10 : Fixed bestiary listener </div>

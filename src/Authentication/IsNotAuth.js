@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import firebase from 'firebase';
-import ButtonLarge from '../Utils/ButtonLarge';
-import Logs from './Logs';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import firebase from "firebase";
+import ButtonLarge from "../Utils/ButtonLarge";
+import Logs from "./Logs";
 
 class IsNotAuth extends Component {
   handleKeyPress = event => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       this.signIn();
     }
   };
@@ -27,19 +27,20 @@ class IsNotAuth extends Component {
       .then(() => {
         firebase
           .database()
-          .ref('/users/' + firebase.auth().currentUser.uid)
-          .once('value')
+          .ref("/users/" + firebase.auth().currentUser.uid)
+          .once("value")
           .then(snapshot => {
             doSetState(
               {
                 ...snapshot.val(),
                 isAuth: true,
                 uid: firebase.auth().currentUser.uid,
+                isAdmin: snapshot.val().isAdmin,
               },
               () => {
                 loadUsers();
                 loadStories();
-              }
+              },
             );
           });
       })
@@ -64,7 +65,7 @@ class IsNotAuth extends Component {
       .then(() => {
         firebase
           .database()
-          .ref('users/' + firebase.auth().currentUser.uid)
+          .ref("users/" + firebase.auth().currentUser.uid)
           .set({
             photoUrl: firebase.auth().currentUser.photoURL,
             name: firebase.auth().currentUser.displayName,
@@ -89,7 +90,7 @@ class IsNotAuth extends Component {
     const { email, password, onChange } = this.props;
 
     return (
-      <div style={{ height: '100%' }}>
+      <div style={{ height: "100%" }}>
         <input
           type="text"
           name="email"

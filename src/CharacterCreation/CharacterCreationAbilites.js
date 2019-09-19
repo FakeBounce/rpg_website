@@ -18,7 +18,7 @@ class CharacterCreationAbilites extends Component {
             <div key={`ability-${index}`}>
               <input
                 type="text"
-                placeholder={`Ability ${index + 1} + description if needed`}
+                placeholder={`Ability ${index + 1}`}
                 value={ability}
                 onChange={e => {
                   onChangeAbilities(index, e.target.value);

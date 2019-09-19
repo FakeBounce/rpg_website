@@ -505,7 +505,7 @@ export const defaultState = {
   currentMerchant: -1,
   currentQuest: -1,
   currentScale: 1,
-  currentStory: 1,
+  currentStory: -1,
   currentTile: {},
   currentTown: -1,
   currentX: -1,
@@ -574,15 +574,15 @@ export const defaultState = {
 };
 
 export const attributes = [
-  'strength', // Puissance physique. Porter, pousser, frappe imprécise, encaisser avec un bouclier, utilisation d'armes lourdes
-  'dexterity', // Souplesse et technique. Esquive, saut, lancer d'objets/tirs
-  'magic', // Utilisation de sorts ou d'objets magiques connus
-  'constitution',  // Résistance physique. Résistance aux altérations, points de vies
-  'willpower', // Résistance mentale. Résistance aux contrôles, sondes ou autre interaction avec l'esprit. Permet de bouger même si le corps ne le permet pas
-  'perception', // Vue, ouïe, toucher, instinct, anticipation.
-  'charisma', // Prestance, persuasion. Se fait plus ou moins remarquer
-  'education', // Utilisation d'objets magiques, connaissance du monde
-  'luck', // Tout et n'importe quoi
+  "strength", // Puissance physique. Porter, pousser, frappe imprécise, encaisser avec un bouclier, utilisation d'armes lourdes
+  "dexterity", // Souplesse et technique. Esquive, saut, lancer d'objets/tirs
+  "magic", // Utilisation de sorts ou d'objets magiques connus
+  "constitution", // Résistance physique. Résistance aux altérations, points de vies
+  "willpower", // Résistance mentale. Résistance aux contrôles, sondes ou autre interaction avec l'esprit. Permet de bouger même si le corps ne le permet pas
+  "perception", // Vue, ouïe, toucher, instinct, anticipation.
+  "charisma", // Prestance, persuasion. Se fait plus ou moins remarquer
+  "education", // Utilisation d'objets magiques, connaissance du monde
+  "luck", // Tout et n'importe quoi
 ];
 
 export const eventList = ["nothing", "gold", "item", "debt", "draw"];
@@ -843,7 +843,6 @@ export const tempoImagesList = [
   { path: "common/dark_forest.jpg", name: "Dark Forest" },
   { path: "common/angel.jpg", name: "Angel" },
   { path: "common/demon.jpg", name: "Demon" },
-  { path: "common/noTown.jpg", name: "Camping" },
   { path: "common/desert.jpg", name: "Deset tempest" },
   { path: "common/cavern.jpg", name: "Cavern" },
 ];
@@ -979,15 +978,286 @@ export const colors = {
 };
 
 export const statusList = [
-  'OK',
-  'Bleeding',
-  'Burned',
-  'Dead',
-  'Left',
-  'Frozen',
-  'Paralyzed',
-  'Poisoned',
-  'Sleepy',
-  'Unconscious',
-  'Under control',
+  "OK",
+  "Bleeding",
+  "Burned",
+  "Dead",
+  "Left",
+  "Frozen",
+  "Paralyzed",
+  "Poisoned",
+  "Sleepy",
+  "Unconscious",
+  "Under control",
 ];
+
+export const mapNames = ["dravos", "dravos2"];
+
+export const defaultStory = {
+  artefacts: {},
+  bestiary: {},
+  chat: {},
+  currentEvent: -1,
+  currentX: 25,
+  currentY: 25,
+  draw: {
+    colors: ["black"],
+    colorsLeft: [
+      "pink",
+      "red",
+      "green",
+      "purple",
+      "orange",
+      "yellow",
+      "blue",
+      "grey",
+      "brown",
+    ],
+    default:
+      '{"lines":[{"points":[{"x":244,"y":83.5},{"x":244,"y":83.5},{"x":244,"y":90.5},{"x":244,"y":99.5},{"x":244,"y":111.5},{"x":244,"y":129.5},{"x":242,"y":145.5},{"x":241,"y":152.5},{"x":240,"y":164.5},{"x":238,"y":173.5},{"x":236,"y":179.5},{"x":235,"y":182.5},{"x":234,"y":187.5},{"x":234,"y":189.5},{"x":234,"y":190.5},{"x":234,"y":191.5},{"x":236,"y":191.5},{"x":246,"y":191.5},{"x":254,"y":191.5},{"x":275,"y":191.5},{"x":294,"y":191.5},{"x":330,"y":191.5},{"x":356,"y":191.5},{"x":374,"y":190.5},{"x":381,"y":189.5},{"x":389,"y":188.5},{"x":393,"y":186.5},{"x":395,"y":186.5},{"x":396,"y":181.5},{"x":396,"y":177.5},{"x":396,"y":170.5},{"x":396,"y":161.5},{"x":395,"y":151.5},{"x":395,"y":147.5},{"x":395,"y":139.5},{"x":395,"y":130.5},{"x":395,"y":123.5},{"x":395,"y":119.5},{"x":395,"y":118.5},{"x":395,"y":115.5},{"x":395,"y":114.5},{"x":395,"y":110.5},{"x":395,"y":104.5},{"x":395,"y":97.5},{"x":395,"y":90.5},{"x":394,"y":83.5},{"x":393,"y":76.5},{"x":392,"y":74.5},{"x":392,"y":73.5},{"x":389,"y":73.5},{"x":388,"y":74.5},{"x":387,"y":75.5},{"x":384,"y":75.5},{"x":381,"y":76.5},{"x":375,"y":77.5},{"x":366,"y":78.5},{"x":358,"y":79.5},{"x":349,"y":81.5},{"x":339,"y":83.5},{"x":329,"y":83.5},{"x":319,"y":83.5},{"x":307,"y":83.5},{"x":300,"y":83.5},{"x":288,"y":83.5},{"x":277,"y":83.5},{"x":274,"y":83.5},{"x":272,"y":83.5},{"x":270,"y":83.5},{"x":269,"y":83.5},{"x":267,"y":83.5},{"x":266,"y":83.5},{"x":265,"y":83.5},{"x":263,"y":83.5},{"x":262,"y":83.5},{"x":259,"y":83.5},{"x":258,"y":82.5},{"x":257,"y":82.5},{"x":256,"y":82.5},{"x":256,"y":81.5},{"x":255,"y":80.5},{"x":254,"y":80.5},{"x":253,"y":80.5},{"x":252,"y":80.5},{"x":250,"y":80.5},{"x":249,"y":80.5},{"x":247,"y":80.5},{"x":245,"y":80.5},{"x":244,"y":80.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":269,"y":203.5},{"x":269,"y":203.5},{"x":267,"y":205.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":303,"y":207.5},{"x":303,"y":207.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":304,"y":201.5},{"x":304,"y":201.5},{"x":305,"y":201.5},{"x":306,"y":201.5},{"x":307,"y":201.5},{"x":308,"y":201.5},{"x":310,"y":201.5},{"x":311,"y":201.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":311,"y":218.5},{"x":311,"y":218.5},{"x":312,"y":217.5},{"x":315,"y":215.5},{"x":316,"y":215.5},{"x":317,"y":214.5},{"x":319,"y":214.5},{"x":320,"y":216.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":344,"y":206.5},{"x":344,"y":206.5},{"x":344,"y":207.5},{"x":344,"y":210.5},{"x":344,"y":211.5},{"x":344,"y":212.5},{"x":344,"y":215.5},{"x":344,"y":216.5},{"x":344,"y":217.5},{"x":344,"y":219.5},{"x":344,"y":221.5},{"x":344,"y":222.5},{"x":344,"y":223.5},{"x":344,"y":224.5},{"x":344,"y":225.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":277,"y":200.5},{"x":277,"y":200.5},{"x":273,"y":200.5},{"x":268,"y":200.5},{"x":263,"y":201.5},{"x":258,"y":201.5},{"x":257,"y":201.5},{"x":256,"y":202.5},{"x":255,"y":204.5},{"x":255,"y":206.5},{"x":255,"y":207.5},{"x":255,"y":210.5},{"x":256,"y":211.5},{"x":259,"y":211.5},{"x":261,"y":211.5},{"x":265,"y":211.5},{"x":270,"y":211.5},{"x":271,"y":211.5},{"x":271,"y":210.5},{"x":271,"y":207.5},{"x":271,"y":204.5},{"x":270,"y":203.5},{"x":270,"y":202.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":244,"y":83.5},{"x":244,"y":83.5},{"x":244,"y":90.5},{"x":244,"y":99.5},{"x":244,"y":111.5},{"x":244,"y":129.5},{"x":242,"y":145.5},{"x":241,"y":152.5},{"x":240,"y":164.5},{"x":238,"y":173.5},{"x":236,"y":179.5},{"x":235,"y":182.5},{"x":234,"y":187.5},{"x":234,"y":189.5},{"x":234,"y":190.5},{"x":234,"y":191.5},{"x":236,"y":191.5},{"x":246,"y":191.5},{"x":254,"y":191.5},{"x":275,"y":191.5},{"x":294,"y":191.5},{"x":330,"y":191.5},{"x":356,"y":191.5},{"x":374,"y":190.5},{"x":381,"y":189.5},{"x":389,"y":188.5},{"x":393,"y":186.5},{"x":395,"y":186.5},{"x":396,"y":181.5},{"x":396,"y":177.5},{"x":396,"y":170.5},{"x":396,"y":161.5},{"x":395,"y":151.5},{"x":395,"y":147.5},{"x":395,"y":139.5},{"x":395,"y":130.5},{"x":395,"y":123.5},{"x":395,"y":119.5},{"x":395,"y":118.5},{"x":395,"y":115.5},{"x":395,"y":114.5},{"x":395,"y":110.5},{"x":395,"y":104.5},{"x":395,"y":97.5},{"x":395,"y":90.5},{"x":394,"y":83.5},{"x":393,"y":76.5},{"x":392,"y":74.5},{"x":392,"y":73.5},{"x":389,"y":73.5},{"x":388,"y":74.5},{"x":387,"y":75.5},{"x":384,"y":75.5},{"x":381,"y":76.5},{"x":375,"y":77.5},{"x":366,"y":78.5},{"x":358,"y":79.5},{"x":349,"y":81.5},{"x":339,"y":83.5},{"x":329,"y":83.5},{"x":319,"y":83.5},{"x":307,"y":83.5},{"x":300,"y":83.5},{"x":288,"y":83.5},{"x":277,"y":83.5},{"x":274,"y":83.5},{"x":272,"y":83.5},{"x":270,"y":83.5},{"x":269,"y":83.5},{"x":267,"y":83.5},{"x":266,"y":83.5},{"x":265,"y":83.5},{"x":263,"y":83.5},{"x":262,"y":83.5},{"x":259,"y":83.5},{"x":258,"y":82.5},{"x":257,"y":82.5},{"x":256,"y":82.5},{"x":256,"y":81.5},{"x":255,"y":80.5},{"x":254,"y":80.5},{"x":253,"y":80.5},{"x":252,"y":80.5},{"x":250,"y":80.5},{"x":249,"y":80.5},{"x":247,"y":80.5},{"x":245,"y":80.5},{"x":244,"y":80.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":269,"y":203.5},{"x":269,"y":203.5},{"x":267,"y":205.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":303,"y":207.5},{"x":303,"y":207.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":304,"y":201.5},{"x":304,"y":201.5},{"x":305,"y":201.5},{"x":306,"y":201.5},{"x":307,"y":201.5},{"x":308,"y":201.5},{"x":310,"y":201.5},{"x":311,"y":201.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":311,"y":218.5},{"x":311,"y":218.5},{"x":312,"y":217.5},{"x":315,"y":215.5},{"x":316,"y":215.5},{"x":317,"y":214.5},{"x":319,"y":214.5},{"x":320,"y":216.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":344,"y":206.5},{"x":344,"y":206.5},{"x":344,"y":207.5},{"x":344,"y":210.5},{"x":344,"y":211.5},{"x":344,"y":212.5},{"x":344,"y":215.5},{"x":344,"y":216.5},{"x":344,"y":217.5},{"x":344,"y":219.5},{"x":344,"y":221.5},{"x":344,"y":222.5},{"x":344,"y":223.5},{"x":344,"y":224.5},{"x":344,"y":225.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":287,"y":250.5},{"x":287,"y":250.5},{"x":271,"y":250.5},{"x":265,"y":250.5},{"x":259,"y":250.5},{"x":252,"y":250.5},{"x":247,"y":251.5},{"x":237,"y":256.5},{"x":228,"y":264.5},{"x":221,"y":271.5},{"x":220,"y":273.5},{"x":220,"y":278.5},{"x":220,"y":284.5},{"x":221,"y":289.5},{"x":228,"y":299.5},{"x":239,"y":310.5},{"x":242,"y":311.5},{"x":248,"y":318.5},{"x":254,"y":321.5},{"x":259,"y":324.5},{"x":263,"y":324.5},{"x":270,"y":324.5},{"x":281,"y":324.5},{"x":283,"y":324.5},{"x":291,"y":320.5},{"x":296,"y":315.5},{"x":299,"y":309.5},{"x":300,"y":301.5},{"x":302,"y":291.5},{"x":302,"y":282.5},{"x":305,"y":275.5},{"x":306,"y":269.5},{"x":306,"y":266.5},{"x":306,"y":264.5},{"x":303,"y":263.5},{"x":300,"y":263.5},{"x":297,"y":263.5},{"x":296,"y":263.5},{"x":295,"y":262.5},{"x":293,"y":262.5},{"x":292,"y":262.5},{"x":290,"y":262.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":345,"y":264.5},{"x":345,"y":264.5},{"x":344,"y":264.5},{"x":343,"y":264.5},{"x":342,"y":264.5},{"x":340,"y":265.5},{"x":337,"y":267.5},{"x":329,"y":272.5},{"x":323,"y":277.5},{"x":316,"y":282.5},{"x":313,"y":285.5},{"x":310,"y":287.5},{"x":306,"y":287.5},{"x":305,"y":289.5},{"x":303,"y":291.5},{"x":303,"y":292.5},{"x":303,"y":296.5},{"x":303,"y":301.5},{"x":303,"y":306.5},{"x":303,"y":310.5},{"x":303,"y":312.5},{"x":305,"y":317.5},{"x":308,"y":321.5},{"x":311,"y":324.5},{"x":312,"y":325.5},{"x":315,"y":326.5},{"x":321,"y":328.5},{"x":323,"y":328.5},{"x":332,"y":328.5},{"x":343,"y":328.5},{"x":345,"y":326.5},{"x":352,"y":322.5},{"x":358,"y":317.5},{"x":365,"y":309.5},{"x":367,"y":300.5},{"x":369,"y":288.5},{"x":369,"y":278.5},{"x":371,"y":269.5},{"x":371,"y":265.5},{"x":371,"y":258.5},{"x":367,"y":248.5},{"x":367,"y":247.5},{"x":365,"y":245.5},{"x":361,"y":244.5},{"x":360,"y":244.5},{"x":358,"y":243.5},{"x":356,"y":243.5},{"x":354,"y":243.5},{"x":354,"y":244.5},{"x":354,"y":246.5},{"x":354,"y":247.5},{"x":354,"y":248.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":276,"y":239.5},{"x":276,"y":239.5},{"x":281,"y":227.5},{"x":286,"y":217.5},{"x":288,"y":207.5},{"x":292,"y":193.5},{"x":292,"y":189.5},{"x":292,"y":184.5},{"x":294,"y":174.5},{"x":295,"y":164.5},{"x":295,"y":155.5},{"x":295,"y":148.5},{"x":298,"y":139.5},{"x":300,"y":130.5},{"x":303,"y":122.5},{"x":305,"y":114.5},{"x":306,"y":110.5},{"x":306,"y":108.5},{"x":308,"y":102.5},{"x":311,"y":94.5},{"x":313,"y":88.5},{"x":314,"y":85.5},{"x":314,"y":83.5},{"x":314,"y":81.5},{"x":314,"y":78.5},{"x":314,"y":76.5},{"x":316,"y":71.5},{"x":316,"y":69.5},{"x":316,"y":67.5},{"x":316,"y":66.5},{"x":316,"y":64.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":366,"y":234.5},{"x":366,"y":234.5},{"x":366,"y":230.5},{"x":366,"y":222.5},{"x":366,"y":212.5},{"x":366,"y":206.5},{"x":366,"y":197.5},{"x":366,"y":189.5},{"x":366,"y":183.5},{"x":366,"y":176.5},{"x":366,"y":170.5},{"x":366,"y":159.5},{"x":366,"y":154.5},{"x":366,"y":147.5},{"x":366,"y":138.5},{"x":366,"y":131.5},{"x":366,"y":122.5},{"x":366,"y":114.5},{"x":366,"y":110.5},{"x":366,"y":109.5},{"x":366,"y":108.5},{"x":366,"y":105.5},{"x":367,"y":103.5},{"x":370,"y":98.5},{"x":373,"y":91.5},{"x":375,"y":88.5},{"x":376,"y":83.5},{"x":378,"y":80.5},{"x":381,"y":77.5},{"x":381,"y":75.5},{"x":381,"y":74.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":312,"y":69.5},{"x":312,"y":69.5},{"x":310,"y":68.5},{"x":306,"y":66.5},{"x":300,"y":65.5},{"x":295,"y":63.5},{"x":288,"y":61.5},{"x":279,"y":56.5},{"x":276,"y":54.5},{"x":273,"y":51.5},{"x":270,"y":45.5},{"x":268,"y":38.5},{"x":268,"y":31.5},{"x":268,"y":25.5},{"x":268,"y":21.5},{"x":268,"y":17.5},{"x":268,"y":16.5},{"x":268,"y":15.5},{"x":268,"y":13.5},{"x":268,"y":12.5},{"x":268,"y":10.5},{"x":268,"y":7.5},{"x":269,"y":5.5},{"x":270,"y":4.5},{"x":271,"y":3.5},{"x":271,"y":2.5},{"x":271,"y":1.5}],"brushColor":"#444","brushRadius":1},{"points":[{"x":386,"y":75.5},{"x":386,"y":75.5},{"x":389,"y":74.5},{"x":397,"y":71.5},{"x":400,"y":68.5},{"x":402,"y":66.5},{"x":408,"y":58.5},{"x":411,"y":52.5},{"x":413,"y":46.5},{"x":415,"y":40.5},{"x":415,"y":34.5},{"x":416,"y":31.5}],"brushColor":"#444","brushRadius":1}],"width":752,"height":376}',
+  },
+  events: [],
+  gameMaster: "dNhsFSvSLbV7rDT85hV8uzXq1WZ2",
+  map: "dravos2",
+  merchants: [],
+  music: {
+    musicNameFirst: "",
+    musicNameSecond: "",
+    musicStatusFirst: "STOPPED",
+    musicStatusSecond: "STOPPED",
+    musicVolume: 50,
+    musicVolumeFirst: 0,
+    musicVolumeSecond: 50,
+  },
+  name: "",
+  noise: {
+    noiseName: "",
+    noiseStatus: "STOPPED",
+    noiseVolume: 50,
+  },
+  quests: [],
+  song: {
+    songName: "",
+    songStatus: "STOPPPED",
+    songVolume: 50,
+  },
+  tempoImage: "common/noTown.jpg",
+  towns: [
+    {
+      name: "Losère",
+      positionX: 16,
+      positionY: 33,
+      size: 4,
+    },
+    {
+      name: "Nadija",
+      positionX: 13,
+      positionY: 15,
+      size: 4,
+    },
+    {
+      name: "Hystrou",
+      positionX: 23,
+      positionY: 25,
+      size: 4,
+    },
+    {
+      name: "Emall",
+      positionX: 8,
+      positionY: 25,
+      size: 3,
+    },
+    {
+      name: "Sutton",
+      positionX: 27,
+      positionY: 29,
+      size: 3,
+    },
+    {
+      name: "Moonbright",
+      positionX: 7,
+      positionY: 18,
+      size: 3,
+    },
+    {
+      name: "Bellmare",
+      positionX: 24,
+      positionY: 12,
+      size: 3,
+    },
+    {
+      name: "Halivaara",
+      positionX: 16,
+      positionY: 16,
+      size: 3,
+    },
+    {
+      name: "Boatwright",
+      positionX: 7,
+      positionY: 13,
+      size: 2,
+    },
+    {
+      name: "Aberdyfi",
+      positionX: 11,
+      positionY: 11,
+      size: 2,
+    },
+    {
+      name: "Imédestongs",
+      positionX: 22,
+      positionY: 32,
+      size: 2,
+    },
+    {
+      name: "Mountmend",
+      positionX: 33,
+      positionY: 11,
+      size: 2,
+    },
+    {
+      name: "Athelney",
+      positionX: 34,
+      positionY: 30,
+      size: 2,
+    },
+    {
+      name: "Haedleigh",
+      positionX: 12,
+      positionY: 28,
+      size: 2,
+    },
+    {
+      name: "Willesden",
+      positionX: 14,
+      positionY: 23,
+      size: 2,
+    },
+    {
+      name: "Nearon",
+      positionX: 22,
+      positionY: 22,
+      size: 2,
+    },
+    {
+      name: "Aylesbury",
+      positionX: 29,
+      positionY: 18,
+      size: 2,
+    },
+    {
+      name: "Beckinsdale",
+      positionX: 19,
+      positionY: 11,
+      size: 2,
+    },
+    {
+      name: "Cardend",
+      positionX: 15,
+      positionY: 9,
+      size: 1,
+    },
+    {
+      name: "Garmsby",
+      positionX: 20,
+      positionY: 32,
+      size: 1,
+    },
+    {
+      name: "Mansfield",
+      positionX: 19,
+      positionY: 29,
+      size: 1,
+    },
+    {
+      name: "Erstonia",
+      positionX: 23,
+      positionY: 34,
+      size: 1,
+    },
+    {
+      name: "Thorpes",
+      positionX: 30,
+      positionY: 10,
+      size: 1,
+    },
+    {
+      name: "Brickelwhyte",
+      positionX: 16,
+      positionY: 25,
+      size: 1,
+    },
+    {
+      name: "Calcheth",
+      positionX: 15,
+      positionY: 21,
+      size: 1,
+    },
+    {
+      name: "Irragin",
+      positionX: 14,
+      positionY: 20,
+      size: 1,
+    },
+    {
+      name: "Northwich",
+      positionX: 18,
+      positionY: 7,
+      size: 1,
+    },
+    {
+      name: "Keld",
+      positionX: 17,
+      positionY: 29,
+      size: 1,
+    },
+    {
+      name: "Damerel",
+      positionX: 27,
+      positionY: 23,
+      size: 1,
+    },
+    {
+      name: "Orilon",
+      positionX: 26,
+      positionY: 18,
+      size: 1,
+    },
+    {
+      name: "Penketh",
+      positionX: 12,
+      positionY: 32,
+      size: 1,
+    },
+    {
+      name: "Hankala",
+      positionX: 19,
+      positionY: 24,
+      size: 1,
+    },
+    {
+      name: "Ilfracombe",
+      positionX: 23,
+      positionY: 16,
+      size: 1,
+    },
+    {
+      name: "Pontypridd",
+      positionX: 26,
+      positionY: 25,
+      size: 1,
+    },
+    {
+      name: "Dalhurst",
+      positionX: 23,
+      positionY: 28,
+      size: 1,
+    },
+    {
+      name: "Frostford",
+      positionX: 21,
+      positionY: 20,
+      size: 1,
+    },
+  ],
+};

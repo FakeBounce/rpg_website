@@ -350,7 +350,7 @@ export const listenSong = (currentStory, doSetState) => {
     });
 };
 
-export const loadStories = doSetState => {
+export const loadStories = (doSetState, callback = null) => {
   firebase
     .database()
     .ref("/stories")
@@ -359,6 +359,10 @@ export const loadStories = doSetState => {
       doSetState({
         stories: snapshot.val(),
       });
+      if(callback)
+      {
+        callback();
+      }
     })
     .catch(error => {
       // An error happened.

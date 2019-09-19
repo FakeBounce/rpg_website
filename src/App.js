@@ -58,6 +58,7 @@ const styledErrorPanel = {
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.state = localStorage.getItem("appState")
       ? JSON.parse(localStorage.getItem("appState"))
       : { ...defaultState };
@@ -75,7 +76,7 @@ class App extends Component {
     // populateTilesTypes();
     // resetMap(0,40);
     // resetEvents(0);
-    populateBestiary(0, this.doSetState);
+    // populateBestiary(0, this.doSetState);
 
     // firebase
     //   .database()
@@ -115,33 +116,33 @@ class App extends Component {
     //   });
     // });
 
-    firebase
-      .database()
-      .ref("stories/" + 0 + "/bestiary")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          bestiary: snapshot.val(),
-        }));
+    // firebase
+    //   .database()
+    //   .ref("stories/" + 0 + "/bestiary")
+    //   .on("value", snapshot => {
+    //     this.setState(state => ({
+    //       ...state,
+    //       bestiary: snapshot.val(),
+    //     }));
 
-        // const test = {};
-        // snapshot.val().map(b => {
-        //   const newPostKey = firebase
-        //     .database()
-        //     .ref('/stories/' + 0 + '/bestiary/')
-        //     .push().key;
-        //   test[newPostKey] = { ...b };
-        // });
-        //
-        // firebase
-        //   .database()
-        //   .ref('stories/' + 0 + '/bestiary')
-        //   .set(test)
-        //   .catch(error => {
-        //     // Handle Errors here.
-        //     this.triggerError(error);
-        //   });
-      });
+    // const test = {};
+    // snapshot.val().map(b => {
+    //   const newPostKey = firebase
+    //     .database()
+    //     .ref('/stories/' + 0 + '/bestiary/')
+    //     .push().key;
+    //   test[newPostKey] = { ...b };
+    // });
+    //
+    // firebase
+    //   .database()
+    //   .ref('stories/' + 0 + '/bestiary')
+    //   .set(test)
+    //   .catch(error => {
+    //     // Handle Errors here.
+    //     this.triggerError(error);
+    //   });
+    // });
   }
 
   loadMerchantsAndItems = () => {
@@ -658,12 +659,43 @@ class App extends Component {
 
     if (i === -1) return null;
 
+    populateBestiary(i, this.doSetState);
+
+    firebase
+      .database()
+      .ref("stories/" + i + "/bestiary")
+      .on("value", snapshot => {
+        this.setState(state => ({
+          ...state,
+          bestiary: snapshot.val(),
+        }));
+
+        // const test = {};
+        // snapshot.val().map(b => {
+        //   const newPostKey = firebase
+        //     .database()
+        //     .ref('/stories/' + i + '/bestiary/')
+        //     .push().key;
+        //   test[newPostKey] = { ...b };
+        // });
+        //
+        // firebase
+        //   .database()
+        //   .ref('stories/' + i + '/bestiary')
+        //   .set(test)
+        //   .catch(error => {
+        //     // Handle Errors here.
+        //     this.triggerError(error);
+        //   });
+      });
+
     // Remember state for the next mount
     localStorage.setItem(
       "appState",
       JSON.stringify({
         ...defaultState,
         email: this.state.email,
+        isAdmin: this.state.isAdmin,
         isAuth: this.state.isAuth,
         password: this.state.password,
         pseudo: this.state.pseudo,
@@ -795,6 +827,7 @@ class App extends Component {
       currentStory,
       email,
       error,
+      isAdmin,
       isAuth,
       isGameMaster,
       isMusicFirst,
@@ -820,6 +853,8 @@ class App extends Component {
       ...rest
     } = this.state;
 
+    console.log("isADmin", isAdmin);
+
     return (
       <div
         className="App"
@@ -839,77 +874,83 @@ class App extends Component {
           />
         )}
 
-        {/*{isAuth &&*/}
-        {/*  pseudo === "" && (*/}
-        {/*    <HasNoNickname*/}
-        {/*      doSetState={this.doSetState}*/}
-        {/*      onChange={this.onChange}*/}
-        {/*      pseudoInput={pseudoInput}*/}
-        {/*      triggerError={this.triggerError}*/}
-        {/*    />*/}
-        {/*  )}*/}
+        {isAuth &&
+          pseudo === "" && (
+            <HasNoNickname
+              doSetState={this.doSetState}
+              onChange={this.onChange}
+              pseudoInput={pseudoInput}
+              triggerError={this.triggerError}
+            />
+          )}
 
-        {/*{isAuth &&*/}
-        {/*  pseudo !== "" &&*/}
-        {/*  currentStory === -1 && (*/}
-        {/*    <StoriesPanel stories={stories} chooseStory={this.chooseStory} />*/}
-        {/*  )}*/}
+        {isAuth &&
+          pseudo !== "" &&
+          currentStory === -1 && (
+            <StoriesPanel
+              stories={stories}
+              chooseStory={this.chooseStory}
+              isAdmin={isAdmin}
+              doSetState={this.doSetState}
+              triggerError={this.triggerError}
+            />
+          )}
 
-        {/*{!isGameMaster &&*/}
-        {/*  isAuth &&*/}
-        {/*  pseudo !== "" &&*/}
-        {/*  currentStory > -1 &&*/}
-        {/*  characterId === 0 && (*/}
-        <CharacterSelection
-          characterCreation={characterCreation}
-          characters={characters}
-          chooseStory={this.chooseStory}
-          currentStory={currentStory}
-          doSetState={this.doSetState}
-          keepCharacter={this.keepCharacter}
-          pseudo={pseudo}
-          signOut={this.signOut}
-          triggerError={this.triggerError}
-          uid={uid}
-        />
-        {/*)}*/}
+        {!isGameMaster &&
+          isAuth &&
+          pseudo !== "" &&
+          currentStory > -1 &&
+          characterId === 0 && (
+            <CharacterSelection
+              characterCreation={characterCreation}
+              characters={characters}
+              chooseStory={this.chooseStory}
+              currentStory={currentStory}
+              doSetState={this.doSetState}
+              keepCharacter={this.keepCharacter}
+              pseudo={pseudo}
+              signOut={this.signOut}
+              triggerError={this.triggerError}
+              uid={uid}
+            />
+          )}
 
-        {/*{isAuth &&*/}
-        {/*  pseudo !== "" &&*/}
-        {/*  currentStory > -1 &&*/}
-        {/*  (characterId > 0 || isGameMaster) && (*/}
-        {/*    <GameScreen*/}
-        {/*      accessChatHelp={this.accessChatHelp}*/}
-        {/*      bestiary={bestiary}*/}
-        {/*      buyItem={this.buyItem}*/}
-        {/*      characters={characters}*/}
-        {/*      currentStory={currentStory}*/}
-        {/*      doSetState={this.doSetState}*/}
-        {/*      generateTable={this.generateTable}*/}
-        {/*      hydrateMerchants={this.hydrateMerchants}*/}
-        {/*      isGameMaster={isGameMaster}*/}
-        {/*      loadCurrentPosition={this.loadCurrentPosition}*/}
-        {/*      musicMute={musicMute}*/}
-        {/*      musicName={isMusicFirst ? musicNameFirst : musicNameSecond}*/}
-        {/*      noiseName={noiseName}*/}
-        {/*      noiseVolume={noiseVolume}*/}
-        {/*      onChange={this.onChange}*/}
-        {/*      onChangeMusics={this.onChangeMusics}*/}
-        {/*      pseudo={pseudo}*/}
-        {/*      quests={quests}*/}
-        {/*      resetSounds={this.resetSounds}*/}
-        {/*      selectAnotherCharacter={this.selectAnotherCharacter}*/}
-        {/*      signOut={this.signOut}*/}
-        {/*      stories={stories}*/}
-        {/*      toggleBestiary={this.toggleBestiary}*/}
-        {/*      toggleMerchantList={this.toggleMerchantList}*/}
-        {/*      toggleMusic={this.toggleMusic}*/}
-        {/*      togglePlayerView={this.togglePlayerView}*/}
-        {/*      triggerError={this.triggerError}*/}
-        {/*      uid={uid}*/}
-        {/*      {...rest}*/}
-        {/*    />*/}
-        {/*  )}*/}
+        {isAuth &&
+          pseudo !== "" &&
+          currentStory > -1 &&
+          (characterId > 0 || isGameMaster) && (
+            <GameScreen
+              accessChatHelp={this.accessChatHelp}
+              bestiary={bestiary}
+              buyItem={this.buyItem}
+              characters={characters}
+              currentStory={currentStory}
+              doSetState={this.doSetState}
+              generateTable={this.generateTable}
+              hydrateMerchants={this.hydrateMerchants}
+              isGameMaster={isGameMaster}
+              loadCurrentPosition={this.loadCurrentPosition}
+              musicMute={musicMute}
+              musicName={isMusicFirst ? musicNameFirst : musicNameSecond}
+              noiseName={noiseName}
+              noiseVolume={noiseVolume}
+              onChange={this.onChange}
+              onChangeMusics={this.onChangeMusics}
+              pseudo={pseudo}
+              quests={quests}
+              resetSounds={this.resetSounds}
+              selectAnotherCharacter={this.selectAnotherCharacter}
+              signOut={this.signOut}
+              stories={stories}
+              toggleBestiary={this.toggleBestiary}
+              toggleMerchantList={this.toggleMerchantList}
+              toggleMusic={this.toggleMusic}
+              togglePlayerView={this.togglePlayerView}
+              triggerError={this.triggerError}
+              uid={uid}
+              {...rest}
+            />
+          )}
         <SoundPlayer
           musicMute={musicMute}
           musicNameFirst={musicNameFirst}
