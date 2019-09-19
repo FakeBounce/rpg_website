@@ -22,7 +22,6 @@ class TownsHistoryMerchantColumnList extends Component {
               key={'town-list-column-merchant-item-' + iKey}
               index={iKey}
               showItemDescription={() => {}}
-              noPrice
               isHidden={
                 character.education <
                 parseInt(merchants[currentMerchant].items[iKey].rarity, 10) * 9

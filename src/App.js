@@ -350,6 +350,7 @@ class App extends Component {
 
   loadTownsAndQuests = () => {
     const { currentStory } = this.state;
+    console.log('loading towns');
     listenTowns(currentStory, this.doSetState);
     listenQuests(currentStory, this.doSetState);
   };
@@ -749,6 +750,7 @@ class App extends Component {
           this.createTable();
           this.createChat();
           this.loadMusic();
+          this.loadTownsAndQuests();
           this.loadMerchantsAndItems();
           this.loadEvents();
         },
@@ -852,8 +854,6 @@ class App extends Component {
       uid,
       ...rest
     } = this.state;
-
-    console.log("isADmin", isAdmin);
 
     return (
       <div

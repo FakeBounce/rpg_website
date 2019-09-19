@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import BottomPanel from './BottomPanel/BottomPanel';
-import ChatCommandsPanel from './ChatCommandsPanel/ChatCommandsPanel';
-import Header from './Utils/Header';
-import MiddlePanel from './MiddlePanel';
-import EventModal from './EventModal/EventModal';
-import BestiaryPanel from './BestiaryPanel/BestiaryPanel';
-import TownsHistoryPanel from './TownsHistoryPanel/TownsHistoryPanel';
+import BottomPanel from "./BottomPanel/BottomPanel";
+import ChatCommandsPanel from "./ChatCommandsPanel/ChatCommandsPanel";
+import Header from "./Utils/Header";
+import MiddlePanel from "./MiddlePanel";
+import EventModal from "./EventModal/EventModal";
+import BestiaryPanel from "./BestiaryPanel/BestiaryPanel";
+import TownsHistoryPanel from "./TownsHistoryPanel/TownsHistoryPanel";
 
 class GameScreen extends Component {
   state = {
@@ -116,12 +116,12 @@ class GameScreen extends Component {
       <div>
         <Header
           accessChatHelp={this.accessChatHelp}
-          chatHelpTitle={onChatHelp ? 'Return to map' : 'Access chat help'}
-          bestiaryTitle={isOnBestiary ? 'Return to map' : 'Bestiary'}
+          chatHelpTitle={onChatHelp ? "Return to map" : "Access chat help"}
+          bestiaryTitle={isOnBestiary ? "Return to map" : "Bestiary"}
           eventTitle={
-            isEventHidden ? 'Toggle event (Is hidden)' : 'Toggle event'
+            isEventHidden ? "Toggle event (Is hidden)" : "Toggle event"
           }
-          merchantTitle={isOnMerchantList ? 'Return to map' : 'Merchants list'}
+          merchantTitle={isOnMerchantList ? "Return to map" : "Merchants list"}
           hydrateMerchants={hydrateMerchants}
           isGameMaster={isGameMaster}
           musicMute={musicMute}
@@ -150,7 +150,7 @@ class GameScreen extends Component {
             uid={uid}
           />
         )}
-        {isOnBestiary ? (
+        {isOnBestiary && bestiary ? (
           <BestiaryPanel
             isGameMaster={isGameMaster}
             uid={uid}
@@ -158,8 +158,13 @@ class GameScreen extends Component {
             doSetState={doSetState}
             currentStory={currentStory}
           />
-        ) : isOnMerchantList && towns.length > 0 && merchants.length > 0 ? (
+        ) : isOnMerchantList &&
+        towns &&
+        towns.length > 0 &&
+        merchants &&
+        merchants.length > 0 ? (
           <TownsHistoryPanel
+            currentStory={currentStory}
             character={character}
             merchants={merchants}
             quests={quests}

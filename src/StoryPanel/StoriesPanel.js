@@ -10,6 +10,12 @@ const styledStoryPanel = {
   width: "100%",
   height: "100%",
   textAlign: "center",
+};
+
+const styledStoryPanelCreation = {
+  width: "100%",
+  height: "100%",
+  textAlign: "center",
   display: "flex",
   alignItems: "center",
   justifyContent: "start",
@@ -153,6 +159,7 @@ class StoriesPanel extends Component {
     return (
       <div style={styledStoryPanel}>
         Select a story :
+        <div>
         {stories.map((s, index) => {
           return (
             <Story
@@ -164,6 +171,7 @@ class StoriesPanel extends Component {
             />
           );
         })}
+        </div>
         {isAdmin && (
           <ButtonLarge onClick={this.toggleStoryCreation(true)}>
             Create a story

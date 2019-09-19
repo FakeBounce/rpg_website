@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { heightLeft } from '../Utils/StyleConstants';
-import TownsHistoryList from './TownsHistoryList';
-import TownsHistorySoloMerchant from './TownsHistorySoloMerchant';
-import TownsHistoryCity from './TownsHistoryCity';
-import TownsHistoryQuest from './TownsHistoryQuest';
-import { colors } from '../Utils/Constants';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { heightLeft } from "../Utils/StyleConstants";
+import TownsHistoryList from "./TownsHistoryList";
+import TownsHistorySoloMerchant from "./TownsHistorySoloMerchant";
+import TownsHistoryCity from "./TownsHistoryCity";
+import TownsHistoryQuest from "./TownsHistoryQuest";
+import { colors } from "../Utils/Constants";
 
 const styledTownsHistoryContainer = {
   height: heightLeft,
-  width: '100%',
-  position: 'relative',
+  width: "100%",
+  position: "relative",
   backgroundColor: colors.background,
   color: colors.text,
 };
@@ -33,7 +33,7 @@ class TownsHistoryPanel extends Component {
       if (t.merchantsList && t.merchantsList.length > 0) {
         t.merchantsList.map(mIndex => {
           if (merchants[mIndex].isDiscovered) {
-            tempMandQ[t.name].merchants.push(merchants[mIndex]);
+            tempMandQ[t.name].merchants.push({...merchants[mIndex], realIndex: mIndex});
             merchantsNumber += 1;
           }
           return null;
@@ -95,7 +95,11 @@ class TownsHistoryPanel extends Component {
   };
 
   render() {
-    const { character, merchants } = this.props;
+    const {
+      character,
+      merchants,
+      currentStory,
+    } = this.props;
     const {
       townsOrdered,
       showedMerchant,
@@ -112,6 +116,7 @@ class TownsHistoryPanel extends Component {
         />
         {showedMerchant.items && (
           <TownsHistorySoloMerchant
+            currentStory={currentStory}
             character={character}
             showedMerchant={showedMerchant}
           />
@@ -134,6 +139,7 @@ TownsHistoryPanel.propTypes = {
   merchants: PropTypes.array.isRequired,
   quests: PropTypes.array.isRequired,
   towns: PropTypes.array.isRequired,
+  currentStory: PropTypes.number.isRequired,
 };
 
 export default TownsHistoryPanel;

@@ -16,7 +16,7 @@ const styledListContainer = {
 
 class TownsHistorySoloMerchantList extends Component {
   render() {
-    const { character, showedMerchant } = this.props;
+    const { character, showedMerchant, showItemDescription } = this.props;
     return (
       <div style={styledListContainer} className="scrollbar">
         {Object.keys(showedMerchant.items).map(iKey => {
@@ -24,8 +24,7 @@ class TownsHistorySoloMerchantList extends Component {
             <Item
               key={'town-list-merchant-item-'+iKey}
               index={iKey}
-              showItemDescription={() => {}}
-              noPrice
+              showItemDescription={showItemDescription}
               isHidden={
                 character.education <
                 parseInt(showedMerchant.items[iKey].rarity, 10) * 9
@@ -42,6 +41,7 @@ class TownsHistorySoloMerchantList extends Component {
 TownsHistorySoloMerchantList.propTypes = {
   character: PropTypes.object.isRequired,
   showedMerchant: PropTypes.object.isRequired,
+  showItemDescription: PropTypes.func.isRequired,
 };
 
 export default TownsHistorySoloMerchantList;
