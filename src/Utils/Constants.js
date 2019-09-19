@@ -89,9 +89,9 @@ export const itemQuantities = {
 //     },
 // ];
 
-const merchantList = [];
-
-const questList = [];
+// const merchantList = [];
+//
+// const questList = [];
 
 export const quests = [
   {

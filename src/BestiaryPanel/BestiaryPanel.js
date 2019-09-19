@@ -1,32 +1,31 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import {
   heightLeft,
   widthLeftBestiary,
   widthListPanelBestiary,
-} from '../Utils/StyleConstants';
-import { sortAlphabetical, sortReversedAlphabetical } from '../Utils/Functions';
-import BestiaryHeader from './BestiaryHeader';
-import BestiaryList from './BestiaryList';
-import BestiaryProfile from './BestiaryProfile';
-import firebase from 'firebase';
-import BestiaryForm from './BestiaryForm';
-import { colors } from '../Utils/Constants';
+} from "../Utils/StyleConstants";
+import BestiaryHeader from "./BestiaryHeader";
+import BestiaryList from "./BestiaryList";
+import BestiaryProfile from "./BestiaryProfile";
+import firebase from "firebase";
+import BestiaryForm from "./BestiaryForm";
+import { colors } from "../Utils/Constants";
 
 const styledBestiaryPanel = {
   height: heightLeft,
-  width: '100%',
-  position: 'relative',
+  width: "100%",
+  position: "relative",
   backgroundColor: colors.background,
   color: colors.text,
 };
 
 class BestiaryPanel extends Component {
   state = {
-    selectedFilter: 'All',
-    selectedOrderBy: 'Default',
-    selectedOrderByType: 'None',
+    selectedFilter: "All",
+    selectedOrderBy: "Default",
+    selectedOrderByType: "None",
     filteredBestiary: { ...this.props.bestiary },
     selectedBeast: -1,
     isOnForm: false,
@@ -47,7 +46,7 @@ class BestiaryPanel extends Component {
 
   onChangeFilter = value => {
     const { bestiary } = this.props;
-    if (value === 'All') {
+    if (value === "All") {
       this.setState(state => ({
         ...state,
         selectedFilter: value,
@@ -56,7 +55,7 @@ class BestiaryPanel extends Component {
       }));
     } else {
       const tempBestiary = {};
-      if (value === 'Monster') {
+      if (value === "Monster") {
         Object.keys(bestiary).map(bKey => {
           if (bestiary[bKey].monster) {
             tempBestiary[bKey] = { ...bestiary[bKey], key: bKey };
@@ -64,7 +63,7 @@ class BestiaryPanel extends Component {
           return null;
         });
       }
-      if (value === 'PNJ') {
+      if (value === "PNJ") {
         Object.keys(bestiary).map(bKey => {
           if (!bestiary[bKey].monster) {
             tempBestiary[bKey] = { ...bestiary[bKey], key: bKey };
@@ -83,7 +82,7 @@ class BestiaryPanel extends Component {
 
   onChangeOrderByType = value => {
     const { filteredBestiary, selectedOrderBy, selectedFilter } = this.state;
-    if (value === 'None') {
+    if (value === "None") {
       this.setState(
         state => ({
           ...state,
@@ -91,15 +90,15 @@ class BestiaryPanel extends Component {
         }),
         () => {
           this.onChangeFilter(selectedFilter);
-          if (selectedOrderBy !== 'Default') {
+          if (selectedOrderBy !== "Default") {
             this.onChangeOrderBy(selectedOrderBy);
           }
-        }
+        },
       );
     } else {
       const tempBestiary = {};
 
-      if (value === 'Monster') {
+      if (value === "Monster") {
         Object.keys(filteredBestiary)
           .sort((a, b) => {
             if (!filteredBestiary[a].monster && filteredBestiary[b].monster) {
@@ -114,7 +113,7 @@ class BestiaryPanel extends Component {
             tempBestiary[key] = filteredBestiary[key];
           });
       }
-      if (value === 'PNJ') {
+      if (value === "PNJ") {
         Object.keys(filteredBestiary)
           .sort((a, b) => {
             if (!filteredBestiary[a].monster && filteredBestiary[b].monster) {
@@ -146,7 +145,7 @@ class BestiaryPanel extends Component {
       selectedOrderByType,
       filteredBestiary,
     } = this.state;
-    if (value === 'Default') {
+    if (value === "Default") {
       this.setState(
         state => ({
           ...state,
@@ -154,14 +153,14 @@ class BestiaryPanel extends Component {
         }),
         () => {
           this.onChangeFilter(selectedFilter);
-          if (selectedOrderBy !== 'All') {
+          if (selectedOrderBy !== "All") {
             this.onChangeOrderByType(selectedOrderByType);
           }
-        }
+        },
       );
     } else {
       const tempBestiary = {};
-      if (value === 'Alphabetical') {
+      if (value === "Alphabetical") {
         Object.keys(filteredBestiary)
           .sort((a, b) => {
             if (filteredBestiary[a].name > filteredBestiary[b].name) {
@@ -176,7 +175,7 @@ class BestiaryPanel extends Component {
             tempBestiary[key] = filteredBestiary[key];
           });
       }
-      if (value === 'Reversed alphabetical') {
+      if (value === "Reversed alphabetical") {
         Object.keys(filteredBestiary)
           .sort((a, b) => {
             if (filteredBestiary[a].name > filteredBestiary[b].name) {
@@ -191,7 +190,7 @@ class BestiaryPanel extends Component {
             tempBestiary[key] = filteredBestiary[key];
           });
       }
-      if (value === 'Knowledge') {
+      if (value === "Knowledge") {
         Object.keys(filteredBestiary)
           .sort((a, b) => {
             if (
@@ -212,7 +211,7 @@ class BestiaryPanel extends Component {
             tempBestiary[key] = filteredBestiary[key];
           });
       }
-      if (value === 'Reversed knowledge') {
+      if (value === "Reversed knowledge") {
         Object.keys(filteredBestiary)
           .sort((a, b) => {
             if (
@@ -282,7 +281,7 @@ class BestiaryPanel extends Component {
 
     firebase
       .database()
-      .ref('stories/' + currentStory + '/bestiary')
+      .ref("stories/" + currentStory + "/bestiary")
       .set(tempBestiary)
       .catch(error => {
         // Handle Errors here.
@@ -291,11 +290,11 @@ class BestiaryPanel extends Component {
     if (tempFilteredBestiary[index].seen) {
       firebase
         .database()
-        .ref('stories/' + currentStory + '/tempoImage')
-        .set('bestiary/' + tempFilteredBestiary[index].image)
+        .ref("stories/" + currentStory + "/tempoImage")
+        .set("bestiary/" + tempFilteredBestiary[index].image)
         .catch(error => {
           // Handle Errors here.
-          console.log('Error', error);
+          console.log("Error", error);
         });
     }
   };
@@ -325,9 +324,9 @@ class BestiaryPanel extends Component {
     return (
       <div style={styledBestiaryPanel}>
         <img
-          src={'./common/fiche.png'}
+          src={"./common/fiche.png"}
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: 25,
             left: widthListPanelBestiary,
             width: `${widthLeftBestiary}px`,

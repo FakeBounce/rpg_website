@@ -642,7 +642,6 @@ class ChatPanel extends PureComponent {
       onChange,
       gameMaster,
       pseudo,
-      doSetState,
     } = this.props;
     const { gmCommands, bonus } = this.state;
 

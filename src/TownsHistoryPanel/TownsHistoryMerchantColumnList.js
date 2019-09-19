@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Item from "../ItemPanel/Item";
-import { heightLeft, widthLeftBestiary } from "../Utils/StyleConstants";
-import firebase from "firebase";
-import ItemDescriptionPanel from "../ItemDescriptionPanel/ItemDescriptionPanel";
+import { heightLeft } from "../Utils/StyleConstants";
 
 const styledMerchantList = {
   width: "100%",
@@ -14,9 +12,13 @@ const styledMerchantList = {
 };
 
 class TownsHistoryMerchantColumnList extends Component {
-
   render() {
-    const { character, merchants, currentMerchant, showItemDescription } = this.props;
+    const {
+      character,
+      merchants,
+      currentMerchant,
+      showItemDescription,
+    } = this.props;
     return (
       <Fragment>
         <div style={styledMerchantList} className="scrollbar">

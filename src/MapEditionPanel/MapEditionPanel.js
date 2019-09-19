@@ -5,7 +5,7 @@ import firebase from "firebase";
 import MapEditionTileInfos from "./MapEditionTileInfos";
 import MapEditionTilesList from "./MapEditionTilesList";
 import MapEditionScale from "./MapEditionScale";
-import { gridLength, heightLeft, widthLeft } from "../Utils/StyleConstants";
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 
 class MapEditionPanel extends Component {
   state = {
