@@ -20,7 +20,7 @@ const styles = {
 
 class Story extends Component {
   render() {
-    const { index, name, chooseStory, totalStories } = this.props;
+    const { index, name, chooseStory, totalStories, wallpaper } = this.props;
 
     return (
       <div
@@ -43,7 +43,7 @@ class Story extends Component {
       >
         <div style={styles.storyTitle}>{name}</div>
         <img
-          src={"./common/dravos.jpg"}
+          src={wallpaper}
           style={{
             ...styles.storyImage,
             width: "80%",
@@ -60,6 +60,7 @@ Story.propTypes = {
   chooseStory: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
+  wallpaper: PropTypes.string.isRequired,
   totalStories: PropTypes.number.isRequired,
 };
 

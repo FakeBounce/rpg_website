@@ -157,6 +157,7 @@ class StoriesPanel extends Component {
               chooseStory={chooseStory}
               index={index}
               name={s.name}
+              wallpaper={s.wallpaper}
               totalStories={stories.length}
             />
           );
