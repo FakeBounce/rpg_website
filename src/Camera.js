@@ -110,9 +110,10 @@ class Camera extends Component {
       .database()
       .ref("camera/room")
       .on("value", snapshot => {
-        doSetState({
-          room: snapshot.val(),
-        });
+        this.setState(state => ({
+          ...state,
+          room: snapshot.val() || [],
+        }));
       });
   }
 

@@ -1,23 +1,23 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { widthLeft, heightLeft } from '../Utils/StyleConstants';
-import ItemList from './ItemList';
-import Cadre from '../Utils/Cadre';
-import firebase from 'firebase';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { widthLeft, heightLeft } from "../Utils/StyleConstants";
+import ItemList from "./ItemList";
+import Cadre from "../Utils/Cadre";
+import firebase from "firebase";
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
-  display: 'inline-block',
-  float: 'left',
-  textAlign: 'left',
-  position: 'relative',
+  display: "inline-block",
+  float: "left",
+  textAlign: "left",
+  position: "relative",
   paddingHorizontal: 10,
 };
 
 class ItemPanel extends PureComponent {
   showItemDescription = i => {
-    const { merchants, currentMerchant, doSetState } = this.props;
+    const { merchants, currentMerchant, doSetState, currentStory } = this.props;
     doSetState(
       {
         isItemDescriptionShowed: true,
@@ -28,13 +28,20 @@ class ItemPanel extends PureComponent {
         // Mandatory ?
         firebase
           .database()
-          .ref('stories/0/merchants/' + currentMerchant + '/items/' + i)
-          .on('value', snapshot => {
+          .ref(
+            "stories/" +
+              currentStory +
+              "/merchants/" +
+              currentMerchant +
+              "/items/" +
+              i,
+          )
+          .on("value", snapshot => {
             this.props.doSetState({
               itemToDescribe: snapshot.val(),
             });
           });
-      }
+      },
     );
   };
 
@@ -55,6 +62,7 @@ class ItemPanel extends PureComponent {
 }
 
 ItemPanel.propTypes = {
+  currentStory: PropTypes.number.isRequired,
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
   itemsList: PropTypes.object.isRequired,

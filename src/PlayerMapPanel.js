@@ -413,6 +413,7 @@ class PlayerMapPanel extends Component {
             />
             <MerchantPanel
               currentMerchant={currentMerchant}
+              currentStory={currentStory}
               merchantsList={merchantsList}
               merchants={merchants}
               doSetState={doSetState}
@@ -436,6 +437,7 @@ class PlayerMapPanel extends Component {
                 {currentTab === 'items' && (
                   <ItemPanel
                     currentMerchant={currentMerchant}
+                    currentStory={currentStory}
                     character={character}
                     itemsList={itemsList}
                     merchants={merchants}

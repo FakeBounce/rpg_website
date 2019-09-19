@@ -262,3 +262,61 @@ Il y a une possibilité, c'est d'attirer les Eldrazis sur les Morts.
 Pour ça il faut briser la barrière érigée après le combat contre Jenko.
 Mais c'est quitte ou double...
 les Eldrazis ne sont clairement pas contrôlable et on risquerait notre extinction plus rapidement que prévu.
+
+**************************************
+
+On ne sait pas où sont les généraux ni combien ils sont.
+Vous devrez le découvrir vous-mêmes.
+
+Nous avons repéré plusieurs avant postes dans les environs.
+Vous trouverez sûrement les informations nécessaires sur place.
+Les Morts ont une volonté imbrisable.
+Vous ne pourrez pas leur tirer d'information verbalement, du moins pas avec des méthodes ordinaires.
+Ils sont également insensible aux attaques mentales: oubliez le contrôle mental ou autre sort similaire.
+
+Prévoyez des sorts de détection.
+Les Morts aiment les embuscades, ils adorent encercler en surgissant du sol.
+
+Les défenses de la ville ne tiendront pas indéfiniment, il faut vous hâter !
+
+
+**************************************
+
+Idées de commandant:
+
+Guerrier légendaire Zekor
+Armure de plaque
+Double lance
+Arc électrique
+Provocation
+Hyper saut
+3m20
+(Sensible à la magie)
+
+Mage légendaire Tytatoutiss
+Apparition d'objet (bâton de puissance, baguettes de puissance)
+Armure vivante
+Invocation de guerriers squelette
+Assèchement
+Absorption d'énergie vitale
+Contrôle de la roche
+Contrôle du sable
+Lévitation
+Doubles illusoires
+Annulation de magie
+(Difficultés contre les cibles isolés/silencieuses)
+
+Assassin légendaire Nissa
+Invisibilité
+Pas léger
+Reflexes éclairs
+Génération de dagues
+Armes empoisonnées
+Armes hallucinogènes
+Armes paralysantes
+Escalade n'importe quoi
+Analyse la cible
+Découverte de points faibles
+Retraite éclair
+Perception de l'invisible
+(Sensible aux contrôles de foule)
