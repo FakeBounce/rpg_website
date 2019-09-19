@@ -5,6 +5,7 @@ import TownsHistoryMerchantHeader from "./TownsHistoryMerchantHeader";
 import TownsHistorySoloMerchantList from "./TownsHistorySoloMerchantList";
 import firebase from "firebase";
 import ItemDescriptionPanel from "../ItemDescriptionPanel/ItemDescriptionPanel";
+import Item from "../ItemPanel/Item";
 
 const styledMerchantColumn = {
   width: widthLeftBestiary / 3,
@@ -71,7 +72,7 @@ class TownsHistorySoloMerchant extends Component {
           <div style={styledItemColumn}>
             <ItemDescriptionPanel
               {...currentItem}
-              buyItem={() => {}}
+              noBuy
               gold={character.gold}
               isHidden={character.education < currentItem.rarity * 9}
             />
