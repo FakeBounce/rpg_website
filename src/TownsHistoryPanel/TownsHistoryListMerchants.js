@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import TownsHistoryListMerchant from './TownsHistoryListMerchant';
-import TownsHistoryListMerchantsHeader from './TownsHistoryListMerchantsHeader';
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+import TownsHistoryListMerchant from "./TownsHistoryListMerchant";
+import TownsHistoryListMerchantsHeader from "./TownsHistoryListMerchantsHeader";
 
 class TownsHistoryListMerchants extends Component {
   render() {
@@ -12,7 +12,7 @@ class TownsHistoryListMerchants extends Component {
         {town.merchants.map(m => {
           return (
             <TownsHistoryListMerchant
-              key={'town-list-merchant-' + m.name}
+              key={"town-list-merchant-" + m.name}
               showMerchant={showMerchant}
               merchant={m}
             />

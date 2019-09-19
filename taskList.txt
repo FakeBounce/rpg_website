@@ -100,8 +100,8 @@ v3.0.0
 36) Ajouter un poids max d'inventaire
 37) Ajouter flèches/Carreaux aux marchands
 38) Revoir le système de changement de perso
-39) Ajouter un changement d'histoire
-40) Régler les crash cam
+39) Ajouter un changement d'histoire - OK
+40) Régler les crash cam - A vérifier
 41) Régler les crash marchands
 42) Ajouter des indications sur les enchants P/T
 43) Ajouter le type d'objet dans les marchands (eg: Type: enchantement)
