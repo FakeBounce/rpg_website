@@ -1260,4 +1260,5 @@ export const defaultStory = {
       size: 1,
     },
   ],
+  wallpaper: "./common/dravos.jpg"
 };
