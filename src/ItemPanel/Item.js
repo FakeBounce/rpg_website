@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import './Item.css';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import "./Item.css";
+import PropTypes from "prop-types";
 
 class Item extends PureComponent {
   render() {
@@ -18,11 +18,11 @@ class Item extends PureComponent {
     return (
       <div className="item" onClick={() => showItemDescription(index)}>
         <img
-          src={iconPath || './' + itemType + '/' + icon}
-          alt={' '}
+          src={iconPath || "./" + itemType + "/" + icon}
+          alt={" "}
           className="item-icon"
         />
-        <div className="item-text">{isHidden ? '???' : name}</div>
+        <div className="item-text">{isHidden ? "???" : name}</div>
         {!noPrice && <div className="item-price">{price}g</div>}
       </div>
     );
@@ -30,10 +30,11 @@ class Item extends PureComponent {
 }
 
 Item.defaultProps = {
-  type: '',
-  iconPath: '',
-  description: '',
+  type: "",
+  iconPath: "",
+  description: "",
   noPrice: false,
+  price: 0,
 };
 
 Item.propTypes = {
@@ -44,7 +45,7 @@ Item.propTypes = {
   type: PropTypes.string,
   description: PropTypes.string,
   name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
+  price: PropTypes.number,
   showItemDescription: PropTypes.func.isRequired,
   isHidden: PropTypes.bool.isRequired,
   noPrice: PropTypes.bool,

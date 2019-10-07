@@ -933,12 +933,14 @@ export const chatCommands = [
   {
     name: "/gmdX, /gmdiceX",
     action:
-      "Launch dice X, returning random number between 1 and X. Only GM and you can see it.",
+      "Launch dice X, returning random number between 1 and X." +
+      " Only GM and you can see it.",
   },
   {
     name: "/strength, /str, /force, /for...",
     action:
-      "Launch dice 100 corresponding to attribute. Says if succeeded or failed.",
+      "Launch dice 100 corresponding to attribute. " +
+      "Says if succeeded or failed.",
   },
   {
     name: "/w Player Message",
@@ -1260,5 +1262,5 @@ export const defaultStory = {
       size: 1,
     },
   ],
-  wallpaper: "./common/dravos.jpg"
+  wallpaper: "./common/dravos.jpg",
 };

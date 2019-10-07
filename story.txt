@@ -115,9 +115,51 @@ Le Baron le remercie de les avoir attirés ici, il dit que sa dette est rembours
 Il n'y a jamais eu d'enfant.
 
 Le mari part, le Baron s'apprête a vous faire les poches
-*********************************
 
+**************************************
 
+Baron
+Cicatrice à l'oeil gauche
+Vêtements en tissu, légers, de couleurs vivaces
+Epée, dague
+Enchantement électrique(épée), gel (dague)
+Eblouissement
+Reflexes aigus
+Cible les tendons
+Peut se renforcer avec une armure de terre
+
+Chien de garde du Baron, Troco
+2m50
+Masse musculaire
+Bretelles, torse nu
+Masque de catcheur
+"Troco tapper"
+Gants avec des piques
+Brise de l'acier
+Résistance magique innée
+Résistance physique hors norme
+Berserker
+
+Bras droit du Baron: Absent
+
+Bras gauche du Baron, Tedia
+Magicienne, chapeau pointu violet un peu décousu
+Vêtements un peu déchirés, jupe fendu sur la cuisse droite
+Cape en tissu en lambeau, torse "nu", soutien george révélant bien la poitrine
+Double baguettes (eau / mental)
+Projection d'eau
+Prison aqueuse
+Barrage aqueux
+//@TODO Trouver des sorts mentaux
+Lévitation
+Soin mineur
+
+Bandits
+Armes diverses (principalement épées, dagues, haches, couteaux de lancer)
+Arcs en extérieur
+Quelques grenades explosives / poison
+Oritentés dex/force/educ, peu de charisme/magie
+Quelques un savent faire un arc électrique ou main givrante
 
 **********************************
 
@@ -232,13 +274,12 @@ un groupe de fortune que tu as rencontré il y a quelques semaines lors d'une ch
 
 Vous aviez décidé de faire un bout de chemin ensemble,
 lorsque cette fameuse opportunité s'est présenté à vous.
-La dernière dont tu te souviens, c'est qu'un des squelettes géant t'as envoyé une lance
+La dernière dont tu te souviens, c'est qu'un des squelettes guerrier t'as envoyé une lance
 de façon si rapide que tu n'as pas pu esquiver.
 
 "Hey, arrête de glander, on a besoin de toi là ! Debout !"
 
 **************************************
-
 
 Les morts ont envahis le royaume.
 Ils ont établis des bastions sur nos villes dévastées.
@@ -250,8 +291,8 @@ Prendre le risque de subir une attaque sur la ville sans le gros des troupes est
 On a besoin de vous pour menez des petites opérations de guérilla, afin de démanteler
 leur réseau.
 Il faut faire tomber les têtes de chaque commandant, peut importe la manière.
-Si ils ont pu monter une telle armée, c'est qu'ils ont acquérit des artefacts.
-Chaque commandant en possède un, les récupérer pourrait équilibrer la balance.
+// Si ils ont pu monter une telle armée, c'est qu'ils ont acquérit des artefacts.
+// Chaque commandant en possède un, les récupérer pourrait équilibrer la balance.
 
 Nous avons envoyer une troupe de messager chez les Gnolls, en espérant les faire réagir.
 
@@ -293,7 +334,7 @@ Hyper saut
 3m20
 (Sensible à la magie)
 
-Mage légendaire Tytatoutiss
+Mage légendaire Pyrtatoutiss
 Apparition d'objet (bâton de puissance, baguettes de puissance)
 Armure vivante
 Invocation de guerriers squelette
@@ -320,3 +361,36 @@ Découverte de points faibles
 Retraite éclair
 Perception de l'invisible
 (Sensible aux contrôles de foule)
+
+**************************************
+
+Vous entendez le bruit d'un foule au loin.
+Les citoyens se dirigent vers la place principale.
+Il semble y avoir une attraction.
+
+En vous approchant, vous remarquez que la foule s'est amassée en cercle.
+Au centre, un stand de tir.
+Vous voyez un gobelin, debout sur son stand de bois,
+en train de regarder un chevalier bander un arc.
+
+La flèche décochée, va se planter dans le mur à une cinquantaine de mètre.
+"Hé non, raté ! Héhéhé, un autre essai ?
+Ou quelqu'un d'autre veux essayer peut-être ?
+Allez-y braves gens, pour la modique somme de 100pièces vous pouvez tenter
+ de remporter ce sublime artefact d'une valeur inestimable !"
+"Ho, vous voulez essayer ? ça fera 100pièces !
+Parfait, voici votre arc et votre flèche.
+Vous voyez l'objet fixé sur le mur ?
+Il vous faudra l'atteindre avec votre flèche, de derrière la ligne !
+Bon courage gnégnégné"
+
+GM - L'arc est réel mais les flèches sont illusoires.
+Leur trajectoire dévie forcément de la cible.
+
+**************************************
+
+
+
+
+**************************************
+
