@@ -38,20 +38,21 @@ class TownQuests extends Component {
           Quests
         </div>
         <div style={styledSemiContainer} className="scrollbar">
-          {quests.map((q, i) => {
-            if (q.town === currentTown) {
-              return (
-                <TownQuest
-                  key={`quests-list-${q.name}`}
-                  q={q}
-                  i={i}
-                  validateQuest={validateQuest}
-                  removeQuestFromTown={removeQuestFromTown}
-                />
-              );
-            }
-            return null;
-          })}
+          {quests &&
+            quests.map((q, i) => {
+              if (q.town === currentTown) {
+                return (
+                  <TownQuest
+                    key={`quests-list-${q.name}`}
+                    q={q}
+                    i={i}
+                    validateQuest={validateQuest}
+                    removeQuestFromTown={removeQuestFromTown}
+                  />
+                );
+              }
+              return null;
+            })}
         </div>
       </div>
     );

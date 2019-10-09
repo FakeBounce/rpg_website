@@ -29,20 +29,21 @@ class StoryQuestList extends Component {
     const { towns, quests, addQuestToTown } = this.props;
     return (
       <div style={styledQuestsContainer}>
-        {quests.map((q, i) => {
-          return (
-            <div
-              key={`quests-list-${q.name}`}
-              onClick={() => addQuestToTown(i)}
-              style={styledBoxHeader}
-            >
-              {q.name}
-              {typeof q.town !== "undefined" &&
-                q.town > -1 && <span>({towns[q.town].name})</span>}
-              {q.validated && <span>(V)</span>}
-            </div>
-          );
-        })}
+        {quests &&
+          quests.map((q, i) => {
+            return (
+              <div
+                key={`quests-list-${q.name}`}
+                onClick={() => addQuestToTown(i)}
+                style={styledBoxHeader}
+              >
+                {q.name}
+                {typeof q.town !== "undefined" &&
+                  q.town > -1 && <span>({towns[q.town].name})</span>}
+                {q.validated && <span>(V)</span>}
+              </div>
+            );
+          })}
       </div>
     );
   }
