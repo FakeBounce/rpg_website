@@ -4,7 +4,6 @@ import { heightLeft } from "../Utils/StyleConstants";
 import PropTypes from "prop-types";
 import TownMerchant from "./TownMerchant";
 
-
 const styledBoxHeader = {
   width: "100%",
   height: 20,
@@ -39,20 +38,21 @@ class TownMerchants extends Component {
           Merchants
         </div>
         <div style={styledSemiContainer} className="scrollbar">
-          {merchants.map((m, i) => {
-            if (m.town === currentTown) {
-              return (
-                <TownMerchant
-                  key={`town-${m.name}`}
-                  m={m}
-                  i={i}
-                  removeMerchantFromTown={removeMerchantFromTown}
-                  toggleMerchantDiscover={toggleMerchantDiscover}
-                />
-              );
-            }
-            return null;
-          })}
+          {merchants &&
+            merchants.map((m, i) => {
+              if (m.town === currentTown) {
+                return (
+                  <TownMerchant
+                    key={`town-${m.name}`}
+                    m={m}
+                    i={i}
+                    removeMerchantFromTown={removeMerchantFromTown}
+                    toggleMerchantDiscover={toggleMerchantDiscover}
+                  />
+                );
+              }
+              return null;
+            })}
         </div>
       </div>
     );

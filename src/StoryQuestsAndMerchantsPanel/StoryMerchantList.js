@@ -29,15 +29,16 @@ class StoryMerchantList extends Component {
     const { towns, merchants, addMerchantToTown } = this.props;
     return (
       <div style={styledMerchantsContainer}>
-        {merchants.map((m, i) => {
-          return (
-            <div onClick={() => addMerchantToTown(i)} style={styledBoxHeader}>
-              {m.name}({m.job})
-              {typeof m.town !== "undefined" &&
-                m.town > -1 && <span>({towns[m.town].name})</span>}
-            </div>
-          );
-        })}
+        {merchants &&
+          merchants.map((m, i) => {
+            return (
+              <div onClick={() => addMerchantToTown(i)} style={styledBoxHeader}>
+                {m.name}({m.job})
+                {typeof m.town !== "undefined" &&
+                  m.town > -1 && <span>({towns[m.town].name})</span>}
+              </div>
+            );
+          })}
       </div>
     );
   }

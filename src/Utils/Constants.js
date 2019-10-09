@@ -993,7 +993,7 @@ export const statusList = [
   "Under control",
 ];
 
-export const mapNames = ["", "dravos", "dravos2"];
+export const mapNames = ["default", "dravos", "dravos2"];
 
 export const defaultStory = {
   artefacts: {},
