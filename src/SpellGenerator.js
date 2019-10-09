@@ -119,6 +119,7 @@ class SpellGenerator extends PureComponent {
         const randomRaritySpell = [];
         let tempRarity = raritySelected;
         while (randomRaritySpell.length === 0 && tempRarity > minimumRange) {
+          // eslint-disable-next-line
           targetedSpells.map(fs => {
             if (parseInt(fs.rarity, 10) === tempRarity) {
               randomRaritySpell.push(fs);
@@ -131,6 +132,7 @@ class SpellGenerator extends PureComponent {
         if (randomRaritySpell.length === 0) {
           let tempRarity = raritySelected;
           while (randomRaritySpell.length === 0 && tempRarity <= spellRange) {
+            // eslint-disable-next-line
             targetedSpells.map(fs => {
               if (parseInt(fs.rarity, 10) === tempRarity) {
                 randomRaritySpell.push(fs);

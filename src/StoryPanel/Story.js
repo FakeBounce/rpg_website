@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { heightHeader, cursorPointer } from "../Utils/StyleConstants";
+import firebase from "firebase";
 
 const styles = {
   storyBox: {
@@ -19,8 +20,34 @@ const styles = {
 };
 
 class Story extends Component {
+  state = {
+    icon: "",
+  };
+
+  componentDidMount() {
+    this.getWallPaperImage();
+  }
+
+  getWallPaperImage = () => {
+    const { wallpaper, triggerError } = this.props;
+    let storageRef = firebase.storage().ref();
+    storageRef
+      .child(wallpaper)
+      .getDownloadURL()
+      .then(url => {
+        this.setState({
+          icon: url,
+        });
+      })
+      .catch(error => {
+        // Handle any errors
+        triggerError(error);
+      });
+  };
+
   render() {
-    const { index, name, chooseStory, totalStories, wallpaper } = this.props;
+    const { index, name, chooseStory, totalStories } = this.props;
+    const { icon } = this.state;
 
     return (
       <div
@@ -43,7 +70,7 @@ class Story extends Component {
       >
         <div style={styles.storyTitle}>{name}</div>
         <img
-          src={wallpaper}
+          src={icon}
           style={{
             ...styles.storyImage,
             width: "80%",

@@ -13,7 +13,7 @@ import GameScreen from "./GameScreen";
 import SoundPlayer from "./SoundPlayer/SoundPlayer";
 import {
   // listenArtefacts,
-  loadUnusedArtefacts,
+  // loadUnusedArtefacts,
   listenCurrentEvent,
   listenEvents,
   listenMerchants,
@@ -29,9 +29,9 @@ import {
   // populateTilesTypes,
   // resetEvents,
   // resetMap,
-  setQuests,
+  // setQuests,
   populateBestiary,
-  loadChat,
+  // loadChat,
   listenUsers,
   loadStories,
 } from "./Utils/DatabaseFunctions";
@@ -41,8 +41,6 @@ import {
   hydrateAllMerchants,
   // hydrateMerchant,
 } from "./Utils/MerchantsFunctions";
-import LoadSpreasheet from "./Utils/LoadSpreasheet";
-import { gridLength } from "./Utils/StyleConstants";
 
 const styledErrorPanel = {
   position: "absolute",
@@ -59,12 +57,25 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = localStorage.getItem("appState")
+    const localStorageInfos = localStorage.getItem("appState")
       ? JSON.parse(localStorage.getItem("appState"))
-      : { ...defaultState };
-    if (localStorage.getItem("appState")) {
+      : null;
+    this.state = localStorageInfos ? localStorageInfos : { ...defaultState };
+
+    if (localStorageInfos) {
       this.loadUsers();
       this.loadStories();
+
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(
+          localStorageInfos.email,
+          localStorageInfos.password,
+        )
+        .catch(error => {
+          // Handle Errors here.
+          this.triggerError(error);
+        });
     }
   }
 
@@ -350,7 +361,7 @@ class App extends Component {
 
   loadTownsAndQuests = () => {
     const { currentStory } = this.state;
-    console.log('loading towns');
+    console.log("loading towns");
     listenTowns(currentStory, this.doSetState);
     listenQuests(currentStory, this.doSetState);
   };
@@ -880,6 +891,7 @@ class App extends Component {
               doSetState={this.doSetState}
               onChange={this.onChange}
               pseudoInput={pseudoInput}
+              signOut={this.signOut}
               triggerError={this.triggerError}
             />
           )}
@@ -890,8 +902,8 @@ class App extends Component {
             <StoriesPanel
               stories={stories}
               chooseStory={this.chooseStory}
-              isAdmin={isAdmin}
               doSetState={this.doSetState}
+              signOut={this.signOut}
               triggerError={this.triggerError}
             />
           )}

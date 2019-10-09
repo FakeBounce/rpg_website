@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import firebase from "firebase";
 import ButtonLarge from "../Utils/ButtonLarge";
 import Logs from "./Logs";
+import { defaultState } from "../Utils/Constants";
 
 class IsNotAuth extends Component {
   handleKeyPress = event => {
@@ -40,6 +41,18 @@ class IsNotAuth extends Component {
               () => {
                 loadUsers();
                 loadStories();
+                localStorage.setItem(
+                  "appState",
+                  JSON.stringify({
+                    ...defaultState,
+                    ...snapshot.val(),
+                    email,
+                    isAuth: true,
+                    password,
+                    uid: firebase.auth().currentUser.uid,
+                    isAdmin: snapshot.val().isAdmin,
+                  }),
+                );
               },
             );
           });

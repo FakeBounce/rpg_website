@@ -5,6 +5,8 @@ import ButtonLarge from "../Utils/ButtonLarge";
 import { defaultStory, mapNames } from "../Utils/Constants";
 import firebase from "firebase";
 import { loadStories } from "../Utils/DatabaseFunctions";
+import FileUploader from "../CharacterCreation/FileUploader";
+import SelectMapper from "../Utils/SelectMapper";
 
 const styledStoryPanel = {
   width: "100%",
@@ -25,6 +27,8 @@ class StoriesPanel extends Component {
     isCreatingStory: false,
     name: "",
     map: "",
+    icon: "",
+    iconPath: "",
   };
 
   onChange = (name, value) => {
@@ -36,6 +40,10 @@ class StoriesPanel extends Component {
     }));
   };
 
+  onSelectChange = name => value => {
+    this.onChange(name, value);
+  };
+
   toggleStoryCreation = bool => () => {
     this.setState(state => ({
       ...state,
@@ -44,12 +52,14 @@ class StoriesPanel extends Component {
   };
   createStory = () => {
     const { stories, triggerError, chooseStory, doSetState } = this.props;
-    const { name, map } = this.state;
+    const { name, map, iconPath } = this.state;
 
     const story = {
       ...defaultStory,
       name,
       map,
+      gameMaster: firebase.auth().currentUser.uid,
+      wallpaper: iconPath,
     };
 
     const lastStoryIndex = stories.length;
@@ -75,9 +85,66 @@ class StoriesPanel extends Component {
       });
   };
 
+  removePicture = () => {
+    const { triggerError } = this.props;
+    const { iconPath } = this.state;
+    // Delete the file
+    let storageRef = firebase.storage().ref();
+    storageRef
+      .child(iconPath)
+      .delete()
+      .then(() => {
+        // File deleted successfully
+        this.setState(state => ({
+          ...state,
+          icon: "",
+          iconPath: "",
+        }));
+      })
+      .catch(error => {
+        // Uh-oh, an error occurred!
+        triggerError(error);
+      });
+  };
+
+  onDrop = picture => {
+    const { triggerError } = this.props;
+    const { name } = this.state;
+    let storageRef = firebase.storage().ref();
+    const path =
+      "images/stories/" +
+      firebase.auth().currentUser.uid +
+      "_" +
+      name +
+      "." +
+      picture[picture.length - 1].name.split(".")[1];
+    storageRef
+      .child(path)
+      .put(picture[picture.length - 1])
+      .then(() => {
+        storageRef
+          .child(path)
+          .getDownloadURL()
+          .then(url => {
+            this.setState({
+              icon: url,
+              iconPath: path,
+            });
+          })
+          .catch(error => {
+            // Handle any errors
+            triggerError(error);
+          });
+      })
+      .catch(error => {
+        // Uh-oh, an error occurred!
+        triggerError(error);
+      });
+  };
+
   render() {
-    const { stories, chooseStory, isAdmin } = this.props;
-    const { isCreatingStory, name, map } = this.state;
+    const { stories, chooseStory, signOut, triggerError } = this.props;
+    const { isCreatingStory, name, map, icon, iconPath } = this.state;
     if (isCreatingStory) {
       return (
         <div style={styledStoryPanel}>
@@ -116,25 +183,39 @@ class StoriesPanel extends Component {
                 textAlign: "center",
               }}
             >
-              <select
+              <SelectMapper
                 value={map}
-                onChange={e => {
-                  this.onChange("map", e.target.value);
-                }}
+                onChange={this.onSelectChange("map")}
+                mapArray={mapNames}
                 style={styledMapSelect}
-              >
-                {mapNames.map(sts => {
-                  return (
-                    <option key={sts} value={sts}>
-                      {sts}
-                    </option>
-                  );
-                })}
-              </select>
+              />
             </div>
+            {name !== "" && (
+              <div
+                style={{
+                  width: "100%",
+                  display: "block",
+                  position: "relative",
+                  textAlign: "center",
+                }}
+              >
+                {icon === "" && <FileUploader onDrop={this.onDrop} />}
+                {icon !== "" && (
+                  <div>
+                    <img
+                      src={icon}
+                      style={{ maxWidth: "50px", maxHeight: "50px" }}
+                      alt={`${name}`}
+                    />
+                    <button onClick={this.removePicture}>Remove picture</button>
+                  </div>
+                )}
+              </div>
+            )}
 
             {name !== "" &&
-              map !== "" && (
+              map !== "" &&
+              iconPath !== "" && (
                 <ButtonLarge
                   onClick={this.createStory}
                   style={{ marginTop: 15 }}
@@ -149,25 +230,30 @@ class StoriesPanel extends Component {
     return (
       <div style={styledStoryPanel}>
         Select a story :
+        <ButtonLarge
+          onClick={signOut}
+          style={{ position: "absolute", top: 0, right: 0 }}
+        >
+          Log out
+        </ButtonLarge>
         <div>
-        {stories.map((s, index) => {
-          return (
-            <Story
-              key={`${s.name}-${index}`}
-              chooseStory={chooseStory}
-              index={index}
-              name={s.name}
-              wallpaper={s.wallpaper}
-              totalStories={stories.length}
-            />
-          );
-        })}
+          {stories.map((s, index) => {
+            return (
+              <Story
+                key={`${s.name}-${index}`}
+                chooseStory={chooseStory}
+                index={index}
+                name={s.name}
+                wallpaper={s.wallpaper}
+                totalStories={stories.length}
+                triggerError={triggerError}
+              />
+            );
+          })}
         </div>
-        {isAdmin && (
-          <ButtonLarge onClick={this.toggleStoryCreation(true)}>
-            Create a story
-          </ButtonLarge>
-        )}
+        <ButtonLarge onClick={this.toggleStoryCreation(true)}>
+          Create a story
+        </ButtonLarge>
       </div>
     );
   }
@@ -177,8 +263,8 @@ StoriesPanel.propTypes = {
   stories: PropTypes.array.isRequired,
   chooseStory: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
+  signOut: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
 };
 
 export default StoriesPanel;

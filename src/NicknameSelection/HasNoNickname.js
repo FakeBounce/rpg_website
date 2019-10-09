@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
+import ButtonLarge from "../Utils/ButtonLarge";
 
 class HasNoNickname extends Component {
   choosePseudo = () => {
@@ -18,7 +19,7 @@ class HasNoNickname extends Component {
   };
 
   render() {
-    const { pseudoInput, onChange } = this.props;
+    const { pseudoInput, onChange, signOut } = this.props;
 
     return (
       <div>
@@ -32,6 +33,12 @@ class HasNoNickname extends Component {
           }}
         />
         <button onClick={this.choosePseudo}>Choisir un pseudo</button>
+        <ButtonLarge
+          onClick={signOut}
+          style={{ position: "absolute", top: 0, right: 0 }}
+        >
+          Log out
+        </ButtonLarge>
       </div>
     );
   }
@@ -41,6 +48,7 @@ HasNoNickname.propTypes = {
   pseudoInput: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
+  signOut: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
 };
 
