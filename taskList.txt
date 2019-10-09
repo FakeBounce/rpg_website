@@ -92,7 +92,7 @@ v3.0.0
  - Carte à droite ? avec perso et chat à gauche
  - Remplir le champ du milieu si vide
  - Cacher la carte pour certains events ?
-31) Ajouter une description des objets dans le MerchantHistory
+31) Ajouter une description des objets dans le MerchantHistory - OK
 32) Revoir la partie GM en design
 33) Ajouter une partie GM avec des noms de gens, taverne...
 34) Ajouter des titres de prestige
@@ -106,7 +106,7 @@ v3.0.0
 42) Ajouter des indications sur les enchants P/T
 43) Ajouter le type d'objet dans les marchands (eg: Type: enchantement)
 44) Pouvoir désactiver un joueur de l'équipe
-45) Remplacer les pseudos par les noms de personnages dans le chat (OK)/events
+45) Remplacer les pseudos par les noms de personnages dans le chat/events - OK
 46) Ajouter des zones en images (égoûts, villes, plaines...)
 47) Ajouter des fiches persos stylées (cadre -> zoom + stuff)
 48) Ajouter une fonction GM "Mort" ou "Inactif",
