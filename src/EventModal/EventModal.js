@@ -46,11 +46,11 @@ const styledEventTitle = {
 };
 
 const styledEventAction = {
-  margin: '0px 15px',
+  margin: "0px 15px",
   padding: 5,
-  textAlign: 'center',
-  position: 'relative',
-  display: 'inline-block',
+  textAlign: "center",
+  position: "relative",
+  display: "inline-block",
 };
 
 class EventModal extends PureComponent {
@@ -125,18 +125,19 @@ class EventModal extends PureComponent {
   };
 
   takeAllItems = () => {
-    const { currentEvent, eventHistory, pseudo } = this.props;
+    const { currentEvent, eventHistory, isGameMaster, character } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       const quantityLeft = newEvent.quantityLeft;
       newEvent.quantityLeft = 0;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has taken all the items left (${quantityLeft}).`,
+          `@${realPseudo} has taken all the items left (${quantityLeft}).`,
         );
       } else {
         newEvent.actionHistory = [
-          `@${pseudo} has taken all the items left (${quantityLeft}).`,
+          `@${realPseudo} has taken all the items left (${quantityLeft}).`,
         ];
       }
       const newEventHistory = [...eventHistory];
@@ -148,7 +149,8 @@ class EventModal extends PureComponent {
   };
 
   takeXItem = () => {
-    const { currentEvent, eventHistory, pseudo } = this.props;
+    const { currentEvent, eventHistory, isGameMaster, character } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const { numberWanted } = this.state;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
@@ -157,13 +159,13 @@ class EventModal extends PureComponent {
       if (newEvent.quantityLeft > 0) {
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has taken ${numberWanted} items. ${
+            `@${realPseudo} has taken ${numberWanted} items. ${
               newEvent.quantityLeft
             } left)`,
           );
         } else {
           newEvent.actionHistory = [
-            `@${pseudo} has taken ${numberWanted} items. ${
+            `@${realPseudo} has taken ${numberWanted} items. ${
               newEvent.quantityLeft
             } left)`,
           ];
@@ -171,11 +173,11 @@ class EventModal extends PureComponent {
       } else {
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has taken the last items (${numberWanted}).`,
+            `@${realPseudo} has taken the last items (${numberWanted}).`,
           );
         } else {
           newEvent.actionHistory = [
-            `@${pseudo} has taken the last items (${numberWanted}).`,
+            `@${realPseudo} has taken the last items (${numberWanted}).`,
           ];
         }
       }
@@ -189,7 +191,8 @@ class EventModal extends PureComponent {
   };
 
   onlyOneItem = () => {
-    const { currentEvent, eventHistory, pseudo } = this.props;
+    const { currentEvent, eventHistory, isGameMaster, character } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       newEvent.quantityLeft = newEvent.quantityLeft - 1;
@@ -197,22 +200,24 @@ class EventModal extends PureComponent {
       if (newEvent.quantityLeft > 0) {
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has taken only one item.(${
+            `@${realPseudo} has taken only one item.(${
               newEvent.quantityLeft
             } left)`,
           );
         } else {
           newEvent.actionHistory = [
-            `@${pseudo} has taken only one item.(${
+            `@${realPseudo} has taken only one item.(${
               newEvent.quantityLeft
             } left)`,
           ];
         }
       } else {
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
-          newEvent.actionHistory.push(`@${pseudo} has taken the last item.`);
+          newEvent.actionHistory.push(
+            `@${realPseudo} has taken the last item.`,
+          );
         } else {
-          newEvent.actionHistory = [`@${pseudo} has taken the last item.`];
+          newEvent.actionHistory = [`@${realPseudo} has taken the last item.`];
         }
       }
 
@@ -225,14 +230,21 @@ class EventModal extends PureComponent {
   };
 
   lastItem = () => {
-    const { currentEvent, eventHistory, pseudo } = this.props;
+    const {
+      currentEvent,
+      eventHistory,
+      pseudo,
+      isGameMaster,
+      character,
+    } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       newEvent.quantityLeft = 0;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
-        newEvent.actionHistory.push(`@${pseudo} has taken the last item.`);
+        newEvent.actionHistory.push(`@${realPseudo} has taken the last item.`);
       } else {
-        newEvent.actionHistory = [`@${pseudo} has taken the last item.`];
+        newEvent.actionHistory = [`@${realPseudo} has taken the last item.`];
       }
       const newEventHistory = [...eventHistory];
       newEventHistory[currentEvent] = { ...newEvent };
@@ -243,7 +255,8 @@ class EventModal extends PureComponent {
   };
 
   giveAllGold = () => {
-    const { currentEvent, eventHistory, pseudo, character } = this.props;
+    const { currentEvent, eventHistory, character, isGameMaster } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       const goldGiven = newEvent.gold - newEvent.goldLeft;
@@ -252,11 +265,11 @@ class EventModal extends PureComponent {
         newEvent.goldLeft = newEvent.gold;
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has given all the gold (${goldGiven}). How generous !`,
+            `@${realPseudo} has given all the gold (${goldGiven}). How generous !`,
           );
         } else {
           newEvent.actionHistory = [
-            `@${pseudo} has given all the gold (${goldGiven}). How generous !`,
+            `@${realPseudo} has given all the gold (${goldGiven}). How generous !`,
           ];
         }
         const newEventHistory = [...eventHistory];
@@ -270,14 +283,14 @@ class EventModal extends PureComponent {
         newEvent.goldLeft = newEvent.goldLeft + parseInt(character.gold, 10);
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has given all his money (${parseInt(
+            `@${realPseudo} has given all his money (${parseInt(
               character.gold,
               10,
             )}). How generous !`,
           );
         } else {
           newEvent.actionHistory = [
-            `@${pseudo} has given all his money (${parseInt(
+            `@${realPseudo} has given all his money (${parseInt(
               character.gold,
               10,
             )}). How generous !`,
@@ -293,7 +306,8 @@ class EventModal extends PureComponent {
   };
 
   giveXGold = () => {
-    const { currentEvent, eventHistory, pseudo, character } = this.props;
+    const { currentEvent, eventHistory, character, isGameMaster } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const { numberWanted } = this.state;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       if (
@@ -304,11 +318,11 @@ class EventModal extends PureComponent {
         newEvent.goldLeft = newEvent.goldLeft + numberWanted;
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has given ${numberWanted} gold.`,
+            `@${realPseudo} has given ${numberWanted} gold.`,
           );
         } else {
           newEvent.actionHistory = [
-            `@${pseudo} has given ${numberWanted} gold.`,
+            `@${realPseudo} has given ${numberWanted} gold.`,
           ];
         }
         const newEventHistory = [...eventHistory];
@@ -328,10 +342,11 @@ class EventModal extends PureComponent {
     const {
       currentEvent,
       eventHistory,
-      pseudo,
       storyCharacters,
       character,
+      isGameMaster,
     } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       let goldGiven = Math.floor(newEvent.gold / (storyCharacters.length - 2));
@@ -341,11 +356,11 @@ class EventModal extends PureComponent {
       newEvent.goldLeft = newEvent.goldLeft + goldGiven;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has given his part (${goldGiven}) of gold.`,
+          `@${realPseudo} has given his part (${goldGiven}) of gold.`,
         );
       } else {
         newEvent.actionHistory = [
-          `@${pseudo} has given his part (${goldGiven}) of gold.`,
+          `@${realPseudo} has given his part (${goldGiven}) of gold.`,
         ];
       }
       const newEventHistory = [...eventHistory];
@@ -357,18 +372,19 @@ class EventModal extends PureComponent {
   };
 
   takeAllGold = () => {
-    const { currentEvent, eventHistory, pseudo, character } = this.props;
+    const { currentEvent, eventHistory, character, isGameMaster } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       const goldTaken = newEvent.goldLeft;
       newEvent.goldLeft = 0;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has taken all the gold left (${goldTaken}).`,
+          `@${realPseudo} has taken all the gold left (${goldTaken}).`,
         );
       } else {
         newEvent.actionHistory = [
-          `@${pseudo} has taken all the gold left (${goldTaken}).`,
+          `@${realPseudo} has taken all the gold left (${goldTaken}).`,
         ];
       }
       const newEventHistory = [...eventHistory];
@@ -382,7 +398,8 @@ class EventModal extends PureComponent {
   };
 
   takeXGold = () => {
-    const { currentEvent, eventHistory, pseudo, character } = this.props;
+    const { currentEvent, eventHistory, character, isGameMaster } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const { numberWanted } = this.state;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       if (numberWanted <= eventHistory[currentEvent].goldLeft) {
@@ -390,11 +407,11 @@ class EventModal extends PureComponent {
         newEvent.goldLeft = newEvent.goldLeft - numberWanted;
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${pseudo} has taken ${numberWanted} gold.`,
+            `@${realPseudo} has taken ${numberWanted} gold.`,
           );
         } else {
           newEvent.actionHistory = [
-            `@${pseudo} has taken ${numberWanted} gold.`,
+            `@${realPseudo} has taken ${numberWanted} gold.`,
           ];
         }
         const newEventHistory = [...eventHistory];
@@ -412,10 +429,11 @@ class EventModal extends PureComponent {
     const {
       currentEvent,
       eventHistory,
-      pseudo,
       storyCharacters,
       character,
+      isGameMaster,
     } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       let goldTaken = Math.floor(newEvent.gold / (storyCharacters.length - 2));
@@ -425,11 +443,11 @@ class EventModal extends PureComponent {
       newEvent.goldLeft = newEvent.goldLeft - goldTaken;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(
-          `@${pseudo} has taken his part (${goldTaken}) of gold.`,
+          `@${realPseudo} has taken his part (${goldTaken}) of gold.`,
         );
       } else {
         newEvent.actionHistory = [
-          `@${pseudo} has taken his part (${goldTaken}) of gold.`,
+          `@${realPseudo} has taken his part (${goldTaken}) of gold.`,
         ];
       }
       const newEventHistory = [...eventHistory];
@@ -441,13 +459,20 @@ class EventModal extends PureComponent {
   };
 
   takeNothing = () => {
-    const { currentEvent, eventHistory, pseudo, doSetState } = this.props;
+    const {
+      currentEvent,
+      eventHistory,
+      doSetState,
+      character,
+      isGameMaster,
+    } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
-        newEvent.actionHistory.push(`@${pseudo} choosed to take nothing.`);
+        newEvent.actionHistory.push(`@${realPseudo} choosed to take nothing.`);
       } else {
-        newEvent.actionHistory = [`@${pseudo} choosed to take nothing.`];
+        newEvent.actionHistory = [`@${realPseudo} choosed to take nothing.`];
       }
       const newEventHistory = [...eventHistory];
       newEventHistory[currentEvent] = { ...newEvent };
@@ -641,13 +666,13 @@ class EventModal extends PureComponent {
             {storyCharacters.map(sc => {
               return sc.userUid === gameMaster ? (
                 <Draw
-                  key={"gm-drawer-"+sc.userUid}
+                  key={"gm-drawer-" + sc.userUid}
                   name={"GameMaster"}
                   disabled={uid !== gameMaster}
                 />
               ) : (
                 <Draw
-                  key={"drawer-"+sc.userUid}
+                  key={"drawer-" + sc.userUid}
                   uid={sc.userUid}
                   disabled={uid !== sc.userUid}
                   name={sc.name}
