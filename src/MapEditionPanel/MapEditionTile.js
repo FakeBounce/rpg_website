@@ -30,9 +30,18 @@ class MapEditionTile extends Component {
                 ? colors.text
                 : tile.backgroundColor,
         }}
-        onClick={() => action()}
+        onClick={action}
       >
         {tile.icon && <MapEditionTileIcon icon={tile.icon} />}
+        <span
+          style={{
+            position: "absolute",
+            height: `${gridDimension - 5}px`,
+            width: `${(widthLeft / 2 - 3) / 8 - 5}px`,
+          }}
+        >
+          {tileKey}
+        </span>
       </div>
     );
   }

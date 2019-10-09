@@ -106,7 +106,7 @@ v3.0.0
 42) Ajouter des indications sur les enchants P/T
 43) Ajouter le type d'objet dans les marchands (eg: Type: enchantement)
 44) Pouvoir désactiver un joueur de l'équipe
-45) Remplacer les pseudos par les noms de personnages dans le chat/events
+45) Remplacer les pseudos par les noms de personnages dans le chat (OK)/events
 46) Ajouter des zones en images (égoûts, villes, plaines...)
 47) Ajouter des fiches persos stylées (cadre -> zoom + stuff)
 48) Ajouter une fonction GM "Mort" ou "Inactif",
