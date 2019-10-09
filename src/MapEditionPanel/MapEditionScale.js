@@ -5,13 +5,17 @@ class MapEditionScale extends Component {
   render() {
     const { changeCurrentScale, currentScale } = this.props;
     return (
-      <input
-        type="number"
-        onChange={e => {
-          changeCurrentScale(parseInt(e.target.value, 10));
-        }}
-        value={currentScale}
-      />
+      <div>
+        <span style={{ marginRight: 10 }}>Taille du pinceau :</span>
+        <input
+          type="number"
+          onChange={e => {
+            changeCurrentScale(parseInt(e.target.value, 10));
+          }}
+          value={currentScale}
+          style={{ maxWidth: 150 }}
+        />
+      </div>
     );
   }
 }

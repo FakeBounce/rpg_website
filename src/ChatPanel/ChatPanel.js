@@ -51,7 +51,7 @@ class ChatPanel extends PureComponent {
   };
 
   talkInChat = () => {
-    const { chatInput, pseudo } = this.props;
+    const { chatInput, pseudo, character, isGameMaster } = this.props;
     let noMagicWord = true;
     if (chatInput !== "") {
       if (chatInput.length >= 3) {
@@ -188,14 +188,18 @@ class ChatPanel extends PureComponent {
       }
 
       if (noMagicWord) {
-        this.sendChatInput({ message: chatInput, pseudo });
+        this.sendChatInput({
+          message: chatInput,
+          pseudo,
+          characterName: isGameMaster ? "GM" : character.name,
+        });
       }
     }
   };
 
   whisperPlayerAction = () => {
-    const { chatInput, pseudo, users, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const { chatInput, pseudo, character, users, isGameMaster } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput.trim().split("/w ");
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
@@ -235,8 +239,15 @@ class ChatPanel extends PureComponent {
   };
 
   whisperGMAction = () => {
-    const { chatInput, pseudo, users, gameMaster, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const {
+      chatInput,
+      pseudo,
+      character,
+      users,
+      gameMaster,
+      isGameMaster,
+    } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput.trim().split("/gmw ");
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
@@ -269,8 +280,14 @@ class ChatPanel extends PureComponent {
   };
 
   whisperTeamAction = () => {
-    const { chatInput, pseudo, users, gameMaster, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const {
+      chatInput,
+      users,
+      gameMaster,
+      isGameMaster,
+      character,
+    } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput.trim().split("/tmw ");
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
@@ -302,8 +319,8 @@ class ChatPanel extends PureComponent {
   };
 
   diceAction = (limiter, viewers = null) => {
-    const { chatInput, pseudo, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const { chatInput, character, isGameMaster } = this.props;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
@@ -324,12 +341,11 @@ class ChatPanel extends PureComponent {
     const {
       chatInput,
       character,
-      pseudo,
       uid,
       currentStory,
       isGameMaster,
     } = this.props;
-    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
@@ -378,7 +394,7 @@ class ChatPanel extends PureComponent {
       currentStory,
       isGameMaster,
     } = this.props;
-    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
@@ -461,7 +477,7 @@ class ChatPanel extends PureComponent {
       gameMaster,
       isGameMaster,
     } = this.props;
-    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
@@ -523,7 +539,7 @@ class ChatPanel extends PureComponent {
   attributeAction = (attribute, isGm = false) => {
     const { pseudo, character, isGameMaster } = this.props;
     const { gmCommands, bonus } = this.state;
-    const realPseudo = isGameMaster ? "GM" : pseudo;
+    const realPseudo = isGameMaster ? "GM" : character.name;
     const dice = Math.floor(Math.random() * parseInt(100, 10) + 1);
     let message = "";
     let bonusMessage = "";
@@ -636,13 +652,7 @@ class ChatPanel extends PureComponent {
   };
 
   render() {
-    const {
-      chatInput,
-      chatHistory,
-      onChange,
-      gameMaster,
-      pseudo,
-    } = this.props;
+    const { chatInput, chatHistory, onChange, gameMaster, pseudo } = this.props;
     const { gmCommands, bonus } = this.state;
 
     return (

@@ -793,7 +793,7 @@ class App extends Component {
       .database()
       .ref("/stories/" + this.state.currentStory + "/chat")
       .limitToLast(50)
-      .on("child_added", (snapshot, prevChildKey) => {
+      .on("child_added", snapshot => {
         this.setState(state => ({
           ...state,
           chatHistory: {
