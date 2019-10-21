@@ -5,15 +5,18 @@ import PropTypes from "prop-types";
 import firebase from "firebase";
 import StoryMerchantList from "./StoryMerchantList";
 import StoryQuestList from "./StoryQuestList";
+import { colors } from "../Utils/Constants";
 
 const styledBoxHeader = {
   width: "100%",
   height: 20,
-  marginBottom: 5,
   textAlign: "center",
   float: "left",
   display: "inline-block",
   position: "relative",
+  borderBottom: "1px solid white",
+  backgroundColor: colors.background,
+  color: "white",
 };
 
 const styledMapSide = {

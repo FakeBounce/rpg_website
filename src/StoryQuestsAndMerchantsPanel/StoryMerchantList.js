@@ -2,15 +2,18 @@ import React, { Component } from "react";
 import { heightLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
+import { colors } from "../Utils/Constants";
 
 const styledBoxHeader = {
+  flex: 1,
+  borderBottom: "1px solid white",
   width: "100%",
-  height: 20,
-  marginBottom: 5,
+  paddingBottom: 5,
   textAlign: "center",
-  float: "left",
   display: "inline-block",
   position: "relative",
+  backgroundColor: colors.background,
+  color: "white",
 };
 
 const styledMerchantsContainer = {
@@ -19,9 +22,11 @@ const styledMerchantsContainer = {
   display: "inline-block",
   float: "left",
   position: "absolute",
-  top: 20,
+  top: 21,
   left: 0,
   overflowY: "auto",
+  backgroundColor: colors.background,
+  color: "white",
 };
 
 class StoryMerchantList extends Component {
@@ -33,7 +38,12 @@ class StoryMerchantList extends Component {
           merchants.map((m, i) => {
             return (
               <div onClick={() => addMerchantToTown(i)} style={styledBoxHeader}>
-                {m.name}({m.job})
+                <img
+                  src={`./merchants/${m.icon}`}
+                  style={{ maxWidth: 45, maxHeight: 45, float: "left" }}
+                  alt={`${m.name}`}
+                />
+                {m.name}
                 {typeof m.town !== "undefined" &&
                   m.town > -1 && <span>({towns[m.town].name})</span>}
               </div>

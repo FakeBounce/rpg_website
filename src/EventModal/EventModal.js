@@ -230,13 +230,7 @@ class EventModal extends PureComponent {
   };
 
   lastItem = () => {
-    const {
-      currentEvent,
-      eventHistory,
-      pseudo,
-      isGameMaster,
-      character,
-    } = this.props;
+    const { currentEvent, eventHistory, isGameMaster, character } = this.props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };

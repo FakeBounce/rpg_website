@@ -3,11 +3,13 @@ import { heightLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import TownQuest from "./TownQuest";
+import ButtonLarge from "../Utils/ButtonLarge";
+import { colors } from "../Utils/Constants";
 
 const styledBoxHeader = {
   width: "100%",
-  height: 20,
-  marginBottom: 5,
+  height: 30,
+  paddingBottom: 5,
   textAlign: "center",
   float: "left",
   display: "inline-block",
@@ -21,6 +23,8 @@ const styledSemiContainer = {
   float: "left",
   position: "relative",
   overflowY: "auto",
+  backgroundColor: colors.background,
+  color: "white",
 };
 
 class TownQuests extends Component {
@@ -34,9 +38,12 @@ class TownQuests extends Component {
     } = this.props;
     return (
       <div>
-        <div onClick={() => toggleRightPanel(true)} style={styledBoxHeader}>
+        <ButtonLarge
+          onClick={() => toggleRightPanel(true)}
+          style={styledBoxHeader}
+        >
           Quests
-        </div>
+        </ButtonLarge>
         <div style={styledSemiContainer} className="scrollbar">
           {quests &&
             quests.map((q, i) => {

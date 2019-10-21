@@ -18,6 +18,7 @@ const styledEventContainer = {
   alignItems: "center",
   backgroundColor: colors.background,
   color: colors.text,
+  borderBottom: "1px solid white",
 };
 
 class EventPanel extends Component {
