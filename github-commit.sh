@@ -1,1 +1,1 @@
-git log --since='last year' --date=short --pretty=format:'<div className="commit"> %an, le %ad : %s </div>' > ./log.csv
+git log --date=short --pretty=format:'<div className="commit"> %an, le %ad : %s </div>' > ./log.csv
