@@ -116,8 +116,10 @@ class GameScreen extends Component {
       <div>
         <Header
           accessChatHelp={this.accessChatHelp}
-          chatHelpTitle={onChatHelp ? "Return to map" : "Access chat help"}
           bestiaryTitle={isOnBestiary ? "Return to map" : "Bestiary"}
+          chatHelpTitle={onChatHelp ? "Return to map" : "Access chat help"}
+          currentStory={currentStory}
+          doSetState={doSetState}
           eventTitle={
             isEventHidden ? "Toggle event (Is hidden)" : "Toggle event"
           }

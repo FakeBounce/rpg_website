@@ -1,50 +1,48 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { heightHeader } from './StyleConstants';
-import Camera from '../Camera';
-import ButtonLarge from './ButtonLarge';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { heightHeader } from "./StyleConstants";
+import { resetStoryMerchants } from "../Utils/MerchantsFunctions";
+import Camera from "../Camera";
+import ButtonLarge from "./ButtonLarge";
+import firebase from "firebase";
 
 const styledSignOut = {
-  display: 'block',
-  position: 'relative',
+  display: "block",
+  position: "relative",
   width: 150,
 };
 
 const styledToggling = {
-  position: 'absolute',
+  position: "absolute",
   top: 50,
   right: 150,
   width: 150,
 };
 
 const styledToggleEvent = {
-  position: 'absolute',
+  position: "absolute",
   top: 75,
   right: 150,
   width: 150,
 };
 
 const styledHydrateEvent = {
-  position: 'absolute',
+  position: "absolute",
   top: 100,
   right: 150,
   width: 150,
 };
 
-// const styledBoxHeader = {
-//   width: '75%',
-//   height: '20px',
-//   marginBottom: '5px',
-//   textAlign: 'center',
-//   fontSize: '36px',
-//   paddingTop: '25px',
-//   color: 'white',
-//   marginLeft: '25%',
-// };
+const styledResetMerchantsEvent = {
+  position: "absolute",
+  top: 0,
+  right: 150,
+  width: 150,
+};
 
 const styledHeaderRight = {
   height: heightHeader,
-  position: 'absolute',
+  position: "absolute",
   right: 0,
   top: 0,
   width: 150,
@@ -52,28 +50,63 @@ const styledHeaderRight = {
 
 const styledHeaderLeft = {
   height: heightHeader,
-  position: 'absolute',
+  position: "absolute",
   left: 0,
   top: 0,
 };
 
 const styledHeader = {
-  width: '100%',
+  width: "100%",
   height: `${heightHeader}px`,
   backgroundImage: `url(./common/dravos_header.jpg)`,
-  backgroundSize: 'cover',
+  backgroundSize: "cover",
   // backgroundColor: colors.background,
 };
 
 const styledSound = {
-  marginLeft: '5px',
-  width: '10px',
-  height: '10px',
+  marginLeft: "5px",
+  width: "10px",
+  height: "10px",
 };
 
 class Header extends Component {
   state = {
     hasHydrated: false,
+    items: null,
+  };
+
+  resetMerchants = () => {
+    const { items } = this.state;
+    const { currentStory, doSetState } = this.props;
+    if (items !== null) {
+      resetStoryMerchants(currentStory, items, doSetState);
+      this.hasHydrated();
+    } else {
+      firebase
+        .database()
+        .ref("/items")
+        .once("value")
+        .then(snapshot => {
+          const tempItems = {};
+          Object.keys(snapshot.val()).map(keyName => {
+            tempItems[keyName] = [];
+            Object.keys(snapshot.val()[keyName]).map(itemKey => {
+              tempItems[keyName].push(snapshot.val()[keyName][itemKey]);
+              return null;
+            });
+            return null;
+          });
+          this.setState(state => ({
+            ...state,
+            items: snapshot.val(),
+          }));
+          resetStoryMerchants(currentStory, tempItems, doSetState);
+          this.hasHydrated();
+        })
+        .catch(e => {
+          console.log("e", e);
+        });
+    }
   };
 
   hasHydrated = () => {
@@ -109,7 +142,7 @@ class Header extends Component {
       togglePlayerView,
       uid,
     } = this.props;
-    const { hasHydrated } = this.state;
+    const { hasHydrated, items } = this.state;
 
     return (
       <div style={styledHeader}>
@@ -134,8 +167,8 @@ class Header extends Component {
             <img
               src={
                 musicMute
-                  ? './common/soundMuted.png'
-                  : './common/soundUnmuted.png'
+                  ? "./common/soundMuted.png"
+                  : "./common/soundUnmuted.png"
               }
               style={styledSound}
               alt="sound muted or not"
@@ -170,9 +203,21 @@ class Header extends Component {
             style={styledHydrateEvent}
           >
             Hydrate merchants
-            {hasHydrated ? ' OK' : ''}
+            {hasHydrated ? " OK" : ""}
           </ButtonLarge>
         )}
+        {isGameMaster &&
+          items !== [] && (
+            <ButtonLarge
+              onClick={() => {
+                this.resetMerchants();
+              }}
+              style={styledResetMerchantsEvent}
+            >
+              Reset merchants
+              {hasHydrated ? " OK" : ""}
+            </ButtonLarge>
+          )}
       </div>
     );
   }
@@ -182,6 +227,8 @@ Header.propTypes = {
   accessChatHelp: PropTypes.func.isRequired,
   bestiaryTitle: PropTypes.string.isRequired,
   chatHelpTitle: PropTypes.string.isRequired,
+  currentStory: PropTypes.number.isRequired,
+  doSetState: PropTypes.func.isRequired,
   eventTitle: PropTypes.string.isRequired,
   hydrateMerchants: PropTypes.func.isRequired,
   isGameMaster: PropTypes.bool.isRequired,

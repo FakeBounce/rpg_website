@@ -1,25 +1,19 @@
 import React, { Component } from "react";
 
 import PropTypes from "prop-types";
-import {cursorPointer} from "../Utils/StyleConstants";
+import { cursorPointer } from "../Utils/StyleConstants";
 
 const styledTownListItem = {
-  width: "75%",
-  height: 20,
   marginBottom: 5,
   textAlign: "center",
-  float: "left",
   display: "inline-block",
   position: "relative",
   cursor: cursorPointer,
 };
 
 const styledTownListDiscover = {
-  width: "25%",
-  height: 20,
   textAlign: "center",
-  float: "left",
-  display: "inline-block",
+  display: "block",
   position: "relative",
   cursor: cursorPointer,
 };
@@ -28,7 +22,23 @@ class TownMerchant extends Component {
   render() {
     const { m, i, removeMerchantFromTown, toggleMerchantDiscover } = this.props;
     return (
-      <div>
+      <div
+        style={{
+          flex: 1,
+          width: "100%",
+          minHeight: 20,
+          float: "left",
+          borderBottom: "1px solid white",
+          textAlign: "center",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <img
+          src={`./merchants/${m.icon}`}
+          style={{ maxWidth: 45, maxHeight: 45, float: "left" }}
+          alt={`${m.name}`}
+        />
         <div
           onClick={() => removeMerchantFromTown(i)}
           style={styledTownListItem}
@@ -39,8 +49,7 @@ class TownMerchant extends Component {
           style={styledTownListDiscover}
           onClick={() => toggleMerchantDiscover(i)}
         >
-          ToggleDiscover(
-          {m.isDiscovered ? "Y" : "N"})
+          Discover ({m.isDiscovered ? "Y" : "N"})
         </button>
       </div>
     );
