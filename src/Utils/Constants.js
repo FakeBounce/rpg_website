@@ -991,6 +991,7 @@ export const statusList = [
   "Sleepy",
   "Unconscious",
   "Under control",
+  "Inactive",
 ];
 
 export const mapNames = ["default", "dravos", "dravos2"];
