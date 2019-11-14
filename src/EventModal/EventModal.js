@@ -159,15 +159,11 @@ class EventModal extends PureComponent {
       if (newEvent.quantityLeft > 0) {
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${realPseudo} has taken ${numberWanted} items. ${
-              newEvent.quantityLeft
-            } left)`,
+            `@${realPseudo} has taken ${numberWanted} items. ${newEvent.quantityLeft} left)`,
           );
         } else {
           newEvent.actionHistory = [
-            `@${realPseudo} has taken ${numberWanted} items. ${
-              newEvent.quantityLeft
-            } left)`,
+            `@${realPseudo} has taken ${numberWanted} items. ${newEvent.quantityLeft} left)`,
           ];
         }
       } else {
@@ -200,15 +196,11 @@ class EventModal extends PureComponent {
       if (newEvent.quantityLeft > 0) {
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
           newEvent.actionHistory.push(
-            `@${realPseudo} has taken only one item.(${
-              newEvent.quantityLeft
-            } left)`,
+            `@${realPseudo} has taken only one item.(${newEvent.quantityLeft} left)`,
           );
         } else {
           newEvent.actionHistory = [
-            `@${realPseudo} has taken only one item.(${
-              newEvent.quantityLeft
-            } left)`,
+            `@${realPseudo} has taken only one item.(${newEvent.quantityLeft} left)`,
           ];
         }
       } else {
@@ -339,29 +331,44 @@ class EventModal extends PureComponent {
       storyCharacters,
       character,
       isGameMaster,
+      gameMaster,
     } = this.props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
-      let goldGiven = Math.floor(newEvent.gold / (storyCharacters.length - 2));
-      if (newEvent.goldLeft + goldGiven > newEvent.gold) {
-        goldGiven = newEvent.gold - newEvent.goldLeft;
-      }
-      newEvent.goldLeft = newEvent.goldLeft + goldGiven;
-      if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
-        newEvent.actionHistory.push(
-          `@${realPseudo} has given his part (${goldGiven}) of gold.`,
-        );
-      } else {
-        newEvent.actionHistory = [
-          `@${realPseudo} has given his part (${goldGiven}) of gold.`,
-        ];
-      }
-      const newEventHistory = [...eventHistory];
-      newEventHistory[currentEvent] = { ...newEvent };
 
-      this.updateCharacterGold(parseInt(character.gold, 10) - goldGiven);
-      this.updateCurrentEvent(newEventHistory);
+      let charactersLeft = 0;
+      storyCharacters.map(storyCharacter => {
+        if (
+          storyCharacter.status !== "Dead" &&
+          storyCharacter.status !== "Inactive" &&
+          storyCharacter.userUid !== gameMaster
+        ) {
+          ++charactersLeft;
+        }
+      });
+
+      if (charactersLeft > 0) {
+        let goldGiven = Math.floor(newEvent.gold / charactersLeft);
+        if (newEvent.goldLeft + goldGiven > newEvent.gold) {
+          goldGiven = newEvent.gold - newEvent.goldLeft;
+        }
+        newEvent.goldLeft = newEvent.goldLeft + goldGiven;
+        if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
+          newEvent.actionHistory.push(
+            `@${realPseudo} has given his part (${goldGiven}) of gold.`,
+          );
+        } else {
+          newEvent.actionHistory = [
+            `@${realPseudo} has given his part (${goldGiven}) of gold.`,
+          ];
+        }
+        const newEventHistory = [...eventHistory];
+        newEventHistory[currentEvent] = { ...newEvent };
+
+        this.updateCharacterGold(parseInt(character.gold, 10) - goldGiven);
+        this.updateCurrentEvent(newEventHistory);
+      }
     }
   };
 
@@ -426,29 +433,44 @@ class EventModal extends PureComponent {
       storyCharacters,
       character,
       isGameMaster,
+      gameMaster,
     } = this.props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
-      let goldTaken = Math.floor(newEvent.gold / (storyCharacters.length - 2));
-      if (newEvent.goldLeft - goldTaken < 0) {
-        goldTaken = newEvent.goldLeft;
-      }
-      newEvent.goldLeft = newEvent.goldLeft - goldTaken;
-      if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
-        newEvent.actionHistory.push(
-          `@${realPseudo} has taken his part (${goldTaken}) of gold.`,
-        );
-      } else {
-        newEvent.actionHistory = [
-          `@${realPseudo} has taken his part (${goldTaken}) of gold.`,
-        ];
-      }
-      const newEventHistory = [...eventHistory];
-      newEventHistory[currentEvent] = { ...newEvent };
 
-      this.updateCharacterGold(parseInt(character.gold, 10) + goldTaken);
-      this.updateCurrentEvent(newEventHistory);
+      let charactersLeft = 0;
+      storyCharacters.map(storyCharacter => {
+        if (
+          storyCharacter.status !== "Dead" &&
+          storyCharacter.status !== "Inactive" &&
+          storyCharacter.userUid !== gameMaster
+        ) {
+          ++charactersLeft;
+        }
+      });
+
+      if (charactersLeft > 0) {
+        let goldTaken = Math.floor(newEvent.gold / charactersLeft);
+        if (newEvent.goldLeft - goldTaken < 0) {
+          goldTaken = newEvent.goldLeft;
+        }
+        newEvent.goldLeft = newEvent.goldLeft - goldTaken;
+        if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
+          newEvent.actionHistory.push(
+            `@${realPseudo} has taken his part (${goldTaken}) of gold.`,
+          );
+        } else {
+          newEvent.actionHistory = [
+            `@${realPseudo} has taken his part (${goldTaken}) of gold.`,
+          ];
+        }
+        const newEventHistory = [...eventHistory];
+        newEventHistory[currentEvent] = { ...newEvent };
+
+        this.updateCharacterGold(parseInt(character.gold, 10) + goldTaken);
+        this.updateCurrentEvent(newEventHistory);
+      }
     }
   };
 
