@@ -214,12 +214,15 @@ class CharacterCreationPanel extends Component {
   };
 
   addItem = () => {
-    if (this.state.items.length === 10) {
-      this.props.triggerError({
+    const { items } = this.state;
+    const { triggerError } = this.props;
+
+    if (items.length === 10) {
+      triggerError({
         message: "Can't have more than 10 items",
       });
     } else {
-      const obj = [...this.state.items];
+      const obj = [...items];
       obj.push({
         name: "",
         quantity: 1,
@@ -233,6 +236,7 @@ class CharacterCreationPanel extends Component {
 
   removeItem = index => {
     const { items } = this.state;
+
     if (items.length === 1) {
       this.setState(state => ({
         ...state,
@@ -263,12 +267,15 @@ class CharacterCreationPanel extends Component {
   };
 
   addWeapon = () => {
-    if (this.state.weapons.length === 2) {
-      this.props.triggerError({
+    const { weapons } = this.state;
+    const { triggerError } = this.props;
+
+    if (weapons.length === 2) {
+      triggerError({
         message: "Can't have more than 2 weapons equipped",
       });
     } else {
-      const obj = [...this.state.weapons];
+      const obj = [...weapons];
       obj.push("");
       this.setState(state => ({
         ...state,
@@ -330,10 +337,13 @@ class CharacterCreationPanel extends Component {
   };
 
   removePicture = () => {
+    const { iconPath } = this.state;
+    const { triggerError } = this.props;
+
     // Delete the file
     let storageRef = firebase.storage().ref();
     storageRef
-      .child(this.state.iconPath)
+      .child(iconPath)
       .delete()
       .then(() => {
         // File deleted successfully
@@ -345,7 +355,7 @@ class CharacterCreationPanel extends Component {
       })
       .catch(error => {
         // Uh-oh, an error occurred!
-        this.props.triggerError(error);
+        triggerError(error);
       });
   };
 
@@ -375,12 +385,21 @@ class CharacterCreationPanel extends Component {
               parseInt(character.constitution, 10))
           : character.health;
 
+      const mentalState =
+        this.state.willpower !== character.willpower
+          ? parseInt(character.mentalState, 10) +
+            (parseInt(this.state.willpower, 10) / 5 -
+              parseInt(character.willpower, 10) / 5)
+          : character.mentalState;
+
       updateCharacter({
         ...rest,
         name,
         icon,
         health,
+        mentalState,
         maxHealth: parseInt(this.state.constitution, 10) + 10,
+        maxMentalState: parseInt(this.state.willpower, 10) / 5 + 1,
         id,
       });
     } else {
@@ -388,6 +407,10 @@ class CharacterCreationPanel extends Component {
         ...rest,
         name,
         icon,
+        mentalState: Math.ceil(
+          (parseInt(this.state.willpower, 10) / 5 + 1) / 2,
+        ),
+        maxMentalState: parseInt(this.state.willpower, 10) / 5 + 1,
         health: parseInt(this.state.constitution, 10) + 10,
         maxHealth: parseInt(this.state.constitution, 10) + 10,
         id,
