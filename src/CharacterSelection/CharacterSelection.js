@@ -252,43 +252,41 @@ class CharacterSelection extends Component {
           {this.getCharacters()}
         </div>
       );
-    } else {
-      return (
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <div style={styledBoxHeader}>
-            <div style={styledSideHeaders}>
-              <ButtonLarge onClick={this.resetStory}>
-                Select another story
-              </ButtonLarge>
-            </div>
-            <div style={styledCenterHeader}>
-              {isAnUpdate ? "Update a character" : "Create a character"}
-            </div>
-            <div style={styledSideHeaders}>
-              <ButtonLarge onClick={signOut}>Log out</ButtonLarge>
-            </div>
-          </div>
-          <CharacterCreationPanel
-            uid={uid}
-            id={
-              isAnUpdate
-                ? updateCharacterId
-                : Object.keys(characters).length + 1
-            }
-            createCharacter={this.createCharacter}
-            updateCharacter={this.updateCharacter}
-            triggerError={triggerError}
-            isAnUpdate={isAnUpdate}
-            character={isAnUpdate ? { ...characters[updateCharacterId] } : {}}
-          />
-        </div>
-      );
     }
+
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <div style={styledBoxHeader}>
+          <div style={styledSideHeaders}>
+            <ButtonLarge onClick={this.resetStory}>
+              Select another story
+            </ButtonLarge>
+          </div>
+          <div style={styledCenterHeader}>
+            {isAnUpdate ? "Update a character" : "Create a character"}
+          </div>
+          <div style={styledSideHeaders}>
+            <ButtonLarge onClick={signOut}>Log out</ButtonLarge>
+          </div>
+        </div>
+        <CharacterCreationPanel
+          uid={uid}
+          id={
+            isAnUpdate ? updateCharacterId : Object.keys(characters).length + 1
+          }
+          createCharacter={this.createCharacter}
+          updateCharacter={this.updateCharacter}
+          triggerError={triggerError}
+          isAnUpdate={isAnUpdate}
+          character={isAnUpdate ? { ...characters[updateCharacterId] } : {}}
+        />
+      </div>
+    );
   }
 }
 

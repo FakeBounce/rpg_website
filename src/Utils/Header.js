@@ -157,7 +157,6 @@ class Header extends Component {
             style={styledSignOut}
             onClick={
               selectAnotherCharacter
-              // () => {}
             }
           >
             Select a character
