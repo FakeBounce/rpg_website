@@ -902,6 +902,7 @@ class App extends Component {
           currentStory === -1 && (
             <StoriesPanel
               stories={stories}
+              currentStory={currentStory}
               chooseStory={this.chooseStory}
               doSetState={this.doSetState}
               signOut={this.signOut}

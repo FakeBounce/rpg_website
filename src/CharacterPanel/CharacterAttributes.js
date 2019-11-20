@@ -1,38 +1,38 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { cursorPointer, heightLeft, imageSize } from '../Utils/StyleConstants';
-import { attributes } from '../Utils/Constants';
-import firebase from 'firebase';
-import ButtonLarge from '../Utils/ButtonLarge';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { cursorPointer, heightLeft, imageSize } from "../Utils/StyleConstants";
+import { attributes } from "../Utils/Constants";
+import firebase from "firebase";
+import ButtonLarge from "../Utils/ButtonLarge";
 
 const styles = {
   BoxHeader: {
-    width: '100%',
-    height: '20px',
-    marginBottom: '5px',
-    textAlign: 'center',
+    width: "100%",
+    height: "20px",
+    marginBottom: "5px",
+    textAlign: "center",
   },
   characterAttributeInfos: {
     width: `${imageSize - 1}px`,
     height: `${heightLeft / 2 - imageSize}px`,
-    position: 'relative',
-    float: 'left',
-    display: 'inline-block',
-    borderRight: '1px solid black',
-    overflowY: 'auto',
+    position: "relative",
+    float: "left",
+    display: "inline-block",
+    borderRight: "1px solid black",
+    overflowY: "auto",
   },
 };
 const styledAttribute = {
   marginLeft: 5,
-  float: 'left',
-  display: 'inline-block',
-  textTransform: 'capitalize',
+  float: "left",
+  display: "inline-block",
+  textTransform: "capitalize",
 };
 const styledAttributeGM = {
   marginLeft: 5,
-  float: 'left',
-  display: 'inline-block',
-  textTransform: 'capitalize',
+  float: "left",
+  display: "inline-block",
+  textTransform: "capitalize",
   cursor: cursorPointer,
 };
 const styledButton = {
@@ -42,14 +42,14 @@ const styledInput = { width: 30 };
 
 class CharacterAttributes extends PureComponent {
   state = {
-    currentAttribute: '',
+    currentAttribute: "",
     currentValue: 0,
   };
 
   onChange = value => {
     this.setState(state => ({
       ...state,
-      currentValue: value === '' ? 0 : parseInt(value, 10),
+      currentValue: value === "" ? 0 : parseInt(value, 10),
     }));
   };
 
@@ -67,24 +67,24 @@ class CharacterAttributes extends PureComponent {
     firebase
       .database()
       .ref(
-        'stories/' +
+        "stories/" +
           currentStory +
-          '/characters/' +
+          "/characters/" +
           character.userUid +
-          '/character/' +
-          currentAttribute
+          "/character/" +
+          currentAttribute,
       )
       .set(currentValue)
       .then(() => {
         this.setState(state => ({
           ...state,
-          currentAttribute: '',
+          currentAttribute: "",
           currentValue: 0,
         }));
       })
       .catch(error => {
         // Handle Errors here.
-        console.log('error', error);
+        console.log("error", error);
       });
   };
 
@@ -92,6 +92,7 @@ class CharacterAttributes extends PureComponent {
     const { character, isGameMaster } = this.props;
     const { currentAttribute, currentValue } = this.state;
 
+    if (!character || !character.attributes) return null;
     return (
       <div style={styles.characterAttributeInfos}>
         <div style={styles.BoxHeader}>Attributes :</div>
@@ -100,10 +101,10 @@ class CharacterAttributes extends PureComponent {
           return (
             <div
               style={isGameMaster ? styledAttributeGM : styledAttribute}
-              onClick={() => this.onClick(a, character[a])}
-              key={'character-attribute-' + a}
+              onClick={() => this.onClick(a, character.attributes[a])}
+              key={"character-attribute-" + a}
             >
-              {label} :{' '}
+              {label} :{" "}
               {isGameMaster && currentAttribute === a ? (
                 <input
                   name={a}
@@ -115,12 +116,12 @@ class CharacterAttributes extends PureComponent {
                   }}
                 />
               ) : (
-                character[a]
+                character.attributes[a]
               )}
             </div>
           );
         })}
-        {currentAttribute !== '' && (
+        {currentAttribute !== "" && (
           <ButtonLarge onClick={this.validate} style={styledButton}>
             OK
           </ButtonLarge>

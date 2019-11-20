@@ -27,6 +27,7 @@ class NewStoryForm extends Component {
       iconPath,
       createStory,
       onDrop,
+      onChange,
       removePicture,
     } = this.props;
     return (
@@ -46,7 +47,7 @@ class NewStoryForm extends Component {
             placeholder="name"
             value={name}
             onChange={e => {
-              this.onChange(e.target.name, e.target.value);
+              onChange(e.target.name, e.target.value);
             }}
             style={{ width: "80%", marginTop: 15 }}
           />

@@ -23,6 +23,7 @@ class CharacterOtherInfos extends Component {
   render() {
     const {
       character,
+      currentStory,
       infoTab,
       status,
       gold,
@@ -42,6 +43,7 @@ class CharacterOtherInfos extends Component {
         <CharacterTabButtons onChangeTab={onChangeTab} infoTab={infoTab}/>
         <CharacterTabPanel
           character={character}
+          currentStory={currentStory}
           infoTab={infoTab}
           onItemUse={onItemUse}
           isGameMaster={isGameMaster}
@@ -67,6 +69,7 @@ class CharacterOtherInfos extends Component {
 
 CharacterOtherInfos.propTypes = {
   character: PropTypes.object.isRequired,
+  currentStory: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
   gold: PropTypes.number.isRequired,
   infoTab: PropTypes.string.isRequired,

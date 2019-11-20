@@ -65,8 +65,9 @@ class CharacterTabPanelItem extends Component {
 
   onValidateItem = () => {
     const { itemValue } = this.state;
-    const { character } = this.props;
-    const obj = [...character.items];
+    const { character, currentStory } = this.props;
+    let obj = [];
+    if (character.items) obj = [...character.items];
     const newObject = {
       name: itemValue,
       quantity: 1,
@@ -77,8 +78,7 @@ class CharacterTabPanelItem extends Component {
     firebase
       .database()
       .ref(
-        "stories/" +
-          0 +
+        "stories/" + currentStory +
           "/characters/" +
           character.userUid +
           "/character/items",
@@ -172,6 +172,7 @@ class CharacterTabPanelItem extends Component {
 
 CharacterTabPanelItem.propTypes = {
   character: PropTypes.object.isRequired,
+  currentStory: PropTypes.number.isRequired,
   onItemUse: PropTypes.func.isRequired,
   isGameMaster: PropTypes.bool.isRequired,
 };

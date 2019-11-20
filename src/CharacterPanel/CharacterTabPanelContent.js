@@ -1,41 +1,41 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { widthRightPanelLeft } from '../Utils/StyleConstants';
-import firebase from 'firebase';
-import ButtonLarge from '../Utils/ButtonLarge';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { widthRightPanelLeft } from "../Utils/StyleConstants";
+import firebase from "firebase";
+import ButtonLarge from "../Utils/ButtonLarge";
 
 const styles = {
   tabPanelItem: {
     width: `${widthRightPanelLeft - 6}px`,
     paddingHorizontal: 5,
-    position: 'relative',
-    float: 'left',
-    display: 'inline-block',
+    position: "relative",
+    float: "left",
+    display: "inline-block",
   },
   itemButton: {
     width: 50,
     height: 30,
-    position: 'relative',
-    float: 'right',
-    display: 'inline-block',
+    position: "relative",
+    float: "right",
+    display: "inline-block",
     padding: 0,
     margin: 0,
-    textAlign: 'center',
+    textAlign: "center",
   },
   itemDescription: {
     width: `${widthRightPanelLeft - 70}px`,
-    position: 'relative',
-    float: 'left',
-    display: 'inline-block',
+    position: "relative",
+    float: "left",
+    display: "inline-block",
     padding: 0,
     margin: 0,
-    textAlign: 'center',
+    textAlign: "center",
   },
 };
 
 class CharacterTabPanelContent extends Component {
   state = {
-    newValue: '',
+    newValue: "",
   };
 
   onChange = value => {
@@ -47,49 +47,50 @@ class CharacterTabPanelContent extends Component {
 
   onValidate = () => {
     const { newValue } = this.state;
-    const { character, tab, tabName } = this.props;
+    const { character, tab, tabName, currentStory } = this.props;
 
-    if (newValue !== '') {
-      const obj = [...tab];
+    if (newValue !== "") {
+      let obj = [];
+      if (tab) obj = [...tab];
       obj.push(newValue);
 
       firebase
         .database()
         .ref(
-          'stories/' +
-            0 +
-            '/characters/' +
+          "stories/" +
+            currentStory +
+            "/characters/" +
             character.userUid +
-            '/character/' +
-            tabName.toLowerCase()
+            "/character/" +
+            tabName.toLowerCase(),
         )
         .set(obj)
         .catch(error => {
           // Handle Errors here.
-          console.log('Error', error);
+          console.log("Error", error);
         });
     }
   };
 
   onRemove = i => {
-    const { character, tab, tabName } = this.props;
+    const { character, tab, tabName, currentStory } = this.props;
     const obj = [...tab];
     obj.splice(i, 1);
 
     firebase
       .database()
       .ref(
-        'stories/' +
-          0 +
-          '/characters/' +
+        "stories/" +
+          currentStory +
+          "/characters/" +
           character.userUid +
-          '/character/' +
-          tabName.toLowerCase()
+          "/character/" +
+          tabName.toLowerCase(),
       )
       .set(obj)
       .catch(error => {
         // Handle Errors here.
-        console.log('Error', error);
+        console.log("Error", error);
       });
   };
 
@@ -131,7 +132,7 @@ class CharacterTabPanelContent extends Component {
 }
 
 CharacterTabPanelContent.defaultProps = {
-  tabName: '',
+  tabName: "",
   character: {},
 };
 
@@ -139,6 +140,7 @@ CharacterTabPanelContent.propTypes = {
   tab: PropTypes.array.isRequired,
   tabName: PropTypes.string,
   character: PropTypes.object,
+  currentStory: PropTypes.number.isRequired,
 };
 
 export default CharacterTabPanelContent;

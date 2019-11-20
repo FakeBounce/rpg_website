@@ -379,18 +379,19 @@ class CharacterCreationPanel extends Component {
       triggerError({ message: "Icon cannot be empty !" });
     } else if (isAnUpdate) {
       const health =
-        this.state.constitution !== character.constitution
+        this.state.attributes.constitution !== character.constitution
           ? parseInt(character.health, 10) +
-            (parseInt(this.state.constitution, 10) -
+            (parseInt(this.state.attributes.constitution, 10) -
               parseInt(character.constitution, 10))
           : character.health;
 
-      const mentalState =
-        this.state.willpower !== character.willpower
+      const mentalState = character.willpower
+        ? this.state.attributes.willpower !== character.willpower
           ? parseInt(character.mentalState, 10) +
-            (parseInt(this.state.willpower, 10) / 5 -
+            (parseInt(this.state.attributes.willpower, 10) / 5 -
               parseInt(character.willpower, 10) / 5)
-          : character.mentalState;
+          : character.mentalState
+        : this.state.attributes.willpower;
 
       updateCharacter({
         ...rest,
@@ -398,8 +399,8 @@ class CharacterCreationPanel extends Component {
         icon,
         health,
         mentalState,
-        maxHealth: parseInt(this.state.constitution, 10) + 10,
-        maxMentalState: parseInt(this.state.willpower, 10) / 5 + 1,
+        maxHealth: parseInt(this.state.attributes.constitution, 10) + 10,
+        maxMentalState: parseInt(this.state.attributes.willpower, 10) / 5 + 1,
         id,
       });
     } else {
@@ -408,11 +409,11 @@ class CharacterCreationPanel extends Component {
         name,
         icon,
         mentalState: Math.ceil(
-          (parseInt(this.state.willpower, 10) / 5 + 1) / 2,
+          (parseInt(this.state.attributes.willpower, 10) / 5 + 1) / 2,
         ),
-        maxMentalState: parseInt(this.state.willpower, 10) / 5 + 1,
-        health: parseInt(this.state.constitution, 10) + 10,
-        maxHealth: parseInt(this.state.constitution, 10) + 10,
+        maxMentalState: parseInt(this.state.attributes.willpower, 10) / 5 + 1,
+        health: parseInt(this.state.attributes.constitution, 10) + 10,
+        maxHealth: parseInt(this.state.attributes.constitution, 10) + 10,
         id,
       });
     }

@@ -137,6 +137,7 @@ class NewStory extends Component {
           icon={icon}
           iconPath={iconPath}
           onDrop={this.onDrop}
+          onChange={this.onChange}
           createStory={this.createStory}
           removePicture={this.removePicture}
         />

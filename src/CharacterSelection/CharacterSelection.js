@@ -83,7 +83,7 @@ class CharacterSelection extends Component {
 
     const charToRegister = characters[id];
     charToRegister.gold = Math.floor(
-      Math.random() * characters[id].luck * 5 + 5,
+      Math.random() * characters[id].attributes.luck * 5 + 5,
     );
     charToRegister.status = "OK";
 
@@ -182,7 +182,8 @@ class CharacterSelection extends Component {
     const charTab = characters;
 
     const charToRegister = character;
-    charToRegister.gold = Math.floor(Math.random() * character.luck + 1) * 5;
+    charToRegister.gold =
+      Math.floor(Math.random() * character.attributes.luck + 1) * 5;
     charToRegister.status = "OK";
     charToRegister.userPseudo = pseudo;
     charToRegister.userUid = uid;

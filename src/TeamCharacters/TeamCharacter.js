@@ -39,8 +39,8 @@ const styles = {
 
 const styledCharacterTeamHeaderImageContainer = {
   position: "relative",
-  width: `${imageSize}px`,
-  height: `${imageSize}px`,
+  width: `${imageSize/2}px`,
+  height: `${imageSize/2}px`,
   float: "left",
   display: "inline-block",
 };
