@@ -30,7 +30,6 @@ class ItemDescriptionPanel extends Component {
       isHidden,
       noBuy,
     } = this.props;
-    console.log("noBuy", noBuy);
     return (
       <div style={styledMapSide}>
         <Cadre />

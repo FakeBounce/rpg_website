@@ -399,6 +399,9 @@ export const towns = [
 ];
 
 export const musics = [
+  "DarksoulArtorias",
+  "Darksoul3Tribute",
+  "WhiteSandEternity",
   "Alarme",
   "Auberge",
   "Aventure_tranquille",
@@ -829,7 +832,7 @@ export const bestiary = [
     text2: "",
     text3: "Il porte un anneau étrange sur sa annulaire gauche.",
     text4:
-      "Force accrue, dextérité accrue, perception accrue, aura de feu,  souffle de flammes, stabilité, peau de roche, résistance mentale accrue",
+      "Force accrue, dextérité accrue, perception accrue, aura de feu,  souffle de flammes, stabilité, peau de roche, résistanc e mentale accrue",
     dangerosity: "7/10",
     taille: "210",
     poids: "90",
@@ -845,6 +848,15 @@ export const tempoImagesList = [
   { path: "common/demon.jpg", name: "Demon" },
   { path: "common/desert.jpg", name: "Deset tempest" },
   { path: "common/cavern.jpg", name: "Cavern" },
+  { path: "common/2.jpg", name: "Artorias" },
+  { path: "common/3.jpg", name: "Armée des morts" },
+  { path: "common/4.jpg", name: "Femme samourai" },
+  { path: "common/5.jpg", name: "Gargouille" },
+  { path: "common/6.jpg", name: "Armée Blanc/Rouge" },
+  { path: "common/7.jpg", name: "Bataille barbare" },
+  { path: "common/8.jpg", name: "Liche/Mort vivant" },
+  { path: "common/9.jpg", name: "Ange" },
+  { path: "common/10.png", name: "Guerrier sans bras avec cape" },
 ];
 
 export const bonusList = [-30, -20, -10, 0, 10, 20, 30];
@@ -881,22 +893,28 @@ export const chatDices = [
     tip: "Constitution",
   },
   {
+    attribute: "willpower",
+    image: "./common/dice_red.png",
+    alt: "Willpower dice",
+    tip: "Willpower",
+  },
+  {
     attribute: "charisma",
     image: "./common/dice_black.png",
     alt: "Charisma dice",
     tip: "Charisma",
   },
   {
-    attribute: "luck",
-    image: "./common/dice_yellow.png",
-    alt: "Luck dice",
-    tip: "Luck",
-  },
-  {
     attribute: "education",
     image: "./common/dice_white.png",
     alt: "Education dice",
     tip: "Education",
+  },
+  {
+    attribute: "luck",
+    image: "./common/dice_yellow.png",
+    alt: "Luck dice",
+    tip: "Luck",
   },
 ];
 

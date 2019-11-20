@@ -1,56 +1,66 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import CharacterTabPanelContent from './CharacterTabPanelContent';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import CharacterTabPanelContent from "./CharacterTabPanelContent";
 
 import {
   widthRightPanelLeft,
   imageSize,
   heightLeft,
-} from '../Utils/StyleConstants';
-import CharacterTabPanelItem from './CharacterTabPanelItem';
+} from "../Utils/StyleConstants";
+import CharacterTabPanelItem from "./CharacterTabPanelItem";
 
 const styles = {
   tabPanel: {
     width: `${widthRightPanelLeft}px`,
     height: `${heightLeft / 2 - imageSize - 50}px`,
     padding: 0,
-    position: 'relative',
-    float: 'left',
-    display: 'inline-block',
-    overflowY: 'auto',
+    position: "relative",
+    float: "left",
+    display: "inline-block",
+    overflowY: "auto",
   },
 };
 
 class CharacterTabPanel extends Component {
   render() {
-    const { character, infoTab, onItemUse, isGameMaster } = this.props;
+    const {
+      character,
+      infoTab,
+      onItemUse,
+      isGameMaster,
+      currentStory,
+    } = this.props;
 
     return (
       <div style={styles.tabPanel} className="scrollbar">
-        {infoTab === 'Weapons' && (
+        {infoTab === "Weapons" && (
           <CharacterTabPanelContent
             tab={character.weapons || []}
-            tabName={'Weapons'}
+            tabName={"Weapons"}
             isGameMaster="Weapons :"
             character={character}
+            currentStory={currentStory}
           />
         )}
-        {infoTab === 'Abilities' && (
+        {infoTab === "Abilities" && (
           <CharacterTabPanelContent
             tab={character.abilities || []}
-            tabName={'Abilities'}
+            tabName={"Abilities"}
             character={character}
+            currentStory={currentStory}
           />
         )}
-        {infoTab === 'Skills' && (
+        {infoTab === "Skills" && (
           <CharacterTabPanelContent
             tab={character.skills || []}
-            tabName={'Skills'}
+            tabName={"Skills"}
             character={character}
+            currentStory={currentStory}
           />
         )}
-        {infoTab === 'Items' && (
+        {infoTab === "Items" && (
           <CharacterTabPanelItem
+            currentStory={currentStory}
             character={character}
             onItemUse={onItemUse}
             isGameMaster={isGameMaster}
@@ -63,6 +73,7 @@ class CharacterTabPanel extends Component {
 
 CharacterTabPanel.propTypes = {
   character: PropTypes.object.isRequired,
+  currentStory: PropTypes.number.isRequired,
   infoTab: PropTypes.string.isRequired,
   onItemUse: PropTypes.func.isRequired,
   isGameMaster: PropTypes.bool.isRequired,

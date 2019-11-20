@@ -70,16 +70,13 @@ class TeamPanel extends PureComponent {
             exchangeWithTeamMember={() => {}}
             chatWithTeamMember={() => {
               chatWithTeamMember("GM");
-              modifyCurrentCharacter(gameMaster);
+              // modifyCurrentCharacter(gameMaster);
             }}
             goldWithTeamMember={() => goldWithTeamMember("GM")}
           />
 
           {storyCharacters.map(storyCharacter => {
-            if (
-              storyCharacter.userUid !== gameMaster &&
-              storyCharacter.userUid !== "0xH2fYPl08czXqUASY4fvSO76cZ2"
-            ) {
+            if (storyCharacter.userUid !== gameMaster) {
               return (
                 <TeamCharacter
                   key={storyCharacter.name}

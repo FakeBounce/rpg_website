@@ -59,8 +59,6 @@ class CharacterInputs extends Component {
       toggleIsOnChar,
     } = this.props;
 
-    console.log("chara", character);
-
     return (
       <div>
         <input
@@ -110,18 +108,6 @@ class CharacterInputs extends Component {
               Gold
             </ButtonLarge>
           </div>
-        )}
-        {character.userUid === "UUCVe6qVn8ZHTrS1qa1ff4fK7i22" && (
-          <ButtonLarge
-            onClick={toggleIsOnChar}
-            style={{
-              position: "relative",
-              float: "right",
-              width: 124,
-            }}
-          >
-            Play music
-          </ButtonLarge>
         )}
       </div>
     );

@@ -23,11 +23,19 @@ class StoriesPanel extends Component {
   };
 
   render() {
-    const { stories, chooseStory, signOut, triggerError } = this.props;
+    const {
+      stories,
+      chooseStory,
+      doSetState,
+      signOut,
+      triggerError,
+    } = this.props;
     const { isCreatingStory } = this.state;
     if (isCreatingStory) {
       return (
         <NewStory
+          stories={stories}
+          doSetState={doSetState}
           triggerError={triggerError}
           toggleStoryCreation={this.toggleStoryCreation}
         />

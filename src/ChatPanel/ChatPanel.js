@@ -220,9 +220,7 @@ class ChatPanel extends PureComponent {
             }),
             () => {
               this.sendChatInput({
-                message: `@${realPseudo}, you say to @${
-                  users[key].pseudo
-                } :${textToSend}`,
+                message: `@${realPseudo}, you say to @${users[key].pseudo} :${textToSend}`,
                 viewers: [pseudo],
               });
               this.sendChatInput({
@@ -265,9 +263,7 @@ class ChatPanel extends PureComponent {
                 viewers: [pseudo],
               });
               this.sendChatInput({
-                message: `@${realPseudo} tells GM secretly :${
-                  splittedString[1]
-                }`,
+                message: `@${realPseudo} tells GM secretly :${splittedString[1]}`,
                 viewers: [users[key].pseudo],
               });
             }
@@ -358,9 +354,7 @@ class ChatPanel extends PureComponent {
           0
         ) {
           this.sendChatInput({
-            message: `@${realPseudo} gave ${
-              splittedString[1]
-            } gold to the GameMaster. He is very thankfull !`,
+            message: `@${realPseudo} gave ${splittedString[1]} gold to the GameMaster. He is very thankfull !`,
           });
           firebase
             .database()
@@ -415,9 +409,7 @@ class ChatPanel extends PureComponent {
             0
           ) {
             this.sendChatInput({
-              message: `You gave ${splittedString[2]} gold to ${
-                splittedString[1]
-              }.`,
+              message: `You gave ${splittedString[2]} gold to ${splittedString[1]}.`,
               viewers: [pseudo],
             });
             this.sendChatInput({
@@ -500,9 +492,7 @@ class ChatPanel extends PureComponent {
             );
 
             this.sendChatInput({
-              message: `@${realPseudo} gave ${
-                splittedString[1]
-              } gold to the team (${goldForEach} each).`,
+              message: `@${realPseudo} gave ${splittedString[1]} gold to the team (${goldForEach} each).`,
             });
 
             let updates = {};
@@ -555,7 +545,7 @@ class ChatPanel extends PureComponent {
       message = `@${realPseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Critical success !)`;
     } else if (
       dice <=
-      parseInt(character[attribute], 10) + parseInt(bonus, 10)
+      parseInt(character.attributes[attribute], 10) + parseInt(bonus, 10)
     ) {
       message = `@${realPseudo} tried a ${attribute} action${bonusMessage}. Result : ${dice} (Success !)`;
     } else if (dice > 95) {

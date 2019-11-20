@@ -679,14 +679,13 @@ class EventModal extends PureComponent {
         )}
         {eventHistory[currentEvent].type === "draw" && (
           <Fragment>
+            <Draw
+              key={"gm-drawer"}
+              name={"GameMaster"}
+              disabled={!isGameMaster}
+            />
             {storyCharacters.map(sc => {
-              return sc.userUid === gameMaster ? (
-                <Draw
-                  key={"gm-drawer-" + sc.userUid}
-                  name={"GameMaster"}
-                  disabled={uid !== gameMaster}
-                />
-              ) : (
+              return (
                 <Draw
                   key={"drawer-" + sc.userUid}
                   uid={sc.userUid}

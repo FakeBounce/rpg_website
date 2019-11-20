@@ -41,17 +41,31 @@ class CharacterPanel extends PureComponent {
     return (
       <div style={styles.CharPanel}>
         <div style={styles.CharacterBox}>
-          <CharacterHeader
-            gold={character.gold}
-            status={character.status}
-            icon={character.icon}
-            name={character.name}
-            health={character.health}
-            maxHealth={character.maxHealth}
-            triggerError={triggerError}
-            uid={uid}
-            currentStory={currentStory}
-          />
+          {isGameMaster ? (
+            <CharacterHeader
+              gold={0}
+              status={"Gamemaster"}
+              icon={"./common/gameMaster.jpg"}
+              name={"Gamemaster"}
+              health={"999"}
+              maxHealth={"999"}
+              triggerError={triggerError}
+              uid={uid}
+              currentStory={currentStory}
+            />
+          ) : (
+            <CharacterHeader
+              gold={character.gold}
+              status={character.status}
+              icon={character.icon}
+              name={character.name}
+              health={character.health}
+              maxHealth={character.maxHealth}
+              triggerError={triggerError}
+              uid={uid}
+              currentStory={currentStory}
+            />
+          )}
           <CharacterAttributes
             character={character}
             isGameMaster={isGameMaster}
@@ -59,6 +73,7 @@ class CharacterPanel extends PureComponent {
           />
           <CharacterOtherInfos
             character={character}
+            currentStory={currentStory}
             status={status}
             infoTab={infoTab}
             damageTaken={damageTaken}
