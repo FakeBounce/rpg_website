@@ -1,106 +1,116 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
 import {
   cursorPointer,
   heightLeft,
   widthRightPanel,
-} from '../Utils/StyleConstants';
-import { musics, noises } from '../Utils/Constants';
-
-import PropTypes from 'prop-types';
+} from "../Utils/StyleConstants";
+import { musics, noises } from "../Utils/Constants";
+import { CALL_RESET_SOUNDS } from "../../redux/actionsTypes/actionsTypesSounds";
 
 const styledBoxHeaderMusic = {
-  width: '100%',
-  height: '20px',
-  marginBottom: '5px',
-  textAlign: 'center',
-  position: 'absolute',
-  display: 'block',
+  width: "100%",
+  height: "20px",
+  marginBottom: "5px",
+  textAlign: "center",
+  position: "absolute",
+  display: "block",
 };
 
 const styledBoxHeaderNoise = {
-  width: '100%',
-  height: '20px',
-  marginBottom: '5px',
-  textAlign: 'center',
-  position: 'absolute',
-  display: 'block',
+  width: "100%",
+  height: "20px",
+  marginBottom: "5px",
+  textAlign: "center",
+  position: "absolute",
+  display: "block",
   top: `${(heightLeft - 1 - 45 * 2) / 2 + 45}px`,
 };
 
 const styledMapSide = {
   width: `${widthRightPanel}px`,
   height: `${heightLeft}px`,
-  display: 'inline-block',
-  float: 'left',
-  textAlign: 'left',
-  position: 'relative',
+  display: "inline-block",
+  float: "left",
+  textAlign: "left",
+  position: "relative",
 };
 
 const styledMusicVolume = {
-  width: '100%',
-  position: 'absolute',
-  height: '25px',
-  top: '20px',
+  width: "100%",
+  position: "absolute",
+  height: "25px",
+  top: "20px",
 };
 
 const styledNoiseVolume = {
-  width: '100%',
-  position: 'absolute',
-  height: '25px',
+  width: "100%",
+  position: "absolute",
+  height: "25px",
   top: `${(heightLeft - 1 - 45 * 2) / 2 + 45 + 20}px`,
 };
 
 const styledMusicContainer = {
-  width: '50%',
-  position: 'absolute',
+  width: "50%",
+  position: "absolute",
   height: `${(heightLeft - 1 - 45 * 2) / 2}px`,
-  top: '45px',
-  overflowY: 'auto',
+  top: "45px",
+  overflowY: "auto",
 };
 
 const styledMusicContainer2 = {
-  width: '50%',
-  position: 'absolute',
+  width: "50%",
+  position: "absolute",
   height: `${(heightLeft - 1 - 45 * 2) / 2}px`,
-  left: '50%',
-  top: '45px',
-  overflowY: 'auto',
+  left: "50%",
+  top: "45px",
+  overflowY: "auto",
 };
 
 const styledNoiseContainer = {
-  width: '50%',
-  position: 'absolute',
+  width: "50%",
+  position: "absolute",
   height: `${(heightLeft - 1 - 45 * 2) / 2}px`,
   top: `${(heightLeft - 1 - 45 * 2) / 2 + 45 + 45}px`,
-  overflowY: 'auto',
+  overflowY: "auto",
 };
 
 const styledNoiseContainer2 = {
-  width: '50%',
-  position: 'absolute',
+  width: "50%",
+  position: "absolute",
   height: `${(heightLeft - 1 - 45 * 2) / 2}px`,
   top: `${(heightLeft - 1 - 45 * 2) / 2 + 45 + 45}px`,
-  left: '50%',
-  overflowY: 'auto',
+  left: "50%",
+  overflowY: "auto",
 };
 
 const styledAudioFile = {
-  width: '100%',
-  height: '30px',
+  width: "100%",
+  height: "30px",
   cursor: cursorPointer,
-  borderBottom: '1px solid black',
+  borderBottom: "1px solid black",
+};
+
+const styledResetSoundButton = {
+  position: "absolute",
+  left: 0,
+  top: 0,
+  cursor: cursorPointer,
+  zIndex: 2,
 };
 
 class SoundPanel extends PureComponent {
   changeCurrentMusic = m => {
     const { onChangeMusics } = this.props;
-    onChangeMusics('musicName', m);
+    onChangeMusics("musicName", m);
   };
 
   changeCurrentNoise = n => {
     const { onChangeMusics } = this.props;
-    onChangeMusics('noiseName', n);
-    onChangeMusics('noiseStatus', 'PLAYING');
+    onChangeMusics("noiseName", n);
+    onChangeMusics("noiseStatus", "PLAYING");
   };
 
   render() {
@@ -115,16 +125,7 @@ class SoundPanel extends PureComponent {
 
     return (
       <div style={styledMapSide}>
-        <button
-          onClick={resetSounds}
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            cursor: cursorPointer,
-            zIndex: 2,
-          }}
-        >
+        <button onClick={resetSounds} style={styledResetSoundButton}>
           Reset
         </button>
         <div style={styledBoxHeaderMusic}>
@@ -144,9 +145,8 @@ class SoundPanel extends PureComponent {
           />
         </div>
         <div style={styledMusicContainer}>
-          {musics.map((m,i) => {
-            if(i < musics.length/2)
-            {
+          {musics.map((m, i) => {
+            if (i < musics.length / 2) {
               return (
                 <div
                   key={`music-${m}`}
@@ -161,9 +161,8 @@ class SoundPanel extends PureComponent {
           })}
         </div>
         <div style={styledMusicContainer2}>
-          {musics.map((m,i) => {
-            if(i >= musics.length/2)
-            {
+          {musics.map((m, i) => {
+            if (i >= musics.length / 2) {
               return (
                 <div
                   key={`music-${m}`}
@@ -232,6 +231,14 @@ class SoundPanel extends PureComponent {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    resetSounds: () => {
+      dispatch({ type: CALL_RESET_SOUNDS });
+    },
+  };
+};
+
 SoundPanel.propTypes = {
   musicName: PropTypes.string.isRequired,
   noiseName: PropTypes.string.isRequired,
@@ -241,4 +248,4 @@ SoundPanel.propTypes = {
   onChangeMusics: PropTypes.func.isRequired,
 };
 
-export default SoundPanel;
+export default connect(null, mapDispatchToProps)(SoundPanel);

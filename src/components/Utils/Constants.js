@@ -1058,7 +1058,7 @@ export const defaultStory = {
   quests: [],
   song: {
     songName: "",
-    songStatus: "STOPPPED",
+    songStatus: "STOPPED",
     songVolume: 50,
   },
   tempoImage: "common/noTown.jpg",

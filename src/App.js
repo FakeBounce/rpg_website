@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import debounce from "lodash/debounce";
 import "./App.css";
-import IsNotAuth from "./Authentication/IsNotAuth";
-import HasNoNickname from "./NicknameSelection/HasNoNickname";
-import CharacterSelection from "./CharacterSelection/CharacterSelection";
-import StoriesPanel from "./StoryPanel/StoriesPanel";
+import IsNotAuth from "./components/Authentication/IsNotAuth";
+import HasNoNickname from "./components/NicknameSelection/HasNoNickname";
+import CharacterSelection from "./components/CharacterSelection/CharacterSelection";
+import StoriesPanel from "./components/StoryPanel/StoriesPanel";
 
-import { defaultState, quests, bestiary } from "./Utils/Constants";
+import { defaultState, quests, bestiary } from "./components/Utils/Constants";
 // import LoadSpreasheet from './Utils/LoadSpreasheet';
 import GameScreen from "./GameScreen";
-import SoundPlayer from "./SoundPlayer/SoundPlayer";
+import SoundPlayer from "./components/SoundPlayer/SoundPlayer";
 import {
   // listenArtefacts,
   // loadUnusedArtefacts,
@@ -34,13 +34,13 @@ import {
   // loadChat,
   listenUsers,
   loadStories,
-} from "./Utils/DatabaseFunctions";
+} from "./components/Utils/DatabaseFunctions";
 import {
   hydrateStoryArtefacts,
   // resetStoryMerchants,
   hydrateAllMerchants,
   // hydrateMerchant,
-} from "./Utils/MerchantsFunctions";
+} from "./components/Utils/MerchantsFunctions";
 
 const styledErrorPanel = {
   position: "absolute",
@@ -391,53 +391,6 @@ class App extends Component {
 
   loadStories = () => {
     loadStories(this.doSetState);
-  };
-
-  stopNoise = () => {
-    const { currentStory } = this.state;
-    this.setState(
-      state => ({
-        ...state,
-        noiseStatus: "STOPPPED",
-        noiseName: "",
-      }),
-      () => {
-        firebase
-          .database()
-          .ref("/stories/" + currentStory + "/noise")
-          .set({
-            noiseStatus: this.state.noiseStatus,
-            noiseName: this.state.noiseName,
-          })
-          .catch(error => {
-            this.triggerError(error);
-          });
-      },
-    );
-  };
-
-  stopSong = () => {
-    const { currentStory } = this.state;
-    this.setState(
-      state => ({
-        ...state,
-        songStatus: "STOPPPED",
-        songName: "",
-      }),
-      () => {
-        firebase
-          .database()
-          .ref("/stories/" + currentStory + "/song")
-          .set({
-            songStatus: this.state.songStatus,
-            songName: this.state.songName,
-            songVolume: this.state.songVolume,
-          })
-          .catch(error => {
-            this.triggerError(error);
-          });
-      },
-    );
   };
 
   resetSounds = () => {
@@ -886,29 +839,26 @@ class App extends Component {
           />
         )}
 
-        {isAuth &&
-          pseudo === "" && (
-            <HasNoNickname
-              doSetState={this.doSetState}
-              onChange={this.onChange}
-              pseudoInput={pseudoInput}
-              signOut={this.signOut}
-              triggerError={this.triggerError}
-            />
-          )}
+        {isAuth && pseudo === "" && (
+          <HasNoNickname
+            doSetState={this.doSetState}
+            onChange={this.onChange}
+            pseudoInput={pseudoInput}
+            signOut={this.signOut}
+            triggerError={this.triggerError}
+          />
+        )}
 
-        {isAuth &&
-          pseudo !== "" &&
-          currentStory === -1 && (
-            <StoriesPanel
-              stories={stories}
-              currentStory={currentStory}
-              chooseStory={this.chooseStory}
-              doSetState={this.doSetState}
-              signOut={this.signOut}
-              triggerError={this.triggerError}
-            />
-          )}
+        {isAuth && pseudo !== "" && currentStory === -1 && (
+          <StoriesPanel
+            stories={stories}
+            currentStory={currentStory}
+            chooseStory={this.chooseStory}
+            doSetState={this.doSetState}
+            signOut={this.signOut}
+            triggerError={this.triggerError}
+          />
+        )}
 
         {!isGameMaster &&
           isAuth &&
@@ -965,24 +915,7 @@ class App extends Component {
               {...rest}
             />
           )}
-        <SoundPlayer
-          musicMute={musicMute}
-          musicNameFirst={musicNameFirst}
-          musicNameSecond={musicNameSecond}
-          musicStatusFirst={musicStatusFirst}
-          musicStatusSecond={musicStatusSecond}
-          musicVolumeFirst={musicVolumeFirst}
-          musicVolumeSecond={musicVolumeSecond}
-          noiseMute={noiseMute}
-          noiseName={noiseName}
-          noiseStatus={noiseStatus}
-          noiseVolume={noiseVolume}
-          stopNoise={this.stopNoise}
-          stopSong={this.stopSong}
-          songName={songName}
-          songStatus={songStatus}
-          songVolume={songVolume}
-        />
+        <SoundPlayer />
         <div style={styledErrorPanel}>{error}</div>
       </div>
     );

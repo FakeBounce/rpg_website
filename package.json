@@ -8,21 +8,29 @@
     "lodash": "^4.17.11",
     "prop-types": "^15.6.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1",
     "react-canvas-draw": "^1.0.0-alpha.7",
+    "react-dom": "^16.8.6",
     "react-images-upload": "^1.2.3",
+    "react-redux": "^7.1.3",
+    "react-scripts": "3.0.1",
     "react-sound": "^1.2.0",
-    "react-tooltip": "^3.8.1"
+    "react-tooltip": "^3.8.1",
+    "redux": "^4.0.4",
+    "redux-persist": "^6.0.0",
+    "redux-saga": "^1.1.3",
+    "reselect": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
+    "syncmessages": "node src/i18n/syncSheets.js",
+    "synccommits": "sh github-commit.sh",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "prettier": "^1.14.2"
+    "prettier": "1.19.1",
+    "redux-devtools": "^3.5.0"
   },
   "browserslist": {
     "production": [

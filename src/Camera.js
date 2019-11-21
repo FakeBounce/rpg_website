@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
-import ButtonLarge from "./Utils/ButtonLarge";
-import { heightHeader } from "./Utils/StyleConstants";
-import { colors } from "./Utils/Constants";
+import ButtonLarge from "./components/Utils/ButtonLarge";
+import { heightHeader } from "./components/Utils/StyleConstants";
+import { colors } from "./components/Utils/Constants";
 
 const styledVideoContainer = {
   width: (window.innerWidth - 300) / 7 - 7,
@@ -488,15 +488,14 @@ class Camera extends Component {
             autoPlay
             muted
           />
-          {isGameMaster &&
-            room.length > 0 && (
-              <ButtonLarge
-                onClick={this.closePrivateRoom}
-                style={styledCloseRoomImg}
-              >
-                R
-              </ButtonLarge>
-            )}
+          {isGameMaster && room.length > 0 && (
+            <ButtonLarge
+              onClick={this.closePrivateRoom}
+              style={styledCloseRoomImg}
+            >
+              R
+            </ButtonLarge>
+          )}
           {isDisabled && (
             <ButtonLarge onClick={this.closeLocalstream} style={styledMuteImg}>
               X

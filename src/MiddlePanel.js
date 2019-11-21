@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import GMMapPanel from "./GMMapPanel";
 import RightPanel from "./RightPanel";
 import PlayerMapPanel from "./PlayerMapPanel";
-import MapGenerator from "./MapGenerator/MapGenerator";
-import ChatPanel from "./ChatPanel/ChatPanel";
-import SoundPanel from "./SoundPanel/SoundPanel";
+import MapGenerator from "./components/MapGenerator/MapGenerator";
+import ChatPanel from "./components/ChatPanel/ChatPanel";
+import SoundPanel from "./components/SoundPanel/SoundPanel";
 
 class MiddlePanel extends Component {
   changeCurrentScale = value => {
@@ -102,36 +102,35 @@ class MiddlePanel extends Component {
             users={users}
           />
         )}
-        {isGameMaster &&
-          !isOnPlayerView && (
-            <GMMapPanel
-              changeCurrentScale={this.changeCurrentScale}
-              currentScale={currentScale}
-              currentStory={currentStory}
-              currentTile={currentTile}
-              currentTown={currentTown}
-              currentX={currentX}
-              currentY={currentY}
-              doSetState={doSetState}
-              eventHistory={eventHistory}
-              gameMaster={gameMaster}
-              items={items}
-              merchants={merchants}
-              musicName={musicName}
-              musicVolume={musicVolume}
-              noiseName={noiseName}
-              noiseVolume={noiseVolume}
-              onChangeMusics={onChangeMusics}
-              quests={quests}
-              resetSounds={resetSounds}
-              stories={stories}
-              storyCharacters={storyCharacters}
-              textureToApply={textureToApply}
-              tilesTypes={tilesTypes}
-              towns={towns}
-              triggerError={triggerError}
-            />
-          )}
+        {isGameMaster && !isOnPlayerView && (
+          <GMMapPanel
+            changeCurrentScale={this.changeCurrentScale}
+            currentScale={currentScale}
+            currentStory={currentStory}
+            currentTile={currentTile}
+            currentTown={currentTown}
+            currentX={currentX}
+            currentY={currentY}
+            doSetState={doSetState}
+            eventHistory={eventHistory}
+            gameMaster={gameMaster}
+            items={items}
+            merchants={merchants}
+            musicName={musicName}
+            musicVolume={musicVolume}
+            noiseName={noiseName}
+            noiseVolume={noiseVolume}
+            onChangeMusics={onChangeMusics}
+            quests={quests}
+            resetSounds={resetSounds}
+            stories={stories}
+            storyCharacters={storyCharacters}
+            textureToApply={textureToApply}
+            tilesTypes={tilesTypes}
+            towns={towns}
+            triggerError={triggerError}
+          />
+        )}
         {(!isGameMaster || isOnPlayerView) && (
           <PlayerMapPanel
             buyItem={buyItem}
@@ -173,17 +172,15 @@ class MiddlePanel extends Component {
             onChangeMusics={onChangeMusics}
           />
         )}
-        {isGameMaster &&
-          !isOnPlayerView && (
-            <SoundPanel
-              musicName={musicName}
-              noiseName={noiseName}
-              musicVolume={musicVolume}
-              noiseVolume={noiseVolume}
-              resetSounds={resetSounds}
-              onChangeMusics={onChangeMusics}
-            />
-          )}
+        {isGameMaster && !isOnPlayerView && (
+          <SoundPanel
+            musicName={musicName}
+            noiseName={noiseName}
+            musicVolume={musicVolume}
+            noiseVolume={noiseVolume}
+            onChangeMusics={onChangeMusics}
+          />
+        )}
       </Fragment>
     );
   }

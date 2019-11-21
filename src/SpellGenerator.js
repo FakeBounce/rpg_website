@@ -1,7 +1,11 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 
-import { spellModeList, spellTypeList, colors } from "./Utils/Constants";
+import {
+  spellModeList,
+  spellTypeList,
+  colors,
+} from "./components/Utils/Constants";
 
 const styledSpellContainer = {
   position: "relative",

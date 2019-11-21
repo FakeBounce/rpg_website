@@ -1,0 +1,8 @@
+export const TOGGLE_MUSIC = 'TOGGLE_MUSIC';
+export const CALL_RESET_SOUNDS = 'CALL_RESET_SOUNDS';
+export const RESET_SOUNDS = 'RESET_SOUNDS';
+export const TOGGLE_MUSIC_FIRST = 'TOGGLE_MUSIC_FIRST';
+export const STOP_NOISE = 'STOP_NOISE';
+export const CALL_STOP_NOISE = 'CALL_STOP_NOISE';
+export const STOP_SONG = 'STOP_SONG';
+export const CALL_STOP_SONG = 'CALL_STOP_SONG';

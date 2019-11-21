@@ -16,7 +16,7 @@ import EventModalGold from "./EventModalGold";
 import EventModalDescription from "./EventModalDescription";
 import EventModalViewers from "./EventModalViewers";
 import EventModalDebt from "./EventModalDebt";
-import Draw from "../Draw";
+import Draw from "../../Draw";
 import { colors } from "../Utils/Constants";
 import ButtonLarge from "../Utils/ButtonLarge";
 

@@ -2,12 +2,15 @@ import React, { Component } from "react";
 
 import PropTypes from "prop-types";
 import firebase from "firebase";
-import TeamPanel from "./TeamCharacters/TeamPanel";
-import { widthRightPanel, heightHeader } from "./Utils/StyleConstants";
-import CharacterPanel from "./CharacterPanel/CharacterPanel";
-import ExchangePanel from "./ExchangePanel/ExchangePanel";
-import SongPanel from "./SongPanel/SongPanel";
-import { listenSong } from "./Utils/DatabaseFunctions";
+import TeamPanel from "./components/TeamCharacters/TeamPanel";
+import {
+  widthRightPanel,
+  heightHeader,
+} from "./components/Utils/StyleConstants";
+import CharacterPanel from "./components/CharacterPanel/CharacterPanel";
+import ExchangePanel from "./components/ExchangePanel/ExchangePanel";
+import SongPanel from "./components/SongPanel/SongPanel";
+import { listenSong } from "./components/Utils/DatabaseFunctions";
 
 const styles = {
   RightPanel: {
@@ -104,8 +107,8 @@ class RightPanel extends Component {
       parseInt(health, 10) + damageTaken < 0
         ? 0
         : parseInt(health, 10) + damageTaken > maxHealth
-          ? maxHealth
-          : parseInt(health, 10) + damageTaken;
+        ? maxHealth
+        : parseInt(health, 10) + damageTaken;
     firebase
       .database()
       .ref(

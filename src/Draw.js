@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import firebase from 'firebase';
-import CanvasDraw from 'react-canvas-draw';
-import { mapWidth, widthLeft } from './Utils/StyleConstants';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import firebase from "firebase";
+import CanvasDraw from "react-canvas-draw";
+import { mapWidth, widthLeft } from "./components/Utils/StyleConstants";
 
 const defaultWidth = (widthLeft + mapWidth) / 2 - 10 + 2;
 const otherWidth = ((widthLeft + mapWidth) / 2 - 10) / 2;
@@ -10,7 +10,7 @@ const otherWidth = ((widthLeft + mapWidth) / 2 - 10) / 2;
 class Draw extends Component {
   canvas = null;
   state = {
-    color: this.props.uid === 'default' ? 'black' : 'red',
+    color: this.props.uid === "default" ? "black" : "red",
   };
 
   componentDidMount() {
@@ -27,15 +27,15 @@ class Draw extends Component {
     //listen to drawers
     firebase
       .database()
-      .ref('stories/' + 0 + '/draw/' + this.props.uid)
-      .on('value', snapshot => {
+      .ref("stories/" + 0 + "/draw/" + this.props.uid)
+      .on("value", snapshot => {
         if (this.canvas) {
-          if (typeof snapshot.val() === 'string') {
+          if (typeof snapshot.val() === "string") {
             this.canvas.loadSaveData(snapshot.val(), false);
           } else {
             firebase
               .database()
-              .ref('stories/' + 0 + '/draw/' + this.props.uid)
+              .ref("stories/" + 0 + "/draw/" + this.props.uid)
               .set('{"lines":[],"width":400,"height":400}')
               .catch(error => {
                 // Handle Errors here.
@@ -51,16 +51,16 @@ class Draw extends Component {
     return (
       <div
         style={{
-          border: '1px solid black',
-          width: uid === 'default' ? defaultWidth : otherWidth,
-          display: 'inline-block',
-          float: 'left',
+          border: "1px solid black",
+          width: uid === "default" ? defaultWidth : otherWidth,
+          display: "inline-block",
+          float: "left",
         }}
       >
         <div
           style={{
-            width: uid === 'default' ? defaultWidth : otherWidth,
-            position: 'absolute',
+            width: uid === "default" ? defaultWidth : otherWidth,
+            position: "absolute",
           }}
         >
           {name}
@@ -70,8 +70,8 @@ class Draw extends Component {
           loadTimeOffset={3}
           brushRadius={1}
           lazyRadius={0}
-          canvasWidth={uid === 'default' ? defaultWidth : otherWidth}
-          canvasHeight={uid === 'default' ? defaultWidth / 2 : otherWidth / 2}
+          canvasWidth={uid === "default" ? defaultWidth : otherWidth}
+          canvasHeight={uid === "default" ? defaultWidth / 2 : otherWidth / 2}
           disabled={disabled}
         />
 
@@ -103,8 +103,8 @@ class Draw extends Component {
               if (this.canvas) {
                 firebase
                   .database()
-                  .ref('stories/' + 0 + '/draw')
-                  .once('value')
+                  .ref("stories/" + 0 + "/draw")
+                  .once("value")
                   .then(sn => {
                     // this.canvas.loadSaveData(sn.val(), false);
 
@@ -114,7 +114,7 @@ class Draw extends Component {
                     // cv.colorsLeft = ['pink','red','green','purple','orange','yellow','blue', 'grey', 'brown'];
                     firebase
                       .database()
-                      .ref('stories/' + 0 + '/draw')
+                      .ref("stories/" + 0 + "/draw")
                       .set(cv)
                       .catch(error => {
                         // Handle Errors here.
@@ -134,8 +134,8 @@ class Draw extends Component {
               if (this.canvas) {
                 firebase
                   .database()
-                  .ref('stories/' + 0 + '/draw/default')
-                  .once('value')
+                  .ref("stories/" + 0 + "/draw/default")
+                  .once("value")
                   .then(sn => {
                     this.canvas.loadSaveData(sn.val(), false);
                   })
@@ -152,8 +152,8 @@ class Draw extends Component {
               if (this.canvas) {
                 firebase
                   .database()
-                  .ref('stories/' + 0 + '/draw/' + uid)
-                  .once('value')
+                  .ref("stories/" + 0 + "/draw/" + uid)
+                  .once("value")
                   .then(sn => {
                     this.canvas.loadSaveData(sn.val(), false);
                   })
@@ -170,7 +170,7 @@ class Draw extends Component {
 }
 
 Draw.defaultProps = {
-  uid: 'default',
+  uid: "default",
   disabled: true,
 };
 

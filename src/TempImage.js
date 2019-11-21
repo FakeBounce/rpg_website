@@ -1,33 +1,33 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { heightLeft, widthLeft } from './Utils/StyleConstants';
-import { colors, tempoImagesList } from './Utils/Constants';
-import firebase from 'firebase';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { heightLeft, widthLeft } from "./components/Utils/StyleConstants";
+import { colors, tempoImagesList } from "./components/Utils/Constants";
+import firebase from "firebase";
 
 const styledTempContainer = {
-  float: 'left',
+  float: "left",
   width: `${widthLeft}px`,
   height: `${heightLeft + 2}px`,
-  position: 'relative',
+  position: "relative",
   backgroundColor: colors.background,
 };
 const styledTempImage = {
   maxWidth: `${widthLeft}px`,
   maxHeight: `${heightLeft}px`,
-  display: 'inline-block',
-  position: 'absolute',
-  left: '50%',
-  top: '50%',
-  transform: 'translate(-50%,-50%)',
+  display: "inline-block",
+  position: "absolute",
+  left: "50%",
+  top: "50%",
+  transform: "translate(-50%,-50%)",
 };
 const styledTempSelect = {
-  position: 'absolute',
+  position: "absolute",
   zIndex: 1,
 };
 
 class TempImage extends PureComponent {
   state = {
-    tempImage: 'noTown.jpg',
+    tempImage: "noTown.jpg",
     bestiaryList: null,
   };
 
@@ -35,8 +35,8 @@ class TempImage extends PureComponent {
     const { currentStory, isGameMaster } = this.props;
     firebase
       .database()
-      .ref('stories/' + currentStory + '/tempoImage')
-      .on('value', snapshot => {
+      .ref("stories/" + currentStory + "/tempoImage")
+      .on("value", snapshot => {
         this.setState(state => ({
           ...state,
           tempImage: snapshot.val(),
@@ -45,8 +45,8 @@ class TempImage extends PureComponent {
     if (isGameMaster) {
       firebase
         .database()
-        .ref('stories/' + currentStory + '/bestiary')
-        .once('value')
+        .ref("stories/" + currentStory + "/bestiary")
+        .once("value")
         .then(snapshot => {
           this.setState(state => ({
             ...state,
@@ -60,11 +60,11 @@ class TempImage extends PureComponent {
     const { currentStory } = this.props;
     firebase
       .database()
-      .ref('stories/' + currentStory + '/tempoImage')
+      .ref("stories/" + currentStory + "/tempoImage")
       .set(value)
       .catch(error => {
         // Handle Errors here.
-        console.log('Error', error);
+        console.log("Error", error);
       });
   };
 
@@ -94,7 +94,7 @@ class TempImage extends PureComponent {
                 return (
                   <option
                     key={bestiaryList[bKey].name}
-                    value={'bestiary/' + bestiaryList[bKey].image}
+                    value={"bestiary/" + bestiaryList[bKey].image}
                   >
                     {bestiaryList[bKey].name}
                   </option>
@@ -102,7 +102,7 @@ class TempImage extends PureComponent {
               })}
           </select>
         )}
-        <img src={'./' + tempImage} style={styledTempImage} alt={tempImage} />
+        <img src={"./" + tempImage} style={styledTempImage} alt={tempImage} />
       </div>
     );
   }
