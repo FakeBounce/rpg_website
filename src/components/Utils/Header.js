@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { heightHeader } from "./StyleConstants";
-import { resetStoryMerchants } from "../Utils/MerchantsFunctions";
-import Camera from "../Camera";
+import { resetStoryMerchants } from "./MerchantsFunctions";
+import Camera from "../../Camera";
 import ButtonLarge from "./ButtonLarge";
 import firebase from "firebase";
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Merchant from "../MerchantPanel/Merchant";
+import Merchant from "./Merchant";
 import PropTypes from "prop-types";
 import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 

@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
 import Sound from "react-sound";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { stopNoise, stopSong } from "../../redux/actions/actionsSounds";
 
 class SoundPlayer extends PureComponent {
   render() {
@@ -19,8 +21,8 @@ class SoundPlayer extends PureComponent {
       musicVolumeSecond,
       musicNameSecond,
       musicStatusSecond,
-      stopNoise,
-      stopSong,
+      dispatchStopNoise,
+      dispatchStopSong,
     } = this.props;
 
     return (
@@ -48,7 +50,7 @@ class SoundPlayer extends PureComponent {
             url={`./noise/${noiseName}.mp3`}
             playStatus={noiseStatus}
             volume={noiseMute ? 0 : noiseVolume}
-            onFinishedPlaying={stopNoise}
+            onFinishedPlaying={dispatchStopNoise}
             autoLoad
           />
         )}
@@ -56,8 +58,8 @@ class SoundPlayer extends PureComponent {
           <Sound
             url={`./songs/${songName}.mp3`}
             playStatus={songStatus}
-            volume={musicMute ? 0 : songVolume/2}
-            onFinishedPlaying={stopSong}
+            volume={musicMute ? 0 : songVolume / 2}
+            onFinishedPlaying={dispatchStopSong}
             autoLoad
           />
         )}
@@ -65,6 +67,34 @@ class SoundPlayer extends PureComponent {
     );
   }
 }
+
+const mapStateToProps = store => ({
+  musicMute: store.sounds.musicMute,
+  musicVolumeFirst: store.sounds.musicVolumeFirst,
+  musicStatusFirst: store.sounds.musicStatusFirst,
+  musicNameFirst: store.sounds.musicNameFirst,
+  musicVolumeSecond: store.sounds.musicVolumeSecond,
+  musicNameSecond: store.sounds.musicNameSecond,
+  musicStatusSecond: store.sounds.musicStatusSecond,
+  noiseMute: store.sounds.noiseMute,
+  noiseName: store.sounds.noiseName,
+  noiseStatus: store.sounds.noiseStatus,
+  noiseVolume: store.sounds.noiseVolume,
+  songName: store.sounds.songName,
+  songStatus: store.sounds.songStatus,
+  songVolume: store.sounds.songVolume,
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchStopNoise: () => {
+      dispatch(stopNoise());
+    },
+    dispatchStopSong: () => {
+      dispatch(stopSong());
+    },
+  };
+};
 
 SoundPlayer.propTypes = {
   musicMute: PropTypes.bool.isRequired,
@@ -78,11 +108,11 @@ SoundPlayer.propTypes = {
   noiseName: PropTypes.string.isRequired,
   noiseStatus: PropTypes.string.isRequired,
   noiseVolume: PropTypes.number.isRequired,
-  stopNoise: PropTypes.func.isRequired,
   songName: PropTypes.string.isRequired,
   songStatus: PropTypes.string.isRequired,
   songVolume: PropTypes.number.isRequired,
-  stopSong: PropTypes.func.isRequired,
+  dispatchStopNoise: PropTypes.func.isRequired,
+  dispatchStopSong: PropTypes.func.isRequired,
 };
 
-export default SoundPlayer;
+export default connect(mapStateToProps, mapDispatchToProps)(SoundPlayer);

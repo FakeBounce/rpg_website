@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import BottomPanel from "./BottomPanel/BottomPanel";
-import ChatCommandsPanel from "./ChatCommandsPanel/ChatCommandsPanel";
-import Header from "./Utils/Header";
+import BottomPanel from "./components/BottomPanel/BottomPanel";
+import ChatCommandsPanel from "./components/ChatCommandsPanel/ChatCommandsPanel";
+import Header from "./components/Utils/Header";
 import MiddlePanel from "./MiddlePanel";
-import EventModal from "./EventModal/EventModal";
-import BestiaryPanel from "./BestiaryPanel/BestiaryPanel";
-import TownsHistoryPanel from "./TownsHistoryPanel/TownsHistoryPanel";
+import EventModal from "./components/EventModal/EventModal";
+import BestiaryPanel from "./components/BestiaryPanel/BestiaryPanel";
+import TownsHistoryPanel from "./components/TownsHistoryPanel/TownsHistoryPanel";
 
 class GameScreen extends Component {
   state = {
@@ -161,10 +161,10 @@ class GameScreen extends Component {
             currentStory={currentStory}
           />
         ) : isOnMerchantList &&
-        towns &&
-        towns.length > 0 &&
-        merchants &&
-        merchants.length > 0 ? (
+          towns &&
+          towns.length > 0 &&
+          merchants &&
+          merchants.length > 0 ? (
           <TownsHistoryPanel
             currentStory={currentStory}
             character={character}

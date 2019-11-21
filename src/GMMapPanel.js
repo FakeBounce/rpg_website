@@ -1,37 +1,37 @@
-import React, { Component } from 'react';
-import { heightLeft, widthLeft } from './Utils/StyleConstants';
+import React, { Component } from "react";
+import { heightLeft, widthLeft } from "./components/Utils/StyleConstants";
 
-import PropTypes from 'prop-types';
-import EventPanel from './EventPanel/EventPanel';
-import MapEditionPanel from './MapEditionPanel/MapEditionPanel';
-import StoryQuestsAndMerchantsPanel from './StoryQuestsAndMerchantsPanel/StoryQuestsAndMerchantsPanel';
-import TownPanel from './TownPanel/TownPanel';
-import SpellGenerator from './SpellGenerator';
+import PropTypes from "prop-types";
+import EventPanel from "./components/EventPanel/EventPanel";
+import MapEditionPanel from "./components/MapEditionPanel/MapEditionPanel";
+import StoryQuestsAndMerchantsPanel from "./components/StoryQuestsAndMerchantsPanel/StoryQuestsAndMerchantsPanel";
+import TownPanel from "./components/TownPanel/TownPanel";
+import SpellGenerator from "./SpellGenerator";
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
-  display: 'inline-block',
-  float: 'left',
-  textAlign: 'left',
-  position: 'relative',
+  display: "inline-block",
+  float: "left",
+  textAlign: "left",
+  position: "relative",
 };
 
 const styledMiddlePanel = {
   width: `${widthLeft}px`,
   height: `${heightLeft}px`,
-  display: 'inline-block',
-  float: 'left',
-  position: 'relative',
+  display: "inline-block",
+  float: "left",
+  position: "relative",
 };
 
 const styledContainer = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
-  overflow: 'auto',
-  display: 'inline-block',
-  float: 'left',
-  position: 'relative',
+  overflow: "auto",
+  display: "inline-block",
+  float: "left",
+  position: "relative",
 };
 
 class GMMapPanel extends Component {
