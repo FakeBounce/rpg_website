@@ -239,7 +239,6 @@ class CharacterSelection extends Component {
       keepCharacter,
       signOut,
       triggerError,
-      uid,
     } = this.props;
 
     if (typeof characters[1] !== "undefined" && !characterCreation) {
@@ -277,7 +276,6 @@ class CharacterSelection extends Component {
           </div>
         </div>
         <CharacterCreationPanel
-          uid={uid}
           id={
             isAnUpdate ? updateCharacterId : Object.keys(characters).length + 1
           }
@@ -295,6 +293,7 @@ class CharacterSelection extends Component {
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   pseudo: store.userInfos.pseudo,
+  uid: store.userInfos.uid,
 });
 
 CharacterSelection.propTypes = {
@@ -305,7 +304,6 @@ CharacterSelection.propTypes = {
   keepCharacter: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
-  uid: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(CharacterSelection);

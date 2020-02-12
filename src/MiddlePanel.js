@@ -19,13 +19,11 @@ class MiddlePanel extends Component {
   render() {
     const {
       buyItem,
-      character,
       chatHistory,
       chatInput,
       currentMerchant,
       currentQuest,
       currentScale,
-      currentStory,
       currentTile,
       currentTown,
       currentX,
@@ -56,7 +54,6 @@ class MiddlePanel extends Component {
       tilesTypes,
       towns,
       triggerError,
-      uid,
       users,
     } = this.props;
 
@@ -79,14 +76,12 @@ class MiddlePanel extends Component {
         />
         {((isGameMaster && isOnPlayerView) || !isGameMaster) && (
           <ChatPanel
-            character={character}
             chatHistory={chatHistory}
             chatInput={chatInput}
             doSetState={doSetState}
             onChange={onChange}
             storyCharacters={storyCharacters}
             triggerError={triggerError}
-            uid={uid}
             users={users}
           />
         )}
@@ -115,7 +110,6 @@ class MiddlePanel extends Component {
         {(!isGameMaster || isOnPlayerView) && (
           <PlayerMapPanel
             buyItem={buyItem}
-            character={character}
             currentMerchant={currentMerchant}
             currentQuest={currentQuest}
             doSetState={doSetState}
@@ -129,20 +123,17 @@ class MiddlePanel extends Component {
             merchantsList={merchantsList}
             quests={quests}
             questsList={questsList}
-            uid={uid}
             triggerError={triggerError}
           />
         )}
 
         {(!isGameMaster || isOnPlayerView) && (
           <RightPanel
-            character={character}
             chatInput={chatInput}
             doSetState={doSetState}
             onChange={onChange}
             storyCharacters={storyCharacters}
             triggerError={triggerError}
-            uid={uid}
             users={users}
             onChangeMusics={onChangeMusics}
           />
@@ -169,7 +160,6 @@ MiddlePanel.defaultProps = {
 
 MiddlePanel.propTypes = {
   buyItem: PropTypes.func.isRequired,
-  character: PropTypes.object.isRequired,
   chatHistory: PropTypes.object.isRequired,
   chatInput: PropTypes.string.isRequired,
   currentMerchant: PropTypes.number.isRequired,
@@ -203,7 +193,6 @@ MiddlePanel.propTypes = {
   tilesTypes: PropTypes.object.isRequired,
   towns: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
-  uid: PropTypes.string.isRequired,
   users: PropTypes.object.isRequired,
 };
 

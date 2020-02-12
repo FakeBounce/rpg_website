@@ -55,7 +55,12 @@ class TownsHistoryMerchantColumn extends Component {
   };
 
   render() {
-    const { character, merchants, currentMerchant } = this.props;
+    const {
+      characterGold,
+      characterEducation,
+      merchants,
+      currentMerchant,
+    } = this.props;
     const { currentItem } = this.state;
     return (
       <Fragment>
@@ -66,7 +71,6 @@ class TownsHistoryMerchantColumn extends Component {
           <TownsHistoryMerchantColumnList
             currentMerchant={currentMerchant}
             merchants={merchants}
-            character={character}
             showItemDescription={this.showItemDescription}
           />
         </div>
@@ -76,8 +80,8 @@ class TownsHistoryMerchantColumn extends Component {
             <ItemDescriptionPanel
               {...currentItem}
               noBuy
-              gold={character.gold}
-              isHidden={character.education < currentItem.rarity * 9}
+              gold={characterGold}
+              isHidden={characterEducation < currentItem.rarity * 9}
             />
           </div>
         )}
@@ -88,10 +92,11 @@ class TownsHistoryMerchantColumn extends Component {
 
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
+  characterGold: store.character.gold,
+  characterEducation: store.character.education,
 });
 
 TownsHistoryMerchantColumn.propTypes = {
-  character: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   currentMerchant: PropTypes.number.isRequired,
 };

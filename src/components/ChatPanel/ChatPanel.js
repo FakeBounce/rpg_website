@@ -674,13 +674,13 @@ const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
   gameMaster: store.appState.gameMaster,
   pseudo: store.userInfos.pseudo,
+  uid: store.userInfos.uid,
+  character: store.character,
 });
 
 ChatPanel.propTypes = {
   users: PropTypes.object.isRequired,
   storyCharacters: PropTypes.array.isRequired,
-  uid: PropTypes.string.isRequired,
-  character: PropTypes.object.isRequired,
   chatInput: PropTypes.string.isRequired,
   chatHistory: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,

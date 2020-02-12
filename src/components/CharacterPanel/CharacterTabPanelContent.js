@@ -134,17 +134,16 @@ class CharacterTabPanelContent extends Component {
 
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
+  character: store.character,
 });
 
 CharacterTabPanelContent.defaultProps = {
   tabName: "",
-  character: {},
 };
 
 CharacterTabPanelContent.propTypes = {
   tab: PropTypes.array.isRequired,
   tabName: PropTypes.string,
-  character: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(CharacterTabPanelContent);

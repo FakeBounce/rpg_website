@@ -4,6 +4,10 @@ import firebase from "firebase";
 import ButtonLarge from "../Utils/ButtonLarge";
 import Logs from "./Logs";
 import { defaultState } from "../Utils/Constants";
+import {
+  setUid,
+} from "../../redux/actions/actionsUserInfos";
+import { connect } from "react-redux";
 
 class IsNotAuth extends Component {
   handleKeyPress = event => {
@@ -20,6 +24,7 @@ class IsNotAuth extends Component {
       doSetState,
       loadUsers,
       loadStories,
+      dispatchSetUid,
     } = this.props;
 
     firebase
@@ -35,10 +40,10 @@ class IsNotAuth extends Component {
               {
                 ...snapshot.val(),
                 isAuth: true,
-                uid: firebase.auth().currentUser.uid,
                 isAdmin: snapshot.val().isAdmin,
               },
               () => {
+                dispatchSetUid(firebase.auth().currentUser.uid);
                 loadUsers();
                 loadStories();
                 localStorage.setItem(
@@ -71,6 +76,7 @@ class IsNotAuth extends Component {
       triggerError,
       loadUsers,
       loadStories,
+      dispatchSetUid,
     } = this.props;
     firebase
       .auth()
@@ -88,8 +94,8 @@ class IsNotAuth extends Component {
           });
         doSetState({
           isAuth: true,
-          uid: firebase.auth().currentUser.uid,
         });
+        dispatchSetUid(firebase.auth().currentUser.uid);
         loadUsers();
         loadStories();
       })
@@ -134,7 +140,16 @@ class IsNotAuth extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSetUid: payload => {
+      dispatch(setUid(payload));
+    },
+  };
+};
+
 IsNotAuth.propTypes = {
+  dispatchSetUid: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
@@ -144,4 +159,4 @@ IsNotAuth.propTypes = {
   loadStories: PropTypes.func.isRequired,
 };
 
-export default IsNotAuth;
+export default connect(null, mapDispatchToProps)(IsNotAuth);

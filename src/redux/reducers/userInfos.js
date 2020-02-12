@@ -1,7 +1,8 @@
-import { SET_USER_PSEUDO } from "../actionsTypes/actionsTypesUserInfos";
+import { SET_USER_PSEUDO, SET_UID } from "../actionsTypes/actionsTypesUserInfos";
 
 const initialState = {
   pseudo: "",
+  uid: "",
 };
 
 const userInfos = (state = initialState, action) => {
@@ -10,6 +11,12 @@ const userInfos = (state = initialState, action) => {
       return {
         ...state,
         pseudo: action.payload,
+      };
+    }
+    case SET_UID: {
+      return {
+        ...state,
+        uid: action.payload,
       };
     }
     default:

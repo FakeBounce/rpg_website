@@ -4,6 +4,7 @@ import firebase from "firebase";
 import { cursorPointer } from "../Utils/StyleConstants";
 import CharacterCreationName from "./CharacterCreationName";
 import CharacterCreationBox from "./CharacterCreationBox";
+import { connect } from "react-redux";
 
 const styledItem = {
   display: "inline-block",
@@ -469,12 +470,15 @@ class CharacterCreationPanel extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  uid: store.userInfos.uid,
+});
+
 CharacterCreationPanel.defaultProps = {
   character: {},
 };
 
 CharacterCreationPanel.propTypes = {
-  uid: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   isAnUpdate: PropTypes.bool.isRequired,
   character: PropTypes.object,
@@ -483,4 +487,4 @@ CharacterCreationPanel.propTypes = {
   triggerError: PropTypes.func.isRequired,
 };
 
-export default CharacterCreationPanel;
+export default connect(mapStateToProps)(CharacterCreationPanel);

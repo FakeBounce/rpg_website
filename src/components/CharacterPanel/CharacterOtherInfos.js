@@ -23,7 +23,6 @@ const styles = {
 class CharacterOtherInfos extends Component {
   render() {
     const {
-      character,
       infoTab,
       status,
       gold,
@@ -40,13 +39,8 @@ class CharacterOtherInfos extends Component {
     return (
       <div style={styles.characterOtherInfos}>
         <CharacterTabButtons onChangeTab={onChangeTab} infoTab={infoTab} />
-        <CharacterTabPanel
-          character={character}
-          infoTab={infoTab}
-          onItemUse={onItemUse}
-        />
+        <CharacterTabPanel infoTab={infoTab} onItemUse={onItemUse} />
         <CharacterInputs
-          character={character}
           status={status}
           gold={gold}
           infoTab={infoTab}
@@ -68,7 +62,6 @@ const mapStateToProps = store => ({
 });
 
 CharacterOtherInfos.propTypes = {
-  character: PropTypes.object.isRequired,
   status: PropTypes.string.isRequired,
   gold: PropTypes.number.isRequired,
   infoTab: PropTypes.string.isRequired,

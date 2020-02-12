@@ -21,7 +21,6 @@ const styledEnhancementWeaponsList = {
 class EnhancementWeaponsContent extends Component {
   render() {
     const {
-      character,
       merchants,
       currentMerchant,
       choosedItem,
@@ -33,14 +32,12 @@ class EnhancementWeaponsContent extends Component {
       <div style={styledEnhancementWeaponsList} className="scrollbar">
         {parseInt(merchants[currentMerchant].weapons, 10) > 0 && (
           <EnhancementWeaponsMerchantList
-            character={character}
             choosedItem={choosedItem}
             showEnhancers={showEnhancers}
             itemsList={itemsList}
           />
         )}
         <EnhancementWeaponsCharacterWeaponList
-          character={character}
           choosedItem={choosedItem}
           showEnhancers={showEnhancers}
         />
@@ -51,7 +48,6 @@ class EnhancementWeaponsContent extends Component {
 
 EnhancementWeaponsContent.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
-  character: PropTypes.object.isRequired,
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
   merchants: PropTypes.array.isRequired,

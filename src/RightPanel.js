@@ -373,7 +373,6 @@ class RightPanel extends Component {
       <div style={styles.RightPanel}>
         {isOnChar ? (
           <CharacterPanel
-            character={character}
             damageTaken={damageTaken}
             gold={gold}
             infoTab={infoTab}
@@ -386,7 +385,6 @@ class RightPanel extends Component {
             toggleIsOnChar={this.toggleIsOnChar}
             status={status}
             triggerError={triggerError}
-            uid={uid}
           />
         ) : (
           <SongPanel
@@ -403,7 +401,6 @@ class RightPanel extends Component {
             onItemExchange={this.onItemExchange}
             onWeaponExchange={this.onWeaponExchange}
             currentExchangeCharacter={currentExchangeCharacter}
-            character={character}
           />
         )}
         <TeamPanel
@@ -421,16 +418,16 @@ class RightPanel extends Component {
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   isGameMaster: store.appState.isGameMaster,
+  uid: store.userInfos.uid,
+  character: store.character,
 });
 
 RightPanel.propTypes = {
-  character: PropTypes.object.isRequired,
   chatInput: PropTypes.string.isRequired,
   doSetState: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
-  uid: PropTypes.string.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
 };
 

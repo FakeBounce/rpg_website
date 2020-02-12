@@ -98,7 +98,7 @@ class TownsHistoryPanel extends Component {
   };
 
   render() {
-    const { character, merchants } = this.props;
+    const { merchants } = this.props;
     const {
       townsOrdered,
       showedMerchant,
@@ -115,14 +115,12 @@ class TownsHistoryPanel extends Component {
         />
         {showedMerchant.items && (
           <TownsHistorySoloMerchant
-            character={character}
             showedMerchant={showedMerchant}
           />
         )}
         {showedQuest.name && <TownsHistoryQuest showedQuest={showedQuest} />}
         {showedTown.name && (
           <TownsHistoryCity
-            character={character}
             merchants={merchants}
             showedTown={showedTown}
           />
@@ -133,7 +131,6 @@ class TownsHistoryPanel extends Component {
 }
 
 TownsHistoryPanel.propTypes = {
-  character: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   quests: PropTypes.array.isRequired,
   towns: PropTypes.array.isRequired,

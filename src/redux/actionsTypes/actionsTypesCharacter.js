@@ -1,0 +1,2 @@
+export const SET_CHARACTER = "SET_CHARACTER";
+export const CALL_SET_CHARACTER = "CALL_SET_CHARACTER";

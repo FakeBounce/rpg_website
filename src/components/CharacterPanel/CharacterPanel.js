@@ -19,7 +19,6 @@ const CharacterPanelBox = { position: "relative", height: "100%" };
 class CharacterPanel extends PureComponent {
   render() {
     const {
-      character,
       isGameMaster,
       infoTab,
       status,
@@ -33,7 +32,6 @@ class CharacterPanel extends PureComponent {
       onGoldChange,
       toggleIsOnChar,
       triggerError,
-      uid,
     } = this.props;
 
     return (
@@ -48,23 +46,14 @@ class CharacterPanel extends PureComponent {
               health={"999"}
               maxHealth={"999"}
               triggerError={triggerError}
-              uid={uid}
             />
           ) : (
             <CharacterHeader
-              gold={character.gold}
-              status={character.status}
-              icon={character.icon}
-              name={character.name}
-              health={character.health}
-              maxHealth={character.maxHealth}
               triggerError={triggerError}
-              uid={uid}
             />
           )}
-          <CharacterAttributes character={character} />
+          <CharacterAttributes />
           <CharacterOtherInfos
-            character={character}
             status={status}
             infoTab={infoTab}
             damageTaken={damageTaken}
@@ -88,7 +77,6 @@ const mapStateToProps = store => ({
 });
 
 CharacterPanel.propTypes = {
-  character: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   infoTab: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
@@ -101,7 +89,6 @@ CharacterPanel.propTypes = {
   onGoldChange: PropTypes.func.isRequired,
   toggleIsOnChar: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
-  uid: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(CharacterPanel);

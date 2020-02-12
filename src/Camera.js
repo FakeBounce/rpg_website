@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import firebase from "firebase";
 import ButtonLarge from "./components/Utils/ButtonLarge";
 import { heightHeader } from "./components/Utils/StyleConstants";
@@ -560,10 +559,7 @@ class Camera extends Component {
 
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
+  uid: store.userInfos.uid,
 });
-
-Camera.propTypes = {
-  uid: PropTypes.string.isRequired,
-};
 
 export default connect(mapStateToProps)(Camera);

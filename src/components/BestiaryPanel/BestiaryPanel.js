@@ -361,7 +361,6 @@ class BestiaryPanel extends Component {
             />
           ) : (
             <BestiaryProfile
-              uid={uid}
               beast={filteredBestiary[selectedBeast]}
               editBeast={this.editBeast}
             />
@@ -373,10 +372,10 @@ class BestiaryPanel extends Component {
 
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
+  uid: store.userInfos.uid,
 });
 
 BestiaryPanel.propTypes = {
-  uid: PropTypes.string.isRequired,
   bestiary: PropTypes.array.isRequired,
   doSetState: PropTypes.func.isRequired,
 };

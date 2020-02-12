@@ -171,17 +171,17 @@ class CharacterHeader extends Component {
 
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
+  uid: store.userInfos.uid,
+  gold: store.character.gold,
+  health: store.character.health,
+  maxHealth: store.character.maxHealth,
+  icon: store.character.icon,
+  name: store.character.name,
+  status: store.character.status,
 });
 
 CharacterHeader.propTypes = {
-  gold: PropTypes.number.isRequired,
-  health: PropTypes.number.isRequired,
-  maxHealth: PropTypes.number.isRequired,
-  icon: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
   triggerError: PropTypes.func.isRequired,
-  uid: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(CharacterHeader);

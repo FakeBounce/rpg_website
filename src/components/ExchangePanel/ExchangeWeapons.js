@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ExchangeWeapon from "./ExchangeWeapon";
+import { connect } from "react-redux";
 
 class ExchangeWeapons extends Component {
   render() {
-    const { character, onWeaponExchange } = this.props;
+    const { characterWeapons, onWeaponExchange } = this.props;
 
-    if (character.weapons) {
-      return character.weapons.map((item, index) => {
+    if (characterWeapons.length > 0) {
+      return characterWeapons.map((item, index) => {
         return (
           <ExchangeWeapon
             onWeaponExchange={onWeaponExchange}
@@ -20,9 +21,13 @@ class ExchangeWeapons extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  characterWeapons: store.character.weapons,
+});
+
 ExchangeWeapons.propTypes = {
   onWeaponExchange: PropTypes.func.isRequired,
-  character: PropTypes.object.isRequired,
 };
 
-export default ExchangeWeapons;
+export default connect(mapStateToProps)(ExchangeWeapons);

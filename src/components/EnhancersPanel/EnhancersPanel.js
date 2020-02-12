@@ -21,7 +21,6 @@ const styledEnhancersContainer = {
 class EnhancersPanel extends Component {
   render() {
     const {
-      character,
       itemsList,
       merchants,
       currentMerchant,
@@ -46,13 +45,11 @@ class EnhancersPanel extends Component {
           chooseEnhancer1={chooseEnhancer1}
           choosedEnhancer2={choosedEnhancer2}
           choosedEnhancer1={choosedEnhancer1}
-          character={character}
           merchants={merchants}
           currentMerchant={currentMerchant}
         />
         {(choosedEnhancer1 !== null || choosedEnhancer2 !== null) && (
           <EnhanceButton
-            character={character}
             chooseEnhancer1={chooseEnhancer1}
             chooseEnhancer2={chooseEnhancer2}
             enhanceWeapon={enhanceWeapon}
@@ -66,7 +63,6 @@ class EnhancersPanel extends Component {
 
 EnhancersPanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
-  character: PropTypes.object.isRequired,
   itemsList: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   chooseEnhancer1: PropTypes.func.isRequired,

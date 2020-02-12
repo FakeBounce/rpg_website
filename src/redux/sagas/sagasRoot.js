@@ -1,9 +1,14 @@
 import { spawn } from "redux-saga/effects";
 
-import * as sagasSounds from "./sagasSounds";
+import * as sagasCharacter from "./sagasCharacter";
 import * as sagasUserInfos from "./sagasUserInfos";
+import * as sagasSounds from "./sagasSounds";
 
 function* rootSaga() {
+  // Character
+  yield spawn(sagasCharacter.watchCallSetCharacter);
+  // User infos
+  yield spawn(sagasUserInfos.watchCallSetUserPseudo);
   // Sounds
   yield spawn(sagasSounds.watchCallResetSounds);
   yield spawn(sagasSounds.watchCallStopNoise);
@@ -11,8 +16,6 @@ function* rootSaga() {
   yield spawn(sagasSounds.watchCallLoadSong);
   yield spawn(sagasSounds.watchCallLoadMusic);
   yield spawn(sagasSounds.watchCallLoadNoise);
-  // User infos
-  yield spawn(sagasUserInfos.watchCallSetUserPseudo);
 }
 
 export default rootSaga;

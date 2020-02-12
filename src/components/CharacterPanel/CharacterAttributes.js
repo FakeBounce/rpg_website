@@ -135,10 +135,7 @@ class CharacterAttributes extends PureComponent {
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   isGameMaster: store.appState.isGameMaster,
+  character: store.character,
 });
-
-CharacterAttributes.propTypes = {
-  character: PropTypes.object.isRequired,
-};
 
 export default connect(mapStateToProps)(CharacterAttributes);
