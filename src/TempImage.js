@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { heightLeft, widthLeft } from "./components/Utils/StyleConstants";
 import { colors, tempoImagesList } from "./components/Utils/Constants";
 import firebase from "firebase";
+import { connect } from "react-redux";
 
 const styledTempContainer = {
   float: "left",
@@ -108,9 +109,9 @@ class TempImage extends PureComponent {
   }
 }
 
-TempImage.propTypes = {
-  isGameMaster: PropTypes.bool.isRequired,
-  currentStory: PropTypes.number.isRequired,
-};
+const mapStateToProps = store => ({
+  isGameMaster: store.appState.isGameMaster,
+  currentStory: store.appState.currentStory,
+});
 
-export default TempImage;
+export default connect(mapStateToProps)(TempImage);

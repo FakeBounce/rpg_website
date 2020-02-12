@@ -11,6 +11,7 @@ import CharacterPanel from "./components/CharacterPanel/CharacterPanel";
 import ExchangePanel from "./components/ExchangePanel/ExchangePanel";
 import SongPanel from "./components/SongPanel/SongPanel";
 import { listenSong } from "./components/Utils/DatabaseFunctions";
+import { connect } from "react-redux";
 
 const styles = {
   RightPanel: {
@@ -37,7 +38,8 @@ class RightPanel extends Component {
   };
 
   componentDidMount() {
-    listenSong(this.props.currentStory, this.doSetState);
+    const { currentStory } = this.props;
+    listenSong(currentStory, this.doSetState);
   }
 
   doSetState = obj => {
@@ -47,26 +49,28 @@ class RightPanel extends Component {
     }));
   };
 
-  chatWithTeamMember = pseudo => {
-    if (pseudo === "GM") {
-      this.props.doSetState({
+  chatWithTeamMember = receiverPseudo => {
+    const { doSetState } = this.props;
+    if (receiverPseudo === "GM") {
+      doSetState({
         chatInput: `/gmw `,
       });
     } else {
-      this.props.doSetState({
-        chatInput: `/w ${pseudo} `,
+      doSetState({
+        chatInput: `/w ${receiverPseudo} `,
       });
     }
   };
 
-  goldWithTeamMember = pseudo => {
-    if (pseudo === "GM") {
-      this.props.doSetState({
+  goldWithTeamMember = receiverPseudo => {
+    const { doSetState } = this.props;
+    if (receiverPseudo === "GM") {
+      doSetState({
         chatInput: `/goldgm `,
       });
     } else {
-      this.props.doSetState({
-        chatInput: `/gold ${pseudo} `,
+      doSetState({
+        chatInput: `/gold ${receiverPseudo} `,
       });
     }
   };
@@ -349,11 +353,8 @@ class RightPanel extends Component {
     const {
       uid,
       character,
-      gameMaster,
-      isGameMaster,
       storyCharacters,
       triggerError,
-      currentStory,
       onChangeMusics,
     } = this.props;
 
@@ -376,7 +377,6 @@ class RightPanel extends Component {
             damageTaken={damageTaken}
             gold={gold}
             infoTab={infoTab}
-            isGameMaster={isGameMaster}
             onChange={this.onChange}
             onChangeTab={this.onChangeTab}
             onGoldChange={this.onGoldChange}
@@ -387,7 +387,6 @@ class RightPanel extends Component {
             status={status}
             triggerError={triggerError}
             uid={uid}
-            currentStory={currentStory}
           />
         ) : (
           <SongPanel
@@ -410,9 +409,7 @@ class RightPanel extends Component {
         <TeamPanel
           chatWithTeamMember={this.chatWithTeamMember}
           exchangeWithTeamMember={this.exchangeWithTeamMember}
-          gameMaster={gameMaster}
           goldWithTeamMember={this.goldWithTeamMember}
-          isGameMaster={isGameMaster}
           modifyCurrentCharacter={this.modifyCurrentCharacter}
           storyCharacters={storyCharacters}
         />
@@ -421,19 +418,20 @@ class RightPanel extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  isGameMaster: store.appState.isGameMaster,
+});
+
 RightPanel.propTypes = {
   character: PropTypes.object.isRequired,
   chatInput: PropTypes.string.isRequired,
-  currentStory: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
-  gameMaster: PropTypes.string.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
-  pseudo: PropTypes.string.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
 };
 
-export default RightPanel;
+export default connect(mapStateToProps)(RightPanel);

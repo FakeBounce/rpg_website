@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import {
   cursorPointer,
   heightLeft,
   widthListPanelBestiary,
-} from '../Utils/StyleConstants';
-import ButtonLarge from '../Utils/ButtonLarge';
-import { colors } from '../Utils/Constants';
+} from "../Utils/StyleConstants";
+import ButtonLarge from "../Utils/ButtonLarge";
+import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledImage = {
-  position: 'relative',
-  float: 'left',
+  position: "relative",
+  float: "left",
   width: 50,
   height: 50,
 };
@@ -19,9 +20,9 @@ const styledImage = {
 const styledPreview = {
   width: widthListPanelBestiary,
   height: heightLeft - 25,
-  overflowY: 'auto',
-  display: 'inline-block',
-  float: 'left',
+  overflowY: "auto",
+  display: "inline-block",
+  float: "left",
 };
 
 class BestiaryList extends Component {
@@ -42,9 +43,9 @@ class BestiaryList extends Component {
               <div
                 style={{
                   height: 50,
-                  position: 'relative',
+                  position: "relative",
                   cursor: cursorPointer,
-                  borderBottom: isGameMaster ? '1px solid black' : 'none',
+                  borderBottom: isGameMaster ? "1px solid black" : "none",
                   color:
                     isGameMaster && filteredBestiary[bKey].seen
                       ? colors.textSeen
@@ -53,17 +54,17 @@ class BestiaryList extends Component {
                 onClick={() => selectBeast(bKey)}
               >
                 <img
-                  src={'./bestiary/' + filteredBestiary[bKey].image}
+                  src={"./bestiary/" + filteredBestiary[bKey].image}
                   style={styledImage}
                   alt={filteredBestiary[bKey].image}
                 />
                 {filteredBestiary[bKey].name}
                 {isGameMaster &&
-                  ` (${filteredBestiary[bKey].seen ? 'S' : 'U'})`}
+                  ` (${filteredBestiary[bKey].seen ? "S" : "U"})`}
                 {isGameMaster && (
                   <ButtonLarge
                     style={{
-                      position: 'absolute',
+                      position: "absolute",
                       right: 0,
                       bottom: 0,
                       zIndex: 1,
@@ -84,15 +85,15 @@ class BestiaryList extends Component {
           <div
             style={{
               height: 50,
-              position: 'relative',
+              position: "relative",
               cursor: cursorPointer,
             }}
             onClick={displayMonsterForm}
           >
             <img
-              src={'./common/unknown_image_white.png'}
+              src={"./common/unknown_image_white.png"}
               style={styledImage}
-              alt={'Unknown'}
+              alt={"Unknown"}
             />
             Add a monster
           </div>
@@ -102,12 +103,15 @@ class BestiaryList extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  isGameMaster: store.appState.isGameMaster,
+});
+
 BestiaryList.propTypes = {
-  isGameMaster: PropTypes.bool.isRequired,
   filteredBestiary: PropTypes.array.isRequired,
   selectBeast: PropTypes.func.isRequired,
   toggleSeenBeast: PropTypes.func.isRequired,
   displayMonsterForm: PropTypes.func.isRequired,
 };
 
-export default BestiaryList;
+export default connect(mapStateToProps)(BestiaryList);

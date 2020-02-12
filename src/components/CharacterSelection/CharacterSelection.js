@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import CharacterPreview from "./CharacterPreview";
 import firebase from "firebase";
 import ButtonLarge from "../Utils/ButtonLarge";
+import { connect } from "react-redux";
 
 const styledBoxHeader = {
   width: "100%",
@@ -291,17 +292,20 @@ class CharacterSelection extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  pseudo: store.userInfos.pseudo,
+});
+
 CharacterSelection.propTypes = {
   characterCreation: PropTypes.bool.isRequired,
   characters: PropTypes.object.isRequired,
   chooseStory: PropTypes.func.isRequired,
-  currentStory: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
   keepCharacter: PropTypes.func.isRequired,
-  pseudo: PropTypes.string.isRequired,
   signOut: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
 };
 
-export default CharacterSelection;
+export default connect(mapStateToProps)(CharacterSelection);

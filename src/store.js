@@ -1,6 +1,7 @@
-import { createStore, compose, applyMiddleware, combineReducers } from "redux";
+// import { createStore, compose, applyMiddleware, combineReducers } from "redux";
+import { createStore, compose, applyMiddleware } from "redux";
 import storage from "redux-persist/es/storage";
-import rootReducer from "reducers/root";
+import rootReducer from "./redux/reducers/root";
 import createSagaMiddleware from "redux-saga";
 import { persistStore, persistCombineReducers } from "redux-persist";
 

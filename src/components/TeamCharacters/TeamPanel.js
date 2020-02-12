@@ -4,40 +4,39 @@ import TeamCharacter from "./TeamCharacter";
 import { widthRightPanel, heightLeft } from "../Utils/StyleConstants";
 import TeamHeader from "./TeamHeader";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
-const styles = {
-  TeamPanel: {
-    borderBottom: "1px solid black",
-    width: "100%",
-    height: "50%",
-    backgroundColor: colors.background,
-    color: colors.text,
-  },
-  teamCharacters: {
-    width: `${widthRightPanel}px`,
-    height: `${heightLeft / 2 - 25}px`,
-    marginTop: 25,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-    overflowY: "auto",
-  },
-  GMTeamPanel: {
-    borderBottom: "1px solid black",
-    width: "100%",
-    height: heightLeft / 2,
-    backgroundColor: colors.background,
-    color: colors.text,
-  },
-  GMteamCharacters: {
-    width: "100%",
-    height: `${heightLeft / 2 - 25}px`,
-    marginTop: 25,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-    overflowY: "auto",
-  },
+const TeamPanelContainer = {
+  borderBottom: "1px solid black",
+  width: "100%",
+  height: "50%",
+  backgroundColor: colors.background,
+  color: colors.text,
+};
+const TeamPanelCharacters = {
+  width: `${widthRightPanel}px`,
+  height: `${heightLeft / 2 - 25}px`,
+  marginTop: 25,
+  position: "relative",
+  float: "left",
+  display: "inline-block",
+  overflowY: "auto",
+};
+const TeamPanelGMContainer = {
+  borderBottom: "1px solid black",
+  width: "100%",
+  height: heightLeft / 2,
+  backgroundColor: colors.background,
+  color: colors.text,
+};
+const TeamPanelGMCharacters = {
+  width: "100%",
+  height: `${heightLeft / 2 - 25}px`,
+  marginTop: 25,
+  position: "relative",
+  float: "left",
+  display: "inline-block",
+  overflowY: "auto",
 };
 
 class TeamPanel extends PureComponent {
@@ -53,10 +52,10 @@ class TeamPanel extends PureComponent {
     } = this.props;
 
     return (
-      <div style={isGameMaster ? styles.GMTeamPanel : styles.TeamPanel}>
+      <div style={isGameMaster ? TeamPanelGMContainer : TeamPanelContainer}>
         <TeamHeader />
         <div
-          style={isGameMaster ? styles.GMteamCharacters : styles.teamCharacters}
+          style={isGameMaster ? TeamPanelGMCharacters : TeamPanelCharacters}
           className="scrollbar"
         >
           <TeamCharacter
@@ -104,14 +103,17 @@ class TeamPanel extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  isGameMaster: store.appState.isGameMaster,
+  gameMaster: store.appState.gameMaster,
+});
+
 TeamPanel.propTypes = {
   storyCharacters: PropTypes.array.isRequired,
   exchangeWithTeamMember: PropTypes.func.isRequired,
   chatWithTeamMember: PropTypes.func.isRequired,
   goldWithTeamMember: PropTypes.func.isRequired,
   modifyCurrentCharacter: PropTypes.func.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
-  gameMaster: PropTypes.string.isRequired,
 };
 
-export default TeamPanel;
+export default connect(mapStateToProps)(TeamPanel);

@@ -13,6 +13,7 @@ import {
 import MapZoom from "./MapZoom";
 import MapArrows from "./MapArrows";
 import MapGrid from "./MapGrid";
+import { connect } from "react-redux";
 
 const styledMap = {
   width: `${mapWidth}px`,
@@ -97,8 +98,6 @@ class MapGenerator extends PureComponent {
       currentY,
       currentZoom,
       loadCurrentPosition,
-      isGameMaster,
-      isOnPlayerView,
       textureToApply,
       tilesTypes,
     } = this.props;
@@ -128,10 +127,8 @@ class MapGenerator extends PureComponent {
               <MapGrid
                 currentX={currentX}
                 currentY={currentY}
-                isGameMaster={isGameMaster}
                 currentZoom={currentZoom}
                 doSetState={doSetState}
-                isOnPlayerView={isOnPlayerView}
                 map={map}
                 setTexture={this.setTexture}
                 textureToApply={textureToApply}
@@ -145,19 +142,20 @@ class MapGenerator extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 MapGenerator.defaultProps = {
   textureToApply: null,
 };
 
 MapGenerator.propTypes = {
   currentScale: PropTypes.number.isRequired,
-  currentStory: PropTypes.number.isRequired,
   currentX: PropTypes.number.isRequired,
   currentY: PropTypes.number.isRequired,
   currentZoom: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
-  isOnPlayerView: PropTypes.bool.isRequired,
   loadCurrentPosition: PropTypes.func.isRequired,
   map: PropTypes.array.isRequired,
   stories: PropTypes.array.isRequired,
@@ -167,4 +165,4 @@ MapGenerator.propTypes = {
   triggerError: PropTypes.func.isRequired,
 };
 
-export default MapGenerator;
+export default connect(mapStateToProps)(MapGenerator);

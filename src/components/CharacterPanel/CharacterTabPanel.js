@@ -8,6 +8,7 @@ import {
   heightLeft,
 } from "../Utils/StyleConstants";
 import CharacterTabPanelItem from "./CharacterTabPanelItem";
+import { connect } from "react-redux";
 
 const styles = {
   tabPanel: {
@@ -23,13 +24,7 @@ const styles = {
 
 class CharacterTabPanel extends Component {
   render() {
-    const {
-      character,
-      infoTab,
-      onItemUse,
-      isGameMaster,
-      currentStory,
-    } = this.props;
+    const { character, infoTab, onItemUse, isGameMaster } = this.props;
 
     return (
       <div style={styles.tabPanel} className="scrollbar">
@@ -39,7 +34,6 @@ class CharacterTabPanel extends Component {
             tabName={"Weapons"}
             isGameMaster="Weapons :"
             character={character}
-            currentStory={currentStory}
           />
         )}
         {infoTab === "Abilities" && (
@@ -47,7 +41,6 @@ class CharacterTabPanel extends Component {
             tab={character.abilities || []}
             tabName={"Abilities"}
             character={character}
-            currentStory={currentStory}
           />
         )}
         {infoTab === "Skills" && (
@@ -55,15 +48,12 @@ class CharacterTabPanel extends Component {
             tab={character.skills || []}
             tabName={"Skills"}
             character={character}
-            currentStory={currentStory}
           />
         )}
         {infoTab === "Items" && (
           <CharacterTabPanelItem
-            currentStory={currentStory}
             character={character}
             onItemUse={onItemUse}
-            isGameMaster={isGameMaster}
           />
         )}
       </div>
@@ -71,12 +61,14 @@ class CharacterTabPanel extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  isGameMaster: store.appState.isGameMaster,
+});
+
 CharacterTabPanel.propTypes = {
   character: PropTypes.object.isRequired,
-  currentStory: PropTypes.number.isRequired,
   infoTab: PropTypes.string.isRequired,
   onItemUse: PropTypes.func.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
 };
 
-export default CharacterTabPanel;
+export default connect(mapStateToProps)(CharacterTabPanel);

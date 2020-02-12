@@ -11,6 +11,7 @@ import FileUploader from "../CharacterCreation/FileUploader";
 import ButtonLarge from "../Utils/ButtonLarge";
 import { initialBestiaryForm } from "../Utils/Constants";
 import { populateBestiary } from "../Utils/DatabaseFunctions";
+import { connect } from "react-redux";
 
 class BestiaryForm extends Component {
   state =
@@ -280,15 +281,18 @@ class BestiaryForm extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 BestiaryForm.defaultProps = {
   beast: null,
 };
 
 BestiaryForm.propTypes = {
   bestiary: PropTypes.array.isRequired,
-  currentStory: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
   beast: PropTypes.object,
 };
 
-export default BestiaryForm;
+export default connect(mapStateToProps)(BestiaryForm);

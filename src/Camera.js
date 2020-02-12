@@ -4,6 +4,7 @@ import firebase from "firebase";
 import ButtonLarge from "./components/Utils/ButtonLarge";
 import { heightHeader } from "./components/Utils/StyleConstants";
 import { colors } from "./components/Utils/Constants";
+import { connect } from "react-redux";
 
 const styledVideoContainer = {
   width: (window.innerWidth - 300) / 7 - 7,
@@ -557,9 +558,12 @@ class Camera extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  isGameMaster: store.appState.isGameMaster,
+});
+
 Camera.propTypes = {
   uid: PropTypes.string.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
 };
 
-export default Camera;
+export default connect(mapStateToProps)(Camera);

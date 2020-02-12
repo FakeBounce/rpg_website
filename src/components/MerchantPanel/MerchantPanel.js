@@ -4,6 +4,7 @@ import { widthLeft, heightLeft } from "../Utils/StyleConstants";
 import MerchantList from "./MerchantList";
 import Cadre from "../Utils/Cadre";
 import firebase from "firebase";
+import { connect } from "react-redux";
 
 const styledMapSide = {
   width: `${widthLeft / 2 - 20}px`,
@@ -54,12 +55,15 @@ class MerchantPanel extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 MerchantPanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
-  currentStory: PropTypes.number.isRequired,
   merchantsList: PropTypes.array.isRequired,
   merchants: PropTypes.array.isRequired,
   doSetState: PropTypes.func.isRequired,
 };
 
-export default MerchantPanel;
+export default connect(mapStateToProps)(MerchantPanel);

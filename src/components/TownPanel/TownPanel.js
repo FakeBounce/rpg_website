@@ -6,6 +6,7 @@ import firebase from "firebase";
 import TownMerchants from "./TownMerchants";
 import TownQuests from "./TownQuests";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledBoxHeader = {
   width: "100%",
@@ -152,13 +153,16 @@ class TownPanel extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 TownPanel.propTypes = {
   currentTown: PropTypes.number.isRequired,
   towns: PropTypes.array.isRequired,
   quests: PropTypes.array.isRequired,
   merchants: PropTypes.array.isRequired,
   toggleRightPanel: PropTypes.func.isRequired,
-  currentStory: PropTypes.number.isRequired,
 };
 
-export default TownPanel;
+export default connect(mapStateToProps)(TownPanel);

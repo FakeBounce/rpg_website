@@ -7,6 +7,7 @@ import EventGoldForm from "./EventGoldForm";
 import EventTypeSelector from "./EventTypeSelector";
 import { heightLeft } from "../Utils/StyleConstants";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledEventContainer = {
   width: "50%",
@@ -168,7 +169,6 @@ class EventPanel extends Component {
         {eventType === "draw" && <Fragment />}
         <EventViewers
           storyCharacters={storyCharacters}
-          gameMaster={gameMaster}
           viewers={viewers}
           removeToViewer={this.removeToViewer}
           addToViewer={this.addToViewer}
@@ -179,16 +179,19 @@ class EventPanel extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  gameMaster: store.appState.gameMaster,
+});
+
 EventPanel.defaultProps = {
   items: null,
 };
 
 EventPanel.propTypes = {
   items: PropTypes.object,
-  currentStory: PropTypes.number.isRequired,
   eventHistory: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
-  gameMaster: PropTypes.string.isRequired,
 };
 
-export default EventPanel;
+export default connect(mapStateToProps)(EventPanel);

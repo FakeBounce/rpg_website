@@ -7,6 +7,7 @@ import MapEditionPanel from "./components/MapEditionPanel/MapEditionPanel";
 import StoryQuestsAndMerchantsPanel from "./components/StoryQuestsAndMerchantsPanel/StoryQuestsAndMerchantsPanel";
 import TownPanel from "./components/TownPanel/TownPanel";
 import SpellGenerator from "./SpellGenerator";
+import { connect } from "react-redux";
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -59,14 +60,12 @@ class GMMapPanel extends Component {
     const {
       changeCurrentScale,
       currentScale,
-      currentStory,
       currentTile,
       currentTown,
       currentX,
       currentY,
       doSetState,
       eventHistory,
-      gameMaster,
       items,
       merchants,
       quests,
@@ -90,7 +89,6 @@ class GMMapPanel extends Component {
           doSetState={doSetState}
           tilesTypes={tilesTypes}
           textureToApply={textureToApply}
-          currentStory={currentStory}
           stories={stories}
         />
         <div style={styledMapSide}>
@@ -101,10 +99,8 @@ class GMMapPanel extends Component {
         </div>
         <EventPanel
           items={items}
-          currentStory={currentStory}
           eventHistory={eventHistory}
           storyCharacters={storyCharacters}
-          gameMaster={gameMaster}
         />
         {currentTown > -1 && (
           <TownPanel
@@ -113,14 +109,12 @@ class GMMapPanel extends Component {
             quests={quests}
             merchants={merchants}
             toggleRightPanel={this.toggleRightPanel}
-            currentStory={currentStory}
           />
         )}
         {currentTown > -1 && (
           <StoryQuestsAndMerchantsPanel
             triggerError={triggerError}
             currentTown={currentTown}
-            currentStory={currentStory}
             towns={towns}
             quests={quests}
             merchants={merchants}
@@ -132,6 +126,10 @@ class GMMapPanel extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 GMMapPanel.defaultProps = {
   items: null,
   textureToApply: null,
@@ -140,23 +138,16 @@ GMMapPanel.defaultProps = {
 GMMapPanel.propTypes = {
   changeCurrentScale: PropTypes.func.isRequired,
   currentScale: PropTypes.number.isRequired,
-  currentStory: PropTypes.number.isRequired,
   currentTile: PropTypes.object.isRequired,
   currentTown: PropTypes.number.isRequired,
   currentX: PropTypes.number.isRequired,
   currentY: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
   eventHistory: PropTypes.array.isRequired,
-  gameMaster: PropTypes.string.isRequired,
   items: PropTypes.object,
   merchants: PropTypes.array.isRequired,
-  musicName: PropTypes.string.isRequired,
-  musicVolume: PropTypes.number.isRequired,
-  noiseName: PropTypes.string.isRequired,
-  noiseVolume: PropTypes.number.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
   quests: PropTypes.array.isRequired,
-  resetSounds: PropTypes.func.isRequired,
   stories: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   textureToApply: PropTypes.object,
@@ -165,4 +156,4 @@ GMMapPanel.propTypes = {
   triggerError: PropTypes.func.isRequired,
 };
 
-export default GMMapPanel;
+export default connect(mapStateToProps)(GMMapPanel);

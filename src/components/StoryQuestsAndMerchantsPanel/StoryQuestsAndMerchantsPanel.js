@@ -6,6 +6,7 @@ import firebase from "firebase";
 import StoryMerchantList from "./StoryMerchantList";
 import StoryQuestList from "./StoryQuestList";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledBoxHeader = {
   width: "100%",
@@ -65,7 +66,13 @@ class StoryQuestsAndMerchantsPanel extends Component {
   };
 
   addMerchantToTown = i => {
-    const { currentStory, currentTown, towns, merchants } = this.props;
+    const {
+      currentStory,
+      currentTown,
+      towns,
+      merchants,
+      triggerError,
+    } = this.props;
     const newTown = { ...towns[currentTown] };
     newTown.merchantsList
       ? newTown.merchantsList.push(i)
@@ -76,7 +83,7 @@ class StoryQuestsAndMerchantsPanel extends Component {
       .set(newTown)
       .catch(error => {
         // Handle Errors here.
-        this.props.triggerError(error);
+        triggerError(error);
       });
 
     const newMerchant = { ...merchants[i] };
@@ -88,7 +95,7 @@ class StoryQuestsAndMerchantsPanel extends Component {
       .set(newMerchant)
       .catch(error => {
         // Handle Errors here.
-        this.props.triggerError(error);
+        triggerError(error);
       });
   };
 
@@ -115,14 +122,17 @@ class StoryQuestsAndMerchantsPanel extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 StoryQuestsAndMerchantsPanel.propTypes = {
   triggerError: PropTypes.func.isRequired,
   currentTown: PropTypes.number.isRequired,
-  currentStory: PropTypes.number.isRequired,
   towns: PropTypes.array.isRequired,
   quests: PropTypes.array.isRequired,
   merchants: PropTypes.array.isRequired,
   isOnQuest: PropTypes.bool.isRequired,
 };
 
-export default StoryQuestsAndMerchantsPanel;
+export default connect(mapStateToProps)(StoryQuestsAndMerchantsPanel);

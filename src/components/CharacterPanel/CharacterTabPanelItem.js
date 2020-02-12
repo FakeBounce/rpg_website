@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { widthRightPanelLeft } from "../Utils/StyleConstants";
 import ButtonLarge from "../Utils/ButtonLarge";
 import firebase from "firebase";
+import { connect } from "react-redux";
 
 const styles = {
   tabPanelItem: {
@@ -78,7 +79,8 @@ class CharacterTabPanelItem extends Component {
     firebase
       .database()
       .ref(
-        "stories/" + currentStory +
+        "stories/" +
+          currentStory +
           "/characters/" +
           character.userUid +
           "/character/items",
@@ -170,11 +172,14 @@ class CharacterTabPanelItem extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  isGameMaster: store.appState.isGameMaster,
+});
+
 CharacterTabPanelItem.propTypes = {
   character: PropTypes.object.isRequired,
-  currentStory: PropTypes.number.isRequired,
   onItemUse: PropTypes.func.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
 };
 
-export default CharacterTabPanelItem;
+export default connect(mapStateToProps)(CharacterTabPanelItem);

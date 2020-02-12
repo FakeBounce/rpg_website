@@ -10,6 +10,7 @@ import {
 } from "../Utils/StyleConstants";
 import firebase from "firebase";
 import FileUploader from "../CharacterCreation/FileUploader";
+import { connect } from "react-redux";
 
 const styles = {
   characterHeader: {
@@ -168,6 +169,10 @@ class CharacterHeader extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 CharacterHeader.propTypes = {
   gold: PropTypes.number.isRequired,
   health: PropTypes.number.isRequired,
@@ -177,7 +182,6 @@ CharacterHeader.propTypes = {
   status: PropTypes.string.isRequired,
   triggerError: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
-  currentStory: PropTypes.number.isRequired,
 };
 
-export default CharacterHeader;
+export default connect(mapStateToProps)(CharacterHeader);

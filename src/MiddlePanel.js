@@ -7,6 +7,7 @@ import PlayerMapPanel from "./PlayerMapPanel";
 import MapGenerator from "./components/MapGenerator/MapGenerator";
 import ChatPanel from "./components/ChatPanel/ChatPanel";
 import SoundPanel from "./components/SoundPanel/SoundPanel";
+import { connect } from "react-redux";
 
 class MiddlePanel extends Component {
   changeCurrentScale = value => {
@@ -32,7 +33,6 @@ class MiddlePanel extends Component {
       currentZoom,
       doSetState,
       eventHistory,
-      gameMaster,
       isGameMaster,
       isItemDescriptionShowed,
       isItemShowed,
@@ -46,16 +46,10 @@ class MiddlePanel extends Component {
       map,
       merchants,
       merchantsList,
-      musicName,
-      musicVolume,
-      noiseName,
-      noiseVolume,
       onChange,
       onChangeMusics,
-      pseudo,
       quests,
       questsList,
-      resetSounds,
       stories,
       storyCharacters,
       textureToApply,
@@ -70,12 +64,10 @@ class MiddlePanel extends Component {
       <Fragment>
         <MapGenerator
           currentScale={currentScale}
-          currentStory={currentStory}
           currentX={currentX}
           currentY={currentY}
           currentZoom={currentZoom}
           doSetState={doSetState}
-          isGameMaster={isGameMaster}
           isOnPlayerView={isOnPlayerView}
           loadCurrentPosition={loadCurrentPosition}
           map={map}
@@ -90,12 +82,8 @@ class MiddlePanel extends Component {
             character={character}
             chatHistory={chatHistory}
             chatInput={chatInput}
-            currentStory={currentStory}
             doSetState={doSetState}
-            gameMaster={gameMaster}
-            isGameMaster={isGameMaster}
             onChange={onChange}
-            pseudo={pseudo}
             storyCharacters={storyCharacters}
             triggerError={triggerError}
             uid={uid}
@@ -106,23 +94,16 @@ class MiddlePanel extends Component {
           <GMMapPanel
             changeCurrentScale={this.changeCurrentScale}
             currentScale={currentScale}
-            currentStory={currentStory}
             currentTile={currentTile}
             currentTown={currentTown}
             currentX={currentX}
             currentY={currentY}
             doSetState={doSetState}
             eventHistory={eventHistory}
-            gameMaster={gameMaster}
             items={items}
             merchants={merchants}
-            musicName={musicName}
-            musicVolume={musicVolume}
-            noiseName={noiseName}
-            noiseVolume={noiseVolume}
             onChangeMusics={onChangeMusics}
             quests={quests}
-            resetSounds={resetSounds}
             stories={stories}
             storyCharacters={storyCharacters}
             textureToApply={textureToApply}
@@ -137,7 +118,6 @@ class MiddlePanel extends Component {
             character={character}
             currentMerchant={currentMerchant}
             currentQuest={currentQuest}
-            currentStory={currentStory}
             doSetState={doSetState}
             isItemDescriptionShowed={isItemDescriptionShowed}
             isItemShowed={isItemShowed}
@@ -145,7 +125,6 @@ class MiddlePanel extends Component {
             isTownShowed={isTownShowed}
             itemsList={itemsList}
             itemToDescribe={itemToDescribe}
-            isGameMaster={isGameMaster}
             merchants={merchants}
             merchantsList={merchantsList}
             quests={quests}
@@ -159,12 +138,8 @@ class MiddlePanel extends Component {
           <RightPanel
             character={character}
             chatInput={chatInput}
-            currentStory={currentStory}
             doSetState={doSetState}
-            gameMaster={gameMaster}
-            isGameMaster={isGameMaster}
             onChange={onChange}
-            pseudo={pseudo}
             storyCharacters={storyCharacters}
             triggerError={triggerError}
             uid={uid}
@@ -174,10 +149,6 @@ class MiddlePanel extends Component {
         )}
         {isGameMaster && !isOnPlayerView && (
           <SoundPanel
-            musicName={musicName}
-            noiseName={noiseName}
-            musicVolume={musicVolume}
-            noiseVolume={noiseVolume}
             onChangeMusics={onChangeMusics}
           />
         )}
@@ -185,6 +156,11 @@ class MiddlePanel extends Component {
     );
   }
 }
+
+const mapStateToProps = store => ({
+  isOnPlayerView: store.appState.isOnPlayerView,
+  isGameMaster: store.appState.isGameMaster,
+});
 
 MiddlePanel.defaultProps = {
   items: null,
@@ -199,7 +175,6 @@ MiddlePanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
   currentQuest: PropTypes.number.isRequired,
   currentScale: PropTypes.number.isRequired,
-  currentStory: PropTypes.number.isRequired,
   currentTile: PropTypes.object.isRequired,
   currentTown: PropTypes.number.isRequired,
   currentX: PropTypes.number.isRequired,
@@ -207,11 +182,8 @@ MiddlePanel.propTypes = {
   currentZoom: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
   eventHistory: PropTypes.array.isRequired,
-  gameMaster: PropTypes.string.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,
   isItemShowed: PropTypes.bool.isRequired,
-  isOnPlayerView: PropTypes.bool.isRequired,
   isQuestShowed: PropTypes.bool.isRequired,
   isTownShowed: PropTypes.bool.isRequired,
   items: PropTypes.object,
@@ -221,16 +193,10 @@ MiddlePanel.propTypes = {
   map: PropTypes.array.isRequired,
   merchants: PropTypes.array.isRequired,
   merchantsList: PropTypes.array.isRequired,
-  musicName: PropTypes.string.isRequired,
-  musicVolume: PropTypes.number.isRequired,
-  noiseName: PropTypes.string.isRequired,
-  noiseVolume: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
-  pseudo: PropTypes.string.isRequired,
   quests: PropTypes.array.isRequired,
   questsList: PropTypes.array.isRequired,
-  resetSounds: PropTypes.func.isRequired,
   stories: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   textureToApply: PropTypes.object,
@@ -241,4 +207,4 @@ MiddlePanel.propTypes = {
   users: PropTypes.object.isRequired,
 };
 
-export default MiddlePanel;
+export default connect(mapStateToProps)(MiddlePanel);

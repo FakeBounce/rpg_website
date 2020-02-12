@@ -33,7 +33,10 @@ class TownsHistoryPanel extends Component {
       if (t.merchantsList && t.merchantsList.length > 0) {
         t.merchantsList.map(mIndex => {
           if (merchants[mIndex].isDiscovered) {
-            tempMandQ[t.name].merchants.push({...merchants[mIndex], realIndex: mIndex});
+            tempMandQ[t.name].merchants.push({
+              ...merchants[mIndex],
+              realIndex: mIndex,
+            });
             merchantsNumber += 1;
           }
           return null;
@@ -95,11 +98,7 @@ class TownsHistoryPanel extends Component {
   };
 
   render() {
-    const {
-      character,
-      merchants,
-      currentStory,
-    } = this.props;
+    const { character, merchants } = this.props;
     const {
       townsOrdered,
       showedMerchant,
@@ -116,7 +115,6 @@ class TownsHistoryPanel extends Component {
         />
         {showedMerchant.items && (
           <TownsHistorySoloMerchant
-            currentStory={currentStory}
             character={character}
             showedMerchant={showedMerchant}
           />
@@ -127,7 +125,6 @@ class TownsHistoryPanel extends Component {
             character={character}
             merchants={merchants}
             showedTown={showedTown}
-            currentStory={currentStory}
           />
         )}
       </div>
@@ -140,7 +137,6 @@ TownsHistoryPanel.propTypes = {
   merchants: PropTypes.array.isRequired,
   quests: PropTypes.array.isRequired,
   towns: PropTypes.array.isRequired,
-  currentStory: PropTypes.number.isRequired,
 };
 
 export default TownsHistoryPanel;

@@ -12,6 +12,7 @@ import BestiaryProfile from "./BestiaryProfile";
 import firebase from "firebase";
 import BestiaryForm from "./BestiaryForm";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledBestiaryPanel = {
   height: heightLeft,
@@ -309,7 +310,7 @@ class BestiaryPanel extends Component {
   };
 
   render() {
-    const { isGameMaster, uid } = this.props;
+    const { uid } = this.props;
     const {
       selectedFilter,
       selectedOrderBy,
@@ -319,7 +320,7 @@ class BestiaryPanel extends Component {
       isOnForm,
       isOnEditForm,
     } = this.state;
-    const { bestiary, doSetState, currentStory } = this.props;
+    const { bestiary, doSetState } = this.props;
 
     return (
       <div style={styledBestiaryPanel}>
@@ -344,29 +345,22 @@ class BestiaryPanel extends Component {
         />
         <BestiaryList
           filteredBestiary={filteredBestiary}
-          isGameMaster={isGameMaster}
           selectBeast={this.selectBeast}
           toggleSeenBeast={this.toggleSeenBeast}
           displayMonsterForm={this.displayMonsterForm}
         />
         {isOnForm && (
-          <BestiaryForm
-            bestiary={bestiary}
-            doSetState={doSetState}
-            currentStory={currentStory}
-          />
+          <BestiaryForm bestiary={bestiary} doSetState={doSetState} />
         )}
         {selectedBeast !== -1 &&
           (isOnEditForm ? (
             <BestiaryForm
               bestiary={bestiary}
               doSetState={doSetState}
-              currentStory={currentStory}
               beast={filteredBestiary[selectedBeast]}
             />
           ) : (
             <BestiaryProfile
-              isGameMaster={isGameMaster}
               uid={uid}
               beast={filteredBestiary[selectedBeast]}
               editBeast={this.editBeast}
@@ -377,12 +371,14 @@ class BestiaryPanel extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 BestiaryPanel.propTypes = {
-  isGameMaster: PropTypes.bool.isRequired,
   uid: PropTypes.string.isRequired,
   bestiary: PropTypes.array.isRequired,
-  currentStory: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
 };
 
-export default BestiaryPanel;
+export default connect(mapStateToProps)(BestiaryPanel);

@@ -4,6 +4,7 @@ import { widthLeft, heightLeft } from "../Utils/StyleConstants";
 import ItemList from "./ItemList";
 import Cadre from "../Utils/Cadre";
 import firebase from "firebase";
+import { connect } from "react-redux";
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -61,8 +62,11 @@ class ItemPanel extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 ItemPanel.propTypes = {
-  currentStory: PropTypes.number.isRequired,
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
   itemsList: PropTypes.object.isRequired,
@@ -70,4 +74,4 @@ ItemPanel.propTypes = {
   doSetState: PropTypes.func.isRequired,
 };
 
-export default ItemPanel;
+export default connect(mapStateToProps)(ItemPanel);
