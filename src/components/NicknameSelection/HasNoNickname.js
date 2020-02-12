@@ -1,21 +1,25 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import firebase from "firebase";
 import ButtonLarge from "../Utils/ButtonLarge";
+import { callSetUserPseudo } from "../../redux/actions/actionsUserInfos";
 
 class HasNoNickname extends Component {
+  state = {
+    pseudoInput: "",
+  };
+
+  onChange = value => {
+    this.setState(state => ({
+      ...state,
+      pseudoInput: value,
+    }));
+  };
+
   choosePseudo = () => {
-    const { pseudoInput, doSetState, triggerError } = this.props;
-    firebase
-      .database()
-      .ref("users/" + firebase.auth().currentUser.uid + "/pseudo")
-      .set(pseudoInput)
-      .catch(error => {
-        triggerError(error);
-      });
-    doSetState({
-      pseudo: pseudoInput,
-    });
+    const { pseudoInput } = this.state;
+    const { dispatchCallSetUserPseudo } = this.props;
+    dispatchCallSetUserPseudo(pseudoInput);
   };
 
   render() {
@@ -29,7 +33,7 @@ class HasNoNickname extends Component {
           placeholder="pseudo"
           value={pseudoInput}
           onChange={e => {
-            onChange(e.target.name, e.target.value.replace(/\s/g, ""));
+            this.onChange(e.target.value.replace(/\s/g, ""));
           }}
         />
         <button onClick={this.choosePseudo}>Choisir un pseudo</button>
@@ -44,12 +48,17 @@ class HasNoNickname extends Component {
   }
 }
 
-HasNoNickname.propTypes = {
-  pseudoInput: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  signOut: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchCallSetUserPseudo: payload => {
+      dispatch(callSetUserPseudo(payload));
+    },
+  };
 };
 
-export default HasNoNickname;
+HasNoNickname.propTypes = {
+  dispatchCallSetUserPseudo: PropTypes.func.isRequired,
+  signOut: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(HasNoNickname);

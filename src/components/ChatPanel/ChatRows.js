@@ -1,6 +1,7 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import ChatRow from './ChatRow';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import ChatRow from "./ChatRow";
+import { connect } from "react-redux";
 
 class ChatRows extends PureComponent {
   isAViewer = viewersTab => {
@@ -8,7 +9,7 @@ class ChatRows extends PureComponent {
     let canSeeMessage = false;
 
     viewersTab.map(viewer => {
-      if (viewer === 'gm' && isGameMaster) canSeeMessage = true;
+      if (viewer === "gm" && isGameMaster) canSeeMessage = true;
       if (viewer === pseudo) canSeeMessage = true;
       return null;
     });
@@ -32,10 +33,13 @@ class ChatRows extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  isGameMaster: store.appState.isGameMaster,
+  pseudo: store.userInfos.pseudo,
+});
+
 ChatRows.propTypes = {
-  gameMaster: PropTypes.string.isRequired,
-  pseudo: PropTypes.string.isRequired,
   chatHistory: PropTypes.object.isRequired,
 };
 
-export default ChatRows;
+export default connect(mapStateToProps)(ChatRows);

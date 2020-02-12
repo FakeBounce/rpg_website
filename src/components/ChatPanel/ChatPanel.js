@@ -7,6 +7,7 @@ import { colors } from "../Utils/Constants";
 import ChatBar from "./ChatBar";
 import ChatDicesRow from "./ChatDicesRow";
 import ChatHistory from "./ChatHistory";
+import { connect } from "react-redux";
 
 const styledChatPanel = {
   width: widthLeft / 2,
@@ -642,16 +643,12 @@ class ChatPanel extends PureComponent {
   };
 
   render() {
-    const { chatInput, chatHistory, onChange, gameMaster, pseudo } = this.props;
+    const { chatInput, chatHistory, onChange } = this.props;
     const { gmCommands, bonus } = this.state;
 
     return (
       <div style={styledChatPanel}>
-        <ChatHistory
-          gameMaster={gameMaster}
-          pseudo={pseudo}
-          chatHistory={chatHistory}
-        />
+        <ChatHistory chatHistory={chatHistory} />
         <ChatDicesRow
           bonus={bonus}
           gmCommands={gmCommands}
@@ -672,15 +669,18 @@ class ChatPanel extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  isGameMaster: store.appState.isGameMaster,
+  gameMaster: store.appState.gameMaster,
+  pseudo: store.userInfos.pseudo,
+});
+
 ChatPanel.propTypes = {
-  isGameMaster: PropTypes.bool.isRequired,
-  gameMaster: PropTypes.string.isRequired,
   users: PropTypes.object.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   uid: PropTypes.string.isRequired,
-  currentStory: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
-  pseudo: PropTypes.string.isRequired,
   chatInput: PropTypes.string.isRequired,
   chatHistory: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
@@ -688,4 +688,4 @@ ChatPanel.propTypes = {
   triggerError: PropTypes.func.isRequired,
 };
 
-export default ChatPanel;
+export default connect(mapStateToProps)(ChatPanel);

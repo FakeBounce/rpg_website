@@ -19,6 +19,7 @@ import EventModalDebt from "./EventModalDebt";
 import Draw from "../../Draw";
 import { colors } from "../Utils/Constants";
 import ButtonLarge from "../Utils/ButtonLarge";
+import { connect } from "react-redux";
 
 const styledEventModal = {
   position: "absolute",
@@ -346,6 +347,7 @@ class EventModal extends PureComponent {
         ) {
           ++charactersLeft;
         }
+        return null;
       });
 
       if (charactersLeft > 0) {
@@ -448,6 +450,7 @@ class EventModal extends PureComponent {
         ) {
           ++charactersLeft;
         }
+        return null;
       });
 
       if (charactersLeft > 0) {
@@ -605,7 +608,6 @@ class EventModal extends PureComponent {
       currentEvent,
       eventHistory,
       storyCharacters,
-      gameMaster,
       uid,
     } = this.props;
 
@@ -616,8 +618,6 @@ class EventModal extends PureComponent {
         <div style={styledEventTitle}>EVENEMENT !</div>
         {eventHistory[currentEvent].type !== "draw" && (
           <EventModalViewers
-            gameMaster={gameMaster}
-            isGameMaster={isGameMaster}
             currentEvent={currentEvent}
             eventHistory={eventHistory}
             storyCharacters={storyCharacters}
@@ -639,7 +639,6 @@ class EventModal extends PureComponent {
         )}
         {eventHistory[currentEvent].type === "gold" && (
           <EventModalGold
-            isGameMaster={isGameMaster}
             event={eventHistory[currentEvent]}
             numberWanted={numberWanted}
             closeEvent={this.closeEvent}
@@ -652,7 +651,6 @@ class EventModal extends PureComponent {
         )}
         {eventHistory[currentEvent].type === "debt" && (
           <EventModalDebt
-            isGameMaster={isGameMaster}
             event={eventHistory[currentEvent]}
             numberWanted={numberWanted}
             closeEvent={this.closeEvent}
@@ -664,7 +662,6 @@ class EventModal extends PureComponent {
         )}
         {eventHistory[currentEvent].type === "item" && (
           <EventModalItem
-            isGameMaster={isGameMaster}
             currentEvent={currentEvent}
             numberWanted={numberWanted}
             eventHistory={eventHistory}
@@ -706,18 +703,19 @@ class EventModal extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  isGameMaster: store.appState.isGameMaster,
+});
+
 EventModal.propTypes = {
-  currentStory: PropTypes.number.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
   currentEvent: PropTypes.number.isRequired,
   eventHistory: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   uid: PropTypes.string.isRequired,
-  pseudo: PropTypes.string.isRequired,
   doSetState: PropTypes.func.isRequired,
   character: PropTypes.object.isRequired,
-  gameMaster: PropTypes.string.isRequired,
   triggerError: PropTypes.func.isRequired,
 };
 
-export default EventModal;
+export default connect(mapStateToProps)(EventModal);

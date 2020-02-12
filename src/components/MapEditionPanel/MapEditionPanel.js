@@ -6,6 +6,7 @@ import MapEditionTileInfos from "./MapEditionTileInfos";
 import MapEditionTilesList from "./MapEditionTilesList";
 import MapEditionScale from "./MapEditionScale";
 import { heightLeft, widthLeft } from "../Utils/StyleConstants";
+import { connect } from "react-redux";
 
 class MapEditionPanel extends Component {
   state = {
@@ -161,6 +162,10 @@ class MapEditionPanel extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 MapEditionPanel.defaultProps = {
   textureToApply: null,
 };
@@ -169,7 +174,6 @@ MapEditionPanel.propTypes = {
   currentX: PropTypes.number.isRequired,
   currentY: PropTypes.number.isRequired,
   stories: PropTypes.array.isRequired,
-  currentStory: PropTypes.number.isRequired,
   textureToApply: PropTypes.object,
   changeCurrentScale: PropTypes.func.isRequired,
   currentScale: PropTypes.number.isRequired,
@@ -178,4 +182,4 @@ MapEditionPanel.propTypes = {
   tilesTypes: PropTypes.object.isRequired,
 };
 
-export default MapEditionPanel;
+export default connect(mapStateToProps)(MapEditionPanel);

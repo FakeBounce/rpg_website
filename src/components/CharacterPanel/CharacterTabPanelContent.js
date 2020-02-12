@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { widthRightPanelLeft } from "../Utils/StyleConstants";
 import firebase from "firebase";
 import ButtonLarge from "../Utils/ButtonLarge";
+import { connect } from "react-redux";
 
 const styles = {
   tabPanelItem: {
@@ -131,6 +132,10 @@ class CharacterTabPanelContent extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 CharacterTabPanelContent.defaultProps = {
   tabName: "",
   character: {},
@@ -140,7 +145,6 @@ CharacterTabPanelContent.propTypes = {
   tab: PropTypes.array.isRequired,
   tabName: PropTypes.string,
   character: PropTypes.object,
-  currentStory: PropTypes.number.isRequired,
 };
 
-export default CharacterTabPanelContent;
+export default connect(mapStateToProps)(CharacterTabPanelContent);

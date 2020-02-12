@@ -5,6 +5,9 @@ import { resetStoryMerchants } from "./MerchantsFunctions";
 import Camera from "../../Camera";
 import ButtonLarge from "./ButtonLarge";
 import firebase from "firebase";
+import { updateAllMusic } from "../../redux/actions/actionsSounds";
+import { connect } from "react-redux";
+import { togglePlayerView } from "../../redux/actions/actionsAppState";
 
 const styledSignOut = {
   display: "block",
@@ -139,7 +142,7 @@ class Header extends Component {
       toggleMerchantList,
       toggleEvent,
       toggleMusic,
-      togglePlayerView,
+      dispatchTogglePlayerView,
       uid,
     } = this.props;
     const { hasHydrated, items } = this.state;
@@ -147,18 +150,13 @@ class Header extends Component {
     return (
       <div style={styledHeader}>
         <div style={styledHeaderLeft}>
-          <Camera uid={uid} isGameMaster={isGameMaster} />
+          <Camera uid={uid} />
         </div>
         <div style={styledHeaderRight}>
           <ButtonLarge style={styledSignOut} onClick={signOut}>
             Sign Out
           </ButtonLarge>
-          <ButtonLarge
-            style={styledSignOut}
-            onClick={
-              selectAnotherCharacter
-            }
-          >
+          <ButtonLarge style={styledSignOut} onClick={selectAnotherCharacter}>
             Select a character
           </ButtonLarge>
           <ButtonLarge style={styledSignOut} onClick={toggleMusic}>
@@ -184,7 +182,10 @@ class Header extends Component {
           </ButtonLarge>
         </div>
         {isGameMaster && (
-          <ButtonLarge style={styledToggling} onClick={togglePlayerView}>
+          <ButtonLarge
+            style={styledToggling}
+            onClick={dispatchTogglePlayerView}
+          >
             Toggle Player View
           </ButtonLarge>
         )}
@@ -205,34 +206,44 @@ class Header extends Component {
             {hasHydrated ? " OK" : ""}
           </ButtonLarge>
         )}
-        {isGameMaster &&
-          items !== [] && (
-            <ButtonLarge
-              onClick={() => {
-                this.resetMerchants();
-              }}
-              style={styledResetMerchantsEvent}
-            >
-              Reset merchants
-              {hasHydrated ? " OK" : ""}
-            </ButtonLarge>
-          )}
+        {isGameMaster && items !== [] && (
+          <ButtonLarge
+            onClick={() => {
+              this.resetMerchants();
+            }}
+            style={styledResetMerchantsEvent}
+          >
+            Reset merchants
+            {hasHydrated ? " OK" : ""}
+          </ButtonLarge>
+        )}
       </div>
     );
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchTogglePlayerView: () => {
+      dispatch(togglePlayerView());
+    },
+  };
+};
+
+const mapStateToProps = store => ({
+  isGameMaster: store.appState.isGameMaster,
+  musicMute: store.sounds.musicMute,
+});
+
 Header.propTypes = {
   accessChatHelp: PropTypes.func.isRequired,
   bestiaryTitle: PropTypes.string.isRequired,
   chatHelpTitle: PropTypes.string.isRequired,
-  currentStory: PropTypes.number.isRequired,
+  dispatchTogglePlayerView: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
   eventTitle: PropTypes.string.isRequired,
   hydrateMerchants: PropTypes.func.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
   merchantTitle: PropTypes.string.isRequired,
-  musicMute: PropTypes.bool.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
@@ -240,8 +251,7 @@ Header.propTypes = {
   toggleEvent: PropTypes.func.isRequired,
   toggleMerchantList: PropTypes.func.isRequired,
   toggleMusic: PropTypes.func.isRequired,
-  togglePlayerView: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
 };
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

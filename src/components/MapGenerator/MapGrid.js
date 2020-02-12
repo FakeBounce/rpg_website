@@ -5,6 +5,7 @@ import "./Grid.css";
 import { gridDimension, gridLength, totalRows } from "../Utils/StyleConstants";
 import Tile from "./Tile";
 import TileGM from "./TileGM";
+import { connect } from "react-redux";
 
 class MapGrid extends PureComponent {
   generateTable = mapToRender => {
@@ -116,6 +117,11 @@ class MapGrid extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  isOnPlayerView: store.appState.isOnPlayerView,
+  isGameMaster: store.appState.isGameMaster,
+});
+
 MapGrid.defaultProps = {
   textureToApply: null,
 };
@@ -126,12 +132,10 @@ MapGrid.propTypes = {
   setTexture: PropTypes.func.isRequired,
   currentZoom: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
-  isOnPlayerView: PropTypes.bool.isRequired,
   map: PropTypes.array.isRequired,
   textureToApply: PropTypes.object,
   tilesTypes: PropTypes.object.isRequired,
   towns: PropTypes.array.isRequired,
 };
 
-export default MapGrid;
+export default connect(mapStateToProps)(MapGrid);

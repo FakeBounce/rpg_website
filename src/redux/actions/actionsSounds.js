@@ -6,10 +6,38 @@ export const toggleMusic = () => {
   };
 };
 
+export const updateAllMusic = payload => {
+  return {
+    type: actionTypesSounds.UPDATE_ALL_MUSIC,
+    payload,
+  };
+};
+
+export const loadSong = payload => {
+  return {
+    type: actionTypesSounds.LOAD_SONG,
+    payload,
+  };
+};
+
+export const loadMusic = payload => {
+  return {
+    type: actionTypesSounds.LOAD_MUSIC,
+    payload,
+  };
+};
+
 // Saga will call reset sounds, which will dispatch RESET_SOUNDS for each user
 export const resetSounds = () => {
   return {
     type: actionTypesSounds.RESET_SOUNDS,
+  };
+};
+
+export const loadNoise = payload => {
+  return {
+    type: actionTypesSounds.LOAD_NOISE,
+    payload,
   };
 };
 

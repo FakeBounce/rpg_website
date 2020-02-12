@@ -1,5 +1,4 @@
-import { delay } from "redux-saga";
-import { call, put, select, takeLatest } from "redux-saga/effects";
+import { call, put, select, delay, takeLatest } from "redux-saga/effects";
 
 import * as actionsTypesSounds from "../actionsTypes/actionsTypesSounds";
 import * as actionsSounds from "../actions/actionsSounds";
@@ -66,7 +65,7 @@ export function* callStopNoise() {
       }).catch(error => {
         console.log("callStopNoise set saga err:", { error });
       });
-      yield call(actionsSounds.stopNoise);
+      // yield call(actionsSounds.stopNoise);
     } else {
       yield call(soundsError, "No story selected");
     }
@@ -93,7 +92,7 @@ export function* callStopSong() {
       }).catch(error => {
         console.log("callStopSong set saga err:", { error });
       });
-      yield call(actionsSounds.stopSong);
+      // yield call(actionsSounds.stopSong);
     } else {
       yield call(soundsError, "No story selected");
     }
@@ -108,4 +107,82 @@ export function* callStopSong() {
 
 export function* watchCallStopSong() {
   yield takeLatest(actionsTypesSounds.CALL_STOP_SONG, callStopSong);
+}
+
+export function* callLoadSong(params) {
+  try {
+    const currentStory = yield select(currentStorySelector);
+    if (currentStory > -1) {
+      firebaseDbSet("/stories/" + currentStory + "/song", {
+        ...params,
+      }).catch(error => {
+        console.log("callLoadSong set saga err:", { error });
+      });
+      // yield call(actionsSounds.loadSong, params);
+    } else {
+      yield call(soundsError, "No story selected");
+    }
+  } catch (error) {
+    console.log("callLoadSong try saga err:", { error });
+
+    yield call(soundsError);
+  }
+
+  return null;
+}
+
+export function* watchCallLoadSong() {
+  yield takeLatest(actionsTypesSounds.CALL_LOAD_SONG, callLoadSong);
+}
+
+export function* callLoadMusic(params) {
+  try {
+    const currentStory = yield select(currentStorySelector);
+    if (currentStory > -1) {
+      firebaseDbSet("/stories/" + currentStory + "/song", {
+        ...params,
+      }).catch(error => {
+        console.log("callLoadSong set saga err:", { error });
+      });
+      // yield call(actionsSounds.loadMusic, params);
+    } else {
+      yield call(soundsError, "No story selected");
+    }
+  } catch (error) {
+    console.log("callLoadSong try saga err:", { error });
+
+    yield call(soundsError);
+  }
+
+  return null;
+}
+
+export function* watchCallLoadMusic() {
+  yield takeLatest(actionsTypesSounds.CALL_LOAD_MUSIC, callLoadMusic);
+}
+
+export function* callLoadNoise(params) {
+  try {
+    const currentStory = yield select(currentStorySelector);
+    if (currentStory > -1) {
+      firebaseDbSet("/stories/" + currentStory + "/noise", {
+        ...params,
+      }).catch(error => {
+        console.log("callLoadNoise set saga err:", { error });
+      });
+      // yield call(actionsSounds.loadNoise, params); // useless because already listening
+    } else {
+      yield call(soundsError, "No story selected");
+    }
+  } catch (error) {
+    console.log("callLoadNoise try saga err:", { error });
+
+    yield call(soundsError);
+  }
+
+  return null;
+}
+
+export function* watchCallLoadNoise() {
+  yield takeLatest(actionsTypesSounds.CALL_LOAD_NOISE, callLoadNoise);
 }

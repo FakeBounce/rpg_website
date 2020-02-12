@@ -14,6 +14,7 @@ import ShopHeaderDefault from "./components/ShopHeader/ShopHeaderDefault";
 import EnhancersPanel from "./components/EnhancersPanel/EnhancersPanel";
 import firebase from "firebase";
 import Cadre from "./components/Utils/Cadre";
+import { connect } from "react-redux";
 
 const styledPlayerMapContainer = {
   float: "left",
@@ -29,6 +30,26 @@ const styledPanelContainer = {
   display: "inline-block",
   float: "left",
   position: "relative",
+};
+
+const styledCadreContainer = {
+  width: `${widthLeft / 2}px`,
+  height: `${heightLeft / 2}px`,
+  display: "inline-block",
+  float: "left",
+  textAlign: "left",
+  position: "relative",
+  paddingHorizontal: 10,
+};
+
+const styledCadreSecondContainer = {
+  width: `${widthLeft / 2 - 20}px`,
+  height: `${heightLeft / 2}px`,
+  display: "inline-block",
+  float: "left",
+  textAlign: "left",
+  position: "relative",
+  paddingHorizontal: 10,
 };
 
 class PlayerMapPanel extends Component {
@@ -376,9 +397,7 @@ class PlayerMapPanel extends Component {
       character,
       currentMerchant,
       currentQuest,
-      currentStory,
       doSetState,
-      isGameMaster,
       isItemDescriptionShowed,
       isItemShowed,
       isQuestShowed,
@@ -413,7 +432,6 @@ class PlayerMapPanel extends Component {
             />
             <MerchantPanel
               currentMerchant={currentMerchant}
-              currentStory={currentStory}
               merchantsList={merchantsList}
               merchants={merchants}
               doSetState={doSetState}
@@ -437,7 +455,6 @@ class PlayerMapPanel extends Component {
                 {currentTab === "items" && (
                   <ItemPanel
                     currentMerchant={currentMerchant}
-                    currentStory={currentStory}
                     character={character}
                     itemsList={itemsList}
                     merchants={merchants}
@@ -466,17 +483,7 @@ class PlayerMapPanel extends Component {
                 )}
               </div>
             ) : (
-              <div
-                style={{
-                  width: `${widthLeft / 2}px`,
-                  height: `${heightLeft / 2}px`,
-                  display: "inline-block",
-                  float: "left",
-                  textAlign: "left",
-                  position: "relative",
-                  paddingHorizontal: 10,
-                }}
-              >
+              <div style={styledCadreContainer}>
                 <Cadre />
               </div>
             )}
@@ -503,32 +510,25 @@ class PlayerMapPanel extends Component {
                 isHidden={character.education < itemToDescribe.rarity * 9}
               />
             ) : (
-              <div
-                style={{
-                  width: `${widthLeft / 2 - 20}px`,
-                  height: `${heightLeft / 2}px`,
-                  display: "inline-block",
-                  float: "left",
-                  textAlign: "left",
-                  position: "relative",
-                  paddingHorizontal: 10,
-                }}
-              >
+              <div style={styledCadreSecondContainer}>
                 <Cadre />
               </div>
             )}
           </Fragment>
         ) : (
-          <TempImage isGameMaster={isGameMaster} currentStory={currentStory} />
+          <TempImage />
         )}
       </div>
     );
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 PlayerMapPanel.propTypes = {
   isQuestShowed: PropTypes.bool.isRequired,
-  currentStory: PropTypes.number.isRequired,
   currentQuest: PropTypes.number.isRequired,
   currentMerchant: PropTypes.number.isRequired,
   character: PropTypes.object.isRequired,
@@ -544,7 +544,6 @@ PlayerMapPanel.propTypes = {
   buyItem: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
 };
 
-export default PlayerMapPanel;
+export default connect(mapStateToProps)(PlayerMapPanel);

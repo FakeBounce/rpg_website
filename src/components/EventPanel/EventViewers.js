@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 const styledBoxHeader = {
   width: "100%",
@@ -52,13 +53,15 @@ class EventViewers extends Component {
     );
   }
 }
+const mapStateToProps = store => ({
+  gameMaster: store.appState.gameMaster,
+});
 
 EventViewers.propTypes = {
   storyCharacters: PropTypes.array.isRequired,
-  gameMaster: PropTypes.string.isRequired,
   viewers: PropTypes.array.isRequired,
   removeToViewer: PropTypes.func.isRequired,
   addToViewer: PropTypes.func.isRequired,
 };
 
-export default EventViewers;
+export default connect(mapStateToProps)(EventViewers);

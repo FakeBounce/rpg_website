@@ -4,6 +4,7 @@ import { cursorPointer, heightLeft, imageSize } from "../Utils/StyleConstants";
 import { attributes } from "../Utils/Constants";
 import firebase from "firebase";
 import ButtonLarge from "../Utils/ButtonLarge";
+import { connect } from "react-redux";
 
 const styles = {
   BoxHeader: {
@@ -131,10 +132,13 @@ class CharacterAttributes extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  isGameMaster: store.appState.isGameMaster,
+});
+
 CharacterAttributes.propTypes = {
   character: PropTypes.object.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
-  currentStory: PropTypes.number.isRequired,
 };
 
-export default CharacterAttributes;
+export default connect(mapStateToProps)(CharacterAttributes);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ButtonLarge from "../Utils/ButtonLarge";
+import { connect } from "react-redux";
 
 const styledEventActionContainer = {
   width: "100%",
@@ -76,12 +77,11 @@ class EventModalItem extends Component {
             Not interested
           </ButtonLarge>
         )}
-        {eventHistory[currentEvent].quantityLeft === 0 &&
-          !isGameMaster && (
-            <ButtonLarge style={styledEventAction} onClick={closeEvent}>
-              Close Event
-            </ButtonLarge>
-          )}
+        {eventHistory[currentEvent].quantityLeft === 0 && !isGameMaster && (
+          <ButtonLarge style={styledEventAction} onClick={closeEvent}>
+            Close Event
+          </ButtonLarge>
+        )}
         {isGameMaster && (
           <ButtonLarge style={styledEventAction} onClick={closeEvent}>
             Delete Event
@@ -92,8 +92,11 @@ class EventModalItem extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  isGameMaster: store.appState.isGameMaster,
+});
+
 EventModalItem.propTypes = {
-  isGameMaster: PropTypes.bool.isRequired,
   currentEvent: PropTypes.number.isRequired,
   numberWanted: PropTypes.number.isRequired,
   eventHistory: PropTypes.array.isRequired,
@@ -106,4 +109,4 @@ EventModalItem.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default EventModalItem;
+export default connect(mapStateToProps)(EventModalItem);

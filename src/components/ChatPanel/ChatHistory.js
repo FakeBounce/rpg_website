@@ -1,14 +1,14 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { heightLeft, widthLeft } from '../Utils/StyleConstants';
-import ChatRows from './ChatRows';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
+import ChatRows from "./ChatRows";
 
 const styledChatHistoric = {
   width: widthLeft / 2,
   height: `${heightLeft / 2 - (25 + 5) - 25}px`,
-  float: 'left',
-  display: 'inline-block',
-  overflowY: 'auto',
+  float: "left",
+  display: "inline-block",
+  overflowY: "auto",
 };
 
 class ChatHistory extends PureComponent {
@@ -23,21 +23,17 @@ class ChatHistory extends PureComponent {
   }
 
   scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   };
 
   render() {
-    const { chatHistory, gameMaster, pseudo } = this.props;
+    const { chatHistory } = this.props;
 
     return (
       <div style={styledChatHistoric} className="scrollbar">
-        <ChatRows
-          gameMaster={gameMaster}
-          pseudo={pseudo}
-          chatHistory={chatHistory}
-        />
+        <ChatRows chatHistory={chatHistory} />
         <div
-          style={{ float: 'left', clear: 'both' }}
+          style={{ float: "left", clear: "both" }}
           ref={el => {
             this.messagesEnd = el;
           }}
@@ -48,8 +44,6 @@ class ChatHistory extends PureComponent {
 }
 
 ChatHistory.propTypes = {
-  gameMaster: PropTypes.string.isRequired,
-  pseudo: PropTypes.string.isRequired,
   chatHistory: PropTypes.object.isRequired,
 };
 

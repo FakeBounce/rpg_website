@@ -9,6 +9,7 @@ import {
 } from "../Utils/StyleConstants";
 import { musics, noises } from "../Utils/Constants";
 import { CALL_RESET_SOUNDS } from "../../redux/actionsTypes/actionsTypesSounds";
+import { currentMusicName } from "../../selectors";
 
 const styledBoxHeaderMusic = {
   width: "100%",
@@ -239,13 +240,16 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const mapStateToProps = store => ({
+  musicName: currentMusicName(store),
+  noiseName: store.sounds.noiseName,
+  musicVolume: store.sounds.musicVolume,
+  noiseVolume: store.sounds.noiseVolume,
+});
+
 SoundPanel.propTypes = {
-  musicName: PropTypes.string.isRequired,
-  noiseName: PropTypes.string.isRequired,
-  musicVolume: PropTypes.number.isRequired,
-  noiseVolume: PropTypes.number.isRequired,
   resetSounds: PropTypes.func.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(SoundPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(SoundPanel);

@@ -5,6 +5,7 @@ import TownsHistoryMerchantHeader from "./TownsHistoryMerchantHeader";
 import TownsHistorySoloMerchantList from "./TownsHistorySoloMerchantList";
 import firebase from "firebase";
 import ItemDescriptionPanel from "../ItemDescriptionPanel/ItemDescriptionPanel";
+import { connect } from "react-redux";
 
 const styledMerchantColumn = {
   width: widthLeftBestiary / 3,
@@ -82,10 +83,13 @@ class TownsHistorySoloMerchant extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 TownsHistorySoloMerchant.propTypes = {
   character: PropTypes.object.isRequired,
   showedMerchant: PropTypes.object.isRequired,
-  currentStory: PropTypes.number.isRequired,
 };
 
-export default TownsHistorySoloMerchant;
+export default connect(mapStateToProps)(TownsHistorySoloMerchant);

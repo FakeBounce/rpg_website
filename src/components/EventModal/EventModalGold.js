@@ -1,24 +1,25 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import ButtonLarge from "../Utils/ButtonLarge";
+import { connect } from "react-redux";
 
 const styledEventActionContainer = {
-  width: '100%',
+  width: "100%",
   height: 50,
   marginTop: 40,
   marginBottom: 10,
-  textAlign: 'center',
-  float: 'left',
-  position: 'relative',
-  display: 'inline-block',
+  textAlign: "center",
+  float: "left",
+  position: "relative",
+  display: "inline-block",
 };
 
 const styledEventAction = {
-  margin: '0px 15px',
+  margin: "0px 15px",
   padding: 5,
-  textAlign: 'center',
-  position: 'relative',
-  display: 'inline-block',
+  textAlign: "center",
+  position: "relative",
+  display: "inline-block",
 };
 
 class EventModalGold extends Component {
@@ -65,12 +66,11 @@ class EventModalGold extends Component {
             </ButtonLarge>
           </div>
         )}
-        {event.goldLeft === 0 &&
-          !isGameMaster && (
-            <ButtonLarge style={styledEventAction} onClick={closeEvent}>
-              Close Event
-            </ButtonLarge>
-          )}
+        {event.goldLeft === 0 && !isGameMaster && (
+          <ButtonLarge style={styledEventAction} onClick={closeEvent}>
+            Close Event
+          </ButtonLarge>
+        )}
         {isGameMaster && (
           <ButtonLarge style={styledEventAction} onClick={closeEvent}>
             Delete Event
@@ -81,8 +81,11 @@ class EventModalGold extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  isGameMaster: store.appState.isGameMaster,
+});
+
 EventModalGold.propTypes = {
-  isGameMaster: PropTypes.bool.isRequired,
   event: PropTypes.object.isRequired,
   numberWanted: PropTypes.number.isRequired,
   closeEvent: PropTypes.func.isRequired,
@@ -93,4 +96,4 @@ EventModalGold.propTypes = {
   takeEquivalentGold: PropTypes.func.isRequired,
 };
 
-export default EventModalGold;
+export default connect(mapStateToProps)(EventModalGold);

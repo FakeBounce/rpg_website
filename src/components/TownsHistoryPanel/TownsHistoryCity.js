@@ -16,7 +16,7 @@ const styledCityColumn = {
 
 class TownsHistoryCity extends Component {
   render() {
-    const { character, merchants, showedTown, currentStory } = this.props;
+    const { character, merchants, showedTown } = this.props;
     return (
       <div style={styledCityColumn} className="scrollbar">
         <TownsHistoryCityHeader name={showedTown.name} />
@@ -27,7 +27,6 @@ class TownsHistoryCity extends Component {
               character={character}
               merchants={merchants}
               currentMerchant={m}
-              currentStory={currentStory}
             />
           );
         })}
@@ -40,7 +39,6 @@ TownsHistoryCity.propTypes = {
   character: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   showedTown: PropTypes.object.isRequired,
-  currentStory: PropTypes.number.isRequired,
 };
 
 export default TownsHistoryCity;

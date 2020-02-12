@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import { firebaseDbRef } from "../../redux/sagas/api";
 
 const triggerError = error => {
   console.log("Database function error : ", error);
@@ -317,37 +318,28 @@ export const listenUsers = doSetState => {
     });
 };
 
-export const listenMusic = (currentStory, doSetState) => {
-  firebase
-    .database()
-    .ref("/stories/" + currentStory + "/music")
-    .on("value", snapshot => {
-      doSetState({
-        ...snapshot.val(),
-      });
+export const listenMusic = (currentStory, dispatchUpdateAllMusic) => {
+  firebaseDbRef("/stories/" + currentStory + "/music").on("value", snapshot => {
+    dispatchUpdateAllMusic({
+      ...snapshot.val(),
     });
+  });
 };
 
-export const listenNoise = (currentStory, doSetState) => {
-  firebase
-    .database()
-    .ref("/stories/" + currentStory + "/noise")
-    .on("value", snapshot => {
-      doSetState({
-        ...snapshot.val(),
-      });
+export const listenNoise = (currentStory, dispatchUpdateAllMusic) => {
+  firebaseDbRef("/stories/" + currentStory + "/noise").on("value", snapshot => {
+    dispatchUpdateAllMusic({
+      ...snapshot.val(),
     });
+  });
 };
 
-export const listenSong = (currentStory, doSetState) => {
-  firebase
-    .database()
-    .ref("/stories/" + currentStory + "/song")
-    .on("value", snapshot => {
-      doSetState({
-        ...snapshot.val(),
-      });
+export const listenSong = (currentStory, dispatchUpdateAllMusic) => {
+  firebaseDbRef("/stories/" + currentStory + "/song").on("value", snapshot => {
+    dispatchUpdateAllMusic({
+      ...snapshot.val(),
     });
+  });
 };
 
 export const loadStories = (doSetState, callback = null) => {
@@ -359,8 +351,7 @@ export const loadStories = (doSetState, callback = null) => {
       doSetState({
         stories: snapshot.val(),
       });
-      if(callback)
-      {
+      if (callback) {
         callback();
       }
     })
@@ -597,11 +588,10 @@ export const populateBestiary = (currentStory, doSetState) => {
                   tempBestiary[bKey].monster
                     ? parseInt(tempCharacters[key].character.education, 10) + 20
                     : tempBestiary[bKey].monster ||
-                      (tempCharacters[key].character.userPseudo === "Danjors" ||
-                        tempCharacters[key].character.userPseudo === "Rangrim")
-                      ? parseInt(tempCharacters[key].character.education, 10) -
-                        10
-                      : parseInt(tempCharacters[key].character.education, 10);
+                      tempCharacters[key].character.userPseudo === "Danjors" ||
+                      tempCharacters[key].character.userPseudo === "Rangrim"
+                    ? parseInt(tempCharacters[key].character.education, 10) - 10
+                    : parseInt(tempCharacters[key].character.education, 10);
                 while (
                   Math.floor(Math.random() * 100 + 1) <= maxRoll &&
                   cpt < 7

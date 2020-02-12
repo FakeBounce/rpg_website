@@ -5,6 +5,7 @@ import TownsHistoryMerchantHeader from "./TownsHistoryMerchantHeader";
 import TownsHistoryMerchantColumnList from "./TownsHistoryMerchantColumnList";
 import firebase from "firebase";
 import ItemDescriptionPanel from "../ItemDescriptionPanel/ItemDescriptionPanel";
+import { connect } from "react-redux";
 
 const styledTownColumn = {
   width: widthLeftBestiary / 3 - 3,
@@ -54,7 +55,7 @@ class TownsHistoryMerchantColumn extends Component {
   };
 
   render() {
-    const { character, merchants, currentMerchant, currentStory } = this.props;
+    const { character, merchants, currentMerchant } = this.props;
     const { currentItem } = this.state;
     return (
       <Fragment>
@@ -64,34 +65,35 @@ class TownsHistoryMerchantColumn extends Component {
           />
           <TownsHistoryMerchantColumnList
             currentMerchant={currentMerchant}
-            currentStory={currentStory}
             merchants={merchants}
             character={character}
             showItemDescription={this.showItemDescription}
           />
         </div>
 
-        {currentItem &&
-          currentItem.name && (
-            <div style={styledItemColumn}>
-              <ItemDescriptionPanel
-                {...currentItem}
-                noBuy
-                gold={character.gold}
-                isHidden={character.education < currentItem.rarity * 9}
-              />
-            </div>
-          )}
+        {currentItem && currentItem.name && (
+          <div style={styledItemColumn}>
+            <ItemDescriptionPanel
+              {...currentItem}
+              noBuy
+              gold={character.gold}
+              isHidden={character.education < currentItem.rarity * 9}
+            />
+          </div>
+        )}
       </Fragment>
     );
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+});
+
 TownsHistoryMerchantColumn.propTypes = {
   character: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   currentMerchant: PropTypes.number.isRequired,
-  currentStory: PropTypes.number.isRequired,
 };
 
-export default TownsHistoryMerchantColumn;
+export default connect(mapStateToProps)(TownsHistoryMerchantColumn);

@@ -5,17 +5,16 @@ import CharacterAttributes from "./CharacterAttributes";
 import CharacterOtherInfos from "./CharacterOtherInfos";
 import CharacterHeader from "./CharacterHeader";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
-const styles = {
-  CharPanel: {
-    borderBottom: "1px solid black",
-    width: "100%",
-    height: "50%",
-    backgroundColor: colors.background,
-    color: colors.text,
-  },
-  CharacterBox: { position: "relative", height: "100%" },
+const CharacterPanelContainer = {
+  borderBottom: "1px solid black",
+  width: "100%",
+  height: "50%",
+  backgroundColor: colors.background,
+  color: colors.text,
 };
+const CharacterPanelBox = { position: "relative", height: "100%" };
 
 class CharacterPanel extends PureComponent {
   render() {
@@ -35,12 +34,11 @@ class CharacterPanel extends PureComponent {
       toggleIsOnChar,
       triggerError,
       uid,
-      currentStory,
     } = this.props;
 
     return (
-      <div style={styles.CharPanel}>
-        <div style={styles.CharacterBox}>
+      <div style={CharacterPanelContainer}>
+        <div style={CharacterPanelBox}>
           {isGameMaster ? (
             <CharacterHeader
               gold={0}
@@ -51,7 +49,6 @@ class CharacterPanel extends PureComponent {
               maxHealth={"999"}
               triggerError={triggerError}
               uid={uid}
-              currentStory={currentStory}
             />
           ) : (
             <CharacterHeader
@@ -63,22 +60,15 @@ class CharacterPanel extends PureComponent {
               maxHealth={character.maxHealth}
               triggerError={triggerError}
               uid={uid}
-              currentStory={currentStory}
             />
           )}
-          <CharacterAttributes
-            character={character}
-            isGameMaster={isGameMaster}
-            currentStory={currentStory}
-          />
+          <CharacterAttributes character={character} />
           <CharacterOtherInfos
             character={character}
-            currentStory={currentStory}
             status={status}
             infoTab={infoTab}
             damageTaken={damageTaken}
             gold={gold}
-            isGameMaster={isGameMaster}
             onChange={onChange}
             onChangeTab={onChangeTab}
             onLifeChange={onLifeChange}
@@ -93,9 +83,12 @@ class CharacterPanel extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  isGameMaster: store.appState.isGameMaster,
+});
+
 CharacterPanel.propTypes = {
   character: PropTypes.object.isRequired,
-  isGameMaster: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   infoTab: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
@@ -109,7 +102,6 @@ CharacterPanel.propTypes = {
   toggleIsOnChar: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
-  currentStory: PropTypes.number.isRequired,
 };
 
-export default CharacterPanel;
+export default connect(mapStateToProps)(CharacterPanel);
