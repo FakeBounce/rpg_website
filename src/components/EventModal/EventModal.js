@@ -556,11 +556,11 @@ class EventModal extends PureComponent {
     }));
   };
 
-  addViewerToEvent = uid => {
+  addViewerToEvent = eventUserUid => {
     const { currentEvent, eventHistory } = this.props;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
-      newEvent.viewers.push(uid);
+      newEvent.viewers.push(eventUserUid);
       const newEventHistory = [...eventHistory];
       newEventHistory[currentEvent] = { ...newEvent };
 
@@ -568,7 +568,7 @@ class EventModal extends PureComponent {
     }
   };
 
-  removeViewerFromEvent = uid => {
+  removeViewerFromEvent = eventUserUid => {
     const {
       currentEvent,
       eventHistory,
@@ -580,7 +580,7 @@ class EventModal extends PureComponent {
 
       if (newEvent.viewers && newEvent.viewers.length > 0) {
         newEvent.viewers.map((ql, index) => {
-          if (ql === uid) {
+          if (ql === eventUserUid) {
             newEvent.viewers.splice(index, 1);
           }
           return null;
@@ -588,7 +588,7 @@ class EventModal extends PureComponent {
       } else {
         const userIds = [];
         storyCharacters.map(sc => {
-          if (sc.userUid !== uid && sc.userUid !== gameMaster) {
+          if (sc.userUid !== eventUserUid && sc.userUid !== gameMaster) {
             userIds.push(sc.userUid);
           }
           return null;
@@ -685,7 +685,7 @@ class EventModal extends PureComponent {
               return (
                 <Draw
                   key={"drawer-" + sc.userUid}
-                  uid={sc.userUid}
+                  drawUid={sc.userUid}
                   disabled={uid !== sc.userUid}
                   name={sc.name}
                 />
@@ -706,15 +706,15 @@ class EventModal extends PureComponent {
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   isGameMaster: store.appState.isGameMaster,
+  uid: store.userInfos.uid,
+  character: store.character,
 });
 
 EventModal.propTypes = {
   currentEvent: PropTypes.number.isRequired,
   eventHistory: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
-  uid: PropTypes.string.isRequired,
   doSetState: PropTypes.func.isRequired,
-  character: PropTypes.object.isRequired,
   triggerError: PropTypes.func.isRequired,
 };
 

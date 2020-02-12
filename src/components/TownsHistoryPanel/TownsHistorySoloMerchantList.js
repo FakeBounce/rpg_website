@@ -1,32 +1,37 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Item from '../ItemPanel/Item';
-import { heightLeft } from '../Utils/StyleConstants';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Item from "../ItemPanel/Item";
+import { heightLeft } from "../Utils/StyleConstants";
+import { connect } from "react-redux";
 
 const styledListContainer = {
-  width: '100%',
+  width: "100%",
   height: heightLeft - 26,
-  display: 'inline-block',
-  position: 'relative',
-  float: 'left',
-  borderRight: '1px solid white',
-  overflowY: 'auto',
-  overflowX: 'hidden',
+  display: "inline-block",
+  position: "relative",
+  float: "left",
+  borderRight: "1px solid white",
+  overflowY: "auto",
+  overflowX: "hidden",
 };
 
 class TownsHistorySoloMerchantList extends Component {
   render() {
-    const { character, showedMerchant, showItemDescription } = this.props;
+    const {
+      characterEducation,
+      showedMerchant,
+      showItemDescription,
+    } = this.props;
     return (
       <div style={styledListContainer} className="scrollbar">
         {Object.keys(showedMerchant.items).map(iKey => {
           return (
             <Item
-              key={'town-list-merchant-item-'+iKey}
+              key={"town-list-merchant-item-" + iKey}
               index={iKey}
               showItemDescription={showItemDescription}
               isHidden={
-                character.education <
+                characterEducation <
                 parseInt(showedMerchant.items[iKey].rarity, 10) * 9
               }
               {...showedMerchant.items[iKey]}
@@ -38,10 +43,14 @@ class TownsHistorySoloMerchantList extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  characterEducation: store.character.education,
+});
+
 TownsHistorySoloMerchantList.propTypes = {
-  character: PropTypes.object.isRequired,
   showedMerchant: PropTypes.object.isRequired,
   showItemDescription: PropTypes.func.isRequired,
 };
 
-export default TownsHistorySoloMerchantList;
+export default connect(mapStateToProps)(TownsHistorySoloMerchantList);

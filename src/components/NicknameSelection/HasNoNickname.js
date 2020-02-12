@@ -23,7 +23,7 @@ class HasNoNickname extends Component {
   };
 
   render() {
-    const { pseudoInput, onChange, signOut } = this.props;
+    const { pseudoInput, signOut } = this.props;
 
     return (
       <div>

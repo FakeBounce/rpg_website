@@ -5,7 +5,6 @@ import { resetStoryMerchants } from "./MerchantsFunctions";
 import Camera from "../../Camera";
 import ButtonLarge from "./ButtonLarge";
 import firebase from "firebase";
-import { updateAllMusic } from "../../redux/actions/actionsSounds";
 import { connect } from "react-redux";
 import { togglePlayerView } from "../../redux/actions/actionsAppState";
 
@@ -143,14 +142,13 @@ class Header extends Component {
       toggleEvent,
       toggleMusic,
       dispatchTogglePlayerView,
-      uid,
     } = this.props;
     const { hasHydrated, items } = this.state;
 
     return (
       <div style={styledHeader}>
         <div style={styledHeaderLeft}>
-          <Camera uid={uid} />
+          <Camera />
         </div>
         <div style={styledHeaderRight}>
           <ButtonLarge style={styledSignOut} onClick={signOut}>
@@ -251,7 +249,6 @@ Header.propTypes = {
   toggleEvent: PropTypes.func.isRequired,
   toggleMerchantList: PropTypes.func.isRequired,
   toggleMusic: PropTypes.func.isRequired,
-  uid: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

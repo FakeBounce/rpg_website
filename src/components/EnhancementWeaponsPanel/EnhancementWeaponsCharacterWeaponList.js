@@ -1,29 +1,34 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 
-import EnhancementWeaponsItem from './EnhancementWeaponsItem';
-import EnhancementWeaponsSeparator from './EnhancementWeaponsSeparator';
+import EnhancementWeaponsItem from "./EnhancementWeaponsItem";
+import EnhancementWeaponsSeparator from "./EnhancementWeaponsSeparator";
+import { connect } from "react-redux";
 
 class EnhancementWeaponsCharacterWeaponList extends Component {
   render() {
-    const { character, choosedItem, showEnhancers } = this.props;
+    const { characterWeapons, choosedItem, showEnhancers } = this.props;
 
     return (
       <Fragment>
         <EnhancementWeaponsSeparator text="Your weapons :" />
-        {character.weapons.map((item, index) => {
-          if (item.indexOf('(') === -1) {
+        {characterWeapons.map((item, index) => {
+          if (item.indexOf("(") === -1) {
             return (
               <EnhancementWeaponsItem
                 key={`item-${item.name}-${index}`}
                 index={index}
                 isHidden={false}
-                isSelected={choosedItem && !choosedItem.isFromMerchant && choosedItem.index === index}
+                isSelected={
+                  choosedItem &&
+                  !choosedItem.isFromMerchant &&
+                  choosedItem.index === index
+                }
                 itemAction={() =>
                   showEnhancers(
                     false,
                     { name: item.name ? item.name : item },
-                    index
+                    index,
                   )
                 }
                 name={item}
@@ -37,10 +42,13 @@ class EnhancementWeaponsCharacterWeaponList extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  characterWeapons: store.character.weapons,
+});
+
 EnhancementWeaponsCharacterWeaponList.propTypes = {
-  character: PropTypes.object.isRequired,
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
 };
 
-export default EnhancementWeaponsCharacterWeaponList;
+export default connect(mapStateToProps)(EnhancementWeaponsCharacterWeaponList);

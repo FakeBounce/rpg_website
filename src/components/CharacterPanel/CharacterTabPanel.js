@@ -24,38 +24,32 @@ const styles = {
 
 class CharacterTabPanel extends Component {
   render() {
-    const { character, infoTab, onItemUse, isGameMaster } = this.props;
+    const {
+      characterWeapons,
+      characterAbilities,
+      characterSkills,
+      infoTab,
+      onItemUse,
+    } = this.props;
 
     return (
       <div style={styles.tabPanel} className="scrollbar">
         {infoTab === "Weapons" && (
           <CharacterTabPanelContent
-            tab={character.weapons || []}
+            tab={characterWeapons}
             tabName={"Weapons"}
-            isGameMaster="Weapons :"
-            character={character}
           />
         )}
         {infoTab === "Abilities" && (
           <CharacterTabPanelContent
-            tab={character.abilities || []}
+            tab={characterAbilities}
             tabName={"Abilities"}
-            character={character}
           />
         )}
         {infoTab === "Skills" && (
-          <CharacterTabPanelContent
-            tab={character.skills || []}
-            tabName={"Skills"}
-            character={character}
-          />
+          <CharacterTabPanelContent tab={characterSkills} tabName={"Skills"} />
         )}
-        {infoTab === "Items" && (
-          <CharacterTabPanelItem
-            character={character}
-            onItemUse={onItemUse}
-          />
-        )}
+        {infoTab === "Items" && <CharacterTabPanelItem onItemUse={onItemUse} />}
       </div>
     );
   }
@@ -63,10 +57,12 @@ class CharacterTabPanel extends Component {
 
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
+  characterWeapons: store.character.weapons,
+  characterAbilities: store.character.abilities,
+  characterSkills: store.character.skills,
 });
 
 CharacterTabPanel.propTypes = {
-  character: PropTypes.object.isRequired,
   infoTab: PropTypes.string.isRequired,
   onItemUse: PropTypes.func.isRequired,
 };

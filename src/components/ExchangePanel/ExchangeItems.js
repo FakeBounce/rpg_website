@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ExchangeItem from './ExchangeItem';
+import { connect } from "react-redux";
 
 class ExchangeItems extends Component {
   render() {
-    const { character, onItemExchange } = this.props;
+    const { characterItems, onItemExchange } = this.props;
 
-    return character.items.map((item, index) => {
+    return characterItems.map((item, index) => {
       return (
         <ExchangeItem
           onItemExchange={onItemExchange}
-          character={character}
           index={index}
           item={item}
         />
@@ -19,9 +19,12 @@ class ExchangeItems extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  characterItems: store.character.items,
+});
+
 ExchangeItems.propTypes = {
   onItemExchange: PropTypes.func.isRequired,
-  character: PropTypes.object.isRequired,
 };
 
-export default ExchangeItems;
+export default connect(mapStateToProps)(ExchangeItems);

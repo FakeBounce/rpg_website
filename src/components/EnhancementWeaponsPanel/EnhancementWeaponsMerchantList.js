@@ -1,19 +1,25 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 
-import EnhancementWeaponsItem from './EnhancementWeaponsItem';
-import EnhancementWeaponsSeparator from './EnhancementWeaponsSeparator';
+import EnhancementWeaponsItem from "./EnhancementWeaponsItem";
+import EnhancementWeaponsSeparator from "./EnhancementWeaponsSeparator";
+import { connect } from "react-redux";
 
 class EnhancementWeaponsMerchantList extends Component {
   render() {
-    const { character, itemsList, choosedItem, showEnhancers } = this.props;
+    const {
+      characterEducation,
+      itemsList,
+      choosedItem,
+      showEnhancers,
+    } = this.props;
 
     return (
       <Fragment>
         <EnhancementWeaponsSeparator text="Proposed weapons :" />
         {Object.keys(itemsList).map(key => {
-          const isHidden = character.education < itemsList[key].rarity * 9;
-          if (itemsList[key].itemType === 'weapons') {
+          const isHidden = characterEducation < itemsList[key].rarity * 9;
+          if (itemsList[key].itemType === "weapons") {
             return (
               <EnhancementWeaponsItem
                 key={`item-${itemsList[key].name}-${key}`}
@@ -37,11 +43,14 @@ class EnhancementWeaponsMerchantList extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  characterEducation: store.education,
+});
+
 EnhancementWeaponsMerchantList.propTypes = {
-  character: PropTypes.object.isRequired,
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
   itemsList: PropTypes.object.isRequired,
 };
 
-export default EnhancementWeaponsMerchantList;
+export default connect(mapStateToProps)(EnhancementWeaponsMerchantList);

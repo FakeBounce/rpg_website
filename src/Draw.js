@@ -10,14 +10,15 @@ const otherWidth = ((widthLeft + mapWidth) / 2 - 10) / 2;
 class Draw extends Component {
   canvas = null;
   state = {
-    color: this.props.uid === "default" ? "black" : "red",
+    color: this.props.drawUid === "default" ? "black" : "red",
   };
 
   componentDidMount() {
+    const { drawUid } = this.props;
     // Reset drawers
     // firebase
     //   .database()
-    //   .ref("stories/" + 0 + "/draw/" + this.props.uid)
+    //   .ref("stories/" + 0 + "/draw/" + this.props.drawUid)
     //   .set("{\"lines\":[],\"width\":400,\"height\":400}")
     //   .catch(error => {
     //     // Handle Errors here.
@@ -27,7 +28,7 @@ class Draw extends Component {
     //listen to drawers
     firebase
       .database()
-      .ref("stories/" + 0 + "/draw/" + this.props.uid)
+      .ref("stories/" + 0 + "/draw/" + drawUid)
       .on("value", snapshot => {
         if (this.canvas) {
           if (typeof snapshot.val() === "string") {
@@ -35,7 +36,7 @@ class Draw extends Component {
           } else {
             firebase
               .database()
-              .ref("stories/" + 0 + "/draw/" + this.props.uid)
+              .ref("stories/" + 0 + "/draw/" + drawUid)
               .set('{"lines":[],"width":400,"height":400}')
               .catch(error => {
                 // Handle Errors here.
@@ -47,19 +48,19 @@ class Draw extends Component {
   }
 
   render() {
-    const { uid, name, disabled } = this.props;
+    const { drawUid, name, disabled } = this.props;
     return (
       <div
         style={{
           border: "1px solid black",
-          width: uid === "default" ? defaultWidth : otherWidth,
+          width: drawUid === "default" ? defaultWidth : otherWidth,
           display: "inline-block",
           float: "left",
         }}
       >
         <div
           style={{
-            width: uid === "default" ? defaultWidth : otherWidth,
+            width: drawUid === "default" ? defaultWidth : otherWidth,
             position: "absolute",
           }}
         >
@@ -70,8 +71,10 @@ class Draw extends Component {
           loadTimeOffset={3}
           brushRadius={1}
           lazyRadius={0}
-          canvasWidth={uid === "default" ? defaultWidth : otherWidth}
-          canvasHeight={uid === "default" ? defaultWidth / 2 : otherWidth / 2}
+          canvasWidth={drawUid === "default" ? defaultWidth : otherWidth}
+          canvasHeight={
+            drawUid === "default" ? defaultWidth / 2 : otherWidth / 2
+          }
           disabled={disabled}
         />
 
@@ -109,7 +112,7 @@ class Draw extends Component {
                     // this.canvas.loadSaveData(sn.val(), false);
 
                     const cv = sn.val();
-                    cv[uid] = this.canvas.getSaveData();
+                    cv[drawUid] = this.canvas.getSaveData();
                     // cv.colors = ['black'];
                     // cv.colorsLeft = ['pink','red','green','purple','orange','yellow','blue', 'grey', 'brown'];
                     firebase
@@ -152,7 +155,7 @@ class Draw extends Component {
               if (this.canvas) {
                 firebase
                   .database()
-                  .ref("stories/" + 0 + "/draw/" + uid)
+                  .ref("stories/" + 0 + "/draw/" + drawUid)
                   .once("value")
                   .then(sn => {
                     this.canvas.loadSaveData(sn.val(), false);
@@ -170,12 +173,12 @@ class Draw extends Component {
 }
 
 Draw.defaultProps = {
-  uid: "default",
+  drawUid: "default",
   disabled: true,
 };
 
 Draw.propTypes = {
-  uid: PropTypes.string,
+  drawUid: PropTypes.string,
   name: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
 };

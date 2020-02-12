@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { widthExchangeBox, heightExchangeBox } from "../Utils/StyleConstants";
 import ExchangeItems from "./ExchangeItems";
 import ExchangeWeapons from "./ExchangeWeapons";
+import { connect } from "react-redux";
 
 const styledItemContainer = {
   position: "absolute",
@@ -21,30 +22,31 @@ const styledSeparator2 = { marginTop: 20, display: "inline-block" };
 
 class ExchangeContent extends Component {
   render() {
-    const { character, onItemExchange, onWeaponExchange } = this.props;
+    const { characterWeapons, onItemExchange, onWeaponExchange } = this.props;
 
     return (
       <div className="scrollbar" style={styledItemContainer}>
-        {character.weapons && (
+        {characterWeapons.length > 0 && (
           <Fragment>
             <div style={styledSeparator}>Weapons : </div>
-            <ExchangeWeapons
-              character={character}
-              onWeaponExchange={onWeaponExchange}
-            />
+            <ExchangeWeapons onWeaponExchange={onWeaponExchange} />
           </Fragment>
         )}
         <div style={styledSeparator2}>Items : </div>
-        <ExchangeItems character={character} onItemExchange={onItemExchange} />
+        <ExchangeItems onItemExchange={onItemExchange} />
       </div>
     );
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  characterWeapons: store.character.weapons,
+});
+
 ExchangeContent.propTypes = {
   onItemExchange: PropTypes.func.isRequired,
   onWeaponExchange: PropTypes.func.isRequired,
-  character: PropTypes.object.isRequired,
 };
 
-export default ExchangeContent;
+export default connect(mapStateToProps)(ExchangeContent);

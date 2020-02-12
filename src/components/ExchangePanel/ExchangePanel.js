@@ -34,7 +34,6 @@ const styledCadre = {
 class ExchangePanel extends Component {
   render() {
     const {
-      character,
       currentExchangeCharacter,
       closeExchange,
       onItemExchange,
@@ -48,7 +47,6 @@ class ExchangePanel extends Component {
         <ExchangeContent
           onItemExchange={onItemExchange}
           onWeaponExchange={onWeaponExchange}
-          character={character}
         />
         <ExchangeExit closeExchange={closeExchange} />
       </div>
@@ -61,7 +59,6 @@ ExchangePanel.propTypes = {
   onItemExchange: PropTypes.func.isRequired,
   onWeaponExchange: PropTypes.func.isRequired,
   currentExchangeCharacter: PropTypes.object.isRequired,
-  character: PropTypes.object.isRequired,
 };
 
 export default ExchangePanel;

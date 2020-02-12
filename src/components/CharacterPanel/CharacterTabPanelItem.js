@@ -175,10 +175,10 @@ class CharacterTabPanelItem extends Component {
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   isGameMaster: store.appState.isGameMaster,
+  character: store.character,
 });
 
 CharacterTabPanelItem.propTypes = {
-  character: PropTypes.object.isRequired,
   onItemUse: PropTypes.func.isRequired,
 };
 

@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
 import { heightLeft, widthLeft } from "./components/Utils/StyleConstants";
 import { colors, tempoImagesList } from "./components/Utils/Constants";
 import firebase from "firebase";

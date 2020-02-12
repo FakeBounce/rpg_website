@@ -41,7 +41,7 @@ import {
   hydrateAllMerchants,
   // hydrateMerchant,
 } from "./components/Utils/MerchantsFunctions";
-import { updateAllMusic } from "./redux/actions/actionsSounds";
+import { toggleMusic, updateAllMusic } from "./redux/actions/actionsSounds";
 import PropTypes from "prop-types";
 import {
   setGameMaster,
@@ -54,6 +54,7 @@ import {
   CALL_LOAD_NOISE,
   CALL_LOAD_SONG,
 } from "./redux/actionsTypes/actionsTypesSounds";
+import { setCharacter } from "./redux/actions/actionsCharacter";
 
 const styledErrorPanel = {
   position: "absolute",
@@ -196,13 +197,7 @@ class App extends Component {
     );
   };
 
-  toggleMusic = () => {
-    this.setState(state => ({
-      ...state,
-      musicMute: !state.musicMute,
-      noiseMute: !state.noiseMute,
-    }));
-  };
+  toggleMusic = () => this.props.dispatchToggleMusic();
 
   onChange = (name, value) => {
     const obj = {};
@@ -538,9 +533,6 @@ class App extends Component {
       noiseName,
       noiseStatus,
       noiseVolume,
-      songName,
-      songStatus,
-      songVolume,
     } = this.state;
     firebase
       .database()
@@ -576,6 +568,7 @@ class App extends Component {
       dispatchTogglePlayerMastering,
       dispatchUpdateCurrentStory,
       dispatchSetGameMaster,
+      dispatchSetCharacter,
     } = this.props;
 
     if (i < 0) return null;
@@ -640,10 +633,10 @@ class App extends Component {
           this.setState(
             state => ({
               ...state,
-              character: snapshot.val(),
               characterId: stories[i].characters[uid].characterId,
             }),
             () => {
+              dispatchSetCharacter(snapshot.val());
               dispatchUpdateCurrentStory(i);
               dispatchSetGameMaster(stories[i].gameMaster);
               this.createTable();
@@ -737,33 +730,15 @@ class App extends Component {
       characterCreation,
       characters,
       characterId,
-      currentStory,
       email,
       error,
       isAdmin,
       isAuth,
-      isGameMaster,
-      isMusicFirst,
-      musicMute,
-      musicNameFirst,
-      musicNameSecond,
-      musicStatusFirst,
-      musicStatusSecond,
-      musicVolumeFirst,
-      musicVolumeSecond,
-      noiseMute,
-      noiseName,
-      noiseStatus,
-      noiseVolume,
       password,
-      songName,
-      songStatus,
-      songVolume,
       stories,
-      uid,
       ...rest
     } = this.state;
-    const { pseudo } = this.props;
+    const { pseudo, currentStory, isGameMaster } = this.props;
 
     return (
       <div
@@ -816,7 +791,6 @@ class App extends Component {
               keepCharacter={this.keepCharacter}
               signOut={this.signOut}
               triggerError={this.triggerError}
-              uid={uid}
             />
           )}
 
@@ -834,7 +808,6 @@ class App extends Component {
               loadCurrentPosition={this.loadCurrentPosition}
               onChange={this.onChange}
               onChangeMusics={this.onChangeMusics}
-              pseudo={pseudo}
               quests={quests}
               selectAnotherCharacter={this.selectAnotherCharacter}
               signOut={this.signOut}
@@ -843,7 +816,6 @@ class App extends Component {
               toggleMerchantList={this.toggleMerchantList}
               toggleMusic={this.toggleMusic}
               triggerError={this.triggerError}
-              uid={uid}
               {...rest}
             />
           )}
@@ -858,6 +830,9 @@ const mapDispatchToProps = dispatch => {
   return {
     dispatchUpdateAllMusic: payload => {
       dispatch(updateAllMusic(payload));
+    },
+    dispatchToggleMusic: () => {
+      dispatch(toggleMusic());
     },
     loadSong: payload => {
       dispatch({ type: CALL_LOAD_SONG, payload });
@@ -880,20 +855,26 @@ const mapDispatchToProps = dispatch => {
     dispatchSetGameMaster: payload => {
       dispatch(setGameMaster(payload));
     },
+    dispatchSetCharacter: payload => {
+      dispatch(setCharacter(payload));
+    },
   };
 };
 
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
+  currentStory: store.appState.currentStory,
   pseudo: store.userInfos.pseudo,
 });
 
 App.propTypes = {
+  dispatchToggleMusic: PropTypes.func.isRequired,
   dispatchUpdateAllMusic: PropTypes.func.isRequired,
   dispatchTogglePlayerView: PropTypes.func.isRequired,
   dispatchTogglePlayerMastering: PropTypes.func.isRequired,
   dispatchUpdateCurrentStory: PropTypes.func.isRequired,
   dispatchSetGameMaster: PropTypes.func.isRequired,
+  dispatchSetCharacter: PropTypes.func.isRequired,
   loadSong: PropTypes.func.isRequired,
   loadNoise: PropTypes.func.isRequired,
   loadMusic: PropTypes.func.isRequired,

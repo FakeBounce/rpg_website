@@ -1,6 +1,7 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { heightLeft } from "../Utils/StyleConstants";
+import { connect } from "react-redux";
 
 const styles = {
   ChatRow: {
@@ -17,7 +18,7 @@ const styles = {
   },
 };
 
-class ChatRow extends PureComponent {
+class ChatRow extends Component {
   render() {
     const { pseudo, message, image, characterName } = this.props;
 
@@ -26,13 +27,17 @@ class ChatRow extends PureComponent {
         {characterName
           ? `@${characterName}: ${message}`
           : pseudo
-            ? `@${pseudo}: ${message}`
-            : message}
+          ? `@${pseudo}: ${message}`
+          : message}
         {image && <img src={image} alt="Chat" style={styles.ChatImage} />}
       </div>
     );
   }
 }
+
+const mapStateToProps = store => ({
+  pseudo: store.userInfos.pseudo,
+});
 
 ChatRow.defaultProps = {
   image: null,
@@ -42,9 +47,8 @@ ChatRow.defaultProps = {
 
 ChatRow.propTypes = {
   characterName: PropTypes.string,
-  pseudo: PropTypes.string,
   image: PropTypes.string,
   message: PropTypes.string.isRequired,
 };
 
-export default ChatRow;
+export default connect(mapStateToProps)(ChatRow);

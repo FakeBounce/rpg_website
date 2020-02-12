@@ -137,7 +137,7 @@ class EventPanel extends Component {
   };
 
   render() {
-    const { storyCharacters, gameMaster, items } = this.props;
+    const { storyCharacters, items } = this.props;
     const {
       eventType,
       goldEvent,

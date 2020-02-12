@@ -1,28 +1,29 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from "react";
 
-import Item from './Item';
-import PropTypes from 'prop-types';
-import { heightLeft, widthLeft } from '../Utils/StyleConstants';
+import Item from "./Item";
+import PropTypes from "prop-types";
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
+import { connect } from "react-redux";
 
 const styledItemContainer = {
-  display: 'inline-block',
-  float: 'left',
-  position: 'absolute',
+  display: "inline-block",
+  float: "left",
+  position: "absolute",
   top: 40,
   left: 26,
-  overflowY: 'auto',
+  overflowY: "auto",
   height: `${heightLeft / 2 - 60}px`,
   width: `${widthLeft / 2 - 52}px`,
 };
 
 class ItemList extends PureComponent {
   render() {
-    const { character, itemsList, showItemDescription } = this.props;
+    const { characterEducation, itemsList, showItemDescription } = this.props;
 
     return (
       <div style={styledItemContainer} className="scrollbar">
         {Object.keys(itemsList).map(key => {
-          const isHidden = character.education < itemsList[key].rarity * 9;
+          const isHidden = characterEducation < itemsList[key].rarity * 9;
           return (
             <Item
               key={`item-${itemsList[key].name}-${key}`}
@@ -38,10 +39,14 @@ class ItemList extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  characterEducation: store.character.education,
+});
+
 ItemList.propTypes = {
-  character: PropTypes.object.isRequired,
   itemsList: PropTypes.object.isRequired,
   showItemDescription: PropTypes.func.isRequired,
 };
 
-export default ItemList;
+export default connect(mapStateToProps)(ItemList);

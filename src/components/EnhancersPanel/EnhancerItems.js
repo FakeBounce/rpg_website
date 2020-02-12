@@ -20,7 +20,6 @@ class EnhancerItems extends Component {
   render() {
     const {
       currentMerchant,
-      character,
       itemsList,
       merchants,
       chooseEnhancer1,
@@ -36,7 +35,6 @@ class EnhancerItems extends Component {
         <EnhancerMerchantItems
           merchants={merchants}
           currentMerchant={currentMerchant}
-          character={character}
           choosedEnhancer1={choosedEnhancer1}
           choosedEnhancer2={choosedEnhancer2}
           chooseEnhancer1={chooseEnhancer1}
@@ -48,7 +46,6 @@ class EnhancerItems extends Component {
         <EnhancerCharacterItems
           merchants={merchants}
           currentMerchant={currentMerchant}
-          character={character}
           choosedEnhancer1={choosedEnhancer1}
           choosedEnhancer2={choosedEnhancer2}
           chooseEnhancer1={chooseEnhancer1}
@@ -62,7 +59,6 @@ class EnhancerItems extends Component {
 
 EnhancerItems.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
-  character: PropTypes.object.isRequired,
   itemsList: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   chooseEnhancer1: PropTypes.func.isRequired,

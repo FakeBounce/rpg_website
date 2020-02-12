@@ -89,7 +89,6 @@ class GameScreen extends Component {
       hydrateMerchants,
       isGameMaster,
       merchants,
-      pseudo,
       quests,
       selectAnotherCharacter,
       signOut,
@@ -129,32 +128,24 @@ class GameScreen extends Component {
           toggleMerchantList={this.toggleMerchantList}
           toggleMusic={toggleMusic}
           toggleEvent={this.toggleEvent}
-          uid={uid}
         />
         {this.canReadEvent() && (
           <EventModal
-            character={character}
             currentEvent={currentEvent}
             doSetState={doSetState}
             eventHistory={eventHistory}
             storyCharacters={storyCharacters}
             triggerError={triggerError}
-            uid={uid}
           />
         )}
         {isOnBestiary && bestiary ? (
-          <BestiaryPanel
-            uid={uid}
-            bestiary={bestiary}
-            doSetState={doSetState}
-          />
+          <BestiaryPanel bestiary={bestiary} doSetState={doSetState} />
         ) : isOnMerchantList &&
           towns &&
           towns.length > 0 &&
           merchants &&
           merchants.length > 0 ? (
           <TownsHistoryPanel
-            character={character}
             merchants={merchants}
             quests={quests}
             towns={towns}
@@ -163,7 +154,6 @@ class GameScreen extends Component {
           <ChatCommandsPanel />
         ) : (
           <MiddlePanel
-            character={character}
             doSetState={doSetState}
             eventHistory={eventHistory}
             merchants={merchants}
@@ -172,7 +162,6 @@ class GameScreen extends Component {
             storyCharacters={storyCharacters}
             towns={towns}
             triggerError={triggerError}
-            uid={uid}
             {...rest}
           />
         )}
@@ -185,6 +174,7 @@ class GameScreen extends Component {
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
   currentStory: store.appState.currentStory,
+  uid: store.userInfos.uid,
 });
 
 GameScreen.propTypes = {
@@ -195,7 +185,6 @@ GameScreen.propTypes = {
   eventHistory: PropTypes.array.isRequired,
   hydrateMerchants: PropTypes.func.isRequired,
   merchants: PropTypes.array.isRequired,
-  pseudo: PropTypes.string.isRequired,
   quests: PropTypes.array.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
@@ -204,7 +193,6 @@ GameScreen.propTypes = {
   toggleMusic: PropTypes.func.isRequired,
   towns: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
-  uid: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(GameScreen);

@@ -47,13 +47,12 @@ class ItemPanel extends PureComponent {
   };
 
   render() {
-    const { character, itemsList } = this.props;
+    const { itemsList } = this.props;
 
     return (
       <div style={styledMapSide}>
         <Cadre />
         <ItemList
-          character={character}
           itemsList={itemsList}
           showItemDescription={this.showItemDescription}
         />
@@ -68,7 +67,6 @@ const mapStateToProps = store => ({
 
 ItemPanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
-  character: PropTypes.object.isRequired,
   itemsList: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   doSetState: PropTypes.func.isRequired,

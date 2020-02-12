@@ -1,13 +1,14 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 
-import EnhancerItem from './EnhancerItem';
-import EnhancerSeparator from './EnhancerSeparator';
+import EnhancerItem from "./EnhancerItem";
+import EnhancerSeparator from "./EnhancerSeparator";
+import { connect } from "react-redux";
 
 class EnhancerMerchantItems extends Component {
   render() {
     const {
-      character,
+      characterEducation,
       itemsList,
       merchants,
       currentMerchant,
@@ -23,16 +24,16 @@ class EnhancerMerchantItems extends Component {
       <Fragment>
         <EnhancerSeparator
           text={
-            currentTab === 'enhancements'
-              ? 'Choose enhancement (temporary) :'
-              : 'Choose enhancement (permanent) :'
+            currentTab === "enhancements"
+              ? "Choose enhancement (temporary) :"
+              : "Choose enhancement (permanent) :"
           }
         />
         {parseInt(merchants[currentMerchant].enhancements, 10) > 0 &&
           Object.keys(itemsList).map(key => {
-            const isHidden = character.education < itemsList[key].rarity * 9;
+            const isHidden = characterEducation < itemsList[key].rarity * 9;
             if (
-              itemsList[key].itemType === 'enhancements' &&
+              itemsList[key].itemType === "enhancements" &&
               itemsList[key].slot <= slots &&
               itemsList[key].slot <=
                 parseInt(merchants[currentMerchant].level, 10)
@@ -68,9 +69,13 @@ class EnhancerMerchantItems extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  characterEducation: store.character.education,
+});
+
 EnhancerMerchantItems.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
-  character: PropTypes.object.isRequired,
   itemsList: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   chooseEnhancer1: PropTypes.func.isRequired,
@@ -81,4 +86,4 @@ EnhancerMerchantItems.propTypes = {
   currentTab: PropTypes.string.isRequired,
 };
 
-export default EnhancerMerchantItems;
+export default connect(mapStateToProps)(EnhancerMerchantItems);

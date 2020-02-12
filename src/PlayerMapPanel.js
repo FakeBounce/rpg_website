@@ -455,7 +455,6 @@ class PlayerMapPanel extends Component {
                 {currentTab === "items" && (
                   <ItemPanel
                     currentMerchant={currentMerchant}
-                    character={character}
                     itemsList={itemsList}
                     merchants={merchants}
                     doSetState={doSetState}
@@ -464,7 +463,6 @@ class PlayerMapPanel extends Component {
                 {currentTab === "enhancements" && (
                   <EnhancementWeaponsPanel
                     currentMerchant={currentMerchant}
-                    character={character}
                     choosedItem={choosedItem}
                     showEnhancers={this.showEnhancers}
                     merchants={merchants}
@@ -474,7 +472,6 @@ class PlayerMapPanel extends Component {
                 {currentTab === "blacksmith" && (
                   <EnhancementWeaponsPanel
                     currentMerchant={currentMerchant}
-                    character={character}
                     choosedItem={choosedItem}
                     showEnhancers={this.showEnhancers}
                     merchants={merchants}
@@ -490,7 +487,6 @@ class PlayerMapPanel extends Component {
             {showEnhancers ? (
               <EnhancersPanel
                 currentMerchant={currentMerchant}
-                character={character}
                 itemsList={itemsList}
                 merchants={merchants}
                 enhanceWeapon={this.enhanceWeapon}
@@ -525,13 +521,14 @@ class PlayerMapPanel extends Component {
 
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
+  uid: store.userInfos.uid,
+  character: store.character,
 });
 
 PlayerMapPanel.propTypes = {
   isQuestShowed: PropTypes.bool.isRequired,
   currentQuest: PropTypes.number.isRequired,
   currentMerchant: PropTypes.number.isRequired,
-  character: PropTypes.object.isRequired,
   isItemShowed: PropTypes.bool.isRequired,
   itemsList: PropTypes.array.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,

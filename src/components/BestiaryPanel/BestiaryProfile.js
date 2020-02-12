@@ -67,10 +67,10 @@ class BestiaryProfile extends Component {
 
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
+  uid: store.userInfos.uid,
 });
 
 BestiaryProfile.propTypes = {
-  uid: PropTypes.string.isRequired,
   beast: PropTypes.object.isRequired,
   editBeast: PropTypes.func.isRequired,
 };

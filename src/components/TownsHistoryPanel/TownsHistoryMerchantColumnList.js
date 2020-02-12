@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Item from "../ItemPanel/Item";
 import { heightLeft } from "../Utils/StyleConstants";
+import { connect } from "react-redux";
 
 const styledMerchantList = {
   width: "100%",
@@ -14,7 +15,7 @@ const styledMerchantList = {
 class TownsHistoryMerchantColumnList extends Component {
   render() {
     const {
-      character,
+      characterEducation,
       merchants,
       currentMerchant,
       showItemDescription,
@@ -29,7 +30,7 @@ class TownsHistoryMerchantColumnList extends Component {
                 index={iKey}
                 showItemDescription={showItemDescription}
                 isHidden={
-                  character.education <
+                  characterEducation <
                   parseInt(merchants[currentMerchant].items[iKey].rarity, 10) *
                     9
                 }
@@ -43,11 +44,15 @@ class TownsHistoryMerchantColumnList extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
+  characterEducation: store.character.education,
+});
+
 TownsHistoryMerchantColumnList.propTypes = {
-  character: PropTypes.object.isRequired,
   merchants: PropTypes.array.isRequired,
   currentMerchant: PropTypes.number.isRequired,
   showItemDescription: PropTypes.func.isRequired,
 };
 
-export default TownsHistoryMerchantColumnList;
+export default connect(mapStateToProps)(TownsHistoryMerchantColumnList);

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { widthExchangeBox } from '../Utils/StyleConstants';
 import ButtonLarge from '../Utils/ButtonLarge';
+import { connect } from "react-redux";
 
 const styledItem = {
   width: `${widthExchangeBox - 40}px`,
@@ -33,12 +34,12 @@ const styledExchangeButton = {
 
 class ExchangeItem extends Component {
   render() {
-    const { character, onItemExchange, index, item } = this.props;
+    const { characterEducation, onItemExchange, index, item } = this.props;
 
     return (
       <div key={`${item.name}-${index}`} style={styledItem}>
         <div style={styledItemName}>
-          {character.education < item.rarity * 9 ? '???' : item.name}
+          {characterEducation < item.rarity * 9 ? "???" : item.name}
         </div>
         <ButtonLarge
           style={styledExchangeButton}
@@ -51,11 +52,14 @@ class ExchangeItem extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  characterEducation: store.character.education,
+});
+
 ExchangeItem.propTypes = {
-  character: PropTypes.object.isRequired,
   onItemExchange: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
   item: PropTypes.object.isRequired,
 };
 
-export default ExchangeItem;
+export default connect(mapStateToProps)(ExchangeItem);
