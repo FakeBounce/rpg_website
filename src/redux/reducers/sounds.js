@@ -9,6 +9,7 @@ import {
   LOAD_MUSIC,
   LOAD_NOISE,
 } from "../actionsTypes/actionsTypesSounds";
+import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
 
 const initialState = {
   musicMute: false,
@@ -86,6 +87,9 @@ const sounds = (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
+    }
+    case RESET_APP: {
+      return initialState;
     }
     default:
       return state;

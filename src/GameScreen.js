@@ -174,6 +174,7 @@ class GameScreen extends Component {
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
   currentStory: store.appState.currentStory,
+  stories: store.appState.stories,
   uid: store.userInfos.uid,
 });
 
@@ -188,7 +189,6 @@ GameScreen.propTypes = {
   quests: PropTypes.array.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
-  stories: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   toggleMusic: PropTypes.func.isRequired,
   towns: PropTypes.array.isRequired,

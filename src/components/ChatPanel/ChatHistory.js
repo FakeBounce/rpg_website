@@ -31,7 +31,7 @@ class ChatHistory extends PureComponent {
 
     return (
       <div style={styledChatHistoric} className="scrollbar">
-        <ChatRows chatHistory={chatHistory} />
+        <ChatRows />
         <div
           style={{ float: "left", clear: "both" }}
           ref={el => {
@@ -42,9 +42,5 @@ class ChatHistory extends PureComponent {
     );
   }
 }
-
-ChatHistory.propTypes = {
-  chatHistory: PropTypes.object.isRequired,
-};
 
 export default ChatHistory;

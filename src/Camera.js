@@ -420,12 +420,20 @@ class Camera extends Component {
       firebase
         .database()
         .ref("camera/room")
-        .set(newRoom);
+        .set(newRoom)
+        .catch(error => {
+          // Handle Errors here.
+          console.log("Error", error);
+        });
     } else {
       firebase
         .database()
         .ref("camera/room")
-        .set([this.yourId, key]);
+        .set([this.yourId, key])
+        .catch(error => {
+          // Handle Errors here.
+          console.log("Error", error);
+        });
     }
   };
 
@@ -433,7 +441,11 @@ class Camera extends Component {
     firebase
       .database()
       .ref("camera/room")
-      .set([]);
+      .set([])
+      .catch(error => {
+        // Handle Errors here.
+        console.log("Error", error);
+      });
   };
 
   render() {

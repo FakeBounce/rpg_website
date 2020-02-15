@@ -1,8 +1,17 @@
-import { SET_USER_PSEUDO, SET_UID } from "../actionsTypes/actionsTypesUserInfos";
+import {
+  SET_USER_PSEUDO,
+  SET_UID,
+  SET_USER_INFOS,
+  SET_ALL_CHARACTERS,
+} from "../actionsTypes/actionsTypesUserInfos";
+import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
 
 const initialState = {
   pseudo: "",
   uid: "",
+  email: "",
+  password: "",
+  characters: [],
 };
 
 const userInfos = (state = initialState, action) => {
@@ -18,6 +27,21 @@ const userInfos = (state = initialState, action) => {
         ...state,
         uid: action.payload,
       };
+    }
+    case SET_USER_INFOS: {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+    case SET_ALL_CHARACTERS: {
+      return {
+        ...state,
+        characters: action.payload,
+      };
+    }
+    case RESET_APP: {
+      return initialState;
     }
     default:
       return state;

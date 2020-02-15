@@ -1,4 +1,5 @@
 import { SET_CHARACTER } from "../actionsTypes/actionsTypesCharacter";
+import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
 
 const initialState = {
   health: 0,
@@ -21,6 +22,9 @@ const character = (state = initialState, action) => {
         ...state,
         error: action.payload,
       };
+    }
+    case RESET_APP: {
+      return initialState;
     }
     default:
       return state;

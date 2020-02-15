@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Story from "./Story";
 import ButtonLarge from "../Utils/ButtonLarge";
 import NewStory from "./NewStory";
+import { connect } from "react-redux";
 
 const styledStoryPanel = {
   width: "100%",
@@ -50,21 +51,22 @@ class StoriesPanel extends Component {
         >
           Log out
         </ButtonLarge>
-        <div>
-          {stories.map((s, index) => {
-            return (
-              <Story
-                key={`${s.name}-${index}`}
-                chooseStory={chooseStory}
-                index={index}
-                name={s.name}
-                wallpaper={s.wallpaper}
-                totalStories={stories.length}
-                triggerError={triggerError}
-              />
-            );
-          })}
-        </div>
+        <>
+          {stories.length > 0 &&
+            stories.map((s, index) => {
+              return (
+                <Story
+                  key={`${s.name}-${index}`}
+                  chooseStory={chooseStory}
+                  index={index}
+                  name={s.name}
+                  wallpaper={s.wallpaper}
+                  totalStories={stories.length}
+                  triggerError={triggerError}
+                />
+              );
+            })}
+        </>
         <ButtonLarge onClick={this.toggleStoryCreation(true)}>
           Create a story
         </ButtonLarge>
@@ -73,12 +75,15 @@ class StoriesPanel extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  stories: store.appState.stories,
+});
+
 StoriesPanel.propTypes = {
-  stories: PropTypes.array.isRequired,
   chooseStory: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
 };
 
-export default StoriesPanel;
+export default connect(mapStateToProps)(StoriesPanel);

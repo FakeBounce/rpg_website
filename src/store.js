@@ -44,9 +44,9 @@ function configureStore() {
   const store = createStore(reducer, {}, composedEnhancer);
 
   // if (PERSIST_ENABLED === "true") {
-  persistStore(store, null, () => {
-    // console.log('store.getState()', store.getState());
-  });
+  // persistStore(store, null, () => {
+  //   console.log('store.getState()', store.getState());
+  // });
   // }
   return store;
 }

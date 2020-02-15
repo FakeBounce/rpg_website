@@ -5,11 +5,33 @@ import ButtonLarge from "../Utils/ButtonLarge";
 import Logs from "./Logs";
 import { defaultState } from "../Utils/Constants";
 import {
+  setAllCharacters,
   setUid,
+  setUserInfos,
 } from "../../redux/actions/actionsUserInfos";
 import { connect } from "react-redux";
+import { setIsAuth, setIsAdmin } from "../../redux/actions/actionsAppState";
+import {
+  CALL_GET_ALL_STORIES,
+  CALL_LISTEN_STORY_USERS,
+  CALL_PRINT_ERROR,
+} from "../../redux/actionsTypes/actionsTypesAppState";
 
 class IsNotAuth extends Component {
+  state = {
+    email: "",
+    password: "",
+  };
+
+  onChange = (name, value) => {
+    const obj = {};
+    obj[name] = value;
+    this.setState(state => ({
+      ...state,
+      ...obj,
+    }));
+  };
+
   handleKeyPress = event => {
     if (event.key === "Enter") {
       this.signIn();
@@ -18,14 +40,15 @@ class IsNotAuth extends Component {
 
   signIn = () => {
     const {
-      email,
-      password,
-      triggerError,
       doSetState,
-      loadUsers,
-      loadStories,
-      dispatchSetUid,
+      dispatchSetUserInfos,
+      dispatchSetIsAuth,
+      dispatchSetIsAdmin,
+      dispatchCallGetStories,
+      dispatchCallListenUsers,
+      dispatchCallPrintError,
     } = this.props;
+    const { email, password } = this.state;
 
     firebase
       .auth()
@@ -36,48 +59,48 @@ class IsNotAuth extends Component {
           .ref("/users/" + firebase.auth().currentUser.uid)
           .once("value")
           .then(snapshot => {
-            doSetState(
-              {
+            console.log("snapshot.val()", snapshot.val());
+            dispatchSetIsAdmin(snapshot.val().isAdmin);
+            dispatchSetIsAuth(true);
+            dispatchSetUserInfos({
+              uid: firebase.auth().currentUser.uid,
+              email,
+              password,
+              pseudo: snapshot.val().pseudo,
+              characters: snapshot.val().characters,
+            });
+            dispatchCallListenUsers();
+            dispatchCallGetStories();
+            localStorage.setItem(
+              "appState",
+              JSON.stringify({
+                ...defaultState,
                 ...snapshot.val(),
+                email,
                 isAuth: true,
+                password,
+                uid: firebase.auth().currentUser.uid,
                 isAdmin: snapshot.val().isAdmin,
-              },
-              () => {
-                dispatchSetUid(firebase.auth().currentUser.uid);
-                loadUsers();
-                loadStories();
-                localStorage.setItem(
-                  "appState",
-                  JSON.stringify({
-                    ...defaultState,
-                    ...snapshot.val(),
-                    email,
-                    isAuth: true,
-                    password,
-                    uid: firebase.auth().currentUser.uid,
-                    isAdmin: snapshot.val().isAdmin,
-                  }),
-                );
-              },
+              }),
             );
           });
       })
       .catch(error => {
         // Handle Errors here.
-        triggerError(error);
+        dispatchCallPrintError(error.message);
       });
   };
 
   signUp = () => {
     const {
-      email,
-      password,
-      doSetState,
-      triggerError,
-      loadUsers,
-      loadStories,
+      dispatchCallPrintError,
       dispatchSetUid,
+      dispatchSetUserInfos,
+      dispatchSetIsAuth,
+      dispatchCallGetStories,
+      dispatchCallListenUsers,
     } = this.props;
+    const { email, password } = this.state;
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -90,23 +113,26 @@ class IsNotAuth extends Component {
             name: firebase.auth().currentUser.displayName,
           })
           .catch(error => {
-            triggerError(error);
+            dispatchCallPrintError(error.message);
           });
-        doSetState({
-          isAuth: true,
+        dispatchSetIsAuth(true);
+        dispatchSetUserInfos({
+          uid: firebase.auth().currentUser.uid,
+          email,
+          password,
         });
         dispatchSetUid(firebase.auth().currentUser.uid);
-        loadUsers();
-        loadStories();
+        dispatchCallListenUsers();
+        dispatchCallGetStories();
       })
       .catch(error => {
         // Handle Errors here.
-        triggerError(error);
+        dispatchCallPrintError(error.message);
       });
   };
 
   render() {
-    const { email, password, onChange } = this.props;
+    const { email, password } = this.state;
 
     return (
       <div style={{ height: "100%" }}>
@@ -117,7 +143,7 @@ class IsNotAuth extends Component {
           autoComplete="on"
           value={email}
           onChange={e => {
-            onChange(e.target.name, e.target.value);
+            this.onChange(e.target.name, e.target.value);
           }}
           onKeyPress={this.handleKeyPress}
         />
@@ -128,7 +154,7 @@ class IsNotAuth extends Component {
           autoComplete="on"
           value={password}
           onChange={e => {
-            onChange(e.target.name, e.target.value);
+            this.onChange(e.target.name, e.target.value);
           }}
           onKeyPress={this.handleKeyPress}
         />
@@ -142,21 +168,42 @@ class IsNotAuth extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
+    dispatchSetUserInfos: payload => {
+      dispatch(setUserInfos(payload));
+    },
     dispatchSetUid: payload => {
       dispatch(setUid(payload));
+    },
+    dispatchSetIsAuth: payload => {
+      dispatch(setIsAuth(payload));
+    },
+    dispatchSetIsAdmin: payload => {
+      dispatch(setIsAdmin(payload));
+    },
+    dispatchCallGetStories: () => {
+      dispatch({ type: CALL_GET_ALL_STORIES });
+    },
+    dispatchCallListenUsers: () => {
+      dispatch({ type: CALL_LISTEN_STORY_USERS });
+    },
+    dispatchCallPrintError: payload => {
+      dispatch({ type: CALL_PRINT_ERROR, payload });
+    },
+    dispatchSetAllCharacters: payload => {
+      dispatch(setAllCharacters(payload));
     },
   };
 };
 
 IsNotAuth.propTypes = {
+  dispatchSetUserInfos: PropTypes.func.isRequired,
   dispatchSetUid: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
-  loadUsers: PropTypes.func.isRequired,
-  loadStories: PropTypes.func.isRequired,
+  dispatchSetIsAuth: PropTypes.func.isRequired,
+  dispatchSetIsAdmin: PropTypes.func.isRequired,
+  dispatchCallGetStories: PropTypes.func.isRequired,
+  dispatchCallListenUsers: PropTypes.func.isRequired,
+  dispatchCallPrintError: PropTypes.func.isRequired,
+  dispatchSetAllCharacters: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(IsNotAuth);
