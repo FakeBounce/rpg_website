@@ -10,7 +10,7 @@ const events = (state = initialState, action) => {
     case SET_CURRENT_EVENT: {
       return {
         ...state,
-        error: action.payload,
+        currentEvent: action.payload,
       };
     }
     case RESET_APP: {
