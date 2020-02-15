@@ -59,7 +59,6 @@ class IsNotAuth extends Component {
           .ref("/users/" + firebase.auth().currentUser.uid)
           .once("value")
           .then(snapshot => {
-            console.log("snapshot.val()", snapshot.val());
             dispatchSetIsAdmin(snapshot.val().isAdmin);
             dispatchSetIsAuth(true);
             dispatchSetUserInfos({
