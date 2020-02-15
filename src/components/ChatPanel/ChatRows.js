@@ -17,16 +17,16 @@ class ChatRows extends PureComponent {
   };
 
   render() {
-    const { chatHistory } = this.props;
+    const { history } = this.props;
 
-    return Object.keys(chatHistory).map(key => {
+    return Object.keys(history).map(key => {
       if (
-        chatHistory[key].viewers &&
-        this.isAViewer(chatHistory[key].viewers)
+        history[key].viewers &&
+        this.isAViewer(history[key].viewers)
       ) {
-        return <ChatRow key={`chat-row-${key}`} {...chatHistory[key]} />;
-      } else if (!chatHistory[key].viewers) {
-        return <ChatRow key={`chat-row-${key}`} {...chatHistory[key]} />;
+        return <ChatRow key={`chat-row-${key}`} {...history[key]} />;
+      } else if (!history[key].viewers) {
+        return <ChatRow key={`chat-row-${key}`} {...history[key]} />;
       }
       return null;
     });
@@ -36,10 +36,7 @@ class ChatRows extends PureComponent {
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
   pseudo: store.userInfos.pseudo,
+  history: store.chat.history,
 });
-
-ChatRows.propTypes = {
-  chatHistory: PropTypes.object.isRequired,
-};
 
 export default connect(mapStateToProps)(ChatRows);

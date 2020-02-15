@@ -4,14 +4,23 @@ import {
   TOGGLE_PLAYER_MASTERING,
   UPDATE_CURRENT_STORY,
   SET_GAME_MASTER,
+  SET_IS_AUTH,
+  SET_IS_ADMIN,
+  SET_ALL_STORIES,
+  SET_STORY_USERS,
+  RESET_APP,
 } from "../actionsTypes/actionsTypesAppState";
 
 const initialState = {
   currentStory: -1,
   isOnPlayerView: true,
   isGameMaster: false,
+  isAuth: false,
+  isAdmin: false,
   gameMaster: "",
   error: "",
+  stories: [],
+  users: [],
 };
 
 const appState = (state = initialState, action) => {
@@ -45,6 +54,33 @@ const appState = (state = initialState, action) => {
         ...state,
         isGameMaster: action.payload,
       };
+    }
+    case SET_IS_AUTH: {
+      return {
+        ...state,
+        isAuth: action.payload,
+      };
+    }
+    case SET_IS_ADMIN: {
+      return {
+        ...state,
+        isAdmin: action.payload,
+      };
+    }
+    case SET_ALL_STORIES: {
+      return {
+        ...state,
+        stories: action.payload,
+      };
+    }
+    case SET_STORY_USERS: {
+      return {
+        ...state,
+        users: action.payload,
+      };
+    }
+    case RESET_APP: {
+      return initialState;
     }
     default:
       return state;

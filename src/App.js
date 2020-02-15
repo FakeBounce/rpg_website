@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import debounce from "lodash/debounce";
 import { connect } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import { ToastProvider } from "./contexts/toastContext";
 import IsNotAuth from "./components/Authentication/IsNotAuth";
 import HasNoNickname from "./components/NicknameSelection/HasNoNickname";
 import CharacterSelection from "./components/CharacterSelection/CharacterSelection";
@@ -32,8 +34,6 @@ import {
   // setQuests,
   populateBestiary,
   // loadChat,
-  listenUsers,
-  loadStories,
 } from "./components/Utils/DatabaseFunctions";
 import {
   hydrateStoryArtefacts,
@@ -55,6 +55,18 @@ import {
   CALL_LOAD_SONG,
 } from "./redux/actionsTypes/actionsTypesSounds";
 import { setCharacter } from "./redux/actions/actionsCharacter";
+import {
+  CALL_LISTEN_CURRENT_EVENT,
+  CALL_LISTEN_EVENTS_HISTORY,
+} from "./redux/actionsTypes/actionsTypesEvents";
+import {
+  CALL_GET_ALL_STORIES,
+  CALL_PRINT_ERROR,
+  CALL_SIGN_OUT,
+} from "./redux/actionsTypes/actionsTypesAppState";
+import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat";
+import ErrorPrinter from "./ErrorPrinter";
+import { CALL_LISTEN_MAP_TILES } from "./redux/actionsTypes/actionsTypesMapInfos";
 
 const styledErrorPanel = {
   position: "absolute",
@@ -71,26 +83,27 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    const localStorageInfos = localStorage.getItem("appState")
-      ? JSON.parse(localStorage.getItem("appState"))
-      : null;
-    this.state = localStorageInfos ? localStorageInfos : { ...defaultState };
+    // const localStorageInfos = localStorage.getItem("appState")
+    //   ? JSON.parse(localStorage.getItem("appState"))
+    //   : null;
+    this.state = { ...defaultState };
+    // this.state = localStorageInfos ? localStorageInfos : { ...defaultState };
 
-    if (localStorageInfos) {
-      this.loadUsers();
-      this.loadStories();
-
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(
-          localStorageInfos.email,
-          localStorageInfos.password,
-        )
-        .catch(error => {
-          // Handle Errors here.
-          this.triggerError(error);
-        });
-    }
+    // if (localStorageInfos) {
+    //   this.loadUsers();
+    //   this.loadStories();
+    //
+    //   firebase
+    //     .auth()
+    //     .signInWithEmailAndPassword(
+    //       localStorageInfos.email,
+    //       localStorageInfos.password,
+    //     )
+    //     .catch(error => {
+    //       // Handle Errors here.
+    //       this.triggerError(error);
+    //     });
+    // }
   }
 
   componentDidMount() {
@@ -172,7 +185,7 @@ class App extends Component {
   }
 
   loadMerchantsAndItems = () => {
-    const { currentStory } = this.state;
+    const { currentStory } = this.props;
     // loadMerchantsOnce(currentStory, this.doSetState)
     listenMerchants(currentStory, this.doSetState);
     loadAllItems(this.doSetState, currentStory, () => {
@@ -188,8 +201,9 @@ class App extends Component {
   };
 
   hydrateMerchants = () => {
+    const { currentStory } = this.props;
     hydrateAllMerchants(
-      this.state.currentStory,
+      currentStory,
       this.state.merchants,
       this.state.items,
       this.doSetState,
@@ -230,15 +244,13 @@ class App extends Component {
 
   buyItem = (item, price) => {
     const {
-      currentStory,
       currentMerchant,
       merchants,
-      uid,
-      character,
       itemsList,
       itemDescribed,
       items: { artefacts },
     } = this.state;
+    const { currentStory, character, uid } = this.props;
     const newWeaponsTab = character.weapons ? [...character.weapons] : [];
     const newItemsTab = character.items ? [...character.items] : [];
     if (item.itemType === "weapons") {
@@ -313,6 +325,7 @@ class App extends Component {
   };
 
   signOut = () => {
+    const { dispatchCallSignOut } = this.props;
     firebase
       .auth()
       .signOut()
@@ -349,53 +362,42 @@ class App extends Component {
   };
 
   createTable = () => {
-    const { stories, currentStory } = this.state;
-    firebase
-      .database()
-      .ref("/maps/" + stories[currentStory].map)
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          map: snapshot.val(),
-        }));
-      });
+    const { dispatchCallListenMapTiles } = this.props;
+    dispatchCallListenMapTiles();
   };
 
   loadTownsAndQuests = () => {
-    const { currentStory } = this.state;
+    const { currentStory } = this.props;
     listenTowns(currentStory, this.doSetState);
     listenQuests(currentStory, this.doSetState);
   };
 
   loadCurrentPosition = () => {
-    const { currentStory } = this.state;
+    const { currentStory } = this.props;
     loadCurrentPosition(currentStory, this.doSetState);
   };
 
   loadEvents = () => {
-    const { currentStory } = this.state;
+    const {
+      currentStory,
+      dispatchCallSetEventHistory,
+      dispatchCallSetCurrentEvent,
+    } = this.props;
+    dispatchCallSetCurrentEvent();
     listenEvents(currentStory, this.doSetState);
-    listenCurrentEvent(currentStory, this.doSetState);
+    // listenCurrentEvent(currentStory, dispatchCallSetCurrentEvent);
   };
 
   loadMusic = () => {
-    const { currentStory } = this.state;
-    const { dispatchUpdateAllMusic } = this.props;
+    const { currentStory, dispatchUpdateAllMusic } = this.props;
     listenMusic(currentStory, dispatchUpdateAllMusic);
     listenNoise(currentStory, dispatchUpdateAllMusic);
     listenSong(currentStory, dispatchUpdateAllMusic);
   };
 
-  loadUsers = () => {
-    listenUsers(this.doSetState);
-  };
-
-  loadStories = () => {
-    loadStories(this.doSetState);
-  };
-
   onChangeMusics = (name, value) => {
-    const { isMusicFirst, isMusicTransition, currentStory } = this.state;
+    const { isMusicFirst, isMusicTransition } = this.state;
+    const { currentStory } = this.props;
     const obj = {};
     obj[name] = value;
     if (name === "musicName") {
@@ -523,7 +525,6 @@ class App extends Component {
 
   saveMusic = () => {
     const {
-      currentStory,
       isMusicFirst,
       musicNameFirst,
       musicNameSecond,
@@ -534,6 +535,7 @@ class App extends Component {
       noiseStatus,
       noiseVolume,
     } = this.state;
+    const { currentStory } = this.props;
     firebase
       .database()
       .ref("/stories/" + currentStory + "/noise")
@@ -563,12 +565,14 @@ class App extends Component {
   };
 
   chooseStory = i => {
-    const { stories, uid } = this.state;
     const {
       dispatchTogglePlayerMastering,
       dispatchUpdateCurrentStory,
       dispatchSetGameMaster,
       dispatchSetCharacter,
+      dispatchCallListenChatHistory,
+      uid,
+      stories,
     } = this.props;
 
     if (i < 0) return null;
@@ -639,8 +643,8 @@ class App extends Component {
               dispatchSetCharacter(snapshot.val());
               dispatchUpdateCurrentStory(i);
               dispatchSetGameMaster(stories[i].gameMaster);
-              this.createTable();
-              this.createChat();
+              this.createTable(i);
+              dispatchCallListenChatHistory();
               this.loadMusic();
               this.loadMerchantsAndItems();
               this.loadTownsAndQuests();
@@ -653,8 +657,8 @@ class App extends Component {
       //@TODO : Activate when GM will have proper tabs
       dispatchUpdateCurrentStory(i);
       dispatchSetGameMaster(stories[i].gameMaster);
-      this.createTable();
-      this.createChat();
+      this.createTable(i);
+      dispatchCallListenChatHistory();
       this.loadMusic();
       this.loadTownsAndQuests();
       this.loadMerchantsAndItems();
@@ -678,24 +682,6 @@ class App extends Component {
       });
   };
 
-  createChat = () => {
-    // loadChat(this.state.currentStory, this.doSetState);
-
-    firebase
-      .database()
-      .ref("/stories/" + this.state.currentStory + "/chat")
-      .limitToLast(50)
-      .on("child_added", snapshot => {
-        this.setState(state => ({
-          ...state,
-          chatHistory: {
-            ...state.chatHistory,
-            [snapshot.key]: snapshot.val(),
-          },
-        }));
-      });
-  };
-
   doSetState = (obj, cb = null) => {
     this.setState(
       state => ({
@@ -709,36 +695,78 @@ class App extends Component {
   };
 
   triggerError = error => {
-    this.setState(
-      state => ({
-        ...state,
-        error: error.message,
-      }),
-      () => {
-        setTimeout(() => {
-          this.setState(state => ({
-            ...state,
-            error: "",
-          }));
-        }, 5000);
-      },
-    );
+    const { dispatchCallPrintError } = this.props;
+    dispatchCallPrintError(error.message);
+  };
+
+  correctRoute = () => {
+    const { characterCreation, characterId, ...rest } = this.state;
+    const {
+      isAuth,
+      pseudo,
+      isGameMaster,
+      currentStory,
+      stories,
+      characters,
+    } = this.props;
+    if (isAuth) {
+      if (pseudo.trim() === "") {
+        return <HasNoNickname signOut={this.signOut} />;
+      } else {
+        if (currentStory === -1) {
+          return (
+            <StoriesPanel
+              chooseStory={this.chooseStory}
+              doSetState={this.doSetState}
+              signOut={this.signOut}
+              triggerError={this.triggerError}
+            />
+          );
+        } else {
+          if (!isGameMaster && characterId === 0) {
+            return (
+              <CharacterSelection
+                characterCreation={characterCreation}
+                characters={characters}
+                chooseStory={this.chooseStory}
+                doSetState={this.doSetState}
+                keepCharacter={this.keepCharacter}
+                signOut={this.signOut}
+                triggerError={this.triggerError}
+              />
+            );
+          } else {
+            return (
+              <GameScreen
+                bestiary={bestiary}
+                buyItem={this.buyItem}
+                characters={characters}
+                doSetState={this.doSetState}
+                generateTable={this.generateTable}
+                hydrateMerchants={this.hydrateMerchants}
+                loadCurrentPosition={this.loadCurrentPosition}
+                onChange={this.onChange}
+                onChangeMusics={this.onChangeMusics}
+                quests={quests}
+                selectAnotherCharacter={this.selectAnotherCharacter}
+                signOut={this.signOut}
+                stories={stories}
+                toggleBestiary={this.toggleBestiary}
+                toggleMerchantList={this.toggleMerchantList}
+                toggleMusic={this.toggleMusic}
+                triggerError={this.triggerError}
+                {...rest}
+              />
+            );
+          }
+        }
+      }
+    }
+    return <IsNotAuth />;
   };
 
   render() {
-    const {
-      characterCreation,
-      characters,
-      characterId,
-      email,
-      error,
-      isAdmin,
-      isAuth,
-      password,
-      stories,
-      ...rest
-    } = this.state;
-    const { pseudo, currentStory, isGameMaster } = this.props;
+    const { error } = this.props;
 
     return (
       <div
@@ -747,80 +775,13 @@ class App extends Component {
           cursor: `url('/common/cursor.png'), auto`,
         }}
       >
-        {!isAuth && (
-          <IsNotAuth
-            doSetState={this.doSetState}
-            email={email}
-            onChange={this.onChange}
-            password={password}
-            triggerError={this.triggerError}
-            loadStories={this.loadStories}
-            loadUsers={this.loadUsers}
-          />
-        )}
-
-        {isAuth && pseudo === "" && (
-          <HasNoNickname
-            doSetState={this.doSetState}
-            onChange={this.onChange}
-            signOut={this.signOut}
-            triggerError={this.triggerError}
-          />
-        )}
-
-        {isAuth && pseudo !== "" && currentStory === -1 && (
-          <StoriesPanel
-            stories={stories}
-            chooseStory={this.chooseStory}
-            doSetState={this.doSetState}
-            signOut={this.signOut}
-            triggerError={this.triggerError}
-          />
-        )}
-
-        {!isGameMaster &&
-          isAuth &&
-          pseudo !== "" &&
-          currentStory > -1 &&
-          characterId === 0 && (
-            <CharacterSelection
-              characterCreation={characterCreation}
-              characters={characters}
-              chooseStory={this.chooseStory}
-              doSetState={this.doSetState}
-              keepCharacter={this.keepCharacter}
-              signOut={this.signOut}
-              triggerError={this.triggerError}
-            />
-          )}
-
-        {isAuth &&
-          pseudo !== "" &&
-          currentStory > -1 &&
-          (characterId > 0 || isGameMaster) && (
-            <GameScreen
-              bestiary={bestiary}
-              buyItem={this.buyItem}
-              characters={characters}
-              doSetState={this.doSetState}
-              generateTable={this.generateTable}
-              hydrateMerchants={this.hydrateMerchants}
-              loadCurrentPosition={this.loadCurrentPosition}
-              onChange={this.onChange}
-              onChangeMusics={this.onChangeMusics}
-              quests={quests}
-              selectAnotherCharacter={this.selectAnotherCharacter}
-              signOut={this.signOut}
-              stories={stories}
-              toggleBestiary={this.toggleBestiary}
-              toggleMerchantList={this.toggleMerchantList}
-              toggleMusic={this.toggleMusic}
-              triggerError={this.triggerError}
-              {...rest}
-            />
-          )}
-        <SoundPlayer />
-        <div style={styledErrorPanel}>{error}</div>
+        <ToastProvider>
+          <>
+            {this.correctRoute()}
+            <SoundPlayer />
+            <ErrorPrinter />
+          </>
+        </ToastProvider>
       </div>
     );
   }
@@ -858,13 +819,37 @@ const mapDispatchToProps = dispatch => {
     dispatchSetCharacter: payload => {
       dispatch(setCharacter(payload));
     },
+    dispatchCallSetEventHistory: () => {
+      dispatch({ type: CALL_LISTEN_EVENTS_HISTORY });
+    },
+    dispatchCallListenChatHistory: () => {
+      dispatch({ type: CALL_LISTEN_CHAT_HISTORY });
+    },
+    dispatchCallSetCurrentEvent: () => {
+      dispatch({ type: CALL_LISTEN_CURRENT_EVENT });
+    },
+    dispatchCallListenMapTiles: () => {
+      dispatch({ type: CALL_LISTEN_MAP_TILES });
+    },
+    dispatchCallPrintError: payload => {
+      dispatch({ type: CALL_PRINT_ERROR, payload });
+    },
+    dispatchCallSignOut: () => {
+      dispatch({ type: CALL_SIGN_OUT });
+    },
   };
 };
 
 const mapStateToProps = store => ({
+  stories: store.appState.stories,
   isGameMaster: store.appState.isGameMaster,
+  isAuth: store.appState.isAuth,
   currentStory: store.appState.currentStory,
   pseudo: store.userInfos.pseudo,
+  uid: store.userInfos.uid,
+  character: store.character,
+  characters: store.userInfos.characters,
+  error: store.appState.error,
 });
 
 App.propTypes = {
@@ -875,6 +860,12 @@ App.propTypes = {
   dispatchUpdateCurrentStory: PropTypes.func.isRequired,
   dispatchSetGameMaster: PropTypes.func.isRequired,
   dispatchSetCharacter: PropTypes.func.isRequired,
+  dispatchCallSetEventHistory: PropTypes.func.isRequired,
+  dispatchCallSetCurrentEvent: PropTypes.func.isRequired,
+  dispatchCallPrintError: PropTypes.func.isRequired,
+  dispatchCallListenChatHistory: PropTypes.func.isRequired,
+  dispatchCallSignOut: PropTypes.func.isRequired,
+  dispatchCallListenMapTiles: PropTypes.func.isRequired,
   loadSong: PropTypes.func.isRequired,
   loadNoise: PropTypes.func.isRequired,
   loadMusic: PropTypes.func.isRequired,
