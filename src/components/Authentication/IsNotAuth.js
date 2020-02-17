@@ -40,7 +40,6 @@ class IsNotAuth extends Component {
 
   signIn = () => {
     const {
-      doSetState,
       dispatchSetUserInfos,
       dispatchSetIsAuth,
       dispatchSetIsAdmin,

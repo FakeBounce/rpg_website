@@ -11,7 +11,6 @@ class MapGrid extends PureComponent {
   generateTable = mapToRender => {
     const table = [];
     const { currentZoom, currentY } = this.props;
-    console.log("generating");
     mapToRender.map((row, index) => {
       if (
         index <= currentY + (gridLength * 10) / currentZoom / 2 &&
@@ -111,15 +110,19 @@ class MapGrid extends PureComponent {
   };
 
   render() {
-    const { map } = this.props;
-
-    return this.generateTable(map);
+    const { map, towns } = this.props;
+    if (map && map.length > 0) {
+      return this.generateTable(map);
+    }
+    return null;
   }
 }
 
 const mapStateToProps = store => ({
   isOnPlayerView: store.appState.isOnPlayerView,
   isGameMaster: store.appState.isGameMaster,
+  map: store.mapInfos.map,
+  tilesTypes: store.mapInfos.tilesTypes,
 });
 
 MapGrid.defaultProps = {
@@ -132,9 +135,7 @@ MapGrid.propTypes = {
   setTexture: PropTypes.func.isRequired,
   currentZoom: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
-  map: PropTypes.array.isRequired,
   textureToApply: PropTypes.object,
-  tilesTypes: PropTypes.object.isRequired,
   towns: PropTypes.array.isRequired,
 };
 

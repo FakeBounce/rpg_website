@@ -16,7 +16,7 @@ import SoundPlayer from "./components/SoundPlayer/SoundPlayer";
 import {
   // listenArtefacts,
   // loadUnusedArtefacts,
-  listenCurrentEvent,
+  // listenCurrentEvent,
   listenEvents,
   listenMerchants,
   listenMusic,
@@ -60,24 +60,12 @@ import {
   CALL_LISTEN_EVENTS_HISTORY,
 } from "./redux/actionsTypes/actionsTypesEvents";
 import {
-  CALL_GET_ALL_STORIES,
   CALL_PRINT_ERROR,
   CALL_SIGN_OUT,
 } from "./redux/actionsTypes/actionsTypesAppState";
 import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat";
 import ErrorPrinter from "./ErrorPrinter";
-import { CALL_LISTEN_MAP_TILES } from "./redux/actionsTypes/actionsTypesMapInfos";
-
-const styledErrorPanel = {
-  position: "absolute",
-  bottom: 0,
-  alignItems: "center",
-  justifyContent: "center",
-  width: "100%",
-  backgroundColor: "#FFFED0",
-  textAlign: "center",
-  color: "red",
-};
+import { CALL_LISTEN_MAP_TILES, CALL_SET_TILES_TYPES } from "./redux/actionsTypes/actionsTypesMapInfos";
 
 class App extends Component {
   constructor(props) {
@@ -107,6 +95,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const { dispatchCallSetTilesTypes } = this.props;
+    dispatchCallSetTilesTypes();
     loadTilesTypes(this.doSetState);
     loadAllItems(this.doSetState);
 
@@ -831,6 +821,9 @@ const mapDispatchToProps = dispatch => {
     dispatchCallListenMapTiles: () => {
       dispatch({ type: CALL_LISTEN_MAP_TILES });
     },
+    dispatchCallSetTilesTypes: () => {
+      dispatch({ type: CALL_SET_TILES_TYPES });
+    },
     dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
     },
@@ -866,6 +859,7 @@ App.propTypes = {
   dispatchCallListenChatHistory: PropTypes.func.isRequired,
   dispatchCallSignOut: PropTypes.func.isRequired,
   dispatchCallListenMapTiles: PropTypes.func.isRequired,
+  dispatchCallSetTilesTypes: PropTypes.func.isRequired,
   loadSong: PropTypes.func.isRequired,
   loadNoise: PropTypes.func.isRequired,
   loadMusic: PropTypes.func.isRequired,
