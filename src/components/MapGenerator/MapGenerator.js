@@ -93,22 +93,12 @@ class MapGenerator extends PureComponent {
     const {
       towns,
       doSetState,
-      currentX,
-      currentY,
-      currentZoom,
-      loadCurrentPosition,
-      textureToApply,
     } = this.props;
 
     return (
       <div className="map" style={styledMap}>
-        <MapZoom doSetState={doSetState} currentZoom={currentZoom} />
-        <MapArrows
-          doSetState={doSetState}
-          currentX={currentX}
-          currentY={currentY}
-          loadCurrentPosition={loadCurrentPosition}
-        />
+        <MapZoom />
+        <MapArrows />
         <div
           className="map-mover"
           style={{
@@ -119,12 +109,8 @@ class MapGenerator extends PureComponent {
           }}
         >
           <MapGrid
-            currentX={currentX}
-            currentY={currentY}
-            currentZoom={currentZoom}
             doSetState={doSetState}
             setTexture={this.setTexture}
-            textureToApply={textureToApply}
             towns={towns}
           />
         </div>
@@ -136,20 +122,12 @@ class MapGenerator extends PureComponent {
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   stories: store.appState.stories,
+  currentScale: store.mapInfos.currentScale,
+  textureToApply: store.mapInfos.textureToApply,
 });
 
-MapGenerator.defaultProps = {
-  textureToApply: null,
-};
-
 MapGenerator.propTypes = {
-  currentScale: PropTypes.number.isRequired,
-  currentX: PropTypes.number.isRequired,
-  currentY: PropTypes.number.isRequired,
-  currentZoom: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
-  loadCurrentPosition: PropTypes.func.isRequired,
-  textureToApply: PropTypes.object,
   towns: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
 };

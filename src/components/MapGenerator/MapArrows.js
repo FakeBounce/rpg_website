@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { cursorPointer } from "../Utils/StyleConstants";
+import { connect } from "react-redux";
+import { GET_CURRENT_POSITION } from "../../redux/actionsTypes/actionsTypesMapInfos";
+import { setCurrentX, setCurrentY } from "../../redux/actions/actionsMapInfos";
 
 const styledMapArrows = {
   position: "absolute",
@@ -20,19 +23,26 @@ const styledMapCenter = {
 
 class MapArrows extends Component {
   render() {
-    const { doSetState, currentX, currentY, loadCurrentPosition } = this.props;
+    const {
+      dispatchSetCurrentX,
+      dispatchSetCurrentY,
+      dispatchGetCurrentPosition,
+      currentX,
+      currentY,
+    } = this.props;
 
     return (
       <div style={styledMapArrows}>
-        <div className="map-move map-move-center" onClick={loadCurrentPosition}>
-          <div
-            style={styledMapCenter}
-          />
+        <div
+          className="map-move map-move-center"
+          onClick={dispatchGetCurrentPosition}
+        >
+          <div style={styledMapCenter} />
         </div>
         <div
           className="map-move map-move-left"
           onClick={() => {
-            doSetState({ currentX: currentX - 3 });
+            dispatchSetCurrentX(currentX - 3);
           }}
         >
           <img
@@ -44,7 +54,7 @@ class MapArrows extends Component {
         <div
           className="map-move map-move-right"
           onClick={() => {
-            doSetState({ currentX: currentX + 3 });
+            dispatchSetCurrentX(currentX + 3);
           }}
         >
           <img
@@ -56,7 +66,7 @@ class MapArrows extends Component {
         <div
           className="map-move map-move-up"
           onClick={() => {
-            doSetState({ currentY: currentY - 3 });
+            dispatchSetCurrentY(currentY - 3);
           }}
         >
           <img
@@ -68,7 +78,7 @@ class MapArrows extends Component {
         <div
           className="map-move map-move-down"
           onClick={() => {
-            doSetState({ currentY: currentY + 3 });
+            dispatchSetCurrentY(currentY + 3);
           }}
         >
           <img
@@ -82,11 +92,29 @@ class MapArrows extends Component {
   }
 }
 
-MapArrows.propTypes = {
-  doSetState: PropTypes.func.isRequired,
-  currentX: PropTypes.number.isRequired,
-  currentY: PropTypes.number.isRequired,
-  loadCurrentPosition: PropTypes.func.isRequired,
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSetCurrentX: payload => {
+      dispatch(setCurrentX(payload));
+    },
+    dispatchSetCurrentY: payload => {
+      dispatch(setCurrentY(payload));
+    },
+    dispatchGetCurrentPosition: () => {
+      dispatch({ type: GET_CURRENT_POSITION });
+    },
+  };
 };
 
-export default MapArrows;
+const mapStateToProps = store => ({
+  currentX: store.mapInfos.currentX,
+  currentY: store.mapInfos.currentY,
+});
+
+MapArrows.propTypes = {
+  dispatchSetCurrentX: PropTypes.func.isRequired,
+  dispatchSetCurrentY: PropTypes.func.isRequired,
+  dispatchGetCurrentPosition: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapArrows);

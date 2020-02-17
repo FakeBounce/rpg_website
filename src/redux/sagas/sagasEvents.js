@@ -59,3 +59,37 @@ export function* watchCallListenCurrentEvent() {
     listenCurrentEvent,
   );
 }
+
+function historyEventChannel(currentStory) {
+  const ref = firebase.database().ref("/stories/" + currentStory + "/events");
+
+  return eventChannel(emit => {
+    const callback = ref.on("value", snapshot => {
+      emit(snapshot.val());
+    });
+
+    // unsubscribe function
+    return () => ref.off("value", callback);
+  });
+}
+
+function* listenHistoryEvents() {
+  const currentStory = yield select(currentStorySelector);
+  const channel = yield call(historyEventChannel, currentStory);
+
+  yield takeEvery(channel, function*(data) {
+    yield put(actionsEvents.setEventsHistory(data));
+  });
+
+  yield take([
+    actionsTypesAppState.CANCEL_ALL_WATCH,
+    actionsTypesAppState.RESET_APP,
+  ]);
+  channel.close();
+}
+export function* watchCallListenHistoryEvents() {
+  yield takeLatest(
+    actionsTypesEvents.CALL_LISTEN_EVENTS_HISTORY,
+    listenHistoryEvents,
+  );
+}

@@ -121,14 +121,7 @@ class MapEditionPanel extends Component {
   };
 
   render() {
-    const {
-      textureToApply,
-      changeCurrentScale,
-      currentScale,
-      currentTile,
-      doSetState,
-      tilesTypes,
-    } = this.props;
+    const { changeCurrentScale, doSetState } = this.props;
     const { townToAssign } = this.state;
     return (
       <div
@@ -141,17 +134,9 @@ class MapEditionPanel extends Component {
           textAlign: "left",
         }}
       >
-        <MapEditionTilesList
-          tilesTypes={tilesTypes}
-          doSetState={doSetState}
-          textureToApply={textureToApply}
-        />
-        <MapEditionScale
-          changeCurrentScale={changeCurrentScale}
-          currentScale={currentScale}
-        />
+        <MapEditionTilesList doSetState={doSetState} />
+        <MapEditionScale changeCurrentScale={changeCurrentScale} />
         <MapEditionTileInfos
-          currentTile={currentTile}
           onChange={this.onChange}
           toggleIsCurrent={this.toggleIsCurrent}
           toggleHasTown={this.toggleHasTown}
@@ -164,22 +149,15 @@ class MapEditionPanel extends Component {
 
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
+  stories: store.appState.stories,
+  currentX: store.mapInfos.currentX,
+  currentY: store.mapInfos.currentY,
+  currentTile: store.mapInfos.currentTile,
 });
 
-MapEditionPanel.defaultProps = {
-  textureToApply: null,
-};
-
 MapEditionPanel.propTypes = {
-  currentX: PropTypes.number.isRequired,
-  currentY: PropTypes.number.isRequired,
-  stories: PropTypes.array.isRequired,
-  textureToApply: PropTypes.object,
   changeCurrentScale: PropTypes.func.isRequired,
-  currentScale: PropTypes.number.isRequired,
-  currentTile: PropTypes.object.isRequired,
   doSetState: PropTypes.func.isRequired,
-  tilesTypes: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(MapEditionPanel);

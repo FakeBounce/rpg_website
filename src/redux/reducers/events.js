@@ -1,8 +1,12 @@
-import { SET_CURRENT_EVENT } from "../actionsTypes/actionsTypesEvents";
+import {
+  SET_CURRENT_EVENT,
+  SET_EVENTS_HISTORY,
+} from "../actionsTypes/actionsTypesEvents";
 import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
 
 const initialState = {
   currentEvent: -1,
+  history: [],
 };
 
 const events = (state = initialState, action) => {
@@ -11,6 +15,12 @@ const events = (state = initialState, action) => {
       return {
         ...state,
         currentEvent: action.payload,
+      };
+    }
+    case SET_EVENTS_HISTORY: {
+      return {
+        ...state,
+        history: action.payload,
       };
     }
     case RESET_APP: {

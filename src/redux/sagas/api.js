@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import { eventChannel } from "redux-saga";
 
 export const firebaseDbRef = path => {
   return firebase.database().ref(path);
@@ -21,6 +22,20 @@ export const firebaseDbOnce = (path = "", once = "value") => {
     })
     .catch(error => {
       console.log("error", error);
+      return error;
       // this.triggerError(error);
     });
 };
+
+export function onValueChannel(path) {
+  const ref = firebase.database().ref(path);
+
+  return eventChannel(emit => {
+    const callback = ref.on("value", snapshot => {
+      emit(snapshot.val());
+    });
+
+    // unsubscribe function
+    return () => ref.off("value", callback);
+  });
+}

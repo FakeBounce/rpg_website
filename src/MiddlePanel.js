@@ -8,29 +8,49 @@ import MapGenerator from "./components/MapGenerator/MapGenerator";
 import ChatPanel from "./components/ChatPanel/ChatPanel";
 import SoundPanel from "./components/SoundPanel/SoundPanel";
 import { connect } from "react-redux";
+import { toggleMusic, updateAllMusic } from "./redux/actions/actionsSounds";
+import {
+  CALL_LOAD_MUSIC,
+  CALL_LOAD_NOISE,
+  CALL_LOAD_SONG,
+} from "./redux/actionsTypes/actionsTypesSounds";
+import {
+  setGameMaster,
+  togglePlayerMastering,
+  togglePlayerView,
+  updateCurrentStory,
+} from "./redux/actions/actionsAppState";
+import { setCharacter } from "./redux/actions/actionsCharacter";
+import {
+  CALL_LISTEN_CURRENT_EVENT,
+  CALL_LISTEN_EVENTS_HISTORY,
+} from "./redux/actionsTypes/actionsTypesEvents";
+import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat";
+import {
+  CALL_LISTEN_CURRENT_X,
+  CALL_LISTEN_CURRENT_Y,
+  CALL_LISTEN_MAP_TILES,
+  CALL_SET_TILES_TYPES,
+} from "./redux/actionsTypes/actionsTypesMapInfos";
+import {
+  CALL_PRINT_ERROR,
+  CALL_SIGN_OUT,
+} from "./redux/actionsTypes/actionsTypesAppState";
+import { setCurrentScale } from "./redux/actions/actionsMapInfos";
 
 class MiddlePanel extends Component {
   changeCurrentScale = value => {
-    this.props.doSetState({
-      currentScale: value,
-    });
+    const { dispatchSetCurrentScale } = this.props;
+    dispatchSetCurrentScale(value);
   };
 
   render() {
     const {
       buyItem,
-      chatHistory,
       chatInput,
       currentMerchant,
       currentQuest,
-      currentScale,
-      currentTile,
-      currentTown,
-      currentX,
-      currentY,
-      currentZoom,
       doSetState,
-      eventHistory,
       isGameMaster,
       isItemDescriptionShowed,
       isItemShowed,
@@ -40,69 +60,42 @@ class MiddlePanel extends Component {
       items,
       itemsList,
       itemToDescribe,
-      loadCurrentPosition,
-      map,
       merchants,
       merchantsList,
       onChange,
       onChangeMusics,
       quests,
       questsList,
-      stories,
       storyCharacters,
-      textureToApply,
-      tilesTypes,
       towns,
       triggerError,
-      users,
     } = this.props;
 
     return (
       <Fragment>
         <MapGenerator
-          currentScale={currentScale}
-          currentX={currentX}
-          currentY={currentY}
-          currentZoom={currentZoom}
           doSetState={doSetState}
-          isOnPlayerView={isOnPlayerView}
-          loadCurrentPosition={loadCurrentPosition}
-          map={map}
-          stories={stories}
-          textureToApply={textureToApply}
-          tilesTypes={tilesTypes}
           towns={towns}
           triggerError={triggerError}
         />
         {((isGameMaster && isOnPlayerView) || !isGameMaster) && (
           <ChatPanel
-            chatHistory={chatHistory}
             chatInput={chatInput}
             doSetState={doSetState}
             onChange={onChange}
             storyCharacters={storyCharacters}
             triggerError={triggerError}
-            users={users}
           />
         )}
         {isGameMaster && !isOnPlayerView && (
           <GMMapPanel
             changeCurrentScale={this.changeCurrentScale}
-            currentScale={currentScale}
-            currentTile={currentTile}
-            currentTown={currentTown}
-            currentX={currentX}
-            currentY={currentY}
             doSetState={doSetState}
-            eventHistory={eventHistory}
             items={items}
             merchants={merchants}
             onChangeMusics={onChangeMusics}
             quests={quests}
-            stories={stories}
             storyCharacters={storyCharacters}
-            textureToApply={textureToApply}
-            tilesTypes={tilesTypes}
             towns={towns}
             triggerError={triggerError}
           />
@@ -134,19 +127,24 @@ class MiddlePanel extends Component {
             onChange={onChange}
             storyCharacters={storyCharacters}
             triggerError={triggerError}
-            users={users}
             onChangeMusics={onChangeMusics}
           />
         )}
         {isGameMaster && !isOnPlayerView && (
-          <SoundPanel
-            onChangeMusics={onChangeMusics}
-          />
+          <SoundPanel onChangeMusics={onChangeMusics} />
         )}
       </Fragment>
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSetCurrentScale: payload => {
+      dispatch(setCurrentScale(payload));
+    },
+  };
+};
 
 const mapStateToProps = store => ({
   isOnPlayerView: store.appState.isOnPlayerView,
@@ -155,23 +153,15 @@ const mapStateToProps = store => ({
 
 MiddlePanel.defaultProps = {
   items: null,
-  textureToApply: null,
 };
 
 MiddlePanel.propTypes = {
   buyItem: PropTypes.func.isRequired,
-  chatHistory: PropTypes.object.isRequired,
   chatInput: PropTypes.string.isRequired,
   currentMerchant: PropTypes.number.isRequired,
   currentQuest: PropTypes.number.isRequired,
-  currentScale: PropTypes.number.isRequired,
-  currentTile: PropTypes.object.isRequired,
-  currentTown: PropTypes.number.isRequired,
-  currentX: PropTypes.number.isRequired,
-  currentY: PropTypes.number.isRequired,
-  currentZoom: PropTypes.number.isRequired,
+  dispatchSetCurrentScale: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
-  eventHistory: PropTypes.array.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,
   isItemShowed: PropTypes.bool.isRequired,
   isQuestShowed: PropTypes.bool.isRequired,
@@ -179,21 +169,15 @@ MiddlePanel.propTypes = {
   items: PropTypes.object,
   itemsList: PropTypes.array.isRequired,
   itemToDescribe: PropTypes.object.isRequired,
-  loadCurrentPosition: PropTypes.func.isRequired,
-  map: PropTypes.array.isRequired,
   merchants: PropTypes.array.isRequired,
   merchantsList: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
   quests: PropTypes.array.isRequired,
   questsList: PropTypes.array.isRequired,
-  stories: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
-  textureToApply: PropTypes.object,
-  tilesTypes: PropTypes.object.isRequired,
   towns: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
-  users: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps)(MiddlePanel);
+export default connect(mapStateToProps, mapDispatchToProps)(MiddlePanel);

@@ -65,7 +65,12 @@ import {
 } from "./redux/actionsTypes/actionsTypesAppState";
 import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat";
 import ErrorPrinter from "./ErrorPrinter";
-import { CALL_LISTEN_MAP_TILES, CALL_SET_TILES_TYPES } from "./redux/actionsTypes/actionsTypesMapInfos";
+import {
+  CALL_LISTEN_CURRENT_X,
+  CALL_LISTEN_CURRENT_Y,
+  CALL_LISTEN_MAP_TILES,
+  CALL_SET_TILES_TYPES,
+} from "./redux/actionsTypes/actionsTypesMapInfos";
 
 class App extends Component {
   constructor(props) {
@@ -363,18 +368,23 @@ class App extends Component {
   };
 
   loadCurrentPosition = () => {
-    const { currentStory } = this.props;
-    loadCurrentPosition(currentStory, this.doSetState);
+    const {
+      dispatchCallListenCurrentX,
+      dispatchCallListenCurrentY,
+    } = this.props;
+    dispatchCallListenCurrentX();
+    dispatchCallListenCurrentY();
+    // loadCurrentPosition(currentStory, this.doSetState);
   };
 
   loadEvents = () => {
     const {
-      currentStory,
-      dispatchCallSetEventHistory,
-      dispatchCallSetCurrentEvent,
+      dispatchCallListenEventHistory,
+      dispatchCallListenCurrentEvent,
     } = this.props;
-    dispatchCallSetCurrentEvent();
-    listenEvents(currentStory, this.doSetState);
+    dispatchCallListenCurrentEvent();
+    dispatchCallListenEventHistory();
+    // listenEvents(currentStory, this.doSetState);
     // listenCurrentEvent(currentStory, dispatchCallSetCurrentEvent);
   };
 
@@ -824,6 +834,12 @@ const mapDispatchToProps = dispatch => {
     dispatchCallSetTilesTypes: () => {
       dispatch({ type: CALL_SET_TILES_TYPES });
     },
+    dispatchCallListenCurrentX: () => {
+      dispatch({ type: CALL_LISTEN_CURRENT_X });
+    },
+    dispatchCallListenCurrentY: () => {
+      dispatch({ type: CALL_LISTEN_CURRENT_Y });
+    },
     dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
     },
@@ -860,6 +876,8 @@ App.propTypes = {
   dispatchCallSignOut: PropTypes.func.isRequired,
   dispatchCallListenMapTiles: PropTypes.func.isRequired,
   dispatchCallSetTilesTypes: PropTypes.func.isRequired,
+  dispatchCallListenCurrentX: PropTypes.func.isRequired,
+  dispatchCallListenCurrentY: PropTypes.func.isRequired,
   loadSong: PropTypes.func.isRequired,
   loadNoise: PropTypes.func.isRequired,
   loadMusic: PropTypes.func.isRequired,

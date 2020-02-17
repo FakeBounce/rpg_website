@@ -131,9 +131,7 @@ class GameScreen extends Component {
         />
         {this.canReadEvent() && (
           <EventModal
-            currentEvent={currentEvent}
             doSetState={doSetState}
-            eventHistory={eventHistory}
             storyCharacters={storyCharacters}
             triggerError={triggerError}
           />
@@ -155,10 +153,8 @@ class GameScreen extends Component {
         ) : (
           <MiddlePanel
             doSetState={doSetState}
-            eventHistory={eventHistory}
             merchants={merchants}
             quests={quests}
-            stories={stories}
             storyCharacters={storyCharacters}
             towns={towns}
             triggerError={triggerError}
@@ -183,7 +179,6 @@ GameScreen.propTypes = {
   character: PropTypes.object.isRequired,
   currentEvent: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
-  eventHistory: PropTypes.array.isRequired,
   hydrateMerchants: PropTypes.func.isRequired,
   merchants: PropTypes.array.isRequired,
   quests: PropTypes.array.isRequired,

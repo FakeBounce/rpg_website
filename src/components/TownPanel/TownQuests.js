@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import TownQuest from "./TownQuest";
 import ButtonLarge from "../Utils/ButtonLarge";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledBoxHeader = {
   width: "100%",
@@ -66,12 +67,15 @@ class TownQuests extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentTown: store.mapInfos.currentTown,
+});
+
 TownQuests.propTypes = {
-  currentTown: PropTypes.number.isRequired,
   quests: PropTypes.array.isRequired,
   toggleRightPanel: PropTypes.func.isRequired,
   removeQuestFromTown: PropTypes.func.isRequired,
   validateQuest: PropTypes.func.isRequired,
 };
 
-export default TownQuests;
+export default connect(mapStateToProps)(TownQuests);
