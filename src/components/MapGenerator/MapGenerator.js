@@ -14,6 +14,7 @@ import MapZoom from "./MapZoom";
 import MapArrows from "./MapArrows";
 import MapGrid from "./MapGrid";
 import { connect } from "react-redux";
+import { CALL_PRINT_ERROR } from "../../redux/actionsTypes/actionsTypesAppState";
 
 const styledMap = {
   width: `${mapWidth}px`,
@@ -27,7 +28,7 @@ class MapGenerator extends PureComponent {
       stories,
       currentStory,
       textureToApply,
-      triggerError,
+      dispatchCallPrintError,
       currentScale,
     } = this.props;
 
@@ -85,15 +86,12 @@ class MapGenerator extends PureComponent {
       .update(updates)
       .catch(error => {
         // Handle Errors here.
-        triggerError(error);
+        dispatchCallPrintError(error);
       });
   };
 
   render() {
-    const {
-      towns,
-      doSetState,
-    } = this.props;
+    const { towns, doSetState } = this.props;
 
     return (
       <div className="map" style={styledMap}>
@@ -119,6 +117,14 @@ class MapGenerator extends PureComponent {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchCallPrintError: payload => {
+      dispatch({ type: CALL_PRINT_ERROR, payload });
+    },
+  };
+};
+
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   stories: store.appState.stories,
@@ -128,8 +134,8 @@ const mapStateToProps = store => ({
 
 MapGenerator.propTypes = {
   doSetState: PropTypes.func.isRequired,
+  dispatchCallPrintError: PropTypes.func.isRequired,
   towns: PropTypes.array.isRequired,
-  triggerError: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(MapGenerator);
+export default connect(mapStateToProps, mapDispatchToProps)(MapGenerator);

@@ -7,7 +7,6 @@ import { gridDimension } from "../Utils/StyleConstants";
 import { connect } from "react-redux";
 import {
   setCurrentTown,
-  setTextureToApply,
 } from "../../redux/actions/actionsMapInfos";
 
 class TileGM extends PureComponent {
