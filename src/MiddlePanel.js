@@ -8,42 +8,9 @@ import MapGenerator from "./components/MapGenerator/MapGenerator";
 import ChatPanel from "./components/ChatPanel/ChatPanel";
 import SoundPanel from "./components/SoundPanel/SoundPanel";
 import { connect } from "react-redux";
-import { toggleMusic, updateAllMusic } from "./redux/actions/actionsSounds";
-import {
-  CALL_LOAD_MUSIC,
-  CALL_LOAD_NOISE,
-  CALL_LOAD_SONG,
-} from "./redux/actionsTypes/actionsTypesSounds";
-import {
-  setGameMaster,
-  togglePlayerMastering,
-  togglePlayerView,
-  updateCurrentStory,
-} from "./redux/actions/actionsAppState";
-import { setCharacter } from "./redux/actions/actionsCharacter";
-import {
-  CALL_LISTEN_CURRENT_EVENT,
-  CALL_LISTEN_EVENTS_HISTORY,
-} from "./redux/actionsTypes/actionsTypesEvents";
-import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat";
-import {
-  CALL_LISTEN_CURRENT_X,
-  CALL_LISTEN_CURRENT_Y,
-  CALL_LISTEN_MAP_TILES,
-  CALL_SET_TILES_TYPES,
-} from "./redux/actionsTypes/actionsTypesMapInfos";
-import {
-  CALL_PRINT_ERROR,
-  CALL_SIGN_OUT,
-} from "./redux/actionsTypes/actionsTypesAppState";
 import { setCurrentScale } from "./redux/actions/actionsMapInfos";
 
 class MiddlePanel extends Component {
-  changeCurrentScale = value => {
-    const { dispatchSetCurrentScale } = this.props;
-    dispatchSetCurrentScale(value);
-  };
-
   render() {
     const {
       buyItem,
@@ -73,23 +40,12 @@ class MiddlePanel extends Component {
 
     return (
       <Fragment>
-        <MapGenerator
-          doSetState={doSetState}
-          towns={towns}
-          triggerError={triggerError}
-        />
+        <MapGenerator doSetState={doSetState} towns={towns} />
         {((isGameMaster && isOnPlayerView) || !isGameMaster) && (
-          <ChatPanel
-            chatInput={chatInput}
-            doSetState={doSetState}
-            onChange={onChange}
-            storyCharacters={storyCharacters}
-            triggerError={triggerError}
-          />
+          <ChatPanel storyCharacters={storyCharacters} />
         )}
         {isGameMaster && !isOnPlayerView && (
           <GMMapPanel
-            changeCurrentScale={this.changeCurrentScale}
             doSetState={doSetState}
             items={items}
             merchants={merchants}
@@ -138,14 +94,6 @@ class MiddlePanel extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchSetCurrentScale: payload => {
-      dispatch(setCurrentScale(payload));
-    },
-  };
-};
-
 const mapStateToProps = store => ({
   isOnPlayerView: store.appState.isOnPlayerView,
   isGameMaster: store.appState.isGameMaster,
@@ -180,4 +128,4 @@ MiddlePanel.propTypes = {
   triggerError: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MiddlePanel);
+export default connect(mapStateToProps)(MiddlePanel);

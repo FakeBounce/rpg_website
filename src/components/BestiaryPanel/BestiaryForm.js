@@ -40,7 +40,7 @@ class BestiaryForm extends Component {
   };
 
   onDrop = picture => {
-    // const { triggerError, chatInput, doSetState } = this.props;
+    // const { triggerError, doSetState } = this.props;
 
     // const path = 'images/bestiary/' + picture[picture.length - 1].name;
     this.setState(state => ({

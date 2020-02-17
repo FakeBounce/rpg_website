@@ -8,6 +8,8 @@ import ChatBar from "./ChatBar";
 import ChatDicesRow from "./ChatDicesRow";
 import ChatHistory from "./ChatHistory";
 import { connect } from "react-redux";
+import { setCurrentScale } from "../../redux/actions/actionsMapInfos";
+import { CALL_PRINT_ERROR } from "../../redux/actionsTypes/actionsTypesAppState";
 
 const styledChatPanel = {
   width: widthLeft / 2,
@@ -24,6 +26,16 @@ class ChatPanel extends PureComponent {
     gmCommands: false,
     bonus: 0,
     isTalking: "",
+    chatInput: "",
+  };
+
+  onChange = (name, value) => {
+    const obj = {};
+    obj[name] = value;
+    this.setState(state => ({
+      ...state,
+      ...obj,
+    }));
   };
 
   onChangeDice = value => {
@@ -52,7 +64,8 @@ class ChatPanel extends PureComponent {
   };
 
   talkInChat = () => {
-    const { chatInput, pseudo, character, isGameMaster } = this.props;
+    const { pseudo, character, isGameMaster } = this.props;
+    const { chatInput } = this.state;
     let noMagicWord = true;
     if (chatInput !== "") {
       if (chatInput.length >= 3) {
@@ -199,7 +212,9 @@ class ChatPanel extends PureComponent {
   };
 
   whisperPlayerAction = () => {
-    const { chatInput, pseudo, character, users, isGameMaster } = this.props;
+    const { pseudo, character, users, isGameMaster } = this.props;
+    const { chatInput } = this.state;
+
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput.trim().split("/w ");
     let hasWhisperAction = false;
@@ -238,14 +253,8 @@ class ChatPanel extends PureComponent {
   };
 
   whisperGMAction = () => {
-    const {
-      chatInput,
-      pseudo,
-      character,
-      users,
-      gameMaster,
-      isGameMaster,
-    } = this.props;
+    const { pseudo, character, users, gameMaster, isGameMaster } = this.props;
+    const { chatInput } = this.state;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput.trim().split("/gmw ");
     let hasWhisperAction = false;
@@ -277,13 +286,8 @@ class ChatPanel extends PureComponent {
   };
 
   whisperTeamAction = () => {
-    const {
-      chatInput,
-      users,
-      gameMaster,
-      isGameMaster,
-      character,
-    } = this.props;
+    const { users, gameMaster, isGameMaster, character } = this.props;
+    const { chatInput } = this.state;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput.trim().split("/tmw ");
     let hasWhisperAction = false;
@@ -316,7 +320,8 @@ class ChatPanel extends PureComponent {
   };
 
   diceAction = (limiter, viewers = null) => {
-    const { chatInput, character, isGameMaster } = this.props;
+    const { character, isGameMaster } = this.props;
+    const { chatInput } = this.state;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
@@ -336,12 +341,13 @@ class ChatPanel extends PureComponent {
 
   sendGoldGMAction = () => {
     const {
-      chatInput,
       character,
       uid,
       currentStory,
       isGameMaster,
+      dispatchCallPrintError,
     } = this.props;
+    const { chatInput } = this.state;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
@@ -369,7 +375,7 @@ class ChatPanel extends PureComponent {
             .set(parseInt(character.gold, 10) - parseInt(splittedString[1], 10))
             .catch(error => {
               // Handle Errors here.
-              this.props.triggerError(error);
+              dispatchCallPrintError(error);
             });
         }
 
@@ -381,14 +387,15 @@ class ChatPanel extends PureComponent {
 
   sendGoldAction = () => {
     const {
-      chatInput,
       pseudo,
       storyCharacters,
       character,
       uid,
       currentStory,
       isGameMaster,
+      dispatchCallPrintError,
     } = this.props;
+    const { chatInput } = this.state;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
@@ -432,7 +439,7 @@ class ChatPanel extends PureComponent {
               )
               .catch(error => {
                 // Handle Errors here.
-                this.props.triggerError(error);
+                dispatchCallPrintError(error);
               });
 
             firebase
@@ -450,7 +457,7 @@ class ChatPanel extends PureComponent {
               )
               .catch(error => {
                 // Handle Errors here.
-                this.props.triggerError(error);
+                dispatchCallPrintError(error);
               });
             return true;
           }
@@ -462,14 +469,15 @@ class ChatPanel extends PureComponent {
 
   sendTeamGoldAction = () => {
     const {
-      chatInput,
       pseudo,
       storyCharacters,
       character,
       currentStory,
       gameMaster,
       isGameMaster,
+      dispatchCallPrintError,
     } = this.props;
+    const { chatInput } = this.state;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
@@ -517,7 +525,7 @@ class ChatPanel extends PureComponent {
               .update(updates)
               .catch(error => {
                 // Handle Errors here.
-                this.props.triggerError(error);
+                dispatchCallPrintError(error);
               });
             return true;
           }
@@ -567,33 +575,27 @@ class ChatPanel extends PureComponent {
   };
 
   sendChatInput = (input, talking = this.state.isTalking) => {
-    const { currentStory, doSetState, triggerError } = this.props;
+    const { currentStory, dispatchCallPrintError } = this.props;
     firebase
       .database()
       .ref("/stories/" + currentStory + "/chat/")
       .push(input)
       .then(() => {
-        doSetState(
-          {
-            error: "",
-            chatInput: talking,
-          },
-          () => {
-            this.setState(state => ({
-              ...state,
-              isTalking: "",
-            }));
-          },
-        );
+        this.setState(state => ({
+          ...state,
+          isTalking: "",
+          chatInput: talking,
+        }));
       })
       .catch(error => {
         // Handle Errors here.
-        triggerError(error);
+        dispatchCallPrintError(error);
       });
   };
 
   onDrop = picture => {
-    const { triggerError, chatInput, doSetState, currentStory } = this.props;
+    const { currentStory, dispatchCallPrintError } = this.props;
+    const { chatInput } = this.state;
     const newPostKey = firebase
       .database()
       .ref("/stories/" + currentStory + "/chat/")
@@ -625,26 +627,25 @@ class ChatPanel extends PureComponent {
                 image: url,
               })
               .then(() => {
-                doSetState({
-                  error: "",
+                this.setState(state => ({
+                  ...state,
                   chatInput: "",
-                });
+                }));
               })
               .catch(error => {
                 // Handle Errors here.
-                triggerError(error);
+                dispatchCallPrintError(error);
               });
           })
           .catch(error => {
             // Handle any errors
-            triggerError(error);
+            dispatchCallPrintError(error);
           });
       });
   };
 
   render() {
-    const { chatInput, chatHistory, onChange } = this.props;
-    const { gmCommands, bonus } = this.state;
+    const { gmCommands, bonus, chatInput } = this.state;
 
     return (
       <div style={styledChatPanel}>
@@ -658,7 +659,7 @@ class ChatPanel extends PureComponent {
         />
         <ChatBar
           chatInput={chatInput}
-          onChange={onChange}
+          onChange={this.onChange}
           talkInChat={this.talkInChat}
           onDrop={this.onDrop}
           handleKeyPress={this.handleKeyPress}
@@ -668,6 +669,14 @@ class ChatPanel extends PureComponent {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchCallPrintError: payload => {
+      dispatch({ type: CALL_PRINT_ERROR, payload });
+    },
+  };
+};
 
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
@@ -680,10 +689,7 @@ const mapStateToProps = store => ({
 
 ChatPanel.propTypes = {
   storyCharacters: PropTypes.array.isRequired,
-  chatInput: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
+  dispatchCallPrintError: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(ChatPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatPanel);

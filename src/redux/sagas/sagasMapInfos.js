@@ -42,7 +42,7 @@ export function* callSetTilesTypes() {
 
 export function* watchCallSetTilesTypes() {
   yield takeLatest(
-    actionsTypesMapInfos.CALL_SET_TILES_TYPES,
+    actionsTypesMapInfos.CALL_GET_TILES_TYPES,
     callSetTilesTypes,
   );
 }

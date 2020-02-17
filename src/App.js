@@ -25,7 +25,7 @@ import {
   listenQuests,
   listenTowns,
   loadAllItems,
-  loadCurrentPosition,
+  // loadCurrentPosition,
   // loadMerchantsOnce,
   loadTilesTypes,
   // populateTilesTypes,
@@ -66,11 +66,13 @@ import {
 import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat";
 import ErrorPrinter from "./ErrorPrinter";
 import {
+  CALL_GET_TILES_TYPES,
   CALL_LISTEN_CURRENT_X,
   CALL_LISTEN_CURRENT_Y,
   CALL_LISTEN_MAP_TILES,
   CALL_SET_TILES_TYPES,
 } from "./redux/actionsTypes/actionsTypesMapInfos";
+import { CALL_LISTEN_MERCHANT_LIST } from "./redux/actionsTypes/actionsTypesMerchants";
 
 class App extends Component {
   constructor(props) {
@@ -94,7 +96,7 @@ class App extends Component {
     //     )
     //     .catch(error => {
     //       // Handle Errors here.
-    //       this.triggerError(error);
+    //       dispatchCallPrintError(error);
     //     });
     // }
   }
@@ -102,7 +104,7 @@ class App extends Component {
   componentDidMount() {
     const { dispatchCallSetTilesTypes } = this.props;
     dispatchCallSetTilesTypes();
-    loadTilesTypes(this.doSetState);
+    // loadTilesTypes(this.doSetState);
     loadAllItems(this.doSetState);
 
     // setQuests(0, quests);
@@ -145,7 +147,7 @@ class App extends Component {
     //       .set(newMonster)
     //       .catch(error => {
     //         // Handle Errors here.
-    //         this.triggerError(error);
+    //         dispatchCallPrintError(error);
     //       });
     //   });
     // });
@@ -174,15 +176,15 @@ class App extends Component {
     //   .set(test)
     //   .catch(error => {
     //     // Handle Errors here.
-    //     this.triggerError(error);
+    //     dispatchCallPrintError(error);
     //   });
     // });
   }
 
   loadMerchantsAndItems = () => {
-    const { currentStory } = this.props;
+    const { currentStory, dispatchCallListenMerchantList } = this.props;
     // loadMerchantsOnce(currentStory, this.doSetState)
-    listenMerchants(currentStory, this.doSetState);
+    dispatchCallListenMerchantList();
     loadAllItems(this.doSetState, currentStory, () => {
       // hydrateAllMerchants(
       //   this.state.currentStory,
@@ -196,10 +198,10 @@ class App extends Component {
   };
 
   hydrateMerchants = () => {
-    const { currentStory } = this.props;
+    const { currentStory, merchants } = this.props;
     hydrateAllMerchants(
       currentStory,
-      this.state.merchants,
+      merchants,
       this.state.items,
       this.doSetState,
       true,
@@ -240,12 +242,17 @@ class App extends Component {
   buyItem = (item, price) => {
     const {
       currentMerchant,
-      merchants,
       itemsList,
       itemDescribed,
       items: { artefacts },
     } = this.state;
-    const { currentStory, character, uid } = this.props;
+    const {
+      currentStory,
+      character,
+      uid,
+      merchants,
+      dispatchCallPrintError,
+    } = this.props;
     const newWeaponsTab = character.weapons ? [...character.weapons] : [];
     const newItemsTab = character.items ? [...character.items] : [];
     if (item.itemType === "weapons") {
@@ -285,7 +292,6 @@ class App extends Component {
         itemToDescribe: isQuantityLeft ? newMerchantList[itemDescribed] : {},
         isItemDescriptionShowed: isQuantityLeft,
         itemsList: newMerchantList,
-        merchants,
       }),
       () => {
         firebase
@@ -313,38 +319,24 @@ class App extends Component {
           })
           .catch(error => {
             // Handle Errors here.
-            this.triggerError(error);
+            dispatchCallPrintError(error);
           });
       },
     );
   };
 
   signOut = () => {
-    const { dispatchCallSignOut } = this.props;
+    const {
+      dispatchCallSignOut,
+      dispatchCallPrintError,
+      dispatchCallSetTilesTypes,
+    } = this.props;
     firebase
       .auth()
       .signOut()
       .then(() => {
-        // Sign-out successful.
-        this.setState(state => ({ ...defaultState }));
-
-        // Reset state for the next mount
-        localStorage.setItem("appState", JSON.stringify(defaultState));
-
-        firebase
-          .database()
-          .ref("/tilesTypes")
-          .once("value")
-          .then(snapshot => {
-            this.setState(state => ({
-              ...state,
-              tilesTypes: snapshot.val(),
-            }));
-          })
-          .catch(error => {
-            this.triggerError(error);
-          });
-
+        dispatchCallSignOut();
+        dispatchCallSetTilesTypes();
         firebase
           .database()
           .ref()
@@ -352,29 +344,14 @@ class App extends Component {
       })
       .catch(error => {
         // An error happened.
-        this.triggerError(error);
+        dispatchCallPrintError(error);
       });
-  };
-
-  createTable = () => {
-    const { dispatchCallListenMapTiles } = this.props;
-    dispatchCallListenMapTiles();
   };
 
   loadTownsAndQuests = () => {
     const { currentStory } = this.props;
     listenTowns(currentStory, this.doSetState);
     listenQuests(currentStory, this.doSetState);
-  };
-
-  loadCurrentPosition = () => {
-    const {
-      dispatchCallListenCurrentX,
-      dispatchCallListenCurrentY,
-    } = this.props;
-    dispatchCallListenCurrentX();
-    dispatchCallListenCurrentY();
-    // loadCurrentPosition(currentStory, this.doSetState);
   };
 
   loadEvents = () => {
@@ -397,7 +374,7 @@ class App extends Component {
 
   onChangeMusics = (name, value) => {
     const { isMusicFirst, isMusicTransition } = this.state;
-    const { currentStory } = this.props;
+    const { currentStory, dispatchCallPrintError } = this.props;
     const obj = {};
     obj[name] = value;
     if (name === "musicName") {
@@ -440,7 +417,7 @@ class App extends Component {
                           musicStatusSecond: this.state.musicStatusSecond,
                         })
                         .catch(error => {
-                          this.triggerError(error);
+                          dispatchCallPrintError(error);
                         });
                     },
                   );
@@ -486,7 +463,7 @@ class App extends Component {
                           musicStatusSecond: this.state.musicStatusSecond,
                         })
                         .catch(error => {
-                          this.triggerError(error);
+                          dispatchCallPrintError(error);
                         });
                     },
                   );
@@ -535,7 +512,7 @@ class App extends Component {
       noiseStatus,
       noiseVolume,
     } = this.state;
-    const { currentStory } = this.props;
+    const { currentStory, dispatchCallPrintError } = this.props;
     firebase
       .database()
       .ref("/stories/" + currentStory + "/noise")
@@ -545,7 +522,7 @@ class App extends Component {
         noiseVolume,
       })
       .catch(error => {
-        this.triggerError(error);
+        dispatchCallPrintError(error);
       });
     firebase
       .database()
@@ -560,7 +537,7 @@ class App extends Component {
         musicVolumeSecond: isMusicFirst ? 0 : musicVolume,
       })
       .catch(error => {
-        this.triggerError(error);
+        dispatchCallPrintError(error);
       });
   };
 
@@ -571,6 +548,9 @@ class App extends Component {
       dispatchSetGameMaster,
       dispatchSetCharacter,
       dispatchCallListenChatHistory,
+      dispatchCallListenMapTiles,
+      dispatchCallListenCurrentX,
+      dispatchCallListenCurrentY,
       uid,
       stories,
     } = this.props;
@@ -603,7 +583,7 @@ class App extends Component {
         //   .set(test)
         //   .catch(error => {
         //     // Handle Errors here.
-        //     this.triggerError(error);
+        //     dispatchCallPrintError(error);
         //   });
       });
 
@@ -643,12 +623,13 @@ class App extends Component {
               dispatchSetCharacter(snapshot.val());
               dispatchUpdateCurrentStory(i);
               dispatchSetGameMaster(stories[i].gameMaster);
-              this.createTable(i);
+              dispatchCallListenMapTiles();
               dispatchCallListenChatHistory();
               this.loadMusic();
               this.loadMerchantsAndItems();
               this.loadTownsAndQuests();
-              this.loadCurrentPosition();
+              dispatchCallListenCurrentX();
+              dispatchCallListenCurrentY();
               this.loadEvents();
             },
           );
@@ -657,7 +638,7 @@ class App extends Component {
       //@TODO : Activate when GM will have proper tabs
       dispatchUpdateCurrentStory(i);
       dispatchSetGameMaster(stories[i].gameMaster);
-      this.createTable(i);
+      dispatchCallListenMapTiles();
       dispatchCallListenChatHistory();
       this.loadMusic();
       this.loadTownsAndQuests();
@@ -744,13 +725,11 @@ class App extends Component {
                 doSetState={this.doSetState}
                 generateTable={this.generateTable}
                 hydrateMerchants={this.hydrateMerchants}
-                loadCurrentPosition={this.loadCurrentPosition}
                 onChange={this.onChange}
                 onChangeMusics={this.onChangeMusics}
                 quests={quests}
                 selectAnotherCharacter={this.selectAnotherCharacter}
                 signOut={this.signOut}
-                stories={stories}
                 toggleBestiary={this.toggleBestiary}
                 toggleMerchantList={this.toggleMerchantList}
                 toggleMusic={this.toggleMusic}
@@ -832,13 +811,16 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: CALL_LISTEN_MAP_TILES });
     },
     dispatchCallSetTilesTypes: () => {
-      dispatch({ type: CALL_SET_TILES_TYPES });
+      dispatch({ type: CALL_GET_TILES_TYPES });
     },
     dispatchCallListenCurrentX: () => {
       dispatch({ type: CALL_LISTEN_CURRENT_X });
     },
     dispatchCallListenCurrentY: () => {
       dispatch({ type: CALL_LISTEN_CURRENT_Y });
+    },
+    dispatchCallListenMerchantList: () => {
+      dispatch({ type: CALL_LISTEN_MERCHANT_LIST });
     },
     dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
@@ -859,6 +841,7 @@ const mapStateToProps = store => ({
   character: store.character,
   characters: store.userInfos.characters,
   error: store.appState.error,
+  merchants: store.merchants.merchantList,
 });
 
 App.propTypes = {
@@ -878,6 +861,7 @@ App.propTypes = {
   dispatchCallSetTilesTypes: PropTypes.func.isRequired,
   dispatchCallListenCurrentX: PropTypes.func.isRequired,
   dispatchCallListenCurrentY: PropTypes.func.isRequired,
+  dispatchCallListenMerchantList: PropTypes.func.isRequired,
   loadSong: PropTypes.func.isRequired,
   loadNoise: PropTypes.func.isRequired,
   loadMusic: PropTypes.func.isRequired,

@@ -6,10 +6,7 @@ import { gridDimension, gridLength, totalRows } from "../Utils/StyleConstants";
 import Tile from "./Tile";
 import TileGM from "./TileGM";
 import { connect } from "react-redux";
-import {
-  setCurrentTile,
-  setTextureToApply,
-} from "../../redux/actions/actionsMapInfos";
+import { setCurrentTile } from "../../redux/actions/actionsMapInfos";
 
 class MapGrid extends Component {
   generateTable = mapToRender => {
@@ -45,7 +42,6 @@ class MapGrid extends Component {
       isGameMaster,
       isOnPlayerView,
       currentZoom,
-      doSetState,
       towns,
       setTexture,
     } = this.props;
