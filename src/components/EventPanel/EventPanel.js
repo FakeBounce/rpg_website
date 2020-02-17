@@ -182,6 +182,7 @@ class EventPanel extends Component {
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   gameMaster: store.appState.gameMaster,
+  eventHistory: store.events.history,
 });
 
 EventPanel.defaultProps = {
@@ -190,7 +191,6 @@ EventPanel.defaultProps = {
 
 EventPanel.propTypes = {
   items: PropTypes.object,
-  eventHistory: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
 };
 

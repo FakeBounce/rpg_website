@@ -58,21 +58,11 @@ class GMMapPanel extends Component {
 
   render() {
     const {
-      changeCurrentScale,
-      currentScale,
-      currentTile,
       currentTown,
-      currentX,
-      currentY,
-      doSetState,
-      eventHistory,
       items,
       merchants,
       quests,
-      stories,
       storyCharacters,
-      textureToApply,
-      tilesTypes,
       towns,
       triggerError,
     } = this.props;
@@ -80,31 +70,16 @@ class GMMapPanel extends Component {
 
     return (
       <div style={styledMiddlePanel}>
-        <MapEditionPanel
-          changeCurrentScale={changeCurrentScale}
-          currentScale={currentScale}
-          currentTile={currentTile}
-          currentX={currentX}
-          currentY={currentY}
-          doSetState={doSetState}
-          tilesTypes={tilesTypes}
-          textureToApply={textureToApply}
-          stories={stories}
-        />
+        <MapEditionPanel />
         <div style={styledMapSide}>
           <div style={styledContainer}>
             Générateur de sorts : <br />
             <SpellGenerator items={items} />
           </div>
         </div>
-        <EventPanel
-          items={items}
-          eventHistory={eventHistory}
-          storyCharacters={storyCharacters}
-        />
+        <EventPanel items={items} storyCharacters={storyCharacters} />
         {currentTown > -1 && (
           <TownPanel
-            currentTown={currentTown}
             towns={towns}
             quests={quests}
             merchants={merchants}
@@ -114,7 +89,6 @@ class GMMapPanel extends Component {
         {currentTown > -1 && (
           <StoryQuestsAndMerchantsPanel
             triggerError={triggerError}
-            currentTown={currentTown}
             towns={towns}
             quests={quests}
             merchants={merchants}
@@ -128,6 +102,7 @@ class GMMapPanel extends Component {
 
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
+  currentTown: store.appState.currentTown,
 });
 
 GMMapPanel.defaultProps = {
@@ -136,22 +111,11 @@ GMMapPanel.defaultProps = {
 };
 
 GMMapPanel.propTypes = {
-  changeCurrentScale: PropTypes.func.isRequired,
-  currentScale: PropTypes.number.isRequired,
-  currentTile: PropTypes.object.isRequired,
-  currentTown: PropTypes.number.isRequired,
-  currentX: PropTypes.number.isRequired,
-  currentY: PropTypes.number.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  eventHistory: PropTypes.array.isRequired,
   items: PropTypes.object,
   merchants: PropTypes.array.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
   quests: PropTypes.array.isRequired,
-  stories: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
-  textureToApply: PropTypes.object,
-  tilesTypes: PropTypes.object.isRequired,
   towns: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
 };

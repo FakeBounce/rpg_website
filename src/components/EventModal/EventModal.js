@@ -618,24 +618,16 @@ class EventModal extends PureComponent {
         <div style={styledEventTitle}>EVENEMENT !</div>
         {eventHistory[currentEvent].type !== "draw" && (
           <EventModalViewers
-            currentEvent={currentEvent}
-            eventHistory={eventHistory}
             storyCharacters={storyCharacters}
             removeViewerFromEvent={this.removeViewerFromEvent}
             addViewerToEvent={this.addViewerToEvent}
           />
         )}
         {eventHistory[currentEvent].type !== "draw" && (
-          <EventModalDescription
-            currentEvent={currentEvent}
-            eventHistory={eventHistory}
-          />
+          <EventModalDescription />
         )}
         {eventHistory[currentEvent].type !== "draw" && (
-          <EventModalActionHistory
-            currentEvent={currentEvent}
-            eventHistory={eventHistory}
-          />
+          <EventModalActionHistory />
         )}
         {eventHistory[currentEvent].type === "gold" && (
           <EventModalGold
@@ -662,9 +654,7 @@ class EventModal extends PureComponent {
         )}
         {eventHistory[currentEvent].type === "item" && (
           <EventModalItem
-            currentEvent={currentEvent}
             numberWanted={numberWanted}
-            eventHistory={eventHistory}
             closeEvent={this.closeEvent}
             takeNothing={this.takeNothing}
             lastItem={this.lastItem}
@@ -708,11 +698,11 @@ const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
   uid: store.userInfos.uid,
   character: store.character,
+  currentEvent: store.events.currentEvent,
+  eventHistory: store.events.history,
 });
 
 EventModal.propTypes = {
-  currentEvent: PropTypes.number.isRequired,
-  eventHistory: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   doSetState: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,

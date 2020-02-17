@@ -124,11 +124,11 @@ class StoryQuestsAndMerchantsPanel extends Component {
 
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
+  currentTown: store.mapInfos.currentTown,
 });
 
 StoryQuestsAndMerchantsPanel.propTypes = {
   triggerError: PropTypes.func.isRequired,
-  currentTown: PropTypes.number.isRequired,
   towns: PropTypes.array.isRequired,
   quests: PropTypes.array.isRequired,
   merchants: PropTypes.array.isRequired,

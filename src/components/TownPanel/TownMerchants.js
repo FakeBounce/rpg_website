@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import TownMerchant from "./TownMerchant";
 import ButtonLarge from "../Utils/ButtonLarge";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledBoxHeader = {
   width: "100%",
@@ -66,12 +67,15 @@ class TownMerchants extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentTown: store.mapInfos.currentTown,
+});
+
 TownMerchants.propTypes = {
-  currentTown: PropTypes.number.isRequired,
   merchants: PropTypes.array.isRequired,
   toggleMerchantDiscover: PropTypes.func.isRequired,
   removeMerchantFromTown: PropTypes.func.isRequired,
   toggleRightPanel: PropTypes.func.isRequired,
 };
 
-export default TownMerchants;
+export default connect(mapStateToProps)(TownMerchants);

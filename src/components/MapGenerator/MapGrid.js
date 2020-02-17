@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./Grid.css";
 
@@ -6,8 +6,12 @@ import { gridDimension, gridLength, totalRows } from "../Utils/StyleConstants";
 import Tile from "./Tile";
 import TileGM from "./TileGM";
 import { connect } from "react-redux";
+import {
+  setCurrentTile,
+  setTextureToApply,
+} from "../../redux/actions/actionsMapInfos";
 
-class MapGrid extends PureComponent {
+class MapGrid extends Component {
   generateTable = mapToRender => {
     const table = [];
     const { currentZoom, currentY } = this.props;
@@ -40,8 +44,6 @@ class MapGrid extends PureComponent {
       currentX,
       isGameMaster,
       isOnPlayerView,
-      textureToApply,
-      tilesTypes,
       currentZoom,
       doSetState,
       towns,
@@ -58,14 +60,10 @@ class MapGrid extends PureComponent {
           isGameMaster && !isOnPlayerView ? (
             <TileGM
               key={`row-${index}`}
-              currentZoom={currentZoom}
-              doSetState={doSetState}
               positionX={positionX}
               row={row}
               setTexture={setTexture}
               showInfos={this.showInfos}
-              textureToApply={textureToApply}
-              tilesTypes={tilesTypes}
               town={row.hasTown > -1 ? towns[row.hasTown] : null}
               index={index}
             />
@@ -73,10 +71,8 @@ class MapGrid extends PureComponent {
             <Tile
               key={`row-${index}`}
               cancelTownList={this.cancelTownList}
-              currentZoom={currentZoom}
               row={row}
               showTownList={this.showTownList}
-              tilesTypes={tilesTypes}
               town={row.hasTown > -1 ? towns[row.hasTown] : null}
             />
           ),
@@ -88,9 +84,8 @@ class MapGrid extends PureComponent {
   };
 
   showInfos = tileInfo => {
-    this.props.doSetState({
-      currentTile: tileInfo,
-    });
+    const { dispatchSetCurrentTile } = this.props;
+    dispatchSetCurrentTile(tileInfo);
   };
 
   showTownList = town => {
@@ -110,7 +105,7 @@ class MapGrid extends PureComponent {
   };
 
   render() {
-    const { map, towns } = this.props;
+    const { map } = this.props;
     if (map && map.length > 0) {
       return this.generateTable(map);
     }
@@ -118,25 +113,28 @@ class MapGrid extends PureComponent {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSetCurrentTile: payload => {
+      dispatch(setCurrentTile(payload));
+    },
+  };
+};
+
 const mapStateToProps = store => ({
   isOnPlayerView: store.appState.isOnPlayerView,
   isGameMaster: store.appState.isGameMaster,
   map: store.mapInfos.map,
-  tilesTypes: store.mapInfos.tilesTypes,
+  currentX: store.mapInfos.currentX,
+  currentY: store.mapInfos.currentY,
+  currentZoom: store.mapInfos.currentZoom,
 });
 
-MapGrid.defaultProps = {
-  textureToApply: null,
-};
-
 MapGrid.propTypes = {
-  currentY: PropTypes.number.isRequired,
-  currentX: PropTypes.number.isRequired,
   setTexture: PropTypes.func.isRequired,
-  currentZoom: PropTypes.number.isRequired,
+  dispatchSetCurrentTile: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
-  textureToApply: PropTypes.object,
   towns: PropTypes.array.isRequired,
 };
 
-export default connect(mapStateToProps)(MapGrid);
+export default connect(mapStateToProps, mapDispatchToProps)(MapGrid);

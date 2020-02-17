@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 const styledActionHistory = {
   width: "100%",
@@ -43,9 +43,9 @@ class EventModalActionHistory extends Component {
   }
 }
 
-EventModalActionHistory.propTypes = {
-  currentEvent: PropTypes.number.isRequired,
-  eventHistory: PropTypes.array.isRequired,
-};
+const mapStateToProps = store => ({
+  currentEvent: store.events.currentEvent,
+  eventHistory: store.events.history,
+});
 
-export default EventModalActionHistory;
+export default connect(mapStateToProps)(EventModalActionHistory);

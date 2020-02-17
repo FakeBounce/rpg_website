@@ -13,3 +13,59 @@ export const setMapTiles = payload => {
     payload,
   };
 };
+
+export const setCurrentX = payload => {
+  return {
+    type: actionTypesMapInfos.SET_CURRENT_X,
+    payload,
+  };
+};
+
+export const setCurrentY = payload => {
+  return {
+    type: actionTypesMapInfos.SET_CURRENT_Y,
+    payload,
+  };
+};
+
+export const setCurrentZoom = payload => {
+  return {
+    type: actionTypesMapInfos.SET_CURRENT_ZOOM,
+    payload,
+  };
+};
+
+export const setCurrentPosition = payload => {
+  return {
+    type: actionTypesMapInfos.SET_CURRENT_POSITION,
+    payload,
+  };
+};
+
+export const setCurrentScale = payload => {
+  return {
+    type: actionTypesMapInfos.SET_CURRENT_SCALE,
+    payload,
+  };
+};
+
+export const setCurrentTown = payload => {
+  return {
+    type: actionTypesMapInfos.SET_CURRENT_TOWN,
+    payload,
+  };
+};
+
+export const setCurrentTile = payload => {
+  return {
+    type: actionTypesMapInfos.SET_CURRENT_TILE,
+    payload,
+  };
+};
+
+export const setTextureToApply = payload => {
+  return {
+    type: actionTypesMapInfos.SET_TEXTURE_TO_APPLY,
+    payload,
+  };
+};

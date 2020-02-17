@@ -648,7 +648,7 @@ class ChatPanel extends PureComponent {
 
     return (
       <div style={styledChatPanel}>
-        <ChatHistory chatHistory={chatHistory} />
+        <ChatHistory />
         <ChatDicesRow
           bonus={bonus}
           gmCommands={gmCommands}
@@ -679,10 +679,8 @@ const mapStateToProps = store => ({
 });
 
 ChatPanel.propTypes = {
-  users: PropTypes.object.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   chatInput: PropTypes.string.isRequired,
-  chatHistory: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,

@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { setCurrentZoom } from "../../redux/actions/actionsMapInfos";
 
 class MapZoom extends Component {
   render() {
-    const { doSetState, currentZoom } = this.props;
+    const { dispatchSetCurrentZoom, currentZoom } = this.props;
 
     return (
       <div className="map-zoom">
@@ -11,9 +13,7 @@ class MapZoom extends Component {
           type="range"
           name="currentZoom"
           onChange={e => {
-            doSetState({
-              currentZoom: parseInt(e.target.value, 10),
-            });
+            dispatchSetCurrentZoom(parseInt(e.target.value, 10));
           }}
           value={currentZoom}
           min="5"
@@ -25,13 +25,20 @@ class MapZoom extends Component {
   }
 }
 
-MapZoom.defaultProps = {
-  textureToApply: null,
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSetCurrentZoom: payload => {
+      dispatch(setCurrentZoom(payload));
+    },
+  };
 };
+
+const mapStateToProps = store => ({
+  currentZoom: store.mapInfos.currentZoom,
+});
 
 MapZoom.propTypes = {
-  doSetState: PropTypes.func.isRequired,
-  currentZoom: PropTypes.number.isRequired,
+  dispatchSetCurrentZoom: PropTypes.func.isRequired,
 };
 
-export default MapZoom;
+export default connect(mapStateToProps)(MapZoom);

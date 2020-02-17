@@ -135,14 +135,12 @@ class TownPanel extends Component {
       <div style={styledMapSide}>
         <div style={styledBoxHeader}>{towns[currentTown].name}</div>
         <TownQuests
-          currentTown={currentTown}
           quests={quests}
           toggleRightPanel={toggleRightPanel}
           removeQuestFromTown={this.removeQuestFromTown}
           validateQuest={this.validateQuest}
         />
         <TownMerchants
-          currentTown={currentTown}
           merchants={merchants}
           toggleRightPanel={toggleRightPanel}
           toggleMerchantDiscover={this.toggleMerchantDiscover}
@@ -158,7 +156,6 @@ const mapStateToProps = store => ({
 });
 
 TownPanel.propTypes = {
-  currentTown: PropTypes.number.isRequired,
   towns: PropTypes.array.isRequired,
   quests: PropTypes.array.isRequired,
   merchants: PropTypes.array.isRequired,

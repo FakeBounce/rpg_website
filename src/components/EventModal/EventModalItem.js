@@ -94,12 +94,12 @@ class EventModalItem extends Component {
 
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
+  currentEvent: store.events.currentEvent,
+  eventHistory: store.events.history,
 });
 
 EventModalItem.propTypes = {
-  currentEvent: PropTypes.number.isRequired,
   numberWanted: PropTypes.number.isRequired,
-  eventHistory: PropTypes.array.isRequired,
   closeEvent: PropTypes.func.isRequired,
   takeNothing: PropTypes.func.isRequired,
   lastItem: PropTypes.func.isRequired,

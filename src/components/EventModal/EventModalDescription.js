@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 const styledEventDescription = {
   width: "50%",
@@ -42,7 +42,8 @@ class EventModalDescription extends Component {
         <div style={styledEventImage}>
           <img
             src={
-              (eventHistory[currentEvent].type === "gold" || eventHistory[currentEvent].type === "debt")
+              eventHistory[currentEvent].type === "gold" ||
+              eventHistory[currentEvent].type === "debt"
                 ? "./common/gold_purse.jpg"
                 : "./" +
                   eventHistory[currentEvent].item.itemType +
@@ -64,7 +65,8 @@ class EventModalDescription extends Component {
         )}
         {eventHistory[currentEvent].type === "debt" && (
           <div style={styledBoxHeader}>
-            CURRENT : {eventHistory[currentEvent].goldLeft} gold / {eventHistory[currentEvent].gold} gold
+            CURRENT : {eventHistory[currentEvent].goldLeft} gold /{" "}
+            {eventHistory[currentEvent].gold} gold
           </div>
         )}
         {eventHistory[currentEvent].type === "item" && (
@@ -82,9 +84,9 @@ class EventModalDescription extends Component {
   }
 }
 
-EventModalDescription.propTypes = {
-  currentEvent: PropTypes.number.isRequired,
-  eventHistory: PropTypes.array.isRequired,
-};
+const mapStateToProps = store => ({
+  currentEvent: store.events.currentEvent,
+  eventHistory: store.events.history,
+});
 
-export default EventModalDescription;
+export default connect(mapStateToProps)(EventModalDescription);

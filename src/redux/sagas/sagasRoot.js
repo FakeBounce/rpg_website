@@ -20,9 +20,13 @@ function* rootSaga() {
   yield spawn(sagasCharacter.watchCallSetCharacter);
   // Events
   yield spawn(sagasEvents.watchCallListenCurrentEvent);
+  yield spawn(sagasEvents.watchCallListenHistoryEvents);
   // Map infos
   yield spawn(sagasMapInfos.watchCallSetTilesTypes);
   yield spawn(sagasMapInfos.watchCallListenMapTiles);
+  yield spawn(sagasMapInfos.watchCallListenCurrentX);
+  yield spawn(sagasMapInfos.watchCallListenCurrentY);
+  yield spawn(sagasMapInfos.watchCallGetCurrentPosition);
   // User infos
   yield spawn(sagasUserInfos.watchCallSetUserPseudo);
   // Sounds

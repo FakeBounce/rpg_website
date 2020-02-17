@@ -102,11 +102,11 @@ class EventModalViewers extends Component {
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
   gameMaster: store.appState.gameMaster,
+  currentEvent: store.events.currentEvent,
+  eventHistory: store.events.history,
 });
 
 EventModalViewers.propTypes = {
-  currentEvent: PropTypes.number.isRequired,
-  eventHistory: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   removeViewerFromEvent: PropTypes.func.isRequired,
   addViewerToEvent: PropTypes.func.isRequired,

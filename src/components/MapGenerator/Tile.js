@@ -4,6 +4,7 @@ import "./Grid.css";
 import Town from "./Town";
 
 import { gridDimension } from "../Utils/StyleConstants";
+import { connect } from "react-redux";
 
 class Tile extends PureComponent {
   render() {
@@ -49,17 +50,20 @@ class Tile extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  currentZoom: store.mapInfos.currentZoom,
+  tilesTypes: store.mapInfos.tilesTypes,
+});
+
 Tile.defaultProps = {
   town: null,
 };
 
 Tile.propTypes = {
   cancelTownList: PropTypes.func.isRequired,
-  currentZoom: PropTypes.number.isRequired,
   row: PropTypes.object.isRequired,
   showTownList: PropTypes.func.isRequired,
-  tilesTypes: PropTypes.object.isRequired,
   town: PropTypes.object,
 };
 
-export default Tile;
+export default connect(mapStateToProps)(Tile);

@@ -1,9 +1,14 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import './Grid.css';
-import Town from './Town';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import "./Grid.css";
+import Town from "./Town";
 
-import { gridDimension } from '../Utils/StyleConstants';
+import { gridDimension } from "../Utils/StyleConstants";
+import { connect } from "react-redux";
+import {
+  setCurrentTown,
+  setTextureToApply,
+} from "../../redux/actions/actionsMapInfos";
 
 class TileGM extends PureComponent {
   render() {
@@ -11,7 +16,7 @@ class TileGM extends PureComponent {
       row,
       index,
       currentZoom,
-      doSetState,
+      dispatchSetCurrentTown,
       positionX,
       setTexture,
       showInfos,
@@ -22,7 +27,7 @@ class TileGM extends PureComponent {
 
     return (
       <div
-        className={`grid ${row.isCurrent && 'is-current'}`}
+        className={`grid ${row.isCurrent && "is-current"}`}
         style={{
           backgroundColor: tilesTypes[row.environment].backgroundColor,
           width: `${(gridDimension * currentZoom) / 10 -
@@ -39,9 +44,7 @@ class TileGM extends PureComponent {
           <Town
             town={town}
             showTownList={() => {
-              doSetState({
-                currentTown: row.hasTown,
-              });
+              dispatchSetCurrentTown(row.hasTown);
               showInfos(row);
             }}
             isCurrent={true}
@@ -61,22 +64,32 @@ class TileGM extends PureComponent {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSetCurrentTown: payload => {
+      dispatch(setCurrentTown(payload));
+    },
+  };
+};
+
+const mapStateToProps = store => ({
+  currentZoom: store.mapInfos.currentZoom,
+  tilesTypes: store.mapInfos.tilesTypes,
+  textureToApply: store.mapInfos.textureToApply,
+});
+
 TileGM.defaultProps = {
   town: null,
-  textureToApply: null,
 };
 
 TileGM.propTypes = {
-  currentZoom: PropTypes.number.isRequired,
-  doSetState: PropTypes.func.isRequired,
+  dispatchSetCurrentTown: PropTypes.func.isRequired,
   positionX: PropTypes.number.isRequired,
   row: PropTypes.object.isRequired,
   setTexture: PropTypes.func.isRequired,
   showInfos: PropTypes.func.isRequired,
-  textureToApply: PropTypes.object,
-  tilesTypes: PropTypes.object.isRequired,
   town: PropTypes.object,
   index: PropTypes.number.isRequired,
 };
 
-export default TileGM;
+export default connect(mapStateToProps, mapDispatchToProps)(TileGM);

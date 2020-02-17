@@ -1,47 +1,47 @@
-import React, { Component } from 'react';
-import { gridDimension } from '../Utils/StyleConstants';
+import React, { Component } from "react";
+import { gridDimension } from "../Utils/StyleConstants";
 
-import PropTypes from 'prop-types';
-import MapEditionTile from './MapEditionTile';
+import PropTypes from "prop-types";
+import MapEditionTile from "./MapEditionTile";
+import { connect } from "react-redux";
+import {
+  setCurrentZoom,
+  setTextureToApply,
+} from "../../redux/actions/actionsMapInfos";
 
 const styledMapButtons = {
-  border: '1px solid blue',
-  width: '100%',
+  border: "1px solid blue",
+  width: "100%",
   height: `${gridDimension * 2 + 1}px`,
-  display: 'inline-block',
-  float: 'left',
-  position: 'relative',
+  display: "inline-block",
+  float: "left",
+  position: "relative",
 };
 
 class MapEditionTilesList extends Component {
   loadTexture = gridType => {
-    if (gridType === 'Fog') {
-      this.props.doSetState({
-        textureToApply: {
-          hasFog: true,
-        },
+    const { dispatchSetTextureToApply } = this.props;
+    if (gridType === "Fog") {
+      dispatchSetTextureToApply({
+        hasFog: true,
       });
-    } else if (gridType === 'NoFog') {
-      this.props.doSetState({
-        textureToApply: {
-          hasFog: false,
-        },
+    } else if (gridType === "NoFog") {
+      dispatchSetTextureToApply({
+        hasFog: false,
       });
     } else {
-      this.props.doSetState({
-        textureToApply: {
-          environment: gridType,
-        },
+      dispatchSetTextureToApply({
+        environment: gridType,
       });
     }
   };
 
   getGridSelected = grid => {
     const { tilesTypes } = this.props;
-    let bg = '';
+    let bg = "";
 
     if (grid.hasFog) {
-      bg = tilesTypes['Fog'];
+      bg = tilesTypes["Fog"];
     } else {
       Object.keys(tilesTypes).map(key => {
         if (key === grid.environment) {
@@ -54,9 +54,8 @@ class MapEditionTilesList extends Component {
   };
 
   unloadTexture = () => {
-    this.props.doSetState({
-      textureToApply: null,
-    });
+    const { dispatchSetTextureToApply } = this.props;
+    dispatchSetTextureToApply(null);
   };
 
   render() {
@@ -79,14 +78,21 @@ class MapEditionTilesList extends Component {
   }
 }
 
-MapEditionTilesList.defaultProps = {
-  textureToApply: null,
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSetTextureToApply: payload => {
+      dispatch(setTextureToApply(payload));
+    },
+  };
 };
+
+const mapStateToProps = store => ({
+  tilesTypes: store.mapInfos.tilesTypes,
+  textureToApply: store.mapInfos.textureToApply,
+});
 
 MapEditionTilesList.propTypes = {
-  textureToApply: PropTypes.object,
-  tilesTypes: PropTypes.object.isRequired,
-  doSetState: PropTypes.func.isRequired,
+  dispatchSetTextureToApply: PropTypes.func.isRequired,
 };
 
-export default MapEditionTilesList;
+export default connect(mapStateToProps, mapDispatchToProps)(MapEditionTilesList);

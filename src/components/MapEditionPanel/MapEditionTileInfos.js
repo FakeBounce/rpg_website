@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { towns } from '../Utils/Constants';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { towns } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledBoxHeader = {
-  width: '100%',
-  height: '20px',
-  marginBottom: '5px',
-  textAlign: 'left',
-  float: 'left',
-  display: 'inline-block',
-  position: 'relative',
+  width: "100%",
+  height: "20px",
+  marginBottom: "5px",
+  textAlign: "left",
+  float: "left",
+  display: "inline-block",
+  position: "relative",
 };
 
 class MapEditionTileInfos extends Component {
@@ -28,9 +29,9 @@ class MapEditionTileInfos extends Component {
           <div>
             environment : {currentTile.environment}
             <br />
-            hasFog : {currentTile.hasFog ? 'True' : 'False'}
+            hasFog : {currentTile.hasFog ? "True" : "False"}
             <br />
-            hasTown : {currentTile.hasTown ? currentTile.hasTown : 'False'}
+            hasTown : {currentTile.hasTown ? currentTile.hasTown : "False"}
             <input
               type="number"
               name="townToAssign"
@@ -56,12 +57,15 @@ class MapEditionTileInfos extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  currentTile: store.mapInfos.currentTile,
+});
+
 MapEditionTileInfos.propTypes = {
-  currentTile: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   toggleIsCurrent: PropTypes.func.isRequired,
   toggleHasTown: PropTypes.func.isRequired,
   townToAssign: PropTypes.number.isRequired,
 };
 
-export default MapEditionTileInfos;
+export default connect(mapStateToProps)(MapEditionTileInfos);
