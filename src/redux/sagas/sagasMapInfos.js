@@ -28,8 +28,9 @@ function* mapInfosError(error = getTranslations("error.transfer.failed")) {
 export function* callSetTilesTypes() {
   try {
     const result = yield call(firebaseDbOnce, "/tilesTypes", "value");
+    console.log('result',result);
     if (result) {
-      yield call(actionsMapInfos.setTilesTypes, result);
+      yield put(actionsMapInfos.setTilesTypes(result));
     } else {
       yield call(mapInfosError, "No result for map tiles");
     }
