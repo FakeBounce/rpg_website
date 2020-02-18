@@ -8,7 +8,6 @@ import ChatBar from "./ChatBar";
 import ChatDicesRow from "./ChatDicesRow";
 import ChatHistory from "./ChatHistory";
 import { connect } from "react-redux";
-import { setCurrentScale } from "../../redux/actions/actionsMapInfos";
 import { CALL_PRINT_ERROR } from "../../redux/actionsTypes/actionsTypesAppState";
 
 const styledChatPanel = {
@@ -685,10 +684,10 @@ const mapStateToProps = store => ({
   pseudo: store.userInfos.pseudo,
   uid: store.userInfos.uid,
   character: store.character,
+  storyCharacters: store.team.characters,
 });
 
 ChatPanel.propTypes = {
-  storyCharacters: PropTypes.array.isRequired,
   dispatchCallPrintError: PropTypes.func.isRequired,
 };
 

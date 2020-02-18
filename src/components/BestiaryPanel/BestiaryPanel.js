@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 import {
   heightLeft,
@@ -310,7 +309,6 @@ class BestiaryPanel extends Component {
   };
 
   render() {
-    const { uid } = this.props;
     const {
       selectedFilter,
       selectedOrderBy,
@@ -320,7 +318,6 @@ class BestiaryPanel extends Component {
       isOnForm,
       isOnEditForm,
     } = this.state;
-    const { bestiary, doSetState } = this.props;
 
     return (
       <div style={styledBestiaryPanel}>
@@ -349,16 +346,10 @@ class BestiaryPanel extends Component {
           toggleSeenBeast={this.toggleSeenBeast}
           displayMonsterForm={this.displayMonsterForm}
         />
-        {isOnForm && (
-          <BestiaryForm bestiary={bestiary} doSetState={doSetState} />
-        )}
+        {isOnForm && <BestiaryForm />}
         {selectedBeast !== -1 &&
           (isOnEditForm ? (
-            <BestiaryForm
-              bestiary={bestiary}
-              doSetState={doSetState}
-              beast={filteredBestiary[selectedBeast]}
-            />
+            <BestiaryForm beast={filteredBestiary[selectedBeast]} />
           ) : (
             <BestiaryProfile
               beast={filteredBestiary[selectedBeast]}
@@ -371,13 +362,9 @@ class BestiaryPanel extends Component {
 }
 
 const mapStateToProps = store => ({
+  bestiary: store.bestiary.bestiary,
   currentStory: store.appState.currentStory,
   uid: store.userInfos.uid,
 });
-
-BestiaryPanel.propTypes = {
-  bestiary: PropTypes.array.isRequired,
-  doSetState: PropTypes.func.isRequired,
-};
 
 export default connect(mapStateToProps)(BestiaryPanel);

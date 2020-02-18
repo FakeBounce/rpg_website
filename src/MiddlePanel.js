@@ -27,7 +27,6 @@ class MiddlePanel extends Component {
       onChange,
       onChangeMusics,
       questsList,
-      storyCharacters,
       triggerError,
     } = this.props;
 
@@ -35,14 +34,13 @@ class MiddlePanel extends Component {
       <Fragment>
         <MapGenerator doSetState={doSetState} />
         {((isGameMaster && isOnPlayerView) || !isGameMaster) && (
-          <ChatPanel storyCharacters={storyCharacters} />
+          <ChatPanel />
         )}
         {isGameMaster && !isOnPlayerView && (
           <GMMapPanel
             doSetState={doSetState}
             items={items}
             onChangeMusics={onChangeMusics}
-            storyCharacters={storyCharacters}
             triggerError={triggerError}
           />
         )}
@@ -66,7 +64,6 @@ class MiddlePanel extends Component {
             chatInput={chatInput}
             doSetState={doSetState}
             onChange={onChange}
-            storyCharacters={storyCharacters}
             triggerError={triggerError}
             onChangeMusics={onChangeMusics}
           />
@@ -103,7 +100,6 @@ MiddlePanel.propTypes = {
   onChange: PropTypes.func.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
   questsList: PropTypes.array.isRequired,
-  storyCharacters: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
 };
 

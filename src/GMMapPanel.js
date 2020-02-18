@@ -57,7 +57,7 @@ class GMMapPanel extends Component {
   };
 
   render() {
-    const { currentTown, items, storyCharacters, triggerError } = this.props;
+    const { currentTown, items, triggerError } = this.props;
     const { isOnQuest } = this.state;
 
     return (
@@ -69,7 +69,7 @@ class GMMapPanel extends Component {
             <SpellGenerator items={items} />
           </div>
         </div>
-        <EventPanel items={items} storyCharacters={storyCharacters} />
+        <EventPanel items={items} />
         {currentTown > -1 && (
           <TownPanel toggleRightPanel={this.toggleRightPanel} />
         )}
@@ -97,7 +97,6 @@ GMMapPanel.defaultProps = {
 GMMapPanel.propTypes = {
   items: PropTypes.object,
   onChangeMusics: PropTypes.func.isRequired,
-  storyCharacters: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
 };
 

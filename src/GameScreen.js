@@ -132,12 +132,11 @@ class GameScreen extends Component {
         {this.canReadEvent() && (
           <EventModal
             doSetState={doSetState}
-            storyCharacters={storyCharacters}
             triggerError={triggerError}
           />
         )}
-        {isOnBestiary && bestiary ? (
-          <BestiaryPanel bestiary={bestiary} doSetState={doSetState} />
+        {isOnBestiary && bestiary.length > 0 ? (
+          <BestiaryPanel />
         ) : isOnMerchantList &&
           towns &&
           towns.length > 0 &&
@@ -149,7 +148,6 @@ class GameScreen extends Component {
         ) : (
           <MiddlePanel
             doSetState={doSetState}
-            storyCharacters={storyCharacters}
             triggerError={triggerError}
             {...rest}
           />
@@ -161,18 +159,18 @@ class GameScreen extends Component {
 }
 
 const mapStateToProps = store => ({
-  isGameMaster: store.appState.isGameMaster,
-  currentStory: store.appState.currentStory,
-  stories: store.appState.stories,
-  uid: store.userInfos.uid,
+  bestiary: store.bestiary.bestiary,
   currentEvent: store.events.currentEvent,
+  currentStory: store.appState.currentStory,
+  isGameMaster: store.appState.isGameMaster,
   merchants: store.merchants.merchantList,
   quests: store.mapInfos.quests,
+  stories: store.appState.stories,
   towns: store.mapInfos.towns,
+  uid: store.userInfos.uid,
 });
 
 GameScreen.propTypes = {
-  bestiary: PropTypes.array.isRequired,
   character: PropTypes.object.isRequired,
   doSetState: PropTypes.func.isRequired,
   hydrateMerchants: PropTypes.func.isRequired,

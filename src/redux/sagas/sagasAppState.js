@@ -12,10 +12,8 @@ import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
 import * as actionsAppState from "../actions/actionsAppState";
 import * as actionsMapInfos from "../actions/actionsMapInfos";
 import { getTranslations } from "../../i18n";
-import { firebaseDbOnce } from "./api";
+import { firebaseDbOnce, onValueChannel } from "./api";
 import firebase from "firebase";
-import { currentStorySelector } from "../../selectors";
-import * as actionsChat from "../actions/actionsChat";
 
 function* appStateError(
   { payload } = getTranslations("error.transfer.failed"),
@@ -66,21 +64,8 @@ export function* watchCallGetStories() {
   yield takeLatest(actionsTypesAppState.CALL_GET_ALL_STORIES, getStories);
 }
 
-function storyUsersChannel() {
-  const ref = firebase.database().ref("/users");
-
-  return eventChannel(emit => {
-    const callback = ref.on("value", snapshot => {
-      emit(snapshot.val());
-    });
-
-    // unsubscribe function
-    return () => ref.off("value", callback);
-  });
-}
-
 function* listenStoryUsers() {
-  const channel = yield call(storyUsersChannel);
+  const channel = yield call(onValueChannel, "/users");
 
   yield takeEvery(channel, function*(data) {
     yield put(actionsAppState.setStoryUsers(data));

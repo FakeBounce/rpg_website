@@ -41,4 +41,4 @@ MapZoom.propTypes = {
   dispatchSetCurrentZoom: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(MapZoom);
+export default connect(mapStateToProps, mapDispatchToProps)(MapZoom);

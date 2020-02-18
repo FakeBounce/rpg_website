@@ -1,11 +1,20 @@
-import { call, put, select, delay, takeLatest } from "redux-saga/effects";
+import {
+  call,
+  put,
+  select,
+  delay,
+  takeLatest,
+  takeEvery,
+  take,
+} from "redux-saga/effects";
 
 import * as actionsTypesSounds from "../actionsTypes/actionsTypesSounds";
 import * as actionsSounds from "../actions/actionsSounds";
 import * as actionsAppState from "../actions/actionsAppState";
 import { currentStorySelector } from "../../selectors";
 import { getTranslations } from "../../i18n";
-import { firebaseDbSet } from "./api";
+import { firebaseDbSet, onValueChannel } from "./api";
+import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
 
 function* soundsError(error = getTranslations("error.transfer.failed")) {
   yield put(actionsAppState.printError(error));
@@ -109,6 +118,8 @@ export function* watchCallStopSong() {
   yield takeLatest(actionsTypesSounds.CALL_STOP_SONG, callStopSong);
 }
 
+
+
 export function* callLoadSong(params) {
   try {
     const currentStory = yield select(currentStorySelector);
@@ -185,4 +196,88 @@ export function* callLoadNoise(params) {
 
 export function* watchCallLoadNoise() {
   yield takeLatest(actionsTypesSounds.CALL_LOAD_NOISE, callLoadNoise);
+}
+
+function* listenMusic() {
+  try {
+    const currentStory = yield select(currentStorySelector);
+    const channel = yield call(
+      onValueChannel,
+      "/stories/" + currentStory + "/music",
+    );
+
+    yield takeEvery(channel, function*(data) {
+      yield put(actionsSounds.loadMusic(data));
+    });
+
+    yield take([
+      actionsTypesAppState.CANCEL_ALL_WATCH,
+      actionsTypesAppState.RESET_APP,
+    ]);
+    channel.close();
+  } catch (error) {
+    console.log("listenMusic try saga err:", { error });
+
+    yield call(soundsError);
+  }
+}
+
+export function* watchCallListenMusic() {
+  yield takeLatest(actionsTypesSounds.CALL_LISTEN_MUSIC, listenMusic);
+}
+
+function* listenNoise() {
+  try {
+    const currentStory = yield select(currentStorySelector);
+    const channel = yield call(
+      onValueChannel,
+      "/stories/" + currentStory + "/noise",
+    );
+
+    yield takeEvery(channel, function*(data) {
+      yield put(actionsSounds.loadNoise(data));
+    });
+
+    yield take([
+      actionsTypesAppState.CANCEL_ALL_WATCH,
+      actionsTypesAppState.RESET_APP,
+    ]);
+    channel.close();
+  } catch (error) {
+    console.log("listenNoise try saga err:", { error });
+
+    yield call(soundsError);
+  }
+}
+
+export function* watchCallListenNoise() {
+  yield takeLatest(actionsTypesSounds.CALL_LISTEN_NOISE, listenNoise);
+}
+
+function* listenSong() {
+  try {
+    const currentStory = yield select(currentStorySelector);
+    const channel = yield call(
+      onValueChannel,
+      "/stories/" + currentStory + "/song",
+    );
+
+    yield takeEvery(channel, function*(data) {
+      yield put(actionsSounds.loadSong(data));
+    });
+
+    yield take([
+      actionsTypesAppState.CANCEL_ALL_WATCH,
+      actionsTypesAppState.RESET_APP,
+    ]);
+    channel.close();
+  } catch (error) {
+    console.log("listenSong try saga err:", { error });
+
+    yield call(soundsError);
+  }
+}
+
+export function* watchCallListenSong() {
+  yield takeLatest(actionsTypesSounds.CALL_LISTEN_SONG, listenSong);
 }

@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
 import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 import ChatRows from "./ChatRows";
 
@@ -27,8 +26,6 @@ class ChatHistory extends PureComponent {
   };
 
   render() {
-    const { chatHistory } = this.props;
-
     return (
       <div style={styledChatHistoric} className="scrollbar">
         <ChatRows />

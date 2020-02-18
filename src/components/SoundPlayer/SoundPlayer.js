@@ -7,20 +7,17 @@ import { stopNoise, stopSong } from "../../redux/actions/actionsSounds";
 class SoundPlayer extends PureComponent {
   render() {
     const {
-      musicMute,
-      noiseName,
-      noiseStatus,
-      noiseMute,
-      noiseVolume,
-      songName,
-      songStatus,
-      songVolume,
-      musicVolumeFirst,
-      musicStatusFirst,
-      musicNameFirst,
-      musicVolumeSecond,
-      musicNameSecond,
-      musicStatusSecond,
+      noise: { noiseName, noiseStatus, noiseMute, noiseVolume },
+      song: { songName, songStatus, songVolume },
+      music: {
+        musicMute,
+        musicVolumeFirst,
+        musicStatusFirst,
+        musicNameFirst,
+        musicVolumeSecond,
+        musicNameSecond,
+        musicStatusSecond,
+      },
       dispatchStopNoise,
       dispatchStopSong,
     } = this.props;
@@ -69,20 +66,9 @@ class SoundPlayer extends PureComponent {
 }
 
 const mapStateToProps = store => ({
-  musicMute: store.sounds.musicMute,
-  musicVolumeFirst: store.sounds.musicVolumeFirst,
-  musicStatusFirst: store.sounds.musicStatusFirst,
-  musicNameFirst: store.sounds.musicNameFirst,
-  musicVolumeSecond: store.sounds.musicVolumeSecond,
-  musicNameSecond: store.sounds.musicNameSecond,
-  musicStatusSecond: store.sounds.musicStatusSecond,
-  noiseMute: store.sounds.noiseMute,
-  noiseName: store.sounds.noiseName,
-  noiseStatus: store.sounds.noiseStatus,
-  noiseVolume: store.sounds.noiseVolume,
-  songName: store.sounds.songName,
-  songStatus: store.sounds.songStatus,
-  songVolume: store.sounds.songVolume,
+  music: store.sounds.music,
+  song: store.sounds.song,
+  noise: store.sounds.noise,
 });
 
 const mapDispatchToProps = dispatch => {
@@ -97,20 +83,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 SoundPlayer.propTypes = {
-  musicMute: PropTypes.bool.isRequired,
-  musicVolumeFirst: PropTypes.number.isRequired,
-  musicStatusFirst: PropTypes.string.isRequired,
-  musicNameFirst: PropTypes.string.isRequired,
-  musicVolumeSecond: PropTypes.number.isRequired,
-  musicNameSecond: PropTypes.string.isRequired,
-  musicStatusSecond: PropTypes.string.isRequired,
-  noiseMute: PropTypes.bool.isRequired,
-  noiseName: PropTypes.string.isRequired,
-  noiseStatus: PropTypes.string.isRequired,
-  noiseVolume: PropTypes.number.isRequired,
-  songName: PropTypes.string.isRequired,
-  songStatus: PropTypes.string.isRequired,
-  songVolume: PropTypes.number.isRequired,
   dispatchStopNoise: PropTypes.func.isRequired,
   dispatchStopSong: PropTypes.func.isRequired,
 };

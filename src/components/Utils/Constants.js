@@ -830,9 +830,9 @@ export const bestiary = [
     text1:
       "Puissant chef de meute, il a participé à plusieurs Waaaagh et à toujours su rallier ses troupes. Combattant vétéran, il utilise une masse d’arme capable de briser n’importe quelle armure.",
     text2: "",
-    text3: "Il porte un anneau étrange sur sa annulaire gauche.",
+    text3: "Il porte un anneau étrange sur son annulaire gauche.",
     text4:
-      "Force accrue, dextérité accrue, perception accrue, aura de feu,  souffle de flammes, stabilité, peau de roche, résistanc e mentale accrue",
+      "Force accrue, dextérité accrue, perception accrue, aura de feu,  souffle de flammes, stabilité, peau de roche, résistance mentale accrue",
     dangerosity: "7/10",
     taille: "210",
     poids: "90",

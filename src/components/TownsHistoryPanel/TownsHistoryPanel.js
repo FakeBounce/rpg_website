@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { heightLeft } from "../Utils/StyleConstants";
 import TownsHistoryList from "./TownsHistoryList";
 import TownsHistorySoloMerchant from "./TownsHistorySoloMerchant";

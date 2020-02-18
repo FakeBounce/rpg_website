@@ -75,10 +75,10 @@ class RightPanel extends Component {
     }
   };
 
-  exchangeWithTeamMember = character => {
+  exchangeWithTeamMember = c => {
     this.setState(state => ({
       ...state,
-      currentExchangeCharacter: character,
+      currentExchangeCharacter: c,
     }));
   };
 
@@ -350,13 +350,7 @@ class RightPanel extends Component {
   };
 
   render() {
-    const {
-      uid,
-      character,
-      storyCharacters,
-      triggerError,
-      onChangeMusics,
-    } = this.props;
+    const { triggerError, onChangeMusics } = this.props;
 
     const {
       status,
@@ -408,7 +402,6 @@ class RightPanel extends Component {
           exchangeWithTeamMember={this.exchangeWithTeamMember}
           goldWithTeamMember={this.goldWithTeamMember}
           modifyCurrentCharacter={this.modifyCurrentCharacter}
-          storyCharacters={storyCharacters}
         />
       </div>
     );
@@ -426,7 +419,6 @@ RightPanel.propTypes = {
   chatInput: PropTypes.string.isRequired,
   doSetState: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  storyCharacters: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
 };

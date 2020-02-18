@@ -4,7 +4,7 @@ import {
   TOGGLE_MUSIC_FIRST,
   STOP_NOISE,
   STOP_SONG,
-  UPDATE_ALL_MUSIC,
+  // UPDATE_ALL_MUSIC,
   LOAD_SONG,
   LOAD_MUSIC,
   LOAD_NOISE,
@@ -12,22 +12,29 @@ import {
 import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
 
 const initialState = {
-  musicMute: false,
-  musicNameFirst: "",
-  musicNameSecond: "",
-  musicStatusFirst: "STOPPED",
-  musicStatusSecond: "STOPPED",
-  musicVolume: 50,
-  musicVolumeFirst: 50,
-  musicVolumeSecond: 0,
-  noiseMute: false,
-  noiseName: "",
-  noiseStatus: "STOPPED",
-  noiseVolume: 50,
-  songName: "",
-  songStatus: "STOPPED",
-  songVolume: 50,
-  isMusicFirst: true,
+  music: {
+    musicMute: false,
+    musicNameFirst: "",
+    musicNameSecond: "",
+    musicStatusFirst: "STOPPED",
+    musicStatusSecond: "STOPPED",
+    musicVolume: 50,
+    musicVolumeFirst: 50,
+    musicVolumeSecond: 0,
+    isMusicFirst: true,
+    isMusicTransition: false,
+  },
+  noise: {
+    noiseMute: false,
+    noiseName: "",
+    noiseStatus: "STOPPED",
+    noiseVolume: 50,
+  },
+  song: {
+    songName: "",
+    songStatus: "STOPPED",
+    songVolume: 50,
+  },
 };
 
 const sounds = (state = initialState, action) => {
@@ -35,59 +42,53 @@ const sounds = (state = initialState, action) => {
     case TOGGLE_MUSIC: {
       return {
         ...state,
-        musicMute: !state.musicMute,
-        noiseMute: !state.noiseMute,
-      };
-    }
-    case RESET_SOUNDS: {
-      return {
-        ...initialState,
+        music: { ...state.music, musicMute: !state.musicMute },
+        noise: { ...state.noise, noiseMute: !state.noiseMute },
       };
     }
     case TOGGLE_MUSIC_FIRST: {
       return {
         ...state,
-        isMusicFirst: action.payload,
+        music: { ...state.music, isMusicFirst: action.payload },
       };
     }
     case STOP_NOISE: {
       return {
         ...state,
-        noiseStatus: "STOPPED",
-        noiseName: "",
+        noise: { ...state.noise, noiseStatus: "STOPPED", noiseName: "" },
       };
     }
     case STOP_SONG: {
       return {
         ...state,
-        songStatus: "STOPPED",
-        songName: "",
+        song: { ...state.song, songStatus: "STOPPED", songName: "" },
       };
     }
-    case UPDATE_ALL_MUSIC: {
-      return {
-        ...state,
-        ...action.payload,
-      };
-    }
+    // case UPDATE_ALL_MUSIC: {
+    //   return {
+    //     ...state,
+    //     ...action.payload,
+    //   };
+    // }
     case LOAD_SONG: {
       return {
         ...state,
-        ...action.payload,
+        song: { ...state.song, ...action.payload },
       };
     }
     case LOAD_MUSIC: {
       return {
         ...state,
-        ...action.payload,
+        music: { ...state.music, ...action.payload },
       };
     }
     case LOAD_NOISE: {
       return {
         ...state,
-        ...action.payload,
+        noise: { ...state.noise, ...action.payload },
       };
     }
+    case RESET_SOUNDS:
     case RESET_APP: {
       return initialState;
     }

@@ -10,24 +10,24 @@ import HasNoNickname from "./components/NicknameSelection/HasNoNickname";
 import CharacterSelection from "./components/CharacterSelection/CharacterSelection";
 import StoriesPanel from "./components/StoryPanel/StoriesPanel";
 
-import { defaultState, bestiary } from "./components/Utils/Constants";
+import { defaultState } from "./components/Utils/Constants";
 import GameScreen from "./GameScreen";
 import SoundPlayer from "./components/SoundPlayer/SoundPlayer";
 import {
   // listenArtefacts,
   // loadUnusedArtefacts,
   // listenCurrentEvent,
-  listenEvents,
-  listenMerchants,
+  // listenEvents,
+  // listenMerchants,
   listenMusic,
   listenNoise,
   listenSong,
-  listenQuests,
-  listenTowns,
+  // listenQuests,
+  // listenTowns,
   loadAllItems,
   // loadCurrentPosition,
   // loadMerchantsOnce,
-  loadTilesTypes,
+  // loadTilesTypes,
   // populateTilesTypes,
   // resetEvents,
   // resetMap,
@@ -50,6 +50,9 @@ import {
   updateCurrentStory,
 } from "./redux/actions/actionsAppState";
 import {
+  CALL_LISTEN_MUSIC,
+  CALL_LISTEN_NOISE,
+  CALL_LISTEN_SONG,
   CALL_LOAD_MUSIC,
   CALL_LOAD_NOISE,
   CALL_LOAD_SONG,
@@ -72,9 +75,12 @@ import {
   CALL_LISTEN_CURRENT_X,
   CALL_LISTEN_CURRENT_Y,
   CALL_LISTEN_MAP_TILES,
-  CALL_SET_TILES_TYPES,
 } from "./redux/actionsTypes/actionsTypesMapInfos";
 import { CALL_LISTEN_MERCHANT_LIST } from "./redux/actionsTypes/actionsTypesMerchants";
+import { CALL_LISTEN_BESTIARY } from "./redux/actionsTypes/actionsTypesBestiary";
+import { CALL_LISTEN_TEAM_CHARACTERS } from "./redux/actionsTypes/actionsTypesTeam";
+import { CALL_LISTEN_CHARACTER } from "./redux/actionsTypes/actionsTypesCharacter";
+import { CALL_GET_ITEM_LIST } from "./redux/actionsTypes/actionsTypesItems";
 
 class App extends Component {
   constructor(props) {
@@ -106,7 +112,6 @@ class App extends Component {
   componentDidMount() {
     const { dispatchCallSetTilesTypes } = this.props;
     dispatchCallSetTilesTypes();
-    // loadTilesTypes(this.doSetState);
     loadAllItems(this.doSetState);
 
     // setQuests(0, quests);
@@ -153,40 +158,10 @@ class App extends Component {
     //       });
     //   });
     // });
-
-    // firebase
-    //   .database()
-    //   .ref("stories/" + 0 + "/bestiary")
-    //   .on("value", snapshot => {
-    //     this.setState(state => ({
-    //       ...state,
-    //       bestiary: snapshot.val(),
-    //     }));
-
-    // const test = {};
-    // snapshot.val().map(b => {
-    //   const newPostKey = firebase
-    //     .database()
-    //     .ref('/stories/' + 0 + '/bestiary/')
-    //     .push().key;
-    //   test[newPostKey] = { ...b };
-    // });
-    //
-    // firebase
-    //   .database()
-    //   .ref('stories/' + 0 + '/bestiary')
-    //   .set(test)
-    //   .catch(error => {
-    //     // Handle Errors here.
-    //     dispatchCallPrintError(error);
-    //   });
-    // });
   }
 
   loadMerchantsAndItems = () => {
-    const { currentStory, dispatchCallListenMerchantList } = this.props;
-    // loadMerchantsOnce(currentStory, this.doSetState)
-    dispatchCallListenMerchantList();
+    const { currentStory } = this.props;
     loadAllItems(this.doSetState, currentStory, () => {
       // hydrateAllMerchants(
       //   this.state.currentStory,
@@ -350,132 +325,67 @@ class App extends Component {
       });
   };
 
-  loadTownsAndQuests = () => {
-    const {
-      dispatchCallListenAllTowns,
-      dispatchCallListenAllQuests,
-    } = this.props;
-    dispatchCallListenAllTowns();
-    dispatchCallListenAllQuests();
-  };
-
-  loadEvents = () => {
-    const {
-      dispatchCallListenEventHistory,
-      dispatchCallListenCurrentEvent,
-    } = this.props;
-    dispatchCallListenCurrentEvent();
-    dispatchCallListenEventHistory();
-    // listenEvents(currentStory, this.doSetState);
-    // listenCurrentEvent(currentStory, dispatchCallSetCurrentEvent);
-  };
-
-  loadMusic = () => {
-    const { currentStory, dispatchUpdateAllMusic } = this.props;
-    listenMusic(currentStory, dispatchUpdateAllMusic);
-    listenNoise(currentStory, dispatchUpdateAllMusic);
-    listenSong(currentStory, dispatchUpdateAllMusic);
-  };
-
   onChangeMusics = (name, value) => {
-    const { isMusicFirst, isMusicTransition } = this.state;
-    const { currentStory, dispatchCallPrintError } = this.props;
+    const {
+      currentStory,
+      dispatchCallPrintError,
+      music: {
+        musicNameFirst,
+        musicNameSecond,
+        musicVolume,
+        isMusicFirst,
+        isMusicTransition,
+      },
+      music,
+    } = this.props;
     const obj = {};
     obj[name] = value;
     if (name === "musicName") {
       if (!isMusicTransition) {
         if (isMusicFirst) {
-          this.setState(
-            state => ({
-              ...state,
-              musicNameSecond: value,
-              isMusicTransition: true,
-              isMusicFirst: false,
-            }),
-            () => {
-              for (let i = 1; i < 21; i++) {
-                setTimeout(() => {
-                  this.setState(
-                    state => ({
-                      ...state,
-                      musicVolumeFirst:
-                        state.musicVolume * ((100 - i * 5) / 100),
-                      musicVolumeSecond: state.musicVolume * ((i * 5) / 100),
-                      isMusicTransition: i !== 20,
-                      musicStatusFirst:
-                        i !== 20 && state.musicNameFirst !== ""
-                          ? "PLAYING"
-                          : "STOPPED",
-                      musicStatusSecond: "PLAYING",
-                    }),
-                    () => {
-                      firebase
-                        .database()
-                        .ref("/stories/" + currentStory + "/music")
-                        .set({
-                          musicVolume: this.state.musicVolume,
-                          musicNameFirst: this.state.musicNameFirst,
-                          musicVolumeFirst: this.state.musicVolumeFirst,
-                          musicNameSecond: this.state.musicNameSecond,
-                          musicVolumeSecond: this.state.musicVolumeSecond,
-                          musicStatusFirst: this.state.musicStatusFirst,
-                          musicStatusSecond: this.state.musicStatusSecond,
-                        })
-                        .catch(error => {
-                          dispatchCallPrintError(error);
-                        });
-                    },
-                  );
-                }, i * 300);
-              }
-            },
-          );
+          for (let i = 1; i < 21; i++) {
+            setTimeout(() => {
+              firebase
+                .database()
+                .ref("/stories/" + currentStory + "/music")
+                .set({
+                  ...music,
+                  musicVolumeFirst: musicVolume * ((100 - i * 5) / 100),
+                  musicVolumeSecond: musicVolume * ((i * 5) / 100),
+                  isMusicTransition: i !== 20,
+                  musicStatusFirst:
+                    i !== 20 && musicNameFirst !== "" ? "PLAYING" : "STOPPED",
+                  musicStatusSecond: "PLAYING",
+                  musicNameSecond: value,
+                  isMusicFirst: false,
+                })
+                .catch(error => {
+                  dispatchCallPrintError(error);
+                });
+            }, i * 300);
+          }
         } else {
-          this.setState(
-            state => ({
-              ...state,
-              musicNameFirst: value,
-              isMusicTransition: true,
-              isMusicFirst: true,
-            }),
-            () => {
-              for (let i = 1; i < 21; i++) {
-                setTimeout(() => {
-                  this.setState(
-                    state => ({
-                      ...state,
-                      musicVolumeSecond:
-                        (state.musicVolume * (100 - i * 5)) / 100,
-                      musicVolumeFirst: state.musicVolume * ((i * 5) / 100),
-                      isMusicTransition: i !== 20,
-                      musicStatusSecond:
-                        i !== 20 && state.musicNameSecond !== ""
-                          ? "PLAYING"
-                          : "STOPPED",
-                      musicStatusFirst: "PLAYING",
-                    }),
-                    () => {
-                      firebase
-                        .database()
-                        .ref("/stories/" + currentStory + "/music")
-                        .set({
-                          musicVolume: this.state.musicVolume,
-                          musicNameFirst: this.state.musicNameFirst,
-                          musicVolumeFirst: this.state.musicVolumeFirst,
-                          musicNameSecond: this.state.musicNameSecond,
-                          musicVolumeSecond: this.state.musicVolumeSecond,
-                          musicStatusFirst: this.state.musicStatusFirst,
-                          musicStatusSecond: this.state.musicStatusSecond,
-                        })
-                        .catch(error => {
-                          dispatchCallPrintError(error);
-                        });
-                    },
-                  );
-                }, i * 300);
-              }
-            },
-          );
+          for (let i = 1; i < 21; i++) {
+            setTimeout(() => {
+              firebase
+                .database()
+                .ref("/stories/" + currentStory + "/music")
+                .set({
+                  ...music,
+                  musicVolumeSecond: (musicVolume * (100 - i * 5)) / 100,
+                  musicVolumeFirst: musicVolume * ((i * 5) / 100),
+                  isMusicTransition: i !== 20,
+                  musicStatusSecond:
+                    i !== 20 && musicNameSecond !== "" ? "PLAYING" : "STOPPED",
+                  musicStatusFirst: "PLAYING",
+                  musicNameFirst: value,
+                  isMusicFirst: true,
+                })
+                .catch(error => {
+                  dispatchCallPrintError(error);
+                });
+            }, i * 300);
+          }
         }
       }
     } else {
@@ -495,12 +405,12 @@ class App extends Component {
     }
   };
 
-  debouncedSavingSound = debounce(() => this.props.loadSong(), 300, {
+  debouncedSavingSound = debounce(() => this.props.dispatchLoadSong(), 300, {
     leading: true,
     maxWait: 2000,
   });
 
-  debouncedSavingMusic = debounce(() => this.props.loadMusic(), 300, {
+  debouncedSavingMusic = debounce(() => this.props.dispatchLoadMusic(), 300, {
     leading: true,
     maxWait: 2000,
   });
@@ -551,121 +461,86 @@ class App extends Component {
       dispatchTogglePlayerMastering,
       dispatchUpdateCurrentStory,
       dispatchSetGameMaster,
-      dispatchSetCharacter,
+      dispatchListenCharacter,
       dispatchCallListenChatHistory,
       dispatchCallListenMapTiles,
       dispatchCallListenCurrentX,
       dispatchCallListenCurrentY,
+      dispatchCallListenBestiary,
+      dispatchCallListenTeamCharacters,
+      dispatchCallListenCurrentEvent,
+      dispatchCallListenEventHistory,
+      dispatchCallListenAllTowns,
+      dispatchCallListenAllQuests,
+      dispatchCallListenMusic,
+      dispatchCallListenNoise,
+      dispatchCallListenSong,
+      dispatchCallListenMerchantList,
+      dispatchCallGetItemList,
       uid,
       stories,
     } = this.props;
 
     if (i < 0) return null;
 
-    populateBestiary(i, this.doSetState);
-
-    firebase
-      .database()
-      .ref("stories/" + i + "/bestiary")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          bestiary: snapshot.val(),
-        }));
-
-        // const test = {};
-        // snapshot.val().map(b => {
-        //   const newPostKey = firebase
-        //     .database()
-        //     .ref('/stories/' + i + '/bestiary/')
-        //     .push().key;
-        //   test[newPostKey] = { ...b };
-        // });
-        //
-        // firebase
-        //   .database()
-        //   .ref('stories/' + i + '/bestiary')
-        //   .set(test)
-        //   .catch(error => {
-        //     // Handle Errors here.
-        //     dispatchCallPrintError(error);
-        //   });
-      });
-
-    // Remember state for the next mount
-    localStorage.setItem(
-      "appState",
-      JSON.stringify({
-        ...defaultState,
-        email: this.state.email,
-        isAdmin: this.state.isAdmin,
-        isAuth: this.state.isAuth,
-        password: this.state.password,
-        pseudo: this.state.pseudo,
-        stories: this.state.stories,
-        uid: this.state.uid,
-        users: this.state.users,
-      }),
-    );
-
+    dispatchCallListenBestiary();
     dispatchTogglePlayerMastering(stories[i].gameMaster === uid);
 
     if (
       typeof stories[i].characters !== "undefined" &&
       typeof stories[i].characters[uid] !== "undefined"
     ) {
-      firebase
-        .database()
-        .ref("/stories/" + i + "/characters/" + uid + "/character")
-        .on("value", snapshot => {
-          //@TODO : Activate when GM will have proper tabs
-          this.setState(
-            state => ({
-              ...state,
-              characterId: stories[i].characters[uid].characterId,
-            }),
-            () => {
-              dispatchSetCharacter(snapshot.val());
-              dispatchUpdateCurrentStory(i);
-              dispatchSetGameMaster(stories[i].gameMaster);
-              dispatchCallListenMapTiles();
-              dispatchCallListenChatHistory();
-              this.loadMusic();
-              this.loadMerchantsAndItems();
-              this.loadTownsAndQuests();
-              dispatchCallListenCurrentX();
-              dispatchCallListenCurrentY();
-              this.loadEvents();
-            },
-          );
-        });
+      dispatchListenCharacter();
+      dispatchUpdateCurrentStory(i);
+      dispatchSetGameMaster(stories[i].gameMaster);
+      dispatchCallListenMapTiles();
+      dispatchCallListenChatHistory();
+      dispatchCallListenMusic();
+      dispatchCallListenNoise();
+      dispatchCallListenSong();
+      dispatchCallListenMerchantList();
+      dispatchCallGetItemList();
+      // this.loadMerchantsAndItems();
+      dispatchCallListenAllTowns();
+      dispatchCallListenAllQuests();
+      dispatchCallListenCurrentX();
+      dispatchCallListenCurrentY();
+      dispatchCallListenCurrentEvent();
+      dispatchCallListenEventHistory();
     } else {
       //@TODO : Activate when GM will have proper tabs
       dispatchUpdateCurrentStory(i);
       dispatchSetGameMaster(stories[i].gameMaster);
       dispatchCallListenMapTiles();
       dispatchCallListenChatHistory();
-      this.loadMusic();
-      this.loadTownsAndQuests();
-      this.loadMerchantsAndItems();
-      this.loadEvents();
+      dispatchCallListenMusic();
+      dispatchCallListenNoise();
+      dispatchCallListenSong();
+      dispatchCallListenAllTowns();
+      dispatchCallListenAllQuests();
+      dispatchCallListenMerchantList();
+      dispatchCallGetItemList();
+      // this.loadMerchantsAndItems();
+      dispatchCallListenCurrentEvent();
+      dispatchCallListenEventHistory();
     }
-    firebase
-      .database()
-      .ref("/stories/" + i + "/characters")
-      .on("value", snapshot => {
-        const charactersFromStories = [];
-        if (typeof snapshot.val() !== "undefined" && snapshot.val()) {
-          Object.keys(snapshot.val()).map(key => {
-            charactersFromStories.push(snapshot.val()[key].character);
-            return null;
-          });
-        }
-        this.setState(state => ({
-          ...state,
-          storyCharacters: charactersFromStories,
-        }));
-      });
+    dispatchCallListenTeamCharacters();
+    // firebase
+    //   .database()
+    //   .ref("/stories/" + i + "/characters")
+    //   .on("value", snapshot => {
+    //     const charactersFromStories = [];
+    //     if (typeof snapshot.val() !== "undefined" && snapshot.val()) {
+    //       Object.keys(snapshot.val()).map(key => {
+    //         charactersFromStories.push(snapshot.val()[key].character);
+    //         return null;
+    //       });
+    //     }
+    //     this.setState(state => ({
+    //       ...state,
+    //       storyCharacters: charactersFromStories,
+    //     }));
+    //   });
   };
 
   doSetState = (obj, cb = null) => {
@@ -723,7 +598,6 @@ class App extends Component {
           } else {
             return (
               <GameScreen
-                bestiary={bestiary}
                 buyItem={this.buyItem}
                 characters={characters}
                 doSetState={this.doSetState}
@@ -769,19 +643,25 @@ class App extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    dispatchUpdateAllMusic: payload => {
-      dispatch(updateAllMusic(payload));
+    dispatchCallListenMusic: payload => {
+      dispatch({ type: CALL_LISTEN_MUSIC });
+    },
+    dispatchCallListenNoise: payload => {
+      dispatch({ type: CALL_LISTEN_NOISE });
+    },
+    dispatchCallListenSong: payload => {
+      dispatch({ type: CALL_LISTEN_SONG });
     },
     dispatchToggleMusic: () => {
       dispatch(toggleMusic());
     },
-    loadSong: payload => {
+    dispatchLoadSong: payload => {
       dispatch({ type: CALL_LOAD_SONG, payload });
     },
-    loadMusic: payload => {
+    dispatchLoadMusic: payload => {
       dispatch({ type: CALL_LOAD_MUSIC, payload });
     },
-    loadNoise: payload => {
+    dispatchLoadNoise: payload => {
       dispatch({ type: CALL_LOAD_NOISE, payload });
     },
     dispatchTogglePlayerView: () => {
@@ -796,8 +676,8 @@ const mapDispatchToProps = dispatch => {
     dispatchSetGameMaster: payload => {
       dispatch(setGameMaster(payload));
     },
-    dispatchSetCharacter: payload => {
-      dispatch(setCharacter(payload));
+    dispatchListenCharacter: () => {
+      dispatch({ type: CALL_LISTEN_CHARACTER });
     },
     dispatchCallSetEventHistory: () => {
       dispatch({ type: CALL_LISTEN_EVENTS_HISTORY });
@@ -829,6 +709,15 @@ const mapDispatchToProps = dispatch => {
     dispatchCallListenAllQuests: () => {
       dispatch({ type: CALL_LISTEN_ALL_QUESTS });
     },
+    dispatchCallListenBestiary: () => {
+      dispatch({ type: CALL_LISTEN_BESTIARY });
+    },
+    dispatchCallListenTeamCharacters: () => {
+      dispatch({ type: CALL_LISTEN_TEAM_CHARACTERS });
+    },
+    dispatchCallGetItemList: () => {
+      dispatch({ type: CALL_GET_ITEM_LIST });
+    },
     dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
     },
@@ -848,16 +737,19 @@ const mapStateToProps = store => ({
   character: store.character,
   characters: store.userInfos.characters,
   merchants: store.merchants.merchantList,
+  music: store.sounds.music,
 });
 
 App.propTypes = {
   dispatchToggleMusic: PropTypes.func.isRequired,
-  dispatchUpdateAllMusic: PropTypes.func.isRequired,
+  dispatchCallListenMusic: PropTypes.func.isRequired,
+  dispatchCallListenSong: PropTypes.func.isRequired,
+  dispatchCallListenNoise: PropTypes.func.isRequired,
   dispatchTogglePlayerView: PropTypes.func.isRequired,
   dispatchTogglePlayerMastering: PropTypes.func.isRequired,
   dispatchUpdateCurrentStory: PropTypes.func.isRequired,
   dispatchSetGameMaster: PropTypes.func.isRequired,
-  dispatchSetCharacter: PropTypes.func.isRequired,
+  dispatchListenCharacter: PropTypes.func.isRequired,
   dispatchCallSetEventHistory: PropTypes.func.isRequired,
   dispatchCallSetCurrentEvent: PropTypes.func.isRequired,
   dispatchCallPrintError: PropTypes.func.isRequired,
@@ -870,9 +762,12 @@ App.propTypes = {
   dispatchCallListenAllTowns: PropTypes.func.isRequired,
   dispatchCallListenAllQuests: PropTypes.func.isRequired,
   dispatchCallListenMerchantList: PropTypes.func.isRequired,
-  loadSong: PropTypes.func.isRequired,
-  loadNoise: PropTypes.func.isRequired,
-  loadMusic: PropTypes.func.isRequired,
+  dispatchCallListenBestiary: PropTypes.func.isRequired,
+  dispatchCallListenTeamCharacters: PropTypes.func.isRequired,
+  dispatchCallGetItemList: PropTypes.func.isRequired,
+  dispatchLoadSong: PropTypes.func.isRequired,
+  dispatchLoadNoise: PropTypes.func.isRequired,
+  dispatchLoadMusic: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

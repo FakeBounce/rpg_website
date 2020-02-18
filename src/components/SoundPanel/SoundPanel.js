@@ -9,7 +9,7 @@ import {
 } from "../Utils/StyleConstants";
 import { musics, noises } from "../Utils/Constants";
 import { CALL_RESET_SOUNDS } from "../../redux/actionsTypes/actionsTypesSounds";
-import { currentMusicName } from "../../selectors";
+import { currentMusicNameSelector } from "../../selectors";
 
 const styledBoxHeaderMusic = {
   width: "100%",
@@ -118,10 +118,9 @@ class SoundPanel extends PureComponent {
     const {
       onChangeMusics,
       resetSounds,
-      musicName,
+      currentMusicName,
       musicVolume,
-      noiseName,
-      noiseVolume,
+      noise: { noiseName, noiseVolume },
     } = this.props;
 
     return (
@@ -130,7 +129,7 @@ class SoundPanel extends PureComponent {
           Reset
         </button>
         <div style={styledBoxHeaderMusic}>
-          Modifier la musique ({musicName})
+          Modifier la musique ({currentMusicName})
         </div>
         <div style={styledMusicVolume}>
           Volume :
@@ -241,10 +240,9 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = store => ({
-  musicName: currentMusicName(store),
-  noiseName: store.sounds.noiseName,
-  musicVolume: store.sounds.musicVolume,
-  noiseVolume: store.sounds.noiseVolume,
+  currentMusicName: currentMusicNameSelector(store),
+  musicVolume: store.sounds.music.musicVolume,
+  noise: store.sounds.noise,
 });
 
 SoundPanel.propTypes = {

@@ -137,7 +137,7 @@ class EventPanel extends Component {
   };
 
   render() {
-    const { storyCharacters, items } = this.props;
+    const { items } = this.props;
     const {
       eventType,
       goldEvent,
@@ -168,7 +168,6 @@ class EventPanel extends Component {
         )}
         {eventType === "draw" && <Fragment />}
         <EventViewers
-          storyCharacters={storyCharacters}
           viewers={viewers}
           removeToViewer={this.removeToViewer}
           addToViewer={this.addToViewer}
@@ -191,7 +190,6 @@ EventPanel.defaultProps = {
 
 EventPanel.propTypes = {
   items: PropTypes.object,
-  storyCharacters: PropTypes.array.isRequired,
 };
 
 export default connect(mapStateToProps)(EventPanel);
