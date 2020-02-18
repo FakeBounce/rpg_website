@@ -618,7 +618,6 @@ class EventModal extends PureComponent {
         <div style={styledEventTitle}>EVENEMENT !</div>
         {eventHistory[currentEvent].type !== "draw" && (
           <EventModalViewers
-            storyCharacters={storyCharacters}
             removeViewerFromEvent={this.removeViewerFromEvent}
             addViewerToEvent={this.addViewerToEvent}
           />
@@ -700,10 +699,10 @@ const mapStateToProps = store => ({
   character: store.character,
   currentEvent: store.events.currentEvent,
   eventHistory: store.events.history,
+  storyCharacters: store.team.characters,
 });
 
 EventModal.propTypes = {
-  storyCharacters: PropTypes.array.isRequired,
   doSetState: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
 };

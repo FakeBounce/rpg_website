@@ -88,7 +88,7 @@ class BestiaryForm extends Component {
       known,
       dangerosity,
     } = this.state;
-    const { bestiary, doSetState, currentStory } = this.props;
+    const { bestiary, currentStory, teamCharacters } = this.props;
 
     const newPostKey = firebase
       .database()
@@ -110,26 +110,93 @@ class BestiaryForm extends Component {
       dangerosity,
       seen: false,
     };
-
+    const tempBestiary = { ...bestiary };
+    const tempCharacters = { ...teamCharacters };
+    Object.keys(tempCharacters).map(key => {
+      Object.keys(tempBestiary).map(bKey => {
+        if (!tempBestiary[bKey][key]) {
+          let cpt = 0;
+          const maxRoll =
+            (tempCharacters[key].character.userPseudo === "Danjors" ||
+              tempCharacters[key].character.userPseudo === "Rangrim") &&
+            tempBestiary[bKey].monster
+              ? parseInt(tempCharacters[key].character.education, 10) + 20
+              : tempBestiary[bKey].monster ||
+                tempCharacters[key].character.userPseudo === "Danjors" ||
+                tempCharacters[key].character.userPseudo === "Rangrim"
+              ? parseInt(tempCharacters[key].character.education, 10) - 10
+              : parseInt(tempCharacters[key].character.education, 10);
+          while (Math.floor(Math.random() * 100 + 1) <= maxRoll && cpt < 7) {
+            ++cpt;
+          }
+          const statsKnown = {};
+          if (cpt === 0) {
+            statsKnown["unknown"] = true;
+          } else {
+            if (cpt >= 1) {
+              statsKnown["text1"] = true;
+            }
+            if (cpt >= 2) {
+              statsKnown["text2"] = true;
+            }
+            if (cpt >= 3) {
+              if (tempBestiary[bKey].monster) {
+                statsKnown["dangerosity"] = true;
+              } else {
+                statsKnown["age"] = true;
+              }
+            }
+            if (cpt >= 4) {
+              statsKnown["text3"] = true;
+            }
+            if (cpt >= 5) {
+              statsKnown["text4"] = true;
+            }
+            if (cpt >= 6) {
+              statsKnown["taille"] = true;
+            }
+            if (cpt >= 7) {
+              statsKnown["poids"] = true;
+            }
+          }
+          tempBestiary[bKey][key] = { ...statsKnown };
+        }
+        return null;
+      });
+      return null;
+    });
     firebase
       .database()
       .ref("stories/" + currentStory + "/bestiary")
-      .set(bestiary)
-      .then(() => {
-        this.setState(
-          state => ({
-            ...initialBestiaryForm,
-          }),
-          () => {
-            populateBestiary(0, doSetState);
-          },
-        );
-      })
+      .set(tempBestiary)
       .catch(error => {
         // Handle Errors here.
-        // this.triggerError(error);
-        console.log("error", error);
+        // triggerError(error);
       });
+    // doSetState({
+    //   bestiary: tempBestiary,
+    // });
+
+    // firebase
+    //   .database()
+    //   .ref("stories/" + currentStory + "/bestiary")
+    //   .set(bestiary)
+    //   .then(() => {
+    //     this.setState(
+    //       state => ({
+    //         ...initialBestiaryForm,
+    //       }),
+    //       () => {
+    //         populateBestiary(0);
+    //         // populateBestiary(0, doSetState);
+    //       },
+    //     );
+    //   })
+    //   .catch(error => {
+    //     // Handle Errors here.
+    //     // this.triggerError(error);
+    //     console.log("error", error);
+    //   });
   };
 
   render() {
@@ -282,7 +349,9 @@ class BestiaryForm extends Component {
 }
 
 const mapStateToProps = store => ({
+  bestiary: store.bestiary.bestiary,
   currentStory: store.appState.currentStory,
+  teamCharacters: store.team.characters,
 });
 
 BestiaryForm.defaultProps = {
@@ -290,8 +359,6 @@ BestiaryForm.defaultProps = {
 };
 
 BestiaryForm.propTypes = {
-  bestiary: PropTypes.array.isRequired,
-  doSetState: PropTypes.func.isRequired,
   beast: PropTypes.object,
 };
 

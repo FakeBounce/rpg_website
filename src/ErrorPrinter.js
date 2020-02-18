@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { useToastContext } from "./contexts/toastContext";
 
@@ -12,7 +12,7 @@ const ErrorPrinter = ({ error }) => {
         toastId: "error",
       });
     }
-  }, [error]);
+  }, [error, notify]);
 
   return null;
 };

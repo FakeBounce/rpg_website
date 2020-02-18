@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
 import { cursorPointer, heightLeft, imageSize } from "../Utils/StyleConstants";
 import { attributes } from "../Utils/Constants";
 import firebase from "firebase";

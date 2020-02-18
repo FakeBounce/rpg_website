@@ -5,7 +5,6 @@ import MerchantList from "./MerchantList";
 import Cadre from "../Utils/Cadre";
 import firebase from "firebase";
 import { connect } from "react-redux";
-import { setCurrentScale } from "../../redux/actions/actionsMapInfos";
 import { setCurrentMerchant } from "../../redux/actions/actionsMerchants";
 
 const styledMapSide = {

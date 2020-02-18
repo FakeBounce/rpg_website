@@ -104,10 +104,10 @@ const mapStateToProps = store => ({
   gameMaster: store.appState.gameMaster,
   currentEvent: store.events.currentEvent,
   eventHistory: store.events.history,
+  storyCharacters: store.team.characters,
 });
 
 EventModalViewers.propTypes = {
-  storyCharacters: PropTypes.array.isRequired,
   removeViewerFromEvent: PropTypes.func.isRequired,
   addViewerToEvent: PropTypes.func.isRequired,
 };

@@ -55,10 +55,10 @@ class EventViewers extends Component {
 }
 const mapStateToProps = store => ({
   gameMaster: store.appState.gameMaster,
+  storyCharacters: store.team.characters,
 });
 
 EventViewers.propTypes = {
-  storyCharacters: PropTypes.array.isRequired,
   viewers: PropTypes.array.isRequired,
   removeToViewer: PropTypes.func.isRequired,
   addToViewer: PropTypes.func.isRequired,

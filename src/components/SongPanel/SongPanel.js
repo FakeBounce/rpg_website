@@ -1,12 +1,10 @@
 import React, { PureComponent } from "react";
-import {
-  cursorPointer,
-  heightLeft,
-} from "../Utils/StyleConstants";
+import { cursorPointer, heightLeft } from "../Utils/StyleConstants";
 import { songs, colors } from "../Utils/Constants";
 
 import PropTypes from "prop-types";
 import ButtonLarge from "../Utils/ButtonLarge";
+import { connect } from "react-redux";
 
 const styles = {
   CharPanel: {
@@ -37,7 +35,7 @@ const styledMusicVolume = {
 const styledMusicContainer = {
   width: "100%",
   position: "absolute",
-  height: `${(heightLeft-50)/2 - 100}px`,
+  height: `${(heightLeft - 50) / 2 - 100}px`,
   top: 80,
   overflowY: "auto",
 };
@@ -57,7 +55,12 @@ class SongPanel extends PureComponent {
   };
 
   render() {
-    const { onChangeSongs, resetSongs, songName, songVolume, toggleIsOnChar } = this.props;
+    const {
+      onChangeSongs,
+      resetSongs,
+      song: { songName, songVolume },
+      toggleIsOnChar,
+    } = this.props;
 
     return (
       <div style={styles.CharPanel}>
@@ -108,7 +111,7 @@ class SongPanel extends PureComponent {
             style={{
               position: "absolute",
               bottom: 0,
-              right:0,
+              right: 0,
               width: 124,
             }}
           >
@@ -120,12 +123,14 @@ class SongPanel extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  song: store.sounds.song,
+});
+
 SongPanel.propTypes = {
   resetSongs: PropTypes.func.isRequired,
-  songName: PropTypes.string.isRequired,
-  songVolume: PropTypes.number.isRequired,
   toggleIsOnChar: PropTypes.func.isRequired,
   onChangeSongs: PropTypes.func.isRequired,
 };
 
-export default SongPanel;
+export default connect(mapStateToProps)(SongPanel);

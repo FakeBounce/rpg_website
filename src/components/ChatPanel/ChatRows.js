@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
 import ChatRow from "./ChatRow";
 import { connect } from "react-redux";
 

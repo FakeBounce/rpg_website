@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { widthLeft, heightLeft } from "../Utils/StyleConstants";
 import QuestFullscreen from "./QuestFullscreen";
 import { connect } from "react-redux";
-import { setCurrentMerchant } from "../../redux/actions/actionsMerchants";
 import { hideQuest, showQuest } from "../../redux/actions/actionsMapInfos";
 
 const styledMapSide = {

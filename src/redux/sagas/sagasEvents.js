@@ -16,6 +16,7 @@ import { getTranslations } from "../../i18n";
 import { currentStorySelector } from "../../selectors";
 import firebase from "firebase";
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
+import { onValueChannel } from "./api";
 
 function* eventsError(error = getTranslations("error.transfer.failed")) {
   yield put(actionsAppState.printError(error));
@@ -24,24 +25,12 @@ function* eventsError(error = getTranslations("error.transfer.failed")) {
   yield put(actionsAppState.printError(""));
 }
 
-function currentEventChannel(currentStory) {
-  const ref = firebase
-    .database()
-    .ref("/stories/" + currentStory + "/currentEvent");
-
-  return eventChannel(emit => {
-    const callback = ref.on("value", snapshot => {
-      emit(snapshot.val());
-    });
-
-    // unsubscribe function
-    return () => ref.off("value", callback);
-  });
-}
-
 function* listenCurrentEvent() {
   const currentStory = yield select(currentStorySelector);
-  const channel = yield call(currentEventChannel, currentStory);
+  const channel = yield call(
+    onValueChannel,
+    "/stories/" + currentStory + "/currentEvent",
+  );
 
   yield takeEvery(channel, function*(data) {
     yield put(actionsEvents.setCurrentEvent(data));
@@ -60,22 +49,12 @@ export function* watchCallListenCurrentEvent() {
   );
 }
 
-function historyEventChannel(currentStory) {
-  const ref = firebase.database().ref("/stories/" + currentStory + "/events");
-
-  return eventChannel(emit => {
-    const callback = ref.on("value", snapshot => {
-      emit(snapshot.val());
-    });
-
-    // unsubscribe function
-    return () => ref.off("value", callback);
-  });
-}
-
 function* listenHistoryEvents() {
   const currentStory = yield select(currentStorySelector);
-  const channel = yield call(historyEventChannel, currentStory);
+  const channel = yield call(
+    onValueChannel,
+    "/stories/" + currentStory + "/events",
+  );
 
   yield takeEvery(channel, function*(data) {
     yield put(actionsEvents.setEventsHistory(data));

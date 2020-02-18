@@ -106,10 +106,10 @@ class TeamPanel extends PureComponent {
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
   gameMaster: store.appState.gameMaster,
+  storyCharacters: store.team.characters,
 });
 
 TeamPanel.propTypes = {
-  storyCharacters: PropTypes.array.isRequired,
   exchangeWithTeamMember: PropTypes.func.isRequired,
   chatWithTeamMember: PropTypes.func.isRequired,
   goldWithTeamMember: PropTypes.func.isRequired,

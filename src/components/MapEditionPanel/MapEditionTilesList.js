@@ -4,10 +4,7 @@ import { gridDimension } from "../Utils/StyleConstants";
 import PropTypes from "prop-types";
 import MapEditionTile from "./MapEditionTile";
 import { connect } from "react-redux";
-import {
-  setCurrentZoom,
-  setTextureToApply,
-} from "../../redux/actions/actionsMapInfos";
+import { setTextureToApply } from "../../redux/actions/actionsMapInfos";
 
 const styledMapButtons = {
   border: "1px solid blue",
@@ -95,4 +92,7 @@ MapEditionTilesList.propTypes = {
   dispatchSetTextureToApply: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MapEditionTilesList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MapEditionTilesList);
