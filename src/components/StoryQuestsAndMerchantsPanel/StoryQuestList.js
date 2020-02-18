@@ -3,6 +3,7 @@ import { heightLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledBoxHeader = {
   width: "100%",
@@ -51,10 +52,13 @@ class StoryQuestList extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  towns: store.mapInfos.towns,
+  quests: store.mapInfos.quests,
+});
+
 StoryQuestList.propTypes = {
   addQuestToTown: PropTypes.func.isRequired,
-  towns: PropTypes.array.isRequired,
-  quests: PropTypes.array.isRequired,
 };
 
-export default StoryQuestList;
+export default connect(mapStateToProps)(StoryQuestList);

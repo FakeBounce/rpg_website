@@ -10,7 +10,7 @@ import HasNoNickname from "./components/NicknameSelection/HasNoNickname";
 import CharacterSelection from "./components/CharacterSelection/CharacterSelection";
 import StoriesPanel from "./components/StoryPanel/StoriesPanel";
 
-import { defaultState, quests, bestiary } from "./components/Utils/Constants";
+import { defaultState, bestiary } from "./components/Utils/Constants";
 import GameScreen from "./GameScreen";
 import SoundPlayer from "./components/SoundPlayer/SoundPlayer";
 import {
@@ -67,6 +67,8 @@ import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat"
 import ErrorPrinter from "./ErrorPrinter";
 import {
   CALL_GET_TILES_TYPES,
+  CALL_LISTEN_ALL_QUESTS,
+  CALL_LISTEN_ALL_TOWNS,
   CALL_LISTEN_CURRENT_X,
   CALL_LISTEN_CURRENT_Y,
   CALL_LISTEN_MAP_TILES,
@@ -349,9 +351,12 @@ class App extends Component {
   };
 
   loadTownsAndQuests = () => {
-    const { currentStory } = this.props;
-    listenTowns(currentStory, this.doSetState);
-    listenQuests(currentStory, this.doSetState);
+    const {
+      dispatchCallListenAllTowns,
+      dispatchCallListenAllQuests,
+    } = this.props;
+    dispatchCallListenAllTowns();
+    dispatchCallListenAllQuests();
   };
 
   loadEvents = () => {
@@ -687,7 +692,6 @@ class App extends Component {
       pseudo,
       isGameMaster,
       currentStory,
-      stories,
       characters,
     } = this.props;
     if (isAuth) {
@@ -727,7 +731,6 @@ class App extends Component {
                 hydrateMerchants={this.hydrateMerchants}
                 onChange={this.onChange}
                 onChangeMusics={this.onChangeMusics}
-                quests={quests}
                 selectAnotherCharacter={this.selectAnotherCharacter}
                 signOut={this.signOut}
                 toggleBestiary={this.toggleBestiary}
@@ -745,8 +748,6 @@ class App extends Component {
   };
 
   render() {
-    const { error } = this.props;
-
     return (
       <div
         className="App"
@@ -822,6 +823,12 @@ const mapDispatchToProps = dispatch => {
     dispatchCallListenMerchantList: () => {
       dispatch({ type: CALL_LISTEN_MERCHANT_LIST });
     },
+    dispatchCallListenAllTowns: () => {
+      dispatch({ type: CALL_LISTEN_ALL_TOWNS });
+    },
+    dispatchCallListenAllQuests: () => {
+      dispatch({ type: CALL_LISTEN_ALL_QUESTS });
+    },
     dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
     },
@@ -840,7 +847,6 @@ const mapStateToProps = store => ({
   uid: store.userInfos.uid,
   character: store.character,
   characters: store.userInfos.characters,
-  error: store.appState.error,
   merchants: store.merchants.merchantList,
 });
 
@@ -861,6 +867,8 @@ App.propTypes = {
   dispatchCallSetTilesTypes: PropTypes.func.isRequired,
   dispatchCallListenCurrentX: PropTypes.func.isRequired,
   dispatchCallListenCurrentY: PropTypes.func.isRequired,
+  dispatchCallListenAllTowns: PropTypes.func.isRequired,
+  dispatchCallListenAllQuests: PropTypes.func.isRequired,
   dispatchCallListenMerchantList: PropTypes.func.isRequired,
   loadSong: PropTypes.func.isRequired,
   loadNoise: PropTypes.func.isRequired,

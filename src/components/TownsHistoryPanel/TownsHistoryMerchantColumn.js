@@ -34,7 +34,7 @@ class TownsHistoryMerchantColumn extends Component {
   };
 
   showItemDescription = i => {
-    const { currentStory, currentMerchant } = this.props;
+    const { currentStory, merchantIndex } = this.props;
 
     firebase
       .database()
@@ -42,7 +42,7 @@ class TownsHistoryMerchantColumn extends Component {
         "stories/" +
           currentStory +
           "/merchants/" +
-          currentMerchant +
+          merchantIndex +
           "/items/" +
           i,
       )
@@ -59,18 +59,14 @@ class TownsHistoryMerchantColumn extends Component {
       characterGold,
       characterEducation,
       merchants,
-      currentMerchant,
+      merchantIndex,
     } = this.props;
     const { currentItem } = this.state;
     return (
       <Fragment>
         <div style={styledTownColumn}>
-          <TownsHistoryMerchantHeader
-            currentMerchant={merchants[currentMerchant]}
-          />
+          <TownsHistoryMerchantHeader merchant={merchants[merchantIndex]} />
           <TownsHistoryMerchantColumnList
-            currentMerchant={currentMerchant}
-            merchants={merchants}
             showItemDescription={this.showItemDescription}
           />
         </div>
@@ -94,11 +90,12 @@ const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   characterGold: store.character.gold,
   characterEducation: store.character.education,
+  merchants: store.merchants.merchantList,
+  currentMerchant: store.merchants.currentMerchant,
 });
 
 TownsHistoryMerchantColumn.propTypes = {
-  merchants: PropTypes.array.isRequired,
-  currentMerchant: PropTypes.number.isRequired,
+  merchantIndex: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(TownsHistoryMerchantColumn);

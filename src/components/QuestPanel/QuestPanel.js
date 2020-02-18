@@ -4,6 +4,9 @@ import Quest from "./Quest";
 import PropTypes from "prop-types";
 import { widthLeft, heightLeft } from "../Utils/StyleConstants";
 import QuestFullscreen from "./QuestFullscreen";
+import { connect } from "react-redux";
+import { setCurrentMerchant } from "../../redux/actions/actionsMerchants";
+import { hideQuest, showQuest } from "../../redux/actions/actionsMapInfos";
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -34,17 +37,13 @@ class QuestPanel extends PureComponent {
   };
 
   showQuest = index => {
-    this.props.doSetState({
-      isQuestShowed: true,
-      currentQuest: index,
-    });
+    const { dispatchShowQuest } = this.props;
+    dispatchShowQuest(index);
   };
 
   hideQuest = () => {
-    this.props.doSetState({
-      isQuestShowed: false,
-      currentQuest: -1,
-    });
+    const { dispatchHideQuest } = this.props;
+    dispatchHideQuest();
   };
 
   render() {
@@ -74,7 +73,7 @@ class QuestPanel extends PureComponent {
           backgroundSize: "cover",
         }}
       >
-        {questsList.map((q,i) => {
+        {questsList.map((q, i) => {
           if (!quests[q].validated) {
             return (
               <Quest
@@ -92,12 +91,27 @@ class QuestPanel extends PureComponent {
   }
 }
 
-QuestPanel.propTypes = {
-  isQuestShowed: PropTypes.bool.isRequired,
-  currentQuest: PropTypes.number.isRequired,
-  quests: PropTypes.array.isRequired,
-  questsList: PropTypes.array.isRequired,
-  doSetState: PropTypes.func.isRequired,
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchShowQuest: payload => {
+      dispatch(showQuest(payload));
+    },
+    dispatchHideQuest: () => {
+      dispatch(hideQuest());
+    },
+  };
 };
 
-export default QuestPanel;
+const mapStateToProps = store => ({
+  currentQuest: store.mapInfos.currentQuest,
+  isQuestShowed: store.mapInfos.isQuestShowed,
+  quests: store.mapInfos.quests,
+});
+
+QuestPanel.propTypes = {
+  questsList: PropTypes.array.isRequired,
+  dispatchShowQuest: PropTypes.func.isRequired,
+  dispatchHideQuest: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestPanel);

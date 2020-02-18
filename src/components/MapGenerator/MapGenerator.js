@@ -91,7 +91,7 @@ class MapGenerator extends PureComponent {
   };
 
   render() {
-    const { towns, doSetState } = this.props;
+    const { doSetState } = this.props;
 
     return (
       <div className="map" style={styledMap}>
@@ -109,7 +109,6 @@ class MapGenerator extends PureComponent {
           <MapGrid
             doSetState={doSetState}
             setTexture={this.setTexture}
-            towns={towns}
           />
         </div>
       </div>
@@ -135,7 +134,6 @@ const mapStateToProps = store => ({
 MapGenerator.propTypes = {
   doSetState: PropTypes.func.isRequired,
   dispatchCallPrintError: PropTypes.func.isRequired,
-  towns: PropTypes.array.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapGenerator);

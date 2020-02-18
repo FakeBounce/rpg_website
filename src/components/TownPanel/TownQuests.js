@@ -69,10 +69,10 @@ class TownQuests extends Component {
 
 const mapStateToProps = store => ({
   currentTown: store.mapInfos.currentTown,
+  quests: store.mapInfos.quests,
 });
 
 TownQuests.propTypes = {
-  quests: PropTypes.array.isRequired,
   toggleRightPanel: PropTypes.func.isRequired,
   removeQuestFromTown: PropTypes.func.isRequired,
   validateQuest: PropTypes.func.isRequired,

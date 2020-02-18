@@ -69,10 +69,10 @@ class TownMerchants extends Component {
 
 const mapStateToProps = store => ({
   currentTown: store.mapInfos.currentTown,
+  merchants: store.mapInfos.merchants,
 });
 
 TownMerchants.propTypes = {
-  merchants: PropTypes.array.isRequired,
   toggleMerchantDiscover: PropTypes.func.isRequired,
   removeMerchantFromTown: PropTypes.func.isRequired,
   toggleRightPanel: PropTypes.func.isRequired,

@@ -3,6 +3,7 @@ import { heightLeft } from "../Utils/StyleConstants";
 
 import PropTypes from "prop-types";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledBoxHeader = {
   flex: 1,
@@ -44,8 +45,9 @@ class StoryMerchantList extends Component {
                   alt={`${m.name}`}
                 />
                 {m.name}
-                {typeof m.town !== "undefined" &&
-                  m.town > -1 && <span>({towns[m.town].name})</span>}
+                {typeof m.town !== "undefined" && m.town > -1 && (
+                  <span>({towns[m.town].name})</span>
+                )}
               </div>
             );
           })}
@@ -54,10 +56,13 @@ class StoryMerchantList extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  towns: store.mapInfos.towns,
+  merchants: store.merchants.merchantList,
+});
+
 StoryMerchantList.propTypes = {
   addMerchantToTown: PropTypes.func.isRequired,
-  towns: PropTypes.array.isRequired,
-  merchants: PropTypes.array.isRequired,
 };
 
-export default StoryMerchantList;
+export default connect(mapStateToProps)(StoryMerchantList);

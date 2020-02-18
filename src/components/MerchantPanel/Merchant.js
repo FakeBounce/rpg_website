@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Merchant.css";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 class Merchant extends Component {
   render() {
@@ -24,17 +25,25 @@ class Merchant extends Component {
       >
         <img
           src={
-            isDiscovered ? "./merchants/" + icon : "./common/unknown_image_white.png"
+            isDiscovered
+              ? "./merchants/" + icon
+              : "./common/unknown_image_white.png"
           }
           alt={description}
           className="merchant-icon"
         />
-        <div className="merchant-text">{isDiscovered ? name + ' ('+job+')' : "???"}</div>
+        <div className="merchant-text">
+          {isDiscovered ? name + " (" + job + ")" : "???"}
+        </div>
         <div className="merchant-text">{description}</div>
       </div>
     );
   }
 }
+
+const mapStateToProps = store => ({
+  currentMerchant: store.merchants.currentMerchant,
+});
 
 Merchant.defaultProps = {
   isDiscovered: false,
@@ -49,7 +58,6 @@ Merchant.propTypes = {
   job: PropTypes.string.isRequired,
   description: PropTypes.string,
   showItems: PropTypes.func.isRequired,
-  currentMerchant: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -59,4 +67,4 @@ Merchant.propTypes = {
   ).isRequired,
 };
 
-export default Merchant;
+export default connect(mapStateToProps)(Merchant);

@@ -28,6 +28,8 @@ function* rootSaga() {
   yield spawn(sagasMapInfos.watchCallListenCurrentX);
   yield spawn(sagasMapInfos.watchCallListenCurrentY);
   yield spawn(sagasMapInfos.watchCallGetCurrentPosition);
+  yield spawn(sagasMapInfos.watchCallListenAllTowns);
+  yield spawn(sagasMapInfos.watchCallListenAllQuests);
   // Merchants
   yield spawn(sagasMerchants.watchCallGetMerchantList);
   yield spawn(sagasMerchants.watchCallListenMerchantList);

@@ -65,11 +65,11 @@ class EnhancerCharacterItems extends Component {
 const mapStateToProps = store => ({
   characterEducation: store.character.education,
   characterItems: store.character.items,
+  merchants: store.merchants.merchantList,
+  currentMerchant: store.merchants.currentMerchant,
 });
 
 EnhancerCharacterItems.propTypes = {
-  currentMerchant: PropTypes.number.isRequired,
-  merchants: PropTypes.array.isRequired,
   chooseEnhancer1: PropTypes.func.isRequired,
   chooseEnhancer2: PropTypes.func.isRequired,
   choosedEnhancer1: PropTypes.object.isRequired,

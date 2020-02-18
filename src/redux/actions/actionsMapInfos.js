@@ -56,6 +56,26 @@ export const setCurrentTown = payload => {
   };
 };
 
+export const setCurrentQuest = payload => {
+  return {
+    type: actionTypesMapInfos.SET_CURRENT_QUEST,
+    payload,
+  };
+};
+
+export const showQuest = payload => {
+  return {
+    type: actionTypesMapInfos.SHOW_QUEST,
+    payload,
+  };
+};
+
+export const hideQuest = () => {
+  return {
+    type: actionTypesMapInfos.HIDE_QUEST,
+  };
+};
+
 export const setCurrentTile = payload => {
   return {
     type: actionTypesMapInfos.SET_CURRENT_TILE,
@@ -66,6 +86,20 @@ export const setCurrentTile = payload => {
 export const setTextureToApply = payload => {
   return {
     type: actionTypesMapInfos.SET_TEXTURE_TO_APPLY,
+    payload,
+  };
+};
+
+export const setAllTowns = payload => {
+  return {
+    type: actionTypesMapInfos.SET_ALL_TOWNS,
+    payload,
+  };
+};
+
+export const setAllQuests = payload => {
+  return {
+    type: actionTypesMapInfos.SET_ALL_QUESTS,
     payload,
   };
 };

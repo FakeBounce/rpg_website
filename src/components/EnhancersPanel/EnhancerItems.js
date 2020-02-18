@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import { heightLeft, widthLeft } from '../Utils/StyleConstants';
-import EnhancerMerchantItems from './EnhancerMerchantItems';
-import EnhancerCharacterItems from './EnhancerCharacterItems';
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
+import EnhancerMerchantItems from "./EnhancerMerchantItems";
+import EnhancerCharacterItems from "./EnhancerCharacterItems";
 
 const styledItemsContainer = {
-  display: 'inline-block',
-  float: 'left',
-  position: 'relative',
+  display: "inline-block",
+  float: "left",
+  position: "relative",
   marginTop: 22,
   marginLeft: 26,
-  overflowY: 'auto',
+  overflowY: "auto",
   height: `${heightLeft / 2 - 80}px`,
   width: `${widthLeft / 2 - 52}px`,
 };
@@ -19,9 +19,7 @@ const styledItemsContainer = {
 class EnhancerItems extends Component {
   render() {
     const {
-      currentMerchant,
       itemsList,
-      merchants,
       chooseEnhancer1,
       chooseEnhancer2,
       choosedEnhancer1,
@@ -33,8 +31,6 @@ class EnhancerItems extends Component {
     return (
       <div style={styledItemsContainer} className="scrollbar">
         <EnhancerMerchantItems
-          merchants={merchants}
-          currentMerchant={currentMerchant}
           choosedEnhancer1={choosedEnhancer1}
           choosedEnhancer2={choosedEnhancer2}
           chooseEnhancer1={chooseEnhancer1}
@@ -44,8 +40,6 @@ class EnhancerItems extends Component {
           slots={slots}
         />
         <EnhancerCharacterItems
-          merchants={merchants}
-          currentMerchant={currentMerchant}
           choosedEnhancer1={choosedEnhancer1}
           choosedEnhancer2={choosedEnhancer2}
           chooseEnhancer1={chooseEnhancer1}
@@ -58,9 +52,7 @@ class EnhancerItems extends Component {
 }
 
 EnhancerItems.propTypes = {
-  currentMerchant: PropTypes.number.isRequired,
   itemsList: PropTypes.object.isRequired,
-  merchants: PropTypes.array.isRequired,
   chooseEnhancer1: PropTypes.func.isRequired,
   chooseEnhancer2: PropTypes.func.isRequired,
   choosedEnhancer1: PropTypes.object.isRequired,

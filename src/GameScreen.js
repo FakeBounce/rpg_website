@@ -143,20 +143,13 @@ class GameScreen extends Component {
           towns.length > 0 &&
           merchants &&
           merchants.length > 0 ? (
-          <TownsHistoryPanel
-            merchants={merchants}
-            quests={quests}
-            towns={towns}
-          />
+          <TownsHistoryPanel />
         ) : onChatHelp ? (
           <ChatCommandsPanel />
         ) : (
           <MiddlePanel
             doSetState={doSetState}
-            merchants={merchants}
-            quests={quests}
             storyCharacters={storyCharacters}
-            towns={towns}
             triggerError={triggerError}
             {...rest}
           />
@@ -172,21 +165,21 @@ const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   stories: store.appState.stories,
   uid: store.userInfos.uid,
+  currentEvent: store.events.currentEvent,
+  merchants: store.merchants.merchantList,
+  quests: store.mapInfos.quests,
+  towns: store.mapInfos.towns,
 });
 
 GameScreen.propTypes = {
   bestiary: PropTypes.array.isRequired,
   character: PropTypes.object.isRequired,
-  currentEvent: PropTypes.number.isRequired,
   doSetState: PropTypes.func.isRequired,
   hydrateMerchants: PropTypes.func.isRequired,
-  merchants: PropTypes.array.isRequired,
-  quests: PropTypes.array.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
   storyCharacters: PropTypes.array.isRequired,
   toggleMusic: PropTypes.func.isRequired,
-  towns: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
 };
 

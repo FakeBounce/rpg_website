@@ -100,22 +100,14 @@ class StoryQuestsAndMerchantsPanel extends Component {
   };
 
   render() {
-    const { towns, quests, merchants, isOnQuest } = this.props;
+    const { isOnQuest } = this.props;
     return (
       <div style={styledMapSide}>
         <div style={styledBoxHeader}>{isOnQuest ? "Quests" : "Merchants"}</div>
         {isOnQuest ? (
-          <StoryQuestList
-            addQuestToTown={this.addQuestToTown}
-            towns={towns}
-            quests={quests}
-          />
+          <StoryQuestList addQuestToTown={this.addQuestToTown} />
         ) : (
-          <StoryMerchantList
-            addMerchantToTown={this.addMerchantToTown}
-            towns={towns}
-            merchants={merchants}
-          />
+          <StoryMerchantList addMerchantToTown={this.addMerchantToTown} />
         )}
       </div>
     );
@@ -125,13 +117,13 @@ class StoryQuestsAndMerchantsPanel extends Component {
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   currentTown: store.mapInfos.currentTown,
+  towns: store.mapInfos.towns,
+  quests: store.mapInfos.quests,
+  merchants: store.mapInfos.merchants,
 });
 
 StoryQuestsAndMerchantsPanel.propTypes = {
   triggerError: PropTypes.func.isRequired,
-  towns: PropTypes.array.isRequired,
-  quests: PropTypes.array.isRequired,
-  merchants: PropTypes.array.isRequired,
   isOnQuest: PropTypes.bool.isRequired,
 };
 
