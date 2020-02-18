@@ -5,6 +5,8 @@ import MerchantList from "./MerchantList";
 import Cadre from "../Utils/Cadre";
 import firebase from "firebase";
 import { connect } from "react-redux";
+import { setCurrentScale } from "../../redux/actions/actionsMapInfos";
+import { setCurrentMerchant } from "../../redux/actions/actionsMerchants";
 
 const styledMapSide = {
   width: `${widthLeft / 2 - 20}px`,
@@ -18,19 +20,20 @@ const styledMapSide = {
 
 class MerchantPanel extends PureComponent {
   showItems = (list, index) => {
-    const { currentStory } = this.props;
-    this.props.doSetState(
+    const { currentStory, dispatchSetCurrentMerchant, doSetState } = this.props;
+    doSetState(
       {
         isItemShowed: true,
         itemsList: list,
         currentMerchant: index,
       },
       () => {
+        dispatchSetCurrentMerchant(index);
         firebase
           .database()
           .ref("stories/" + currentStory + "/merchants/" + index + "/items")
           .on("value", snapshot => {
-            this.props.doSetState({
+            doSetState({
               itemsList: snapshot.val(),
             });
           });
@@ -39,15 +42,13 @@ class MerchantPanel extends PureComponent {
   };
 
   render() {
-    const { merchantsList, merchants, currentMerchant } = this.props;
+    const { merchantsList } = this.props;
 
     return (
       <div style={styledMapSide}>
         <Cadre />
         <MerchantList
-          currentMerchant={currentMerchant}
           merchantsList={merchantsList}
-          merchants={merchants}
           showItems={this.showItems}
         />
       </div>
@@ -55,15 +56,25 @@ class MerchantPanel extends PureComponent {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSetCurrentMerchant: payload => {
+      dispatch(setCurrentMerchant(payload));
+    },
+  };
+};
+
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
+  currentMerchant: store.merchants.currentMerchant,
+  merchants: store.merchants.merchantList,
 });
 
 MerchantPanel.propTypes = {
-  currentMerchant: PropTypes.number.isRequired,
   merchantsList: PropTypes.array.isRequired,
   merchants: PropTypes.array.isRequired,
   doSetState: PropTypes.func.isRequired,
+  dispatchSetCurrentMerchant: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(MerchantPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(MerchantPanel);

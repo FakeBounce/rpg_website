@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import { heightLeft, widthLeft } from '../Utils/StyleConstants';
-import EnhancementWeaponsMerchantList from './EnhancementWeaponsMerchantList';
-import EnhancementWeaponsCharacterWeaponList from './EnhancementWeaponsCharacterWeaponList';
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
+import EnhancementWeaponsMerchantList from "./EnhancementWeaponsMerchantList";
+import EnhancementWeaponsCharacterWeaponList from "./EnhancementWeaponsCharacterWeaponList";
+import { connect } from "react-redux";
 // Not supported now
 // import EnhancementWeaponsCharacterItemsList from './EnhancementWeaponsCharacterItemsList';
 
 const styledEnhancementWeaponsList = {
-  display: 'inline-block',
-  float: 'left',
-  position: 'absolute',
+  display: "inline-block",
+  float: "left",
+  position: "absolute",
   top: 40,
   left: 26,
-  overflowY: 'auto',
+  overflowY: "auto",
   height: `${heightLeft / 2 - 60}px`,
   width: `${widthLeft / 2 - 52}px`,
 };
@@ -46,12 +47,15 @@ class EnhancementWeaponsContent extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  merchants: store.merchants.merchantList,
+  currentMerchant: store.merchants.currentMerchant,
+});
+
 EnhancementWeaponsContent.propTypes = {
-  currentMerchant: PropTypes.number.isRequired,
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
-  merchants: PropTypes.array.isRequired,
   itemsList: PropTypes.object.isRequired,
 };
 
-export default EnhancementWeaponsContent;
+export default connect(mapStateToProps)(EnhancementWeaponsContent);

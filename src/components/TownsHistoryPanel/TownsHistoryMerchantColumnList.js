@@ -16,9 +16,9 @@ class TownsHistoryMerchantColumnList extends Component {
   render() {
     const {
       characterEducation,
+      showItemDescription,
       merchants,
       currentMerchant,
-      showItemDescription,
     } = this.props;
     return (
       <Fragment>
@@ -47,11 +47,11 @@ class TownsHistoryMerchantColumnList extends Component {
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   characterEducation: store.character.education,
+  merchants: store.merchants.merchantList,
+  currentMerchant: store.merchants.currentMerchant,
 });
 
 TownsHistoryMerchantColumnList.propTypes = {
-  merchants: PropTypes.array.isRequired,
-  currentMerchant: PropTypes.number.isRequired,
   showItemDescription: PropTypes.func.isRequired,
 };
 

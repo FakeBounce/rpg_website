@@ -7,8 +7,13 @@ import {
   SET_CURRENT_POSITION,
   SET_CURRENT_SCALE,
   SET_CURRENT_TOWN,
+  SET_CURRENT_QUEST,
+  SHOW_QUEST,
+  HIDE_QUEST,
   SET_CURRENT_TILE,
   SET_TEXTURE_TO_APPLY,
+  SET_ALL_TOWNS,
+  SET_ALL_QUESTS,
 } from "../actionsTypes/actionsTypesMapInfos";
 import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
 
@@ -22,6 +27,10 @@ const initialState = {
   currentTile: {},
   currentTown: -1,
   textureToApply: null,
+  towns: [],
+  quests: [],
+  currentQuest: -1,
+  isQuestShowed: false,
 };
 
 const mapInfos = (state = initialState, action) => {
@@ -74,6 +83,26 @@ const mapInfos = (state = initialState, action) => {
         currentTown: action.payload,
       };
     }
+    case SET_CURRENT_QUEST: {
+      return {
+        ...state,
+        currentQuest: action.payload,
+      };
+    }
+    case SHOW_QUEST: {
+      return {
+        ...state,
+        currentQuest: action.payload,
+        isQuestShowed: true,
+      };
+    }
+    case HIDE_QUEST: {
+      return {
+        ...state,
+        currentQuest: -1,
+        isQuestShowed: false,
+      };
+    }
     case SET_CURRENT_TILE: {
       return {
         ...state,
@@ -84,6 +113,18 @@ const mapInfos = (state = initialState, action) => {
       return {
         ...state,
         textureToApply: action.payload,
+      };
+    }
+    case SET_ALL_TOWNS: {
+      return {
+        ...state,
+        towns: action.payload,
+      };
+    }
+    case SET_ALL_QUESTS: {
+      return {
+        ...state,
+        quests: action.payload,
       };
     }
     case RESET_APP: {

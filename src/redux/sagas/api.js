@@ -27,7 +27,7 @@ export const firebaseDbOnce = (path = "", once = "value") => {
     });
 };
 
-export function onValueChannel(path) {
+export function onValueChannel(path = "") {
   const ref = firebase.database().ref(path);
 
   return eventChannel(emit => {

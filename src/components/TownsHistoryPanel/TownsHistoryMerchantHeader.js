@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 const styledMerchantHeader = {
-  width: '100%',
+  width: "100%",
   height: 25,
-  borderBottom: '1px solid white',
-  position: 'relative',
+  borderBottom: "1px solid white",
+  position: "relative",
 };
 
 class TownsHistoryMerchantHeader extends Component {
   render() {
-    const { currentMerchant } = this.props;
+    const { merchant } = this.props;
     return (
       <div style={styledMerchantHeader}>
-        {currentMerchant.name}, {currentMerchant.job}
+        {merchant.name}, {merchant.job}
       </div>
     );
   }
 }
 
 TownsHistoryMerchantHeader.propTypes = {
-  currentMerchant: PropTypes.object.isRequired,
+  merchant: PropTypes.object.isRequired,
 };
 
 export default TownsHistoryMerchantHeader;

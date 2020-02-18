@@ -396,17 +396,14 @@ class PlayerMapPanel extends Component {
       buyItem,
       character,
       currentMerchant,
-      currentQuest,
       doSetState,
       isItemDescriptionShowed,
       isItemShowed,
-      isQuestShowed,
       isTownShowed,
       itemsList,
       itemToDescribe,
-      merchants,
       merchantsList,
-      quests,
+      merchants,
       questsList,
     } = this.props;
 
@@ -424,16 +421,10 @@ class PlayerMapPanel extends Component {
         {isTownShowed ? (
           <Fragment>
             <QuestPanel
-              isQuestShowed={isQuestShowed}
-              currentQuest={currentQuest}
-              quests={quests}
               questsList={questsList}
-              doSetState={doSetState}
             />
             <MerchantPanel
-              currentMerchant={currentMerchant}
               merchantsList={merchantsList}
-              merchants={merchants}
               doSetState={doSetState}
             />
             {isItemShowed ? (
@@ -453,28 +444,19 @@ class PlayerMapPanel extends Component {
                   <ShopHeaderDefault />
                 )}
                 {currentTab === "items" && (
-                  <ItemPanel
-                    currentMerchant={currentMerchant}
-                    itemsList={itemsList}
-                    merchants={merchants}
-                    doSetState={doSetState}
-                  />
+                  <ItemPanel itemsList={itemsList} doSetState={doSetState} />
                 )}
                 {currentTab === "enhancements" && (
                   <EnhancementWeaponsPanel
-                    currentMerchant={currentMerchant}
                     choosedItem={choosedItem}
                     showEnhancers={this.showEnhancers}
-                    merchants={merchants}
                     itemsList={itemsList}
                   />
                 )}
                 {currentTab === "blacksmith" && (
                   <EnhancementWeaponsPanel
-                    currentMerchant={currentMerchant}
                     choosedItem={choosedItem}
                     showEnhancers={this.showEnhancers}
-                    merchants={merchants}
                     itemsList={itemsList}
                   />
                 )}
@@ -486,9 +468,7 @@ class PlayerMapPanel extends Component {
             )}
             {showEnhancers ? (
               <EnhancersPanel
-                currentMerchant={currentMerchant}
                 itemsList={itemsList}
-                merchants={merchants}
                 enhanceWeapon={this.enhanceWeapon}
                 chooseEnhancer1={this.chooseEnhancer1}
                 chooseEnhancer2={this.chooseEnhancer2}
@@ -523,20 +503,17 @@ const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   uid: store.userInfos.uid,
   character: store.character,
+  currentMerchant: store.merchants.currentMerchant,
+  merchants: store.merchants.merchantList,
 });
 
 PlayerMapPanel.propTypes = {
-  isQuestShowed: PropTypes.bool.isRequired,
-  currentQuest: PropTypes.number.isRequired,
-  currentMerchant: PropTypes.number.isRequired,
   isItemShowed: PropTypes.bool.isRequired,
   itemsList: PropTypes.array.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,
   itemToDescribe: PropTypes.object.isRequired,
   isTownShowed: PropTypes.bool.isRequired,
   merchantsList: PropTypes.array.isRequired,
-  merchants: PropTypes.array.isRequired,
-  quests: PropTypes.array.isRequired,
   questsList: PropTypes.array.isRequired,
   buyItem: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,

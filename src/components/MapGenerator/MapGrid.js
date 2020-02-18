@@ -124,13 +124,13 @@ const mapStateToProps = store => ({
   currentX: store.mapInfos.currentX,
   currentY: store.mapInfos.currentY,
   currentZoom: store.mapInfos.currentZoom,
+  towns: store.mapInfos.towns,
 });
 
 MapGrid.propTypes = {
   setTexture: PropTypes.func.isRequired,
   dispatchSetCurrentTile: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
-  towns: PropTypes.array.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapGrid);

@@ -170,3 +170,62 @@ export function* watchCallGetCurrentPosition() {
     getCurrentPosition,
   );
 }
+
+function* listenAllTowns() {
+  const currentStory = yield select(currentStorySelector);
+  try {
+    const channel = yield call(
+      onValueChannel,
+      "/stories/" + currentStory + "/towns",
+    );
+
+    yield takeEvery(channel, function*(data) {
+      yield put(actionsMapInfos.setAllTowns(data));
+    });
+
+    yield take([
+      actionsTypesAppState.CANCEL_ALL_WATCH,
+      actionsTypesAppState.RESET_APP,
+    ]);
+    channel.close();
+  } catch (error) {
+    console.log("listenAllTowns try saga err:", { error });
+
+    yield call(mapInfosError);
+  }
+}
+
+export function* watchCallListenAllTowns() {
+  yield takeLatest(actionsTypesMapInfos.CALL_LISTEN_ALL_TOWNS, listenAllTowns);
+}
+
+function* listenAllQuests() {
+  const currentStory = yield select(currentStorySelector);
+  try {
+    const channel = yield call(
+      onValueChannel,
+      "/stories/" + currentStory + "/quests",
+    );
+
+    yield takeEvery(channel, function*(data) {
+      yield put(actionsMapInfos.setAllQuests(data));
+    });
+
+    yield take([
+      actionsTypesAppState.CANCEL_ALL_WATCH,
+      actionsTypesAppState.RESET_APP,
+    ]);
+    channel.close();
+  } catch (error) {
+    console.log("listenAllTowns try saga err:", { error });
+
+    yield call(mapInfosError);
+  }
+}
+
+export function* watchCallListenAllQuests() {
+  yield takeLatest(
+    actionsTypesMapInfos.CALL_LISTEN_ALL_QUESTS,
+    listenAllQuests,
+  );
+}

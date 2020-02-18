@@ -57,15 +57,7 @@ class GMMapPanel extends Component {
   };
 
   render() {
-    const {
-      currentTown,
-      items,
-      merchants,
-      quests,
-      storyCharacters,
-      towns,
-      triggerError,
-    } = this.props;
+    const { currentTown, items, storyCharacters, triggerError } = this.props;
     const { isOnQuest } = this.state;
 
     return (
@@ -79,19 +71,11 @@ class GMMapPanel extends Component {
         </div>
         <EventPanel items={items} storyCharacters={storyCharacters} />
         {currentTown > -1 && (
-          <TownPanel
-            towns={towns}
-            quests={quests}
-            merchants={merchants}
-            toggleRightPanel={this.toggleRightPanel}
-          />
+          <TownPanel toggleRightPanel={this.toggleRightPanel} />
         )}
         {currentTown > -1 && (
           <StoryQuestsAndMerchantsPanel
             triggerError={triggerError}
-            towns={towns}
-            quests={quests}
-            merchants={merchants}
             isOnQuest={isOnQuest}
           />
         )}
@@ -112,11 +96,8 @@ GMMapPanel.defaultProps = {
 
 GMMapPanel.propTypes = {
   items: PropTypes.object,
-  merchants: PropTypes.array.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
-  quests: PropTypes.array.isRequired,
   storyCharacters: PropTypes.array.isRequired,
-  towns: PropTypes.array.isRequired,
   triggerError: PropTypes.func.isRequired,
 };
 

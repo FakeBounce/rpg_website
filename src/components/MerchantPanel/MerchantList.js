@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import Merchant from "./Merchant";
 import PropTypes from "prop-types";
 import { heightLeft, widthLeft } from "../Utils/StyleConstants";
+import { connect } from "react-redux";
 
 const styledItemContainer = {
   display: "inline-block",
   float: "left",
   position: "absolute",
   top: 30,
-  left : 26,
+  left: 26,
   overflowY: "auto",
   height: `${heightLeft / 2 - 60}px`,
   width: `${widthLeft / 2 - 46}px`,
@@ -16,7 +17,7 @@ const styledItemContainer = {
 
 class MerchantList extends Component {
   render() {
-    const { merchantsList, merchants, currentMerchant, showItems } = this.props;
+    const { merchantsList, merchants, showItems } = this.props;
 
     return (
       <div style={styledItemContainer} className="scrollbar">
@@ -27,7 +28,6 @@ class MerchantList extends Component {
               {...merchants[index]}
               index={index}
               showItems={showItems}
-              currentMerchant={currentMerchant}
             />
           );
         })}
@@ -36,11 +36,13 @@ class MerchantList extends Component {
   }
 }
 
+const mapStateToProps = store => ({
+  merchants: store.merchants.merchantList,
+});
+
 MerchantList.propTypes = {
-  currentMerchant: PropTypes.number.isRequired,
   merchantsList: PropTypes.array.isRequired,
-  merchants: PropTypes.array.isRequired,
   showItems: PropTypes.func.isRequired,
 };
 
-export default MerchantList;
+export default connect(mapStateToProps)(MerchantList);

@@ -1,8 +1,9 @@
-import { SET_MERCHANT_LIST } from "../actionsTypes/actionsTypesMerchants";
+import { SET_MERCHANT_LIST, SET_CURRENT_MERCHANT } from "../actionsTypes/actionsTypesMerchants";
 import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
 
 const initialState = {
   merchantList: [],
+  currentMerchant: -1
 };
 
 const merchants = (state = initialState, action) => {
@@ -11,6 +12,12 @@ const merchants = (state = initialState, action) => {
       return {
         ...state,
         merchantList: action.payload,
+      };
+    }
+    case SET_CURRENT_MERCHANT: {
+      return {
+        ...state,
+        currentMerchant: action.payload,
       };
     }
     case RESET_APP: {

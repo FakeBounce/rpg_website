@@ -6,3 +6,10 @@ export const setMerchantList = payload => {
     payload,
   };
 };
+
+export const setCurrentMerchant = payload => {
+  return {
+    type: actionsTypesMerchants.SET_CURRENT_MERCHANT,
+    payload,
+  };
+};

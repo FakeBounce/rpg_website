@@ -6,6 +6,7 @@ import TownsHistorySoloMerchant from "./TownsHistorySoloMerchant";
 import TownsHistoryCity from "./TownsHistoryCity";
 import TownsHistoryQuest from "./TownsHistoryQuest";
 import { colors } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledTownsHistoryContainer = {
   height: heightLeft,
@@ -98,7 +99,6 @@ class TownsHistoryPanel extends Component {
   };
 
   render() {
-    const { merchants } = this.props;
     const {
       townsOrdered,
       showedMerchant,
@@ -114,26 +114,19 @@ class TownsHistoryPanel extends Component {
           showCity={this.showCity}
         />
         {showedMerchant.items && (
-          <TownsHistorySoloMerchant
-            showedMerchant={showedMerchant}
-          />
+          <TownsHistorySoloMerchant showedMerchant={showedMerchant} />
         )}
         {showedQuest.name && <TownsHistoryQuest showedQuest={showedQuest} />}
-        {showedTown.name && (
-          <TownsHistoryCity
-            merchants={merchants}
-            showedTown={showedTown}
-          />
-        )}
+        {showedTown.name && <TownsHistoryCity showedTown={showedTown} />}
       </div>
     );
   }
 }
 
-TownsHistoryPanel.propTypes = {
-  merchants: PropTypes.array.isRequired,
-  quests: PropTypes.array.isRequired,
-  towns: PropTypes.array.isRequired,
-};
+const mapStateToProps = store => ({
+  towns: store.mapInfos.towns,
+  quests: store.mapInfos.quests,
+  merchants: store.merchants.merchantList,
+});
 
-export default TownsHistoryPanel;
+export default connect(mapStateToProps)(TownsHistoryPanel);
