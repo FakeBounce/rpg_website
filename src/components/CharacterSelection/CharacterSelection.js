@@ -294,11 +294,11 @@ const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   pseudo: store.userInfos.pseudo,
   uid: store.userInfos.uid,
+  characters: store.userInfos.characters,
 });
 
 CharacterSelection.propTypes = {
   characterCreation: PropTypes.bool.isRequired,
-  characters: PropTypes.object.isRequired,
   chooseStory: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
   keepCharacter: PropTypes.func.isRequired,

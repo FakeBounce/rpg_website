@@ -5,13 +5,14 @@ import { connect } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { ToastProvider } from "./contexts/toastContext";
+import { ChatInputProvider } from "./contexts/chatInputContext";
 import IsNotAuth from "./components/Authentication/IsNotAuth";
 import HasNoNickname from "./components/NicknameSelection/HasNoNickname";
 import CharacterSelection from "./components/CharacterSelection/CharacterSelection";
-import StoriesPanel from "./components/StoryPanel/StoriesPanel";
+import StoriesPanel from "./components/StoryPanel";
 
 import { defaultState } from "./components/Utils/Constants";
-import GameScreen from "./GameScreen";
+import GameScreen from "./containers/GameScreen";
 import SoundPlayer from "./components/SoundPlayer/SoundPlayer";
 import {
   // listenArtefacts,
@@ -67,7 +68,7 @@ import {
   CALL_SIGN_OUT,
 } from "./redux/actionsTypes/actionsTypesAppState";
 import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat";
-import ErrorPrinter from "./ErrorPrinter";
+import ErrorPrinter from "./components/Utils/ErrorPrinter";
 import {
   CALL_GET_TILES_TYPES,
   CALL_LISTEN_ALL_QUESTS,
@@ -175,14 +176,8 @@ class App extends Component {
   };
 
   hydrateMerchants = () => {
-    const { currentStory, merchants } = this.props;
-    hydrateAllMerchants(
-      currentStory,
-      merchants,
-      this.state.items,
-      this.doSetState,
-      true,
-    );
+    const { currentStory, merchants, items } = this.props;
+    hydrateAllMerchants(currentStory, merchants, items, this.doSetState, true);
   };
 
   toggleMusic = () => this.props.dispatchToggleMusic();
@@ -562,13 +557,7 @@ class App extends Component {
 
   correctRoute = () => {
     const { characterCreation, characterId, ...rest } = this.state;
-    const {
-      isAuth,
-      pseudo,
-      isGameMaster,
-      currentStory,
-      characters,
-    } = this.props;
+    const { isAuth, pseudo, isGameMaster, currentStory } = this.props;
     if (isAuth) {
       if (pseudo.trim() === "") {
         return <HasNoNickname signOut={this.signOut} />;
@@ -587,7 +576,6 @@ class App extends Component {
             return (
               <CharacterSelection
                 characterCreation={characterCreation}
-                characters={characters}
                 chooseStory={this.chooseStory}
                 doSetState={this.doSetState}
                 keepCharacter={this.keepCharacter}
@@ -599,9 +587,7 @@ class App extends Component {
             return (
               <GameScreen
                 buyItem={this.buyItem}
-                characters={characters}
                 doSetState={this.doSetState}
-                generateTable={this.generateTable}
                 hydrateMerchants={this.hydrateMerchants}
                 onChange={this.onChange}
                 onChangeMusics={this.onChangeMusics}
@@ -630,11 +616,13 @@ class App extends Component {
         }}
       >
         <ToastProvider>
-          <>
-            {this.correctRoute()}
-            <SoundPlayer />
-            <ErrorPrinter />
-          </>
+          <ChatInputProvider>
+            <>
+              {this.correctRoute()}
+              <SoundPlayer />
+              <ErrorPrinter />
+            </>
+          </ChatInputProvider>
         </ToastProvider>
       </div>
     );
@@ -643,13 +631,13 @@ class App extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    dispatchCallListenMusic: payload => {
+    dispatchCallListenMusic: () => {
       dispatch({ type: CALL_LISTEN_MUSIC });
     },
-    dispatchCallListenNoise: payload => {
+    dispatchCallListenNoise: () => {
       dispatch({ type: CALL_LISTEN_NOISE });
     },
-    dispatchCallListenSong: payload => {
+    dispatchCallListenSong: () => {
       dispatch({ type: CALL_LISTEN_SONG });
     },
     dispatchToggleMusic: () => {
@@ -737,6 +725,7 @@ const mapStateToProps = store => ({
   character: store.character,
   characters: store.userInfos.characters,
   merchants: store.merchants.merchantList,
+  items: store.items.items,
   music: store.sounds.music,
 });
 

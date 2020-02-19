@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { heightHeader } from "./StyleConstants";
 import { resetStoryMerchants } from "./MerchantsFunctions";
-import Camera from "../../Camera";
+import Camera from "./Camera";
 import ButtonLarge from "./ButtonLarge";
 import firebase from "firebase";
 import { connect } from "react-redux";

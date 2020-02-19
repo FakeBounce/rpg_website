@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import BottomPanel from "./components/BottomPanel/BottomPanel";
-import ChatCommandsPanel from "./components/ChatCommandsPanel/ChatCommandsPanel";
-import Header from "./components/Utils/Header";
+import BottomPanel from "../components/BottomPanel";
+import ChatCommandsPanel from "../components/ChatCommandsPanel";
+import Header from "../components/Utils/Header";
 import MiddlePanel from "./MiddlePanel";
-import EventModal from "./components/EventModal/EventModal";
-import BestiaryPanel from "./components/BestiaryPanel/BestiaryPanel";
-import TownsHistoryPanel from "./components/TownsHistoryPanel/TownsHistoryPanel";
+import EventModal from "../components/EventModal/EventModal";
+import BestiaryPanel from "../components/BestiaryPanel";
+import TownsHistoryPanel from "../components/TownsHistoryPanel";
 import { connect } from "react-redux";
 
 class GameScreen extends Component {
@@ -85,18 +85,13 @@ class GameScreen extends Component {
       currentEvent,
       currentStory,
       doSetState,
-      eventHistory,
       hydrateMerchants,
-      isGameMaster,
       merchants,
-      quests,
       selectAnotherCharacter,
       signOut,
       stories,
-      storyCharacters,
       toggleMusic,
       triggerError,
-      uid,
       bestiary,
       towns,
       ...rest
@@ -119,21 +114,18 @@ class GameScreen extends Component {
           eventTitle={
             isEventHidden ? "Toggle event (Is hidden)" : "Toggle event"
           }
-          merchantTitle={isOnMerchantList ? "Return to map" : "Merchants list"}
           hydrateMerchants={hydrateMerchants}
+          merchantTitle={isOnMerchantList ? "Return to map" : "Merchants list"}
           selectAnotherCharacter={selectAnotherCharacter}
           signOut={signOut}
           title={stories[currentStory].name}
           toggleBestiary={this.toggleBestiary}
+          toggleEvent={this.toggleEvent}
           toggleMerchantList={this.toggleMerchantList}
           toggleMusic={toggleMusic}
-          toggleEvent={this.toggleEvent}
         />
         {this.canReadEvent() && (
-          <EventModal
-            doSetState={doSetState}
-            triggerError={triggerError}
-          />
+          <EventModal doSetState={doSetState} triggerError={triggerError} />
         )}
         {isOnBestiary && bestiary.length > 0 ? (
           <BestiaryPanel />
@@ -160,6 +152,7 @@ class GameScreen extends Component {
 
 const mapStateToProps = store => ({
   bestiary: store.bestiary.bestiary,
+  characters: store.userInfos.characters,
   currentEvent: store.events.currentEvent,
   currentStory: store.appState.currentStory,
   isGameMaster: store.appState.isGameMaster,

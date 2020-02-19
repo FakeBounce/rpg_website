@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
 import CanvasDraw from "react-canvas-draw";
-import { mapWidth, widthLeft } from "./components/Utils/StyleConstants";
+import { mapWidth, widthLeft } from "../Utils/StyleConstants";
 
 const defaultWidth = (widthLeft + mapWidth) / 2 - 10 + 2;
 const otherWidth = ((widthLeft + mapWidth) / 2 - 10) / 2;

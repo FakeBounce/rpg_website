@@ -4,7 +4,7 @@ import { heightLeft, widthLeftBestiary } from "../Utils/StyleConstants";
 import TownsHistoryMerchantHeader from "./TownsHistoryMerchantHeader";
 import TownsHistoryMerchantColumnList from "./TownsHistoryMerchantColumnList";
 import firebase from "firebase";
-import ItemDescriptionPanel from "../ItemDescriptionPanel/ItemDescriptionPanel";
+import ItemDescriptionPanel from "../ItemDescriptionPanel";
 import { connect } from "react-redux";
 
 const styledTownColumn = {

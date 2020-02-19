@@ -1,49 +1,43 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { widthLeft } from '../Utils/StyleConstants';
+import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+import { widthLeft } from "../Utils/StyleConstants";
+import { useChatInputContext } from "../../contexts/chatInputContext";
 
 const styledChatInput = {
   width: widthLeft / 2 - 51,
-  height: '20px',
-  float: 'left',
-  display: 'inline-block',
+  height: "20px",
+  float: "left",
+  display: "inline-block",
   marginLeft: 20,
 };
 
-class ChatInput extends PureComponent {
-  chatInputRef = null;
+const ChatInput = ({ handleKeyPress }) => {
+  let chatInputRef = useRef(null);
+  const { chatInput, setChatInput } = useChatInputContext();
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.chatInput !== this.props.chatInput) {
-      this.chatInputRef.focus();
+  useEffect(() => {
+    if (chatInput.trim() !== "" && chatInputRef !== null) {
+      chatInputRef.current.focus();
     }
-  }
+  }, [chatInput, chatInputRef]);
 
-  render() {
-    const { chatInput, onChange, handleKeyPress } = this.props;
-
-    return (
-      <input
-        type="text"
-        name="chatInput"
-        placeholder="Chat !"
-        value={chatInput}
-        onChange={e => {
-          onChange(e.target.name, e.target.value);
-        }}
-        style={styledChatInput}
-        onKeyPress={handleKeyPress}
-        ref={input => {
-          this.chatInputRef = input;
-        }}
-      />
-    );
-  }
-}
+  return (
+    <input
+      type="text"
+      name="chatInput"
+      placeholder="Chat !"
+      value={chatInput}
+      onChange={e => {
+        setChatInput(e.target.value);
+      }}
+      style={styledChatInput}
+      onKeyPress={handleKeyPress}
+      ref={chatInputRef}
+    />
+  );
+};
 
 ChatInput.propTypes = {
-  chatInput: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
   handleKeyPress: PropTypes.func.isRequired,
 };
 

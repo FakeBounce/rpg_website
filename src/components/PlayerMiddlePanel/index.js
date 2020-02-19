@@ -1,19 +1,19 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
-import ItemDescriptionPanel from "./components/ItemDescriptionPanel/ItemDescriptionPanel";
-import MerchantPanel from "./components/MerchantPanel/MerchantPanel";
-import ItemPanel from "./components/ItemPanel/ItemPanel";
-import QuestPanel from "./components/QuestPanel/QuestPanel";
-import { heightLeft, widthLeft } from "./components/Utils/StyleConstants";
+import ItemDescriptionPanel from "../ItemDescriptionPanel";
+import MerchantPanel from "../MerchantPanel";
+import ItemPanel from "../ItemPanel";
+import QuestPanel from "../QuestPanel";
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 import TempImage from "./TempImage";
-import EnhancementWeaponsPanel from "./components/EnhancementWeaponsPanel/EnhancementWeaponsPanel";
-import ShopHeaderBlacksmith from "./components/ShopHeader/ShopHeaderBlacksmith";
-import ShopHeaderEnhancements from "./components/ShopHeader/ShopHeaderEnhancements";
-import ShopHeaderDefault from "./components/ShopHeader/ShopHeaderDefault";
-import EnhancersPanel from "./components/EnhancersPanel/EnhancersPanel";
+import EnhancementWeaponsPanel from "../EnhancementWeaponsPanel";
+import ShopHeaderBlacksmith from "../ShopHeader/ShopHeaderBlacksmith";
+import ShopHeaderEnhancements from "../ShopHeader/ShopHeaderEnhancements";
+import ShopHeaderDefault from "../ShopHeader/ShopHeaderDefault";
+import EnhancersPanel from "../EnhancersPanel/EnhancersPanel";
 import firebase from "firebase";
-import Cadre from "./components/Utils/Cadre";
+import Cadre from "../Utils/Cadre";
 import { connect } from "react-redux";
 
 const styledPlayerMapContainer = {
@@ -52,7 +52,7 @@ const styledCadreSecondContainer = {
   paddingHorizontal: 10,
 };
 
-class PlayerMapPanel extends Component {
+class PlayerMiddlePanel extends Component {
   state = {
     currentTab: "items",
     showEnhancers: false,
@@ -507,7 +507,7 @@ const mapStateToProps = store => ({
   merchants: store.merchants.merchantList,
 });
 
-PlayerMapPanel.propTypes = {
+PlayerMiddlePanel.propTypes = {
   isItemShowed: PropTypes.bool.isRequired,
   itemsList: PropTypes.array.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,
@@ -520,4 +520,4 @@ PlayerMapPanel.propTypes = {
   triggerError: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(PlayerMapPanel);
+export default connect(mapStateToProps)(PlayerMiddlePanel);

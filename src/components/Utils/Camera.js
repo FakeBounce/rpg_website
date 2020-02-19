@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import firebase from "firebase";
-import ButtonLarge from "./components/Utils/ButtonLarge";
-import { heightHeader } from "./components/Utils/StyleConstants";
-import { colors } from "./components/Utils/Constants";
+import ButtonLarge from "./ButtonLarge";
+import { heightHeader } from "./StyleConstants";
+import { colors } from "./Constants";
 import { connect } from "react-redux";
 
 const styledVideoContainer = {
