@@ -1,29 +1,22 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import { useCharacterContext } from "../../contexts/characterContext";
 
-class CharacterCreationName extends Component {
-  render() {
-    const { name, onChange } = this.props;
+const CharacterCreationName = () => {
+  const { name, setName } = useCharacterContext();
 
-    return (
-      <div>
-        <input
-          type="text"
-          name="name"
-          placeholder="name"
-          value={name}
-          onChange={e => {
-            onChange(e.target.name, e.target.value);
-          }}
-        />
-      </div>
-    );
-  }
-}
-
-CharacterCreationName.propTypes = {
-  name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  return (
+    <div>
+      <input
+        type="text"
+        name="name"
+        placeholder="name"
+        value={name}
+        onChange={e => {
+          setName(e.target.value);
+        }}
+      />
+    </div>
+  );
 };
 
 export default CharacterCreationName;

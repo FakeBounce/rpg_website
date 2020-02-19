@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import { attributes as namedAttributes } from "../Utils/Constants";
+import { useCharacterContext } from "../../contexts/characterContext";
 
 const styledBoxHeader = {
   width: "100%",
@@ -9,41 +9,37 @@ const styledBoxHeader = {
   textAlign: "center",
 };
 
-class CharacterCreationAttributes extends Component {
-  render() {
-    const { attributes, onChange, totalPointsleft } = this.props;
+const CharacterCreationAttributes = () => {
+  const {
+    attributes,
+    onChangeAttribute,
+    totalPointsleft,
+  } = useCharacterContext;
 
-    return (
-      <div>
-        <div style={styledBoxHeader}>Attributes :</div>
-        {namedAttributes.map(a => {
-          return (
-            <div key={`attribute-${a}`}>
-              {a} :
-              <input
-                type="number"
-                name={a}
-                placeholder={a}
-                value={attributes[a]}
-                onChange={e => {
-                  onChange(e.target.name, e.target.value);
-                }}
-                min="5"
-                max="75"
-              />
-            </div>
-          );
-        })}
-        <div>Total points left : {totalPointsleft}</div>
-      </div>
-    );
-  }
-}
-
-CharacterCreationAttributes.propTypes = {
-  attributes: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired,
-  totalPointsleft: PropTypes.func.isRequired,
+  return (
+    <div>
+      <div style={styledBoxHeader}>Attributes :</div>
+      {namedAttributes.map(a => {
+        return (
+          <div key={`attribute-${a}`}>
+            {a} :
+            <input
+              type="number"
+              name={a}
+              placeholder={a}
+              value={attributes[a]}
+              onChange={e => {
+                onChangeAttribute(e.target.name, e.target.value);
+              }}
+              min="5"
+              max="75"
+            />
+          </div>
+        );
+      })}
+      <div>Total points left : {totalPointsleft}</div>
+    </div>
+  );
 };
 
 export default CharacterCreationAttributes;

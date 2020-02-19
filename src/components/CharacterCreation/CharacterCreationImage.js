@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import FileUploader from "./FileUploader";
+import { useCharacterContext } from "../../contexts/characterContext";
 
 const styledCharacterImage = {
   width: "20%",
@@ -10,32 +10,24 @@ const styledCharacterImage = {
   float: "left",
 };
 
-class CharacterCreationImage extends Component {
-  render() {
-    const { icon, onDrop, removePicture } = this.props;
+const CharacterCreationImage = () => {
+  const { icon, onDrop, removePicture } = useCharacterContext();
 
-    return (
-      <div style={styledCharacterImage}>
-        {icon === "" && <FileUploader onDrop={onDrop} />}
-        {icon !== "" && (
-          <div>
-            <img
-              src={icon}
-              style={{ maxWidth: "50px", maxHeight: "50px" }}
-              alt={"Character preview"}
-            />
-            <button onClick={removePicture}>Remove picture</button>
-          </div>
-        )}
-      </div>
-    );
-  }
-}
-
-CharacterCreationImage.propTypes = {
-  icon: PropTypes.oneOfType("string", "number", "object").isRequired,
-  onDrop: PropTypes.func.isRequired,
-  removePicture: PropTypes.func.isRequired,
+  return (
+    <div style={styledCharacterImage}>
+      {icon === "" && <FileUploader onDrop={onDrop} />}
+      {icon !== "" && (
+        <div>
+          <img
+            src={icon}
+            style={{ maxWidth: "50px", maxHeight: "50px" }}
+            alt={"Character preview"}
+          />
+          <button onClick={removePicture}>Remove picture</button>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default CharacterCreationImage;

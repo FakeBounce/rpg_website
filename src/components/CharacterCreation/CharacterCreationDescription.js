@@ -1,28 +1,21 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import { useCharacterContext } from "../../contexts/characterContext";
 
-class CharacterCreationDescription extends Component {
-  render() {
-    const { description, onChange } = this.props;
+const CharacterCreationDescription = () => {
+  const { description, setDescription } = useCharacterContext;
 
-    return (
-      <div>
-        <textarea
-          name="description"
-          placeholder="description"
-          value={description}
-          onChange={e => {
-            onChange(e.target.name, e.target.value);
-          }}
-        />
-      </div>
-    );
-  }
-}
-
-CharacterCreationDescription.propTypes = {
-  description: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  return (
+    <div>
+      <textarea
+        name="description"
+        placeholder="description"
+        value={description}
+        onChange={e => {
+          setDescription(e.target.name, e.target.value);
+        }}
+      />
+    </div>
+  );
 };
 
 export default CharacterCreationDescription;
