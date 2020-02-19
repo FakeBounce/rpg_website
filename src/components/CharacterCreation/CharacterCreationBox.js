@@ -14,7 +14,6 @@ class CharacterCreationBox extends Component {
     return (
       <div style={styledCharacterBox}>
         <CharacterCreationImage
-          name={name}
           icon={icon}
           onDrop={onDrop}
           removePicture={removePicture}

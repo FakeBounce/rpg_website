@@ -14,7 +14,6 @@ import * as actionsAppState from "../actions/actionsAppState";
 import { getTranslations } from "../../i18n";
 import { firebaseDbOnce, onValueChannel } from "./api";
 import { currentStorySelector } from "../../selectors";
-import * as actionsMapInfos from "../actions/actionsMapInfos";
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
 
 function* itemsError(error = getTranslations("error.transfer.failed")) {

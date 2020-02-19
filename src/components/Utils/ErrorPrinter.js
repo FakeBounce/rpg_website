@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import { useToastContext } from "./contexts/toastContext";
+import { useToastContext } from "../../contexts/toastContext";
 
 const ErrorPrinter = ({ error }) => {
   const { notify } = useToastContext();

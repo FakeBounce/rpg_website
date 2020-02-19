@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { heightLeft, widthLeft } from "./components/Utils/StyleConstants";
+import { heightLeft, widthLeft } from "../components/Utils/StyleConstants";
 
 import PropTypes from "prop-types";
-import EventPanel from "./components/EventPanel/EventPanel";
-import MapEditionPanel from "./components/MapEditionPanel/MapEditionPanel";
-import StoryQuestsAndMerchantsPanel from "./components/StoryQuestsAndMerchantsPanel/StoryQuestsAndMerchantsPanel";
-import TownPanel from "./components/TownPanel/TownPanel";
-import SpellGenerator from "./SpellGenerator";
+import EventPanel from "../components/EventPanel";
+import MapEditionPanel from "../components/MapEditionPanel";
+import StoryQuestsAndMerchantsPanel from "../components/StoryQuestsAndMerchantsPanel";
+import TownPanel from "../components/TownPanel";
+import SpellGenerator from "../components/Utils/SpellGenerator";
 import { connect } from "react-redux";
 
 const styledMapSide = {

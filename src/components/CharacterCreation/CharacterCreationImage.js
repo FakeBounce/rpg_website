@@ -12,7 +12,7 @@ const styledCharacterImage = {
 
 class CharacterCreationImage extends Component {
   render() {
-    const { name, icon, onDrop, removePicture } = this.props;
+    const { icon, onDrop, removePicture } = this.props;
 
     return (
       <div style={styledCharacterImage}>
@@ -22,7 +22,7 @@ class CharacterCreationImage extends Component {
             <img
               src={icon}
               style={{ maxWidth: "50px", maxHeight: "50px" }}
-              alt={`${name}`}
+              alt={"Character preview"}
             />
             <button onClick={removePicture}>Remove picture</button>
           </div>
@@ -33,7 +33,6 @@ class CharacterCreationImage extends Component {
 }
 
 CharacterCreationImage.propTypes = {
-  name: PropTypes.string.isRequired,
   icon: PropTypes.oneOfType("string", "number", "object").isRequired,
   onDrop: PropTypes.func.isRequired,
   removePicture: PropTypes.func.isRequired,

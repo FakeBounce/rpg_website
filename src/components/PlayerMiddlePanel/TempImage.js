@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
-import { heightLeft, widthLeft } from "./components/Utils/StyleConstants";
-import { colors, tempoImagesList } from "./components/Utils/Constants";
+import { heightLeft, widthLeft } from "../Utils/StyleConstants";
+import { colors, tempoImagesList } from "../Utils/Constants";
 import firebase from "firebase";
 import { connect } from "react-redux";
 

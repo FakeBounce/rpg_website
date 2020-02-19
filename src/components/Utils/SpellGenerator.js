@@ -5,7 +5,7 @@ import {
   spellModeList,
   spellTypeList,
   colors,
-} from "./components/Utils/Constants";
+} from "./Constants";
 
 const styledSpellContainer = {
   position: "relative",

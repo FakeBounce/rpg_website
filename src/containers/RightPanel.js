@@ -1,16 +1,16 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 
 import PropTypes from "prop-types";
 import firebase from "firebase";
-import TeamPanel from "./components/TeamCharacters/TeamPanel";
+import TeamPanel from "../components/TeamCharacters/TeamPanel";
 import {
   widthRightPanel,
   heightHeader,
-} from "./components/Utils/StyleConstants";
-import CharacterPanel from "./components/CharacterPanel/CharacterPanel";
-import ExchangePanel from "./components/ExchangePanel/ExchangePanel";
-import SongPanel from "./components/SongPanel/SongPanel";
-import { listenSong } from "./components/Utils/DatabaseFunctions";
+} from "../components/Utils/StyleConstants";
+import CharacterPanel from "../components/CharacterPanel";
+import ExchangePanel from "../components/ExchangePanel";
+import SongPanel from "../components/SongPanel";
+import { listenSong } from "../components/Utils/DatabaseFunctions";
 import { connect } from "react-redux";
 
 const styles = {
@@ -24,33 +24,18 @@ const styles = {
   },
 };
 
-class RightPanel extends Component {
-  state = {
-    status: this.props.character.status ? this.props.character.status : "OK",
+const RightPanel = props => {
+  const [panelState, setPanelState] = useState({
+    status: props.character.status ? props.character.status : "OK",
     infoTab: "Weapons",
     damageTaken: 0,
     gold: 0,
     currentExchangeCharacter: null,
     isOnChar: true,
-    songName: "",
-    songStatus: "PAUSED",
-    songVolume: 50,
-  };
+  });
 
-  componentDidMount() {
-    const { currentStory } = this.props;
-    listenSong(currentStory, this.doSetState);
-  }
-
-  doSetState = obj => {
-    this.setState(state => ({
-      ...state,
-      ...obj,
-    }));
-  };
-
-  chatWithTeamMember = receiverPseudo => {
-    const { doSetState } = this.props;
+  const chatWithTeamMember = receiverPseudo => {
+    const { doSetState } = props;
     if (receiverPseudo === "GM") {
       doSetState({
         chatInput: `/gmw `,
@@ -62,8 +47,8 @@ class RightPanel extends Component {
     }
   };
 
-  goldWithTeamMember = receiverPseudo => {
-    const { doSetState } = this.props;
+  const goldWithTeamMember = receiverPseudo => {
+    const { doSetState } = props;
     if (receiverPseudo === "GM") {
       doSetState({
         chatInput: `/goldgm `,
@@ -75,37 +60,37 @@ class RightPanel extends Component {
     }
   };
 
-  exchangeWithTeamMember = c => {
-    this.setState(state => ({
-      ...state,
+  const exchangeWithTeamMember = c => {
+    setPanelState({
+      ...panelState,
       currentExchangeCharacter: c,
-    }));
+    });
   };
 
-  onChange = (name, value) => {
+  const onChange = (name, value) => {
     const obj = {};
     obj[name] = value;
-    this.setState(state => ({
-      ...state,
+    setPanelState({
+      ...panelState,
       ...obj,
-    }));
+    });
   };
 
-  onChangeTab = tab => {
-    this.setState(state => ({
-      ...state,
+  const onChangeTab = tab => {
+    setPanelState({
+      ...panelState,
       infoTab: tab,
-    }));
+    });
   };
 
-  onLifeChange = () => {
+  const onLifeChange = () => {
     const {
       character: { health, maxHealth },
       currentStory,
       uid,
       triggerError,
-    } = this.props;
-    const { damageTaken } = this.state;
+    } = props;
+    const { damageTaken } = panelState;
 
     const healthLeft =
       parseInt(health, 10) + damageTaken < 0
@@ -125,9 +110,9 @@ class RightPanel extends Component {
       });
   };
 
-  onStatusChange = () => {
-    const { currentStory, uid, triggerError } = this.props;
-    const { status } = this.state;
+  const onStatusChange = () => {
+    const { currentStory, uid, triggerError } = props;
+    const { status } = panelState;
 
     firebase
       .database()
@@ -141,14 +126,8 @@ class RightPanel extends Component {
       });
   };
 
-  onItemUse = (i, value) => {
-    const {
-      character,
-      currentStory,
-      uid,
-      doSetState,
-      triggerError,
-    } = this.props;
+  const onItemUse = (i, value) => {
+    const { character, currentStory, uid, doSetState, triggerError } = props;
 
     if (value > -1) {
       const newCharacterItems = [...character.items];
@@ -179,9 +158,9 @@ class RightPanel extends Component {
     }
   };
 
-  onItemExchange = (i, value, givableItem) => {
-    const { currentStory, triggerError } = this.props;
-    const { currentExchangeCharacter } = this.state;
+  const onItemExchange = (i, value, givableItem) => {
+    const { currentStory, triggerError } = props;
+    const { currentExchangeCharacter } = panelState;
 
     const newCharacterItems = currentExchangeCharacter.items
       ? [...currentExchangeCharacter.items]
@@ -213,7 +192,7 @@ class RightPanel extends Component {
       )
       .set(newCharacterItems)
       .then(() => {
-        this.onItemUse(i, value);
+        onItemUse(i, value);
       })
       .catch(error => {
         // Handle Errors here.
@@ -221,9 +200,9 @@ class RightPanel extends Component {
       });
   };
 
-  onWeaponExchange = (i, givableItem) => {
-    const { character, currentStory, uid, triggerError } = this.props;
-    const { currentExchangeCharacter } = this.state;
+  const onWeaponExchange = (i, givableItem) => {
+    const { character, currentStory, uid, triggerError } = props;
+    const { currentExchangeCharacter } = panelState;
 
     const newCharacterItems = currentExchangeCharacter.weapons
       ? [...currentExchangeCharacter.weapons]
@@ -262,15 +241,9 @@ class RightPanel extends Component {
   };
 
   // for GM only
-  onGoldChange = () => {
-    const {
-      character,
-      currentStory,
-      uid,
-      isGameMaster,
-      triggerError,
-    } = this.props;
-    const { gold } = this.state;
+  const onGoldChange = () => {
+    const { character, currentStory, uid, isGameMaster, triggerError } = props;
+    const { gold } = panelState;
 
     if (isGameMaster) {
       const goldToSet = character.gold + gold < 0 ? 0 : character.gold + gold;
@@ -288,18 +261,14 @@ class RightPanel extends Component {
     }
   };
 
-  modifyCurrentCharacter = uid => {
-    const { currentStory, isGameMaster, doSetState } = this.props;
+  const modifyCurrentCharacter = uid => {
+    const { currentStory, isGameMaster, doSetState } = props;
 
     if (isGameMaster) {
       firebase
         .database()
         .ref(
-          "stories/" +
-            currentStory +
-            "/characters/" +
-            this.props.uid +
-            "/character",
+          "stories/" + currentStory + "/characters/" + props.uid + "/character",
         )
         .off();
       firebase
@@ -314,15 +283,15 @@ class RightPanel extends Component {
     }
   };
 
-  closeExchange = () => {
-    this.setState(state => ({
-      ...state,
+  const closeExchange = () => {
+    setPanelState({
+      ...panelState,
       currentExchangeCharacter: null,
-    }));
+    });
   };
 
-  resetSongs = () => {
-    const { currentStory } = this.props;
+  const resetSongs = () => {
+    const { currentStory } = props;
     firebase
       .database()
       .ref("/stories/" + currentStory + "/song")
@@ -332,91 +301,79 @@ class RightPanel extends Component {
         songStatus: "STOPPED",
       })
       .catch(error => {
-        this.triggerError(error);
+        triggerError(error);
       });
   };
 
-  changeCurrentNoise = n => {
-    const { onChangeMusics } = this.props;
-    onChangeMusics("songName", n);
-    onChangeMusics("songStatus", "PLAYING");
+  const toggleIsOnChar = () => {
+    setPanelState({
+      ...panelState,
+      isOnChar: !panelState.isOnChar,
+    });
   };
 
-  toggleIsOnChar = () => {
-    this.setState(state => ({
-      ...state,
-      isOnChar: !state.isOnChar,
-    }));
-  };
+  const { triggerError, onChangeMusics } = props;
 
-  render() {
-    const { triggerError, onChangeMusics } = this.props;
+  const {
+    status,
+    infoTab,
+    damageTaken,
+    gold,
+    currentExchangeCharacter,
+    isOnChar,
+  } = panelState;
 
-    const {
-      status,
-      infoTab,
-      damageTaken,
-      gold,
-      currentExchangeCharacter,
-      isOnChar,
-      songName,
-      songVolume,
-    } = this.state;
-
-    return (
-      <div style={styles.RightPanel}>
-        {isOnChar ? (
-          <CharacterPanel
-            damageTaken={damageTaken}
-            gold={gold}
-            infoTab={infoTab}
-            onChange={this.onChange}
-            onChangeTab={this.onChangeTab}
-            onGoldChange={this.onGoldChange}
-            onItemUse={this.onItemUse}
-            onLifeChange={this.onLifeChange}
-            onStatusChange={this.onStatusChange}
-            toggleIsOnChar={this.toggleIsOnChar}
-            status={status}
-            triggerError={triggerError}
-          />
-        ) : (
-          <SongPanel
-            resetSongs={this.resetSongs}
-            songName={songName}
-            songVolume={songVolume}
-            onChangeSongs={onChangeMusics}
-            toggleIsOnChar={this.toggleIsOnChar}
-          />
-        )}
-        {currentExchangeCharacter !== null && (
-          <ExchangePanel
-            closeExchange={this.closeExchange}
-            onItemExchange={this.onItemExchange}
-            onWeaponExchange={this.onWeaponExchange}
-            currentExchangeCharacter={currentExchangeCharacter}
-          />
-        )}
-        <TeamPanel
-          chatWithTeamMember={this.chatWithTeamMember}
-          exchangeWithTeamMember={this.exchangeWithTeamMember}
-          goldWithTeamMember={this.goldWithTeamMember}
-          modifyCurrentCharacter={this.modifyCurrentCharacter}
+  return (
+    <div style={styles.RightPanel}>
+      {isOnChar ? (
+        <CharacterPanel
+          damageTaken={damageTaken}
+          gold={gold}
+          infoTab={infoTab}
+          onChange={onChange}
+          onChangeTab={onChangeTab}
+          onGoldChange={onGoldChange}
+          onItemUse={onItemUse}
+          onLifeChange={onLifeChange}
+          onStatusChange={onStatusChange}
+          toggleIsOnChar={toggleIsOnChar}
+          status={status}
+          triggerError={triggerError}
         />
-      </div>
-    );
-  }
-}
+      ) : (
+        <SongPanel
+          resetSongs={resetSongs}
+          onChangeSongs={onChangeMusics}
+          toggleIsOnChar={toggleIsOnChar}
+        />
+      )}
+      {currentExchangeCharacter !== null && (
+        <ExchangePanel
+          closeExchange={closeExchange}
+          onItemExchange={onItemExchange}
+          onWeaponExchange={onWeaponExchange}
+          currentExchangeCharacter={currentExchangeCharacter}
+        />
+      )}
+      <TeamPanel
+        chatWithTeamMember={chatWithTeamMember}
+        exchangeWithTeamMember={exchangeWithTeamMember}
+        goldWithTeamMember={goldWithTeamMember}
+        modifyCurrentCharacter={modifyCurrentCharacter}
+      />
+    </div>
+  );
+};
 
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   isGameMaster: store.appState.isGameMaster,
   uid: store.userInfos.uid,
   character: store.character,
+  song: store.sounds.song,
 });
 
 RightPanel.propTypes = {
-  chatInput: PropTypes.string.isRequired,
   doSetState: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,

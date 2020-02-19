@@ -3,17 +3,16 @@ import PropTypes from "prop-types";
 
 import GMMapPanel from "./GMMapPanel";
 import RightPanel from "./RightPanel";
-import PlayerMapPanel from "./PlayerMapPanel";
-import MapGenerator from "./components/MapGenerator/MapGenerator";
-import ChatPanel from "./components/ChatPanel/ChatPanel";
-import SoundPanel from "./components/SoundPanel/SoundPanel";
+import PlayerMapPanel from "../components/PlayerMiddlePanel";
+import MapGenerator from "../components/MapGenerator/MapGenerator";
+import ChatPanel from "../components/ChatPanel";
+import SoundPanel from "../components/SoundPanel";
 import { connect } from "react-redux";
 
 class MiddlePanel extends Component {
   render() {
     const {
       buyItem,
-      chatInput,
       doSetState,
       isGameMaster,
       isItemDescriptionShowed,
@@ -61,7 +60,6 @@ class MiddlePanel extends Component {
 
         {(!isGameMaster || isOnPlayerView) && (
           <RightPanel
-            chatInput={chatInput}
             doSetState={doSetState}
             onChange={onChange}
             triggerError={triggerError}
@@ -87,7 +85,6 @@ MiddlePanel.defaultProps = {
 
 MiddlePanel.propTypes = {
   buyItem: PropTypes.func.isRequired,
-  chatInput: PropTypes.string.isRequired,
   dispatchSetCurrentScale: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,

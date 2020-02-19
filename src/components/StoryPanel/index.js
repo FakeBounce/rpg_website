@@ -35,7 +35,6 @@ class StoriesPanel extends Component {
     if (isCreatingStory) {
       return (
         <NewStory
-          stories={stories}
           doSetState={doSetState}
           triggerError={triggerError}
           toggleStoryCreation={this.toggleStoryCreation}
@@ -57,7 +56,7 @@ class StoriesPanel extends Component {
               return (
                 <Story
                   key={`${s.name}-${index}`}
-                  chooseStory={chooseStory}
+                  chooseStory={() => chooseStory(index)}
                   index={index}
                   name={s.name}
                   wallpaper={s.wallpaper}

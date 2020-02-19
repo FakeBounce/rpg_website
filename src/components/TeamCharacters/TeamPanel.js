@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import TeamCharacter from "./TeamCharacter";
 import { widthRightPanel, heightLeft } from "../Utils/StyleConstants";
@@ -39,7 +39,7 @@ const TeamPanelGMCharacters = {
   overflowY: "auto",
 };
 
-class TeamPanel extends PureComponent {
+class TeamPanel extends Component {
   render() {
     const {
       storyCharacters,
