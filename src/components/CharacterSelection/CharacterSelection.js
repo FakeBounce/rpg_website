@@ -6,6 +6,7 @@ import CharacterPreview from "./CharacterPreview";
 import firebase from "firebase";
 import ButtonLarge from "../Utils/ButtonLarge";
 import { connect } from "react-redux";
+import { CharacterProvider } from "../../contexts/characterContext";
 
 const styledBoxHeader = {
   width: "100%",
@@ -231,12 +232,44 @@ class CharacterSelection extends Component {
     chooseStory(-1);
   };
 
+  calculatePointsLeft = () => {
+    const { characters, updateCharacterId } = this.props;
+
+    const {
+      attributes: {
+        strength,
+        dexterity,
+        luck,
+        charisma,
+        education,
+        magic,
+        perception,
+        constitution,
+        willpower = 50,
+      },
+    } = characters[updateCharacterId];
+
+    return (
+      450 -
+      strength -
+      dexterity -
+      luck -
+      constitution -
+      charisma -
+      education -
+      magic -
+      perception -
+      willpower
+    );
+  };
+
   render() {
     const { isAnUpdate, updateCharacterId } = this.state;
     const {
       characterCreation,
       characters,
       keepCharacter,
+      uid,
       signOut,
       triggerError,
     } = this.props;
@@ -275,16 +308,28 @@ class CharacterSelection extends Component {
             <ButtonLarge onClick={signOut}>Log out</ButtonLarge>
           </div>
         </div>
-        <CharacterCreationPanel
+        <CharacterProvider
+          uid={uid}
           id={
             isAnUpdate ? updateCharacterId : Object.keys(characters).length + 1
           }
-          createCharacter={this.createCharacter}
-          updateCharacter={this.updateCharacter}
-          triggerError={triggerError}
           isAnUpdate={isAnUpdate}
           character={isAnUpdate ? { ...characters[updateCharacterId] } : {}}
-        />
+          totalPointsleft={this.calculatePointsLeft()}
+        >
+          <CharacterCreationPanel
+            id={
+              isAnUpdate
+                ? updateCharacterId
+                : Object.keys(characters).length + 1
+            }
+            createCharacter={this.createCharacter}
+            updateCharacter={this.updateCharacter}
+            triggerError={triggerError}
+            isAnUpdate={isAnUpdate}
+            character={isAnUpdate ? { ...characters[updateCharacterId] } : {}}
+          />
+        </CharacterProvider>
       </div>
     );
   }
