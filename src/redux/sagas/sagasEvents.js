@@ -7,14 +7,12 @@ import {
   take,
   takeEvery,
 } from "redux-saga/effects";
-import { eventChannel } from "redux-saga";
 
 import * as actionsTypesEvents from "../actionsTypes/actionsTypesEvents";
 import * as actionsEvents from "../actions/actionsEvents";
 import * as actionsAppState from "../actions/actionsAppState";
 import { getTranslations } from "../../i18n";
 import { currentStorySelector } from "../../selectors";
-import firebase from "firebase";
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
 import { onValueChannel } from "./api";
 

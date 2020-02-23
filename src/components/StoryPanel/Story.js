@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { heightHeader, cursorPointer } from "../Utils/StyleConstants";
+import { cursorPointer } from "../Utils/StyleConstants";
 import firebase from "firebase";
 
 const styles = {
@@ -8,25 +8,19 @@ const styles = {
     marginTop: 30,
     cursor: cursorPointer,
     position: "relative",
-    display: "inline-block",
-    float: "left",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   storyTitle: {
-    marginBottom: 15,
+    marginBottom: 30,
     fontSize: 23,
     fontWeight: "bolder",
   },
-  storyImage: { width: 150, height: 150 },
+  storyImage: { width: 300, height: 300, borderRadius: 300 },
 };
 
-const Story = ({
-  wallpaper,
-  triggerError,
-  index,
-  name,
-  chooseStory,
-  totalStories,
-}) => {
+const Story = ({ wallpaper, triggerError, name, chooseStory }) => {
   const [icon, setIcon] = useState("");
   let storageRef = firebase.storage().ref();
 
@@ -48,18 +42,6 @@ const Story = ({
       onClick={chooseStory}
       style={{
         ...styles.storyBox,
-        width:
-          totalStories > 4
-            ? window.innerWidth / 4 - 4
-            : window.innerWidth / totalStories - totalStories,
-
-        borderRight: index !== totalStories - 1 ? "1px solid black" : "",
-        height:
-          totalStories > 4
-            ? totalStories > 8
-              ? (window.innerHeight - heightHeader) / 4
-              : (window.innerHeight - heightHeader) / totalStories - 4
-            : window.innerHeight - heightHeader,
       }}
     >
       <div style={styles.storyTitle}>{name}</div>
@@ -67,9 +49,8 @@ const Story = ({
         src={icon}
         style={{
           ...styles.storyImage,
-          width: "80%",
-          height: "90%",
         }}
+        className={"borderOnHover"}
         alt="dravos"
       />
     </div>
@@ -78,10 +59,8 @@ const Story = ({
 
 Story.propTypes = {
   chooseStory: PropTypes.func.isRequired,
-  index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   wallpaper: PropTypes.string.isRequired,
-  totalStories: PropTypes.number.isRequired,
 };
 
 export default Story;

@@ -11,7 +11,7 @@ import HasNoNickname from "./components/NicknameSelection/HasNoNickname";
 import CharacterSelection from "./components/CharacterSelection/CharacterSelection";
 import StoriesPanel from "./components/StoryPanel";
 
-import { defaultState } from "./components/Utils/Constants";
+import { bestiary, defaultState } from "./components/Utils/Constants";
 import GameScreen from "./containers/GameScreen";
 import SoundPlayer from "./components/SoundPlayer/SoundPlayer";
 import {
@@ -20,9 +20,9 @@ import {
   // listenCurrentEvent,
   // listenEvents,
   // listenMerchants,
-  listenMusic,
-  listenNoise,
-  listenSong,
+  // listenMusic,
+  // listenNoise,
+  // listenSong,
   // listenQuests,
   // listenTowns,
   loadAllItems,
@@ -33,7 +33,7 @@ import {
   // resetEvents,
   // resetMap,
   // setQuests,
-  populateBestiary,
+  // populateBestiary,
   // loadChat,
 } from "./components/Utils/DatabaseFunctions";
 import {
@@ -42,12 +42,11 @@ import {
   hydrateAllMerchants,
   // hydrateMerchant,
 } from "./components/Utils/MerchantsFunctions";
-import { toggleMusic, updateAllMusic } from "./redux/actions/actionsSounds";
+import { toggleMusic } from "./redux/actions/actionsSounds";
 import PropTypes from "prop-types";
 import {
   setGameMaster,
   togglePlayerMastering,
-  togglePlayerView,
   updateCurrentStory,
 } from "./redux/actions/actionsAppState";
 import {
@@ -58,7 +57,6 @@ import {
   CALL_LOAD_NOISE,
   CALL_LOAD_SONG,
 } from "./redux/actionsTypes/actionsTypesSounds";
-import { setCharacter } from "./redux/actions/actionsCharacter";
 import {
   CALL_LISTEN_CURRENT_EVENT,
   CALL_LISTEN_EVENTS_HISTORY,
@@ -82,6 +80,9 @@ import { CALL_LISTEN_BESTIARY } from "./redux/actionsTypes/actionsTypesBestiary"
 import { CALL_LISTEN_TEAM_CHARACTERS } from "./redux/actionsTypes/actionsTypesTeam";
 import { CALL_LISTEN_CHARACTER } from "./redux/actionsTypes/actionsTypesCharacter";
 import { CALL_GET_ITEM_LIST } from "./redux/actionsTypes/actionsTypesItems";
+import { Button, Icon } from "semantic-ui-react";
+import ButtonLarge from "./components/Utils/ButtonLarge";
+import { cursorPointer } from "./components/Utils/StyleConstants";
 
 class App extends Component {
   constructor(props) {
@@ -111,7 +112,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { dispatchCallSetTilesTypes } = this.props;
+    const { dispatchCallSetTilesTypes, currentStory } = this.props;
     dispatchCallSetTilesTypes();
     loadAllItems(this.doSetState);
 
@@ -151,14 +152,29 @@ class App extends Component {
     //
     //     firebase
     //       .database()
-    //       .ref("stories/" + 0 + "/bestiary/"+newPostKey)
-    //       .set(newMonster)
+    //       .ref("stories/" + 1 + "/bestiary")
+    //       .set(bestiary)
     //       .catch(error => {
     //         // Handle Errors here.
-    //         dispatchCallPrintError(error);
+    //         this.triggerError(error);
     //       });
     //   });
     // });
+
+    // firebase
+    //   .database()
+    //   .ref("stories/" + 0 + "/artefacts")
+    //   .once("value")
+    //   .then(snapshot => {
+    //     firebase
+    //       .database()
+    //       .ref("stories/" + 1 + "/artefacts")
+    //       .set(snapshot.val())
+    //       .catch(error => {
+    //         // Handle Errors here.
+    //         this.triggerError(error);
+    //       });
+    //   });
   }
 
   loadMerchantsAndItems = () => {
@@ -475,6 +491,7 @@ class App extends Component {
       uid,
       stories,
     } = this.props;
+    dispatchUpdateCurrentStory(i);
 
     if (i < 0) return null;
 
@@ -486,7 +503,6 @@ class App extends Component {
       typeof stories[i].characters[uid] !== "undefined"
     ) {
       dispatchListenCharacter();
-      dispatchUpdateCurrentStory(i);
       dispatchSetGameMaster(stories[i].gameMaster);
       dispatchCallListenMapTiles();
       dispatchCallListenChatHistory();
@@ -504,7 +520,6 @@ class App extends Component {
       dispatchCallListenEventHistory();
     } else {
       //@TODO : Activate when GM will have proper tabs
-      dispatchUpdateCurrentStory(i);
       dispatchSetGameMaster(stories[i].gameMaster);
       dispatchCallListenMapTiles();
       dispatchCallListenChatHistory();
@@ -560,14 +575,13 @@ class App extends Component {
     const { isAuth, pseudo, isGameMaster, currentStory } = this.props;
     if (isAuth) {
       if (pseudo.trim() === "") {
-        return <HasNoNickname signOut={this.signOut} />;
+        return <HasNoNickname />;
       } else {
         if (currentStory === -1) {
           return (
             <StoriesPanel
               chooseStory={this.chooseStory}
               doSetState={this.doSetState}
-              signOut={this.signOut}
               triggerError={this.triggerError}
             />
           );
@@ -608,6 +622,7 @@ class App extends Component {
   };
 
   render() {
+    const { isAuth, musicMute } = this.props;
     return (
       <div
         className="App"
@@ -621,6 +636,36 @@ class App extends Component {
               {this.correctRoute()}
               <SoundPlayer />
               <ErrorPrinter />
+              {isAuth && (
+                <Icon
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                    right: 20,
+                    cursor: cursorPointer,
+                  }}
+                  onClick={this.signOut}
+                  circular
+                  inverted
+                  name="shutdown"
+                  color="red"
+                />
+              )}
+              {isAuth && (
+                <Icon
+                  style={{
+                    position: "absolute",
+                    top: 45,
+                    right: 20,
+                    cursor: cursorPointer,
+                  }}
+                  onClick={this.toggleMusic}
+                  circular
+                  name={musicMute ? "volume up" : "volume off"}
+                  inverted
+                  color={"black"}
+                />
+              )}
             </>
           </ChatInputProvider>
         </ToastProvider>
@@ -652,9 +697,6 @@ const mapDispatchToProps = dispatch => {
     dispatchLoadNoise: payload => {
       dispatch({ type: CALL_LOAD_NOISE, payload });
     },
-    dispatchTogglePlayerView: () => {
-      dispatch(togglePlayerView());
-    },
     dispatchTogglePlayerMastering: payload => {
       dispatch(togglePlayerMastering(payload));
     },
@@ -667,13 +709,13 @@ const mapDispatchToProps = dispatch => {
     dispatchListenCharacter: () => {
       dispatch({ type: CALL_LISTEN_CHARACTER });
     },
-    dispatchCallSetEventHistory: () => {
+    dispatchCallListenEventHistory: () => {
       dispatch({ type: CALL_LISTEN_EVENTS_HISTORY });
     },
     dispatchCallListenChatHistory: () => {
       dispatch({ type: CALL_LISTEN_CHAT_HISTORY });
     },
-    dispatchCallSetCurrentEvent: () => {
+    dispatchCallListenCurrentEvent: () => {
       dispatch({ type: CALL_LISTEN_CURRENT_EVENT });
     },
     dispatchCallListenMapTiles: () => {
@@ -727,6 +769,7 @@ const mapStateToProps = store => ({
   merchants: store.merchants.merchantList,
   items: store.items.items,
   music: store.sounds.music,
+  musicMute: store.sounds.music.musicMute,
 });
 
 App.propTypes = {
@@ -734,13 +777,12 @@ App.propTypes = {
   dispatchCallListenMusic: PropTypes.func.isRequired,
   dispatchCallListenSong: PropTypes.func.isRequired,
   dispatchCallListenNoise: PropTypes.func.isRequired,
-  dispatchTogglePlayerView: PropTypes.func.isRequired,
   dispatchTogglePlayerMastering: PropTypes.func.isRequired,
   dispatchUpdateCurrentStory: PropTypes.func.isRequired,
   dispatchSetGameMaster: PropTypes.func.isRequired,
   dispatchListenCharacter: PropTypes.func.isRequired,
-  dispatchCallSetEventHistory: PropTypes.func.isRequired,
-  dispatchCallSetCurrentEvent: PropTypes.func.isRequired,
+  dispatchCallListenEventHistory: PropTypes.func.isRequired,
+  dispatchCallListenCurrentEvent: PropTypes.func.isRequired,
   dispatchCallPrintError: PropTypes.func.isRequired,
   dispatchCallListenChatHistory: PropTypes.func.isRequired,
   dispatchCallSignOut: PropTypes.func.isRequired,

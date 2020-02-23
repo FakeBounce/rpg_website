@@ -23,26 +23,69 @@ class HasNoNickname extends Component {
   };
 
   render() {
-    const { pseudoInput, signOut } = this.props;
+    const { pseudoInput } = this.props;
 
     return (
-      <div>
-        <input
-          type="text"
-          name="pseudoInput"
-          placeholder="pseudo"
-          value={pseudoInput}
-          onChange={e => {
-            this.onChange(e.target.value.replace(/\s/g, ""));
+      <div
+        style={{
+          height: "100%",
+          display: "flex",
+        }}
+      >
+        <h1
+          style={{
+            position: "absolute",
+            width: "100%",
+            top: 30,
+            display: "flex",
+            justifyContent: "center",
+            letterSpacing: 13,
           }}
-        />
-        <button onClick={this.choosePseudo}>Choisir un pseudo</button>
-        <ButtonLarge
-          onClick={signOut}
-          style={{ position: "absolute", top: 0, right: 0 }}
         >
-          Log out
-        </ButtonLarge>
+          Choose your pseudo
+        </h1>
+        <div
+          style={{
+            width: "50%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            paddingTop: 70,
+            paddingBottom: 50,
+            paddingLeft: 30,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <input
+              type="text"
+              name="pseudoInput"
+              placeholder="pseudo"
+              value={pseudoInput}
+              onChange={e => {
+                this.onChange(e.target.value.replace(/\s/g, ""));
+              }}
+            />
+            <ButtonLarge onClick={this.choosePseudo} style={{ marginTop: 20 }}>
+              Validate
+            </ButtonLarge>
+          </div>
+        </div>
+        <div style={{ width: "50%", height: "100%" }}>
+          <img
+            src={"./common/pseudoPage.jpg"}
+            alt={"homepage"}
+            style={{ width: "100%", height: "100%" }}
+          />
+        </div>
       </div>
     );
   }
@@ -58,7 +101,6 @@ const mapDispatchToProps = dispatch => {
 
 HasNoNickname.propTypes = {
   dispatchCallSetUserPseudo: PropTypes.func.isRequired,
-  signOut: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(HasNoNickname);

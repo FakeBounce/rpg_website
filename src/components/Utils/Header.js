@@ -1,52 +1,39 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { heightHeader } from "./StyleConstants";
+import { cursorPointer, heightHeader } from "./StyleConstants";
 import { resetStoryMerchants } from "./MerchantsFunctions";
 import Camera from "./Camera";
 import ButtonLarge from "./ButtonLarge";
 import firebase from "firebase";
 import { connect } from "react-redux";
 import { togglePlayerView } from "../../redux/actions/actionsAppState";
-
-const styledSignOut = {
-  display: "block",
-  position: "relative",
-  width: 150,
-};
+import { Icon } from "semantic-ui-react";
 
 const styledToggling = {
   position: "absolute",
   top: 50,
-  right: 150,
+  right: 100,
   width: 150,
 };
 
 const styledToggleEvent = {
   position: "absolute",
   top: 75,
-  right: 150,
+  right: 100,
   width: 150,
 };
 
 const styledHydrateEvent = {
   position: "absolute",
   top: 100,
-  right: 150,
+  right: 100,
   width: 150,
 };
 
 const styledResetMerchantsEvent = {
   position: "absolute",
   top: 0,
-  right: 150,
-  width: 150,
-};
-
-const styledHeaderRight = {
-  height: heightHeader,
-  position: "absolute",
-  right: 0,
-  top: 0,
+  right: 100,
   width: 150,
 };
 
@@ -63,12 +50,6 @@ const styledHeader = {
   backgroundImage: `url(./common/dravos_header.jpg)`,
   backgroundSize: "cover",
   // backgroundColor: colors.background,
-};
-
-const styledSound = {
-  marginLeft: "5px",
-  width: "10px",
-  height: "10px",
 };
 
 class Header extends Component {
@@ -150,35 +131,58 @@ class Header extends Component {
         <div style={styledHeaderLeft}>
           <Camera />
         </div>
-        <div style={styledHeaderRight}>
-          <ButtonLarge style={styledSignOut} onClick={signOut}>
-            Sign Out
-          </ButtonLarge>
-          <ButtonLarge style={styledSignOut} onClick={selectAnotherCharacter}>
-            Select a character
-          </ButtonLarge>
-          <ButtonLarge style={styledSignOut} onClick={toggleMusic}>
-            Toggle music
-            <img
-              src={
-                musicMute
-                  ? "./common/soundMuted.png"
-                  : "./common/soundUnmuted.png"
-              }
-              style={styledSound}
-              alt="sound muted or not"
-            />
-          </ButtonLarge>
-          <ButtonLarge style={styledSignOut} onClick={accessChatHelp}>
-            {chatHelpTitle}
-          </ButtonLarge>
-          <ButtonLarge style={styledSignOut} onClick={toggleBestiary}>
-            {bestiaryTitle}
-          </ButtonLarge>
-          <ButtonLarge style={styledSignOut} onClick={toggleMerchantList}>
-            {merchantTitle}
-          </ButtonLarge>
-        </div>
+        <Icon
+          style={{
+            position: "absolute",
+            top: 80,
+            right: 20,
+            cursor: cursorPointer,
+          }}
+          onClick={selectAnotherCharacter}
+          circular
+          name={"address book"}
+          inverted
+          color={"black"}
+        />
+        <Icon
+          style={{
+            position: "absolute",
+            top: 115,
+            right: 20,
+            cursor: cursorPointer,
+          }}
+          onClick={accessChatHelp}
+          circular
+          name={"chat"}
+          inverted
+          color={"black"}
+        />
+        <Icon
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 60,
+            cursor: cursorPointer,
+          }}
+          onClick={toggleBestiary}
+          circular
+          name={"bug"}
+          inverted
+          color={"black"}
+        />
+        <Icon
+          style={{
+            position: "absolute",
+            top: 45,
+            right: 60,
+            cursor: cursorPointer,
+          }}
+          onClick={toggleMerchantList}
+          circular
+          name={"gem"}
+          inverted
+          color={"black"}
+        />
         {isGameMaster && (
           <ButtonLarge
             style={styledToggling}
@@ -230,7 +234,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
-  musicMute: store.sounds.musicMute,
+  musicMute: store.sounds.music.musicMute,
 });
 
 Header.propTypes = {

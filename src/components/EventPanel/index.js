@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
 import firebase from "firebase";
 import EventViewers from "./EventViewers";
 import EventItemForm from "./EventItemForm";
@@ -137,7 +136,6 @@ class EventPanel extends Component {
   };
 
   render() {
-    const { items } = this.props;
     const {
       eventType,
       goldEvent,
@@ -159,7 +157,6 @@ class EventPanel extends Component {
         )}
         {eventType === "item" && (
           <EventItemForm
-            items={items}
             descriptionEvent={descriptionEvent}
             quantityEvent={quantityEvent}
             itemEvent={itemEvent}
@@ -183,13 +180,5 @@ const mapStateToProps = store => ({
   gameMaster: store.appState.gameMaster,
   eventHistory: store.events.history,
 });
-
-EventPanel.defaultProps = {
-  items: null,
-};
-
-EventPanel.propTypes = {
-  items: PropTypes.object,
-};
 
 export default connect(mapStateToProps)(EventPanel);

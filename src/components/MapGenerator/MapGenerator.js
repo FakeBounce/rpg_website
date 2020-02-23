@@ -91,8 +91,6 @@ class MapGenerator extends PureComponent {
   };
 
   render() {
-    const { doSetState } = this.props;
-
     return (
       <div className="map" style={styledMap}>
         <MapZoom />
@@ -106,10 +104,7 @@ class MapGenerator extends PureComponent {
             top: 0,
           }}
         >
-          <MapGrid
-            doSetState={doSetState}
-            setTexture={this.setTexture}
-          />
+          <MapGrid setTexture={this.setTexture} />
         </div>
       </div>
     );
@@ -132,7 +127,6 @@ const mapStateToProps = store => ({
 });
 
 MapGenerator.propTypes = {
-  doSetState: PropTypes.func.isRequired,
   dispatchCallPrintError: PropTypes.func.isRequired,
 };
 

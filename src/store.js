@@ -4,6 +4,29 @@ import storage from "redux-persist/es/storage";
 import rootReducer from "./redux/reducers/root";
 import createSagaMiddleware from "redux-saga";
 import { persistStore, persistCombineReducers } from "redux-persist";
+import { CALL_LISTEN_BESTIARY } from "./redux/actionsTypes/actionsTypesBestiary";
+import { CALL_LISTEN_CHARACTER } from "./redux/actionsTypes/actionsTypesCharacter";
+import {
+  CALL_LISTEN_ALL_QUESTS,
+  CALL_LISTEN_ALL_TOWNS,
+  CALL_LISTEN_CURRENT_X,
+  CALL_LISTEN_CURRENT_Y,
+  CALL_LISTEN_MAP_TILES,
+} from "./redux/actionsTypes/actionsTypesMapInfos";
+import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat";
+import {
+  CALL_LISTEN_MUSIC,
+  CALL_LISTEN_NOISE,
+  CALL_LISTEN_SONG,
+} from "./redux/actionsTypes/actionsTypesSounds";
+import { CALL_LISTEN_MERCHANT_LIST } from "./redux/actionsTypes/actionsTypesMerchants";
+import { CALL_GET_ITEM_LIST } from "./redux/actionsTypes/actionsTypesItems";
+import {
+  CALL_LISTEN_CURRENT_EVENT,
+  CALL_LISTEN_EVENTS_HISTORY,
+} from "./redux/actionsTypes/actionsTypesEvents";
+import { SET_GAME_MASTER } from "./redux/actionsTypes/actionsTypesAppState";
+import { CALL_LISTEN_TEAM_CHARACTERS } from "./redux/actionsTypes/actionsTypesTeam";
 
 // Env
 // const { PERSIST_ENABLED, PERSIST_PURGE } = Config;
@@ -44,9 +67,40 @@ function configureStore() {
   const store = createStore(reducer, {}, composedEnhancer);
 
   // if (PERSIST_ENABLED === "true") {
-  // persistStore(store, null, () => {
-  //   console.log('store.getState()', store.getState());
-  // });
+  persistStore(store, null, () => {
+    if (store.getState().appState.currentStory > -1) {
+      const currentStory = store.getState().appState.currentStory;
+      const uid = store.getState().userInfos.uid;
+      if (
+        typeof store.getState().appState.stories[currentStory].characters !==
+          "undefined" &&
+        typeof store.getState().appState.stories[currentStory].characters[
+          uid
+        ] !== "undefined"
+      ) {
+        store.dispatch({ type: CALL_GET_ITEM_LIST });
+      }
+      store.dispatch({ type: CALL_LISTEN_CHARACTER });
+      store.dispatch({
+        type: SET_GAME_MASTER,
+        payload: store.getState().appState.stories[currentStory].gameMaster,
+      });
+      store.dispatch({ type: CALL_LISTEN_MAP_TILES });
+      store.dispatch({ type: CALL_LISTEN_BESTIARY });
+      store.dispatch({ type: CALL_LISTEN_CHAT_HISTORY });
+      store.dispatch({ type: CALL_LISTEN_MUSIC });
+      store.dispatch({ type: CALL_LISTEN_NOISE });
+      store.dispatch({ type: CALL_LISTEN_SONG });
+      store.dispatch({ type: CALL_LISTEN_MERCHANT_LIST });
+      store.dispatch({ type: CALL_LISTEN_ALL_TOWNS });
+      store.dispatch({ type: CALL_LISTEN_ALL_QUESTS });
+      store.dispatch({ type: CALL_LISTEN_CURRENT_X });
+      store.dispatch({ type: CALL_LISTEN_CURRENT_Y });
+      store.dispatch({ type: CALL_LISTEN_CURRENT_EVENT });
+      store.dispatch({ type: CALL_LISTEN_EVENTS_HISTORY });
+      store.dispatch({ type: CALL_LISTEN_TEAM_CHARACTERS });
+    }
+  });
   // }
   return store;
 }

@@ -6,14 +6,12 @@ import {
   takeEvery,
   call,
 } from "redux-saga/effects";
-import { eventChannel } from "redux-saga";
 
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
 import * as actionsAppState from "../actions/actionsAppState";
 import * as actionsMapInfos from "../actions/actionsMapInfos";
 import { getTranslations } from "../../i18n";
 import { firebaseDbOnce, onValueChannel } from "./api";
-import firebase from "firebase";
 
 function* appStateError(
   { payload } = getTranslations("error.transfer.failed"),

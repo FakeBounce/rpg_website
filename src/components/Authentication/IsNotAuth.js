@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import firebase from "firebase";
-import ButtonLarge from "../Utils/ButtonLarge";
 import Logs from "./Logs";
 import { defaultState } from "../Utils/Constants";
 import {
@@ -9,13 +9,14 @@ import {
   setUid,
   setUserInfos,
 } from "../../redux/actions/actionsUserInfos";
-import { connect } from "react-redux";
 import { setIsAuth, setIsAdmin } from "../../redux/actions/actionsAppState";
 import {
   CALL_GET_ALL_STORIES,
   CALL_LISTEN_STORY_USERS,
   CALL_PRINT_ERROR,
 } from "../../redux/actionsTypes/actionsTypesAppState";
+import { Button } from "semantic-ui-react";
+import { cursorPointer } from "../Utils/StyleConstants";
 
 class IsNotAuth extends Component {
   state = {
@@ -133,32 +134,119 @@ class IsNotAuth extends Component {
     const { email, password } = this.state;
 
     return (
-      <div style={{ height: "100%" }}>
-        <input
-          type="text"
-          name="email"
-          placeholder="email"
-          autoComplete="on"
-          value={email}
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
+      <div
+        style={{
+          height: "100%",
+          display: "flex",
+        }}
+      >
+        <h1
+          style={{
+            position: "absolute",
+            width: "100%",
+            top: 30,
+            display: "flex",
+            justifyContent: "center",
+            letterSpacing: 13,
           }}
-          onKeyPress={this.handleKeyPress}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="password"
-          autoComplete="on"
-          value={password}
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
+        >
+          RPG PLAYER
+        </h1>
+        <div style={{ width: "50%", height: "100%" }}>
+          <img
+            src={"./common/homepage.jpg"}
+            alt={"homepage"}
+            style={{ width: "100%", height: "100%" }}
+          />
+        </div>
+        <div
+          style={{
+            width: "50%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            paddingTop: 70,
+            paddingBottom: 50,
+            paddingLeft: 30,
           }}
-          onKeyPress={this.handleKeyPress}
-        />
-        <ButtonLarge onClick={this.signIn}>Sign In</ButtonLarge>
-        <ButtonLarge onClick={this.signUp}>Sign Up</ButtonLarge>
-        <Logs />
+        >
+          <div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingBottom: 30,
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <input
+                  type="text"
+                  name="email"
+                  placeholder="email"
+                  autoComplete="on"
+                  value={email}
+                  onChange={e => {
+                    this.onChange(e.target.name, e.target.value);
+                  }}
+                  onKeyPress={this.handleKeyPress}
+                  style={{ minWidth: 200, marginBottom: 20 }}
+                />
+              </div>
+              <input
+                type="password"
+                name="password"
+                placeholder="password"
+                autoComplete="on"
+                value={password}
+                onChange={e => {
+                  this.onChange(e.target.name, e.target.value);
+                }}
+                onKeyPress={this.handleKeyPress}
+                style={{ minWidth: 200, marginBottom: 20 }}
+              />
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                marginBottom: 30,
+              }}
+            >
+              <Button.Group>
+                <Button
+                  onClick={this.signIn}
+                  primary
+                  style={{ width: 120, cursor: cursorPointer }}
+                >
+                  Sign In
+                </Button>
+                <Button.Or />
+                <Button
+                  onClick={this.signUp}
+                  positive
+                  style={{ width: 120, cursor: cursorPointer }}
+                >
+                  Sign Up
+                </Button>
+              </Button.Group>
+            </div>
+          </div>
+          <Logs />
+        </div>
       </div>
     );
   }

@@ -1,267 +1,35 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import LogList from "./LogList";
+import { cursorPointer } from "../Utils/StyleConstants";
 
-class Logs extends Component {
-  render() {
-    return (
-      <div className="scrollbar" style={{height: "90%", overflowY: "scroll"}}>
-          <div className="commit"> Fakebounce, le 2019-10-21 : Updated GM town gestion </div>
-          <div className="commit"> Fakebounce, le 2019-10-09 : Replaced pseudos with character names in event modal </div>
-          <div className="commit"> Fakebounce, le 2019-10-09 : Replaced pseudos with character names in chat </div>
-          <div className="commit"> Fakebounce, le 2019-10-09 : Fixed crashes for new Story </div>
-          <div className="commit"> Fakebounce, le 2019-10-09 : Everyone can create a story now </div>
-          <div className="commit"> Fakebounce, le 2019-10-07 : Added some story </div>
-          <div className="commit"> Fakebounce, le 2019-09-19 : Added wallpaper to stories </div>
-          <div className="commit"> Fakebounce, le 2019-09-19 : Fixed warnings in bundler </div>
-          <div className="commit"> Fakebounce, le 2019-09-19 : Added Items description in townList recap and removed buy possibilities in this panel </div>
-          <div className="commit"> Fakebounce, le 2019-09-19 : Added gold and item descriptions in merchantPanel </div>
-          <div className="commit"> Fakebounce, le 2019-09-19 : Fixed crashes, updated story paths to currentStory and added storyCreation </div>
-          <div className="commit"> Fakebounce, le 2019-09-06 : Added item type in description </div>
-          <div className="commit"> Fakebounce, le 2019-09-06 : Updated story </div>
-          <div className="commit"> Fakebounce, le 2019-09-06 : Update Camera to simple Component </div>
-          <div className="commit"> Fakebounce, le 2019-09-06 : Added rooms for private talk </div>
-          <div className="commit"> Fakebounce, le 2019-06-19 : Reworking Character creation style... </div>
-          <div className="commit"> Fakebounce, le 2019-06-19 : Reworked characterCreation </div>
-          <div className="commit"> Fakebounce, le 2019-06-19 : Removed console.log </div>
-          <div className="commit"> Fakebounce, le 2019-06-19 : Reworked CharacterCreation structure and removed useless px precision in css </div>
-          <div className="commit"> Fakebounce, le 2019-06-18 : Added a story and updated package.json for React 16.8 </div>
-          <div className="commit"> Fakebounce, le 2019-06-14 : Cleaned files </div>
-          <div className="commit"> Fakebounce, le 2019-06-14 : Updated task list </div>
-          <div className="commit"> Fakebounce, le 2019-06-11 : Added some ideas and story </div>
-          <div className="commit"> fakebounce, le 2019-06-12 : WIP </div>
-          <div className="commit"> fakebounce, le 2019-05-30 : Added a monster </div>
-          <div className="commit"> fakebounce, le 2019-04-27 : Added some monsters </div>
-          <div className="commit"> fakebounce, le 2019-04-27 : Added some songs </div>
-          <div className="commit"> fakebounce, le 2019-04-27 : Adde songs for Menestrels </div>
-          <div className="commit"> fakebounce, le 2019-02-23 : Now chat remembers who you're talking to, and players can now play songs </div>
-          <div className="commit"> fakebounce, le 2019-01-12 : Added some images, musics and css for events </div>
-          <div className="commit"> FakeBounce, le 2018-12-31 : Reviewed bestiary, now mapping on objects instead of arrays </div>
-          <div className="commit"> FakeBounce, le 2018-12-28 : Changed tempo image when a beast has been seen </div>
-          <div className="commit"> FakeBounce, le 2018-12-28 : All colors are now in a constant </div>
-          <div className="commit"> FakeBounce, le 2018-12-28 : Remove props check on chatHistory child added </div>
-          <div className="commit"> FakeBounce, le 2018-12-28 : Fixed besitary link </div>
-          <div className="commit"> FakeBounce, le 2018-12-28 : Fixed chat whisper </div>
-          <div className="commit"> FakeBounce, le 2018-12-28 : Optimized chat </div>
-          <div className="commit"> FakeBounce, le 2018-12-27 : Removing useless arrays in tiles </div>
-          <div className="commit"> FakeBounce, le 2018-12-27 : Optimized mapgrid </div>
-          <div className="commit"> FakeBounce, le 2018-12-27 : Turned all style to greylike bg and white text, changed scrollbars </div>
-          <div className="commit"> FakeBounce, le 2018-12-27 : Fixed all warnings, keys and proptypes; fixed spell generator issue </div>
-          <div className="commit"> FakeBounce, le 2018-12-27 : Fixed toggle map isCurrent and setState on firebase update </div>
-          <div className="commit"> FakeBounce, le 2018-12-27 : Added cadres on header for cameras </div>
-          <div className="commit"> FakeBounce, le 2018-12-26 : Added a function to close localstream </div>
-          <div className="commit"> FakeBounce, le 2018-12-24 : Added some artefacts and corrected hydrateHard </div>
-          <div className="commit"> FakeBounce, le 2018-12-24 : Centered temp image </div>
-          <div className="commit"> FakeBounce, le 2018-12-21 : Added quests on merchantlist </div>
-          <div className="commit"> FakeBounce, le 2018-12-20 : Moved header logic </div>
-          <div className="commit"> FakeBounce, le 2018-12-20 : Merchant list finalized with css </div>
-          <div className="commit"> FakeBounce, le 2018-12-19 : Added images for items </div>
-          <div className="commit"> FakeBounce, le 2018-12-19 : Merchant list available; No style </div>
-          <div className="commit"> FakeBounce, le 2018-12-19 : Added unconscious to status list </div>
-          <div className="commit"> FakeBounce, le 2018-12-19 : Added a filter on item events </div>
-          <div className="commit"> FakeBounce, le 2018-12-19 : Fixed spell generator </div>
-          <div className="commit"> FakeBounce, le 2018-12-19 : Fixed map edition bug; Reworking GM panels </div>
-          <div className="commit"> FakeBounce, le 2018-12-19 : Moved hydrate merchants to header </div>
-          <div className="commit"> FakeBounce, le 2018-12-18 : Added some style for bestiary </div>
-          <div className="commit"> FakeBounce, le 2018-12-18 : Changed tiles to pureComponent and added a cancelShowTown when the town is no longer selected </div>
-          <div className="commit"> FakeBounce, le 2018-12-17 : Fixed some merchants bugs and optimized map render </div>
-          <div className="commit"> fakebounce, le 2018-12-15 : Added images for bestiary </div>
-          <div className="commit"> fakebounce, le 2018-12-15 : Fixed teampanel </div>
-          <div className="commit"> fakebounce, le 2018-12-15 : Last minute fixes </div>
-          <div className="commit"> fakebounce, le 2018-12-15 : Removed Tadlos from TeamCharacters </div>
-          <div className="commit"> fakebounce, le 2018-12-15 : Fixed some image and added Rangrim for bestiary rolls </div>
-          <div className="commit"> fakebounce, le 2018-12-15 : Merge branch 'master' of https://github.com/FakeBounce/rpg_website </div>
-          <div className="commit"> FakeBounce, le 2018-12-14 : Fixed music panel on player view </div>
-          <div className="commit"> FakeBounce, le 2018-12-14 : Moved music panel to the right for GM </div>
-          <div className="commit"> FakeBounce, le 2018-12-14 : Fixed header event </div>
-          <div className="commit"> FakeBounce, le 2018-12-14 : Fixed header event </div>
-          <div className="commit"> FakeBounce, le 2018-12-14 : Fixed warnings </div>
-          <div className="commit"> FakeBounce, le 2018-12-14 : Added some PureComponent to optimize renders </div>
-          <div className="commit"> FakeBounce, le 2018-12-14 : Added bestiary to temp images </div>
-          <div className="commit"> FakeBounce, le 2018-12-14 : GM can go back to his character on TeamPanel </div>
-          <div className="commit"> FakeBounce, le 2018-12-14 : Now GM can change attributes directly </div>
-          <div className="commit"> FakeBounce, le 2018-12-13 : Reworked items to work with objects instead of indexes. Added listeners on merchants and their items </div>
-          <div className="commit"> FakeBounce, le 2018-12-12 : Exchange weapons </div>
-          <div className="commit"> FakeBounce, le 2018-12-12 : Cleaned enhance </div>
-          <div className="commit"> FakeBounce, le 2018-12-12 : Blacksmith up </div>
-          <div className="commit"> FakeBounce, le 2018-12-12 : Enhance from players </div>
-          <div className="commit"> FakeBounce, le 2018-12-12 : Can enhance weapons from merchant </div>
-          <div className="commit"> FakeBounce, le 2018-12-11 : Added slots and pricing to enhancements </div>
-          <div className="commit"> FakeBounce, le 2018-12-11 : Added enhancer panel and function; Need to create and save enhanced weapon now </div>
-          <div className="commit"> FakeBounce, le 2018-12-11 : Added Enhancement Panel; Cannot enhance yet </div>
-          <div className="commit"> FakeBounce, le 2018-12-11 : Added Exchange between player </div>
-          <div className="commit"> FakeBounce, le 2018-12-10 : Fixed bestiary listener </div>
-          <div className="commit"> FakeBounce, le 2018-12-10 : Fix critical bug and added some css </div>
-          <div className="commit"> FakeBounce, le 2018-12-10 : Added a button to hydrate merchants and added a form to add beasts </div>
-          <div className="commit"> FakeBounce, le 2018-12-10 : Updated bestiary (toggle seen) for GM </div>
-          <div className="commit"> FakeBounce, le 2018-12-10 : Added some css for items and fixed global heightLeft problem </div>
-          <div className="commit"> FakeBounce, le 2018-12-10 : Added some range to map Arrows </div>
-          <div className="commit"> FakeBounce, le 2018-12-10 : Fixed GM drawer </div>
-          <div className="commit"> FakeBounce, le 2018-12-10 : Fixed Draw for players </div>
-          <div className="commit"> FakeBounce, le 2018-12-10 : Fixed some chat panel behavior </div>
-          <div className="commit"> FakeBounce, le 2018-12-07 : Fixed auth fields removed </div>
-          <div className="commit"> FakeBounce, le 2018-12-07 : Added tags and updated version </div>
-          <div className="commit"> FakeBounce, le 2018-12-07 : Added image inputs for chat </div>
-          <div className="commit"> FakeBounce, le 2018-12-07 : Reviewed Bestiary and now players can change their character's image in a story </div>
-          <div className="commit"> FakeBounce, le 2018-12-06 : Added style on bestiary filters </div>
-          <div className="commit"> FakeBounce, le 2018-12-06 : Fixed wrong filters for bestiary </div>
-          <div className="commit"> FakeBounce, le 2018-12-06 : Added some bestiary css </div>
-          <div className="commit"> FakeBounce, le 2018-12-06 : Fixed bestiary filters and added list preview </div>
-          <div className="commit"> FakeBounce, le 2018-12-06 : Fixed item addition </div>
-          <div className="commit"> FakeBounce, le 2018-12-06 : Fixed chat bad behavior and optimized it </div>
-          <div className="commit"> FakeBounce, le 2018-12-05 : Limited chat to 50 last message, added some filter for bestiary, and cleaned up some code </div>
-          <div className="commit"> fakebounce, le 2018-12-01 : Updated cameras </div>
-          <div className="commit"> fakebounce, le 2018-12-01 : Trying to not register cache </div>
-          <div className="commit"> fakebounce, le 2018-12-01 : Now players can add skills in game </div>
-          <div className="commit"> fakebounce, le 2018-12-01 : Added button to load self drawing </div>
-          <div className="commit"> fakebounce, le 2018-12-01 : Added drawing event </div>
-          <div className="commit"> fakebounce, le 2018-12-01 : Added select for malus/bonus while doing a dice action </div>
-          <div className="commit"> fakebounce, le 2018-12-01 : Fixed some style and added png to cover Player panel when no town is accessible </div>
-          <div className="commit"> FakeBounce, le 2018-11-21 : Working on drawer; Added colors and saved drawer with user uid </div>
-          <div className="commit"> FakeBounce, le 2018-11-20 : Moved drawer, and reviewed bestiary functions. Did some GM css </div>
-          <div className="commit"> FakeBounce, le 2018-11-20 : Fixed noises issues, added a drawer and saved user in cache </div>
-          <div className="commit"> fakebounce, le 2018-11-17 : Added infomrations on bestiairy </div>
-          <div className="commit"> fakebounce, le 2018-11-17 : Fixed bestiary reset </div>
-          <div className="commit"> fakebounce, le 2018-11-17 : Fixed webcam styles </div>
-          <div className="commit"> fakebounce, le 2018-11-17 : Added some beast </div>
-          <div className="commit"> fakebounce, le 2018-11-17 : Now gm can toggle seen creatures </div>
-          <div className="commit"> fakebounce, le 2018-11-17 : Added bestiary </div>
-          <div className="commit"> fakebounce, le 2018-11-17 : Added spell generator in admin panel and fixed some css </div>
-          <div className="commit"> fakebounce, le 2018-11-17 : Merge branch 'master' of https://github.com/FakeBounce/rpg_website </div>
-          <div className="commit"> FakeBounce, le 2018-11-16 : Changed header styles for toggle player view </div>
-          <div className="commit"> FakeBounce, le 2018-11-16 : Fixed chat focus and GM button </div>
-          <div className="commit"> FakeBounce, le 2018-11-16 : Did some css on player's panel </div>
-          <div className="commit"> FakeBounce, le 2018-11-16 : Did some css on player's panel </div>
-          <div className="commit"> FakeBounce, le 2018-11-16 : Feature/camera (#3) </div>
-          <div className="commit"> FakeBounce, le 2018-11-15 : Added large button </div>
-          <div className="commit"> FakeBounce, le 2018-11-15 : Fixed warnings </div>
-          <div className="commit"> FakeBounce, le 2018-11-15 : Added some quests </div>
-          <div className="commit"> fakebounce, le 2018-11-15 : Merge branch 'master' of https://github.com/FakeBounce/rpg_website </div>
-          <div className="commit"> FakeBounce, le 2018-11-14 : Added cursor styles for selects </div>
-          <div className="commit"> FakeBounce, le 2018-11-14 : Reworking styles... Changed cursor to glove and trying to rework buttons </div>
-          <div className="commit"> FakeBounce, le 2018-11-14 : Did some css </div>
-          <div className="commit"> FakeBounce, le 2018-11-14 : Added spell generator and removed useless console.logs </div>
-          <div className="commit"> FakeBounce, le 2018-11-14 : Reviewed event display and added debt event </div>
-          <div className="commit"> FakeBounce, le 2018-11-13 : Added focus on chatInput when modified </div>
-          <div className="commit"> FakeBounce, le 2018-11-13 : Deleted items if none left </div>
-          <div className="commit"> FakeBounce, le 2018-11-13 : Added buttons for items to use instead of input </div>
-          <div className="commit"> FakeBounce, le 2018-11-13 : Trimmed chat inputs </div>
-          <div className="commit"> FakeBounce, le 2018-11-13 : GM buttons now works for attributes </div>
-          <div className="commit"> FakeBounce, le 2018-11-13 : Added dices in chat for attributes rolls </div>
-          <div className="commit"> FakeBounce, le 2018-11-13 : Fixed map rerender overflow </div>
-          <div className="commit"> FakeBounce, le 2018-11-13 : Fixed event overflow </div>
-          <div className="commit"> FakeBounce, le 2018-11-13 : Reworked styles; Added life total to characters and fixed some css issues </div>
-          <div className="commit"> fakebounce, le 2018-11-09 : Remote peer connexion </div>
-          <div className="commit"> FakeBounce, le 2018-10-30 : WIP Reworking images... </div>
-          <div className="commit"> FakeBounce, le 2018-10-29 : Added some beasts and did the first step to load images from db instead of public repo </div>
-          <div className="commit"> FakeBounce, le 2018-10-23 : Added somes images </div>
-          <div className="commit"> fakebounce, le 2018-10-20 : Refactoring... Done. Fixed warnings and logs </div>
-          <div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (Prettier) </div>
-          <div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (PlayerMapPanel) </div>
-          <div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (MerchantPanel) </div>
-          <div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (TownPanel and PanelToggle) </div>
-          <div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (Event and MapEdition) </div>
-          <div className="commit"> FakeBounce, le 2018-10-19 : WIP Refactoring... (MapGenerator) </div>
-          <div className="commit"> fakebounce, le 2018-10-18 : WIP Refactoring... (Event panel) </div>
-          <div className="commit"> FakeBounce, le 2018-10-18 : Reworked project structure </div>
-          <div className="commit"> fakebounce, le 2018-10-13 : Last minute fixes </div>
-          <div className="commit"> fakebounce, le 2018-10-13 : Last fixes on events; ready to go. </div>
-          <div className="commit"> fakebounce, le 2018-10-13 : GM can now pop item events. Events disappear when all viewers have closed the event. </div>
-          <div className="commit"> fakebounce, le 2018-10-13 : Added musics and noises </div>
-          <div className="commit"> fakebounce, le 2018-10-13 : Added git history </div>
-          <div className="commit"> fakebounce, le 2018-10-13 : Added GM actions on Event; Removed white spaced on pseudos </div>
-          <div className="commit"> fakebounce, le 2018-10-13 : GM can now add gold events. Players have a few option to interact. </div>
-          <div className="commit"> fakebounce, le 2018-10-13 : WIP - Event creation + Corrected aura wind image </div>
-          <div className="commit"> fakebounce, le 2018-10-13 : Loaded all images from spreadsheets. Fixed some paths. Now GM can see if a merchant is visible or not </div>
-          <div className="commit"> fakebounce, le 2018-10-12 : Can now autocomplete chat with gold regex </div>
-          <div className="commit"> fakebounce, le 2018-10-12 : Players can now distribute gold </div>
-          <div className="commit"> fakebounce, le 2018-10-12 : GM can now unvalidate quest </div>
-          <div className="commit"> fakebounce, le 2018-10-12 : Fixed towns apparition. Now towns.map, now display the hasTown key; Map render time divided by 40. Corrected Quest fullscreen css. Added hasTown input for maps </div>
-          <div className="commit"> FakeBounce, le 2018-10-12 : WIP - Reworking map functions </div>
-          <div className="commit"> FakeBounce, le 2018-10-12 : Corrected export in stylesConstant </div>
-          <div className="commit"> FakeBounce, le 2018-10-12 : Removed useless images and filtered public folder; preparing to use </div>
-          <div className="commit"> fakebounce, le 2018-10-12 : Replaced empty_notice png. Some bugs due to firebase db - to check </div>
-          <div className="commit"> fakebounce, le 2018-10-12 : Can now select maps on Fog through GM </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Added back button to return on story when trying to change character </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Saved on firebase last current position, so we are automatically zoom on the current position </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Added center point to center the map. Now GM can select current point on map, and player can only interact with this point. Fixed some texture bugs </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Fixed gold GM edition </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Added quest validator </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Added isDiscovered option for merchants </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Added autocomplete </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Added autocomplete </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Corrected some console errors and added autocomplete on sign in/up form </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Fixed arrows - again ! </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Fixed character creation strings </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Added white arrows to map </div>
-          <div className="commit"> fakebounce, le 2018-10-11 : Fixed some CharacterPanel bugs </div>
-          <div className="commit"> fakebounce, le 2018-10-10 : Added illustrations for items </div>
-          <div className="commit"> FakeBounce, le 2018-10-09 : Fixed map player view. Fixed quest bugs. GM can now switch between GM view and Player view. Did some style to Town gestion </div>
-          <div className="commit"> fakebounce, le 2018-10-09 : Positionned towns. Now GM can add and remove quests/merchants from towns dynamically. Style need to be reviewed </div>
-          <div className="commit"> FakeBounce, le 2018-10-08 : Formatted map, added NoFog tile and arrows to navigate </div>
-          <div className="commit"> fakebounce, le 2018-10-07 : Added zoom on the map </div>
-          <div className="commit"> fakebounce, le 2018-10-07 : Added a map navigator </div>
-          <div className="commit"> fakebounce, le 2018-10-07 : Added scaling on map edition </div>
-          <div className="commit"> fakebounce, le 2018-10-07 : Added towns, quests and tileTypes to firebase. Now loading them from db; Enlarged map and reviewed the way tiles are displayed; Working on Map edition for GM </div>
-          <div className="commit"> fakebounce, le 2018-10-06 : Added transition while changing music + reset music button and display current music </div>
-          <div className="commit"> fakebounce, le 2018-10-06 : Added debounce for adjusting sound volume </div>
-          <div className="commit"> FakeBounce, le 2018-10-04 : Did some css for Gm music panel and cleaned some code </div>
-          <div className="commit"> FakeBounce, le 2018-10-04 : GM can now play musics and noises </div>
-          <div className="commit"> fakebounce, le 2018-10-03 : Game master is now Up ! He can modify a character directly by clicking on a team portrait. Can also add gold. Fixed some number inputs which sends strings and character Tabs if array was empty </div>
-          <div className="commit"> fakebounce, le 2018-10-03 : Moved some values to constants </div>
-          <div className="commit"> fakebounce, le 2018-10-03 : Transformed high value item to unknown if the character has not enough education </div>
-          <div className="commit"> fakebounce, le 2018-10-03 : Added function to modify items in inventory </div>
-          <div className="commit"> FakeBounce, le 2018-10-03 : Corrected life input and changed gold algo on character creation </div>
-          <div className="commit"> fakebounce, le 2018-10-02 : Removed hydratation on start </div>
-          <div className="commit"> fakebounce, le 2018-10-02 : Artefacts are now genereted separately; no more duplicates on artefacts generation for merchants. Reviewed merchant hydration to remove potentially duplicates items. Did some css to add overflow on some critical views </div>
-          <div className="commit"> FakeBounce, le 2018-10-02 : Saved merchants items and corrected quantities when buying </div>
-          <div className="commit"> fakebounce, le 2018-10-01 : Merchants generation for a story </div>
-          <div className="commit"> FakeBounce, le 2018-09-28 : Finalized random merchant items+artefacts and added limitations on rare items </div>
-          <div className="commit"> fakebounce, le 2018-09-28 : Loading random items for merchants </div>
-          <div className="commit"> FakeBounce, le 2018-09-27 : Get datas from spreadsheet and store it in the state </div>
-          <div className="commit"> FakeBounce, le 2018-09-26 : Added aura images </div>
-          <div className="commit"> FakeBounce, le 2018-09-25 : Logged values from Items spreadsheet </div>
-          <div className="commit"> FakeBounce, le 2018-09-25 : Added logs + corrected some errors </div>
-          <div className="commit"> FakeBounce, le 2018-09-25 : Added Items spreadsheet url + key </div>
-          <div className="commit"> fakebounce, le 2018-09-24 : Modified header style and added symbol for music muting </div>
-          <div className="commit"> fakebounce, le 2018-09-24 : Added images and musics </div>
-          <div className="commit"> fakebounce, le 2018-09-24 : Added click on team to chat function + GameMaster character to team </div>
-          <div className="commit"> fakebounce, le 2018-09-24 : Added sound story dependancy and regrouped items by quantity </div>
-          <div className="commit"> fakebounce, le 2018-09-22 : Finalized quests style + Load map and chat after choosing history </div>
-          <div className="commit"> fakebounce, le 2018-09-21 : Quest fullscreen </div>
-          <div className="commit"> fakebounce, le 2018-09-21 : Real quest pannel </div>
-          <div className="commit"> fakebounce, le 2018-09-20 : Added quests </div>
-          <div className="commit"> fakebounce, le 2018-09-20 : Reviewed merchants and item css. Can buy an item. Added music package. </div>
-          <div className="commit"> FakeBounce, le 2018-09-19 : Added character modification </div>
-          <div className="commit"> fakebounce, le 2018-09-18 : Restructured code and corrected all errors from console </div>
-          <div className="commit"> FakeBounce, le 2018-09-18 : Corrected Chat GM, Team display, Gold input and window overflow </div>
-          <div className="commit"> fakebounce, le 2018-09-18 : Finalized Character Panel with story bound. Team tab on progress. </div>
-          <div className="commit"> FakeBounce, le 2018-09-17 : Added stories and corrected some styles issue, code not structured </div>
-          <div className="commit"> fakebounce, le 2018-09-16 : UI images </div>
-          <div className="commit"> fakebounce, le 2018-09-16 : Corrected some rules </div>
-          <div className="commit"> fakebounce, le 2018-09-16 : Character panel for players </div>
-          <div className="commit"> fakebounce, le 2018-09-16 : Added toggle for chat help. Now can return to map panel. </div>
-          <div className="commit"> fakebounce, le 2018-09-16 : Added chat commands </div>
-          <div className="commit"> fakebounce, le 2018-09-15 : Corrected character auto creation </div>
-          <div className="commit"> fakebounce, le 2018-09-15 : Chat and character creation correction </div>
-          <div className="commit"> fakebounce, le 2018-09-15 : Restructured code </div>
-          <div className="commit"> FakeBounce, le 2018-09-14 : Began file restructuration </div>
-          <div className="commit"> FakeBounce, le 2018-09-14 : Added map edition for Admins and chat /dice function </div>
-          <div className="commit"> fakebounce, le 2018-09-14 : Finished character creation form and added chat </div>
-          <div className="commit"> FakeBounce, le 2018-09-13 : Merge pull request #1 from FakeBounce/feature/loadMapFromDb </div>
-          <div className="commit"> FakeBounce, le 2018-09-13 : Added a map loader from DB </div>
-          <div className="commit"> fakebounce, le 2018-09-12 : Character creation </div>
-          <div className="commit"> fakebounce, le 2018-09-12 : Added firebase correctly, plus account name selection (Pseudo) </div>
-          <div className="commit"> fakebounce, le 2018-09-11 : Added tiles to update map </div>
-          <div className="commit"> fakebounce, le 2018-09-11 : updated gitignore </div>
-          <div className="commit"> fakebounce, le 2018-09-11 : Added Firebase and auth plugin, running as admin for now </div>
-          <div className="commit"> fakebounce, le 2018-09-11 : MAJ TODO </div>
-          <div className="commit"> fakebounce, le 2018-09-11 : Added image for transparency </div>
-          <div className="commit"> fakebounce, le 2018-09-11 : Screen ready </div>
-          <div className="commit"> FakeBounce, le 2018-09-10 : Update readme without format </div>
-          <div className="commit"> fakebounce, le 2018-09-10 : Constructed base of the website </div>
-          <div className="commit"> FakeBounce, le 2018-09-10 : Initial commit </div>
-      </div>
-    );
-  }
-}
+const Logs = () => {
+  const [showPatches, setShowPatches] = useState(false);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: 300,
+      }}
+    >
+      <p
+        onClick={() => setShowPatches(!showPatches)}
+        style={{ cursor: cursorPointer, textDecoration: "underline" }}
+      >
+        Show patches history
+      </p>
+      {showPatches && (
+        <div
+          className="scrollbar"
+          style={{ height: "100%", overflowY: "scroll" }}
+        >
+          <LogList />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default Logs;

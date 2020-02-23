@@ -21,7 +21,9 @@ class Tile extends PureComponent {
       <div
         className={`grid ${row.isCurrent && "is-current"}`}
         style={{
-          backgroundColor: tilesTypes[row.environment].backgroundColor,
+          backgroundColor: tilesTypes[row.environment]
+            ? tilesTypes[row.environment].backgroundColor
+            : "white",
           width: `${(gridDimension * currentZoom) / 10 -
             (row.isCurrent ? 4 : 0)}px`,
           height: `${(gridDimension * currentZoom) / 10 -

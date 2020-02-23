@@ -22,8 +22,8 @@ const styledChatPanel = {
 };
 
 const ChatPanel = props => {
-  const [gmCommands, setGmCommands] = useState();
-  const [bonus, setBonus] = useState();
+  const [gmCommands, setGmCommands] = useState(false);
+  const [bonus, setBonus] = useState(0);
   const { chatInput, setChatInput } = useChatInputContext();
 
   const toggleGMCommands = () => {

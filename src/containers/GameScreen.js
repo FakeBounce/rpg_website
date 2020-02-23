@@ -124,9 +124,7 @@ class GameScreen extends Component {
           toggleMerchantList={this.toggleMerchantList}
           toggleMusic={toggleMusic}
         />
-        {this.canReadEvent() && (
-          <EventModal doSetState={doSetState} triggerError={triggerError} />
-        )}
+        {this.canReadEvent() && <EventModal />}
         {isOnBestiary && bestiary.length > 0 ? (
           <BestiaryPanel />
         ) : isOnMerchantList &&

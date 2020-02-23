@@ -10,7 +10,6 @@ import firebase from "firebase";
 import FileUploader from "../CharacterCreation/FileUploader";
 import ButtonLarge from "../Utils/ButtonLarge";
 import { initialBestiaryForm } from "../Utils/Constants";
-import { populateBestiary } from "../Utils/DatabaseFunctions";
 import { connect } from "react-redux";
 
 class BestiaryForm extends Component {

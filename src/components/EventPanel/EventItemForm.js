@@ -1,32 +1,33 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import EventItem from './EventItem';
-import { sortAlphabetical } from '../Utils/Functions';
-import SelectMapper from '../Utils/SelectMapper';
-import { itemEventTypes } from '../Utils/Constants';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import EventItem from "./EventItem";
+import { sortAlphabetical } from "../Utils/Functions";
+import SelectMapper from "../Utils/SelectMapper";
+import { itemEventTypes } from "../Utils/Constants";
+import { connect } from "react-redux";
 
 const styledItemList = {
-  width: '100%',
+  width: "100%",
   height: 210,
-  display: 'inline-block',
-  float: 'left',
-  position: 'relative',
-  overflowY: 'auto',
+  display: "inline-block",
+  float: "left",
+  position: "relative",
+  overflowY: "auto",
 };
 
 class EventItemForm extends PureComponent {
   state = {
     orderedItems: [],
     filteredItems: [],
-    filterText: '',
-    filterType: '',
+    filterText: "",
+    filterType: "",
   };
 
   componentDidMount() {
     const { items } = this.props;
     const filteredItems = [];
     Object.keys(items).map(ikey => {
-      if (ikey !== 'runes' && ikey !== 'enhancements') {
+      if (ikey !== "runes" && ikey !== "enhancements") {
         Object.keys(items[ikey]).map(key => {
           return filteredItems.push({
             ...items[ikey][key],
@@ -53,7 +54,7 @@ class EventItemForm extends PureComponent {
       }),
       () => {
         this.filterItems();
-      }
+      },
     );
   };
 
@@ -65,7 +66,7 @@ class EventItemForm extends PureComponent {
       }),
       () => {
         this.filterItems();
-      }
+      },
     );
   };
 
@@ -75,8 +76,8 @@ class EventItemForm extends PureComponent {
     orderedItems.map(item => {
       if (
         item.name.indexOf(filterText) !== -1 &&
-        ((filterType !== '' && item.itemType === filterType) ||
-          filterType === '')
+        ((filterType !== "" && item.itemType === filterType) ||
+          filterType === "")
       ) {
         tempFilter.push(item);
       }
@@ -120,8 +121,8 @@ class EventItemForm extends PureComponent {
                 i={{
                   ...i,
                   name:
-                    i.itemType === 'spells'
-                      ? i.name + ' (' + i.type + ')'
+                    i.itemType === "spells"
+                      ? i.name + " (" + i.type + ")"
                       : i.name,
                 }}
                 ikey={i.itemType}
@@ -150,12 +151,15 @@ class EventItemForm extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  items: store.items.items,
+});
+
 EventItemForm.propTypes = {
-  items: PropTypes.object.isRequired,
   descriptionEvent: PropTypes.string.isRequired,
   quantityEvent: PropTypes.number.isRequired,
   itemEvent: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-export default EventItemForm;
+export default connect(mapStateToProps)(EventItemForm);

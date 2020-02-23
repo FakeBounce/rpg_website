@@ -1,16 +1,34 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ButtonLarge from "../Utils/ButtonLarge";
 import { defaultStory } from "../Utils/Constants";
 import firebase from "firebase";
 import { loadStories } from "../Utils/DatabaseFunctions";
 import NewStoryForm from "./NewStoryForm";
 import { connect } from "react-redux";
+import { Icon } from "semantic-ui-react";
+import { cursorPointer } from "../Utils/StyleConstants";
 
 const styledStoryPanel = {
   width: "100%",
   height: "100%",
   textAlign: "center",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
+const styledNewStoryTitleContainer = {
+  width: "100%",
+  marginTop: 30,
+  marginBottom: 30,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const styledNewStoryTitle = {
+  letterSpacing: 13,
+  margin: 0,
 };
 
 class NewStory extends Component {
@@ -53,9 +71,22 @@ class NewStory extends Component {
 
     return (
       <div style={styledStoryPanel}>
-        <ButtonLarge onClick={toggleStoryCreation(false)}>
-          Cancel story creation
-        </ButtonLarge>
+        <div style={styledNewStoryTitleContainer}>
+          <Icon
+            style={{
+              marginRight: 40,
+              maxWidth: 50,
+              maxHeight: 50,
+              cursor: cursorPointer,
+            }}
+            onClick={toggleStoryCreation(false)}
+            circular
+            inverted
+            name="cancel"
+            color="red"
+          />
+          <h1 style={styledNewStoryTitle}>Create your story</h1>
+        </div>
 
         <NewStoryForm createStory={this.createStory} />
       </div>

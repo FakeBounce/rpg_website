@@ -28,8 +28,6 @@ class ChatBar extends PureComponent {
 }
 
 ChatBar.propTypes = {
-  chatInput: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
   talkInChat: PropTypes.func.isRequired,
   onDrop: PropTypes.func.isRequired,
   handleKeyPress: PropTypes.func.isRequired,

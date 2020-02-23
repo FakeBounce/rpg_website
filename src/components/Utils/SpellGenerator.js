@@ -1,11 +1,7 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
 
-import {
-  spellModeList,
-  spellTypeList,
-  colors,
-} from "./Constants";
+import { spellModeList, spellTypeList, colors } from "./Constants";
+import { connect } from "react-redux";
 
 const styledSpellContainer = {
   position: "relative",
@@ -238,12 +234,8 @@ class SpellGenerator extends PureComponent {
   }
 }
 
-SpellGenerator.defaultProps = {
-  items: null,
-};
+const mapStateToProps = store => ({
+  items: store.items.items,
+});
 
-SpellGenerator.propTypes = {
-  items: PropTypes.object,
-};
-
-export default SpellGenerator;
+export default connect(mapStateToProps)(SpellGenerator);

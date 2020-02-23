@@ -14,9 +14,7 @@ import * as actionsAppState from "../actions/actionsAppState";
 import { getTranslations } from "../../i18n";
 import { currentStorySelector, currentUidSelector } from "../../selectors";
 import { firebaseDbSet, onValueChannel } from "./api";
-import * as actionsBestiary from "../actions/actionsBestiary";
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
-import * as actionsTypesBestiary from "../actionsTypes/actionsTypesBestiary";
 
 function* characterError(error = getTranslations("error.transfer.failed")) {
   yield put(actionsAppState.printError(error));
