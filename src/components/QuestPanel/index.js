@@ -105,10 +105,10 @@ const mapStateToProps = store => ({
   currentQuest: store.mapInfos.currentQuest,
   isQuestShowed: store.mapInfos.isQuestShowed,
   quests: store.mapInfos.quests,
+  questsList: store.mapInfos.townInfos.questsList,
 });
 
 QuestPanel.propTypes = {
-  questsList: PropTypes.array.isRequired,
   dispatchShowQuest: PropTypes.func.isRequired,
   dispatchHideQuest: PropTypes.func.isRequired,
 };

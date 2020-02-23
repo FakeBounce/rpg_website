@@ -1012,7 +1012,7 @@ export const statusList = [
   "Inactive",
 ];
 
-export const mapNames = ["default", "dravos", "dravos2"];
+export const mapNames = ["", "default"];
 
 export const defaultStory = {
   artefacts: {},

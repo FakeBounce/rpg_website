@@ -7,6 +7,8 @@ import StoryMerchantList from "./StoryMerchantList";
 import StoryQuestList from "./StoryQuestList";
 import { colors } from "../Utils/Constants";
 import { connect } from "react-redux";
+import { setCurrentMerchant } from "../../redux/actions/actionsMerchants";
+import { CALL_PRINT_ERROR } from "../../redux/actionsTypes/actionsTypesAppState";
 
 const styledBoxHeader = {
   width: "100%",
@@ -36,7 +38,7 @@ class StoryQuestsAndMerchantsPanel extends Component {
       currentTown,
       towns,
       quests,
-      triggerError,
+      dispatchCallPrintError,
     } = this.props;
     if (!quests[i].validated) {
       const newTown = { ...towns[currentTown] };
@@ -49,7 +51,7 @@ class StoryQuestsAndMerchantsPanel extends Component {
         .set(newTown)
         .catch(error => {
           // Handle Errors here.
-          triggerError(error);
+          dispatchCallPrintError(error);
         });
 
       const newQuest = { ...quests[i] };
@@ -60,7 +62,7 @@ class StoryQuestsAndMerchantsPanel extends Component {
         .set(newQuest)
         .catch(error => {
           // Handle Errors here.
-          triggerError(error);
+          dispatchCallPrintError(error);
         });
     }
   };
@@ -71,7 +73,7 @@ class StoryQuestsAndMerchantsPanel extends Component {
       currentTown,
       towns,
       merchants,
-      triggerError,
+      dispatchCallPrintError,
     } = this.props;
     const newTown = { ...towns[currentTown] };
     newTown.merchantsList
@@ -83,7 +85,7 @@ class StoryQuestsAndMerchantsPanel extends Component {
       .set(newTown)
       .catch(error => {
         // Handle Errors here.
-        triggerError(error);
+        dispatchCallPrintError(error);
       });
 
     const newMerchant = { ...merchants[i] };
@@ -95,7 +97,7 @@ class StoryQuestsAndMerchantsPanel extends Component {
       .set(newMerchant)
       .catch(error => {
         // Handle Errors here.
-        triggerError(error);
+        dispatchCallPrintError(error);
       });
   };
 
@@ -114,6 +116,17 @@ class StoryQuestsAndMerchantsPanel extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSetCurrentMerchant: payload => {
+      dispatch(setCurrentMerchant(payload));
+    },
+    dispatchCallPrintError: payload => {
+      dispatch({ type: CALL_PRINT_ERROR, payload });
+    },
+  };
+};
+
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   currentTown: store.mapInfos.currentTown,
@@ -123,8 +136,11 @@ const mapStateToProps = store => ({
 });
 
 StoryQuestsAndMerchantsPanel.propTypes = {
-  triggerError: PropTypes.func.isRequired,
+  dispatchCallPrintError: PropTypes.func.isRequired,
   isOnQuest: PropTypes.bool.isRequired,
 };
 
-export default connect(mapStateToProps)(StoryQuestsAndMerchantsPanel);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(StoryQuestsAndMerchantsPanel);

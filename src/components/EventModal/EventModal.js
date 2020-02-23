@@ -20,6 +20,8 @@ import Draw from "./Draw";
 import { colors } from "../Utils/Constants";
 import ButtonLarge from "../Utils/ButtonLarge";
 import { connect } from "react-redux";
+import { setCurrentEvent } from "../../redux/actions/actionsEvents";
+import { CALL_PRINT_ERROR } from "../../redux/actionsTypes/actionsTypesAppState";
 
 const styledEventModal = {
   position: "absolute",
@@ -60,43 +62,43 @@ class EventModal extends PureComponent {
   };
 
   resetCurrentEvent = () => {
-    const { currentStory, triggerError } = this.props;
+    const { currentStory, dispatchCallPrintError } = this.props;
     firebase
       .database()
       .ref("stories/" + currentStory + "/currentEvent")
       .set(-1)
       .catch(error => {
         // Handle Errors here.
-        triggerError(error);
+        dispatchCallPrintError(error);
       });
   };
 
   updateCurrentEvent = newEventHistory => {
-    const { currentStory, triggerError } = this.props;
+    const { currentStory, dispatchCallPrintError } = this.props;
     firebase
       .database()
       .ref("stories/" + currentStory + "/events")
       .set(newEventHistory)
       .catch(error => {
         // Handle Errors here.
-        triggerError(error);
+        dispatchCallPrintError(error);
       });
   };
 
   updateCharacterGold = goldWanted => {
-    const { currentStory, uid, triggerError } = this.props;
+    const { currentStory, uid, dispatchCallPrintError } = this.props;
     firebase
       .database()
       .ref("stories/" + currentStory + "/characters/" + uid + "/character/gold")
       .set(goldWanted)
       .catch(error => {
         // Handle Errors here.
-        triggerError(error);
+        dispatchCallPrintError(error);
       });
   };
 
   addItem = (item, quantity) => {
-    const { currentStory, uid, character, triggerError } = this.props;
+    const { currentStory, uid, character, dispatchCallPrintError } = this.props;
     const newItemsTab = character.items ? [...character.items] : [];
     let hasAlready = false;
     if (character.items) {
@@ -121,7 +123,7 @@ class EventModal extends PureComponent {
       })
       .catch(error => {
         // Handle Errors here.
-        triggerError(error);
+        dispatchCallPrintError(error);
       });
   };
 
@@ -481,9 +483,9 @@ class EventModal extends PureComponent {
     const {
       currentEvent,
       eventHistory,
-      doSetState,
       character,
       isGameMaster,
+      dispatchSetCurrentEvent,
     } = this.props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
@@ -497,9 +499,7 @@ class EventModal extends PureComponent {
       newEventHistory[currentEvent] = { ...newEvent };
 
       this.updateCurrentEvent(newEventHistory);
-      doSetState({
-        currentEvent: -1,
-      });
+      dispatchSetCurrentEvent(-1);
     }
   };
 
@@ -507,7 +507,7 @@ class EventModal extends PureComponent {
     const {
       currentEvent,
       eventHistory,
-      doSetState,
+      dispatchSetCurrentEvent,
       isGameMaster,
       uid,
       storyCharacters,
@@ -539,9 +539,7 @@ class EventModal extends PureComponent {
         if (!newEvent.isActive) {
           this.resetCurrentEvent();
         } else {
-          doSetState({
-            currentEvent: -1,
-          });
+          dispatchSetCurrentEvent(-1);
         }
       }
     }
@@ -692,6 +690,17 @@ class EventModal extends PureComponent {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSetCurrentEvent: payload => {
+      dispatch(setCurrentEvent(payload));
+    },
+    dispatchCallPrintError: payload => {
+      dispatch({ type: CALL_PRINT_ERROR, payload });
+    },
+  };
+};
+
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   isGameMaster: store.appState.isGameMaster,
@@ -703,8 +712,8 @@ const mapStateToProps = store => ({
 });
 
 EventModal.propTypes = {
-  doSetState: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
+  dispatchSetCurrentEvent: PropTypes.func.isRequired,
+  dispatchCallPrintError: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(EventModal);
+export default connect(mapStateToProps, mapDispatchToProps)(EventModal);

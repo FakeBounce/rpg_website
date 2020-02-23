@@ -24,7 +24,6 @@ class MerchantPanel extends PureComponent {
       {
         isItemShowed: true,
         itemsList: list,
-        currentMerchant: index,
       },
       () => {
         dispatchSetCurrentMerchant(index);
@@ -67,11 +66,10 @@ const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   currentMerchant: store.merchants.currentMerchant,
   merchants: store.merchants.merchantList,
+  merchantsList: store.mapInfos.townInfos.merchantsList,
 });
 
 MerchantPanel.propTypes = {
-  merchantsList: PropTypes.array.isRequired,
-  merchants: PropTypes.array.isRequired,
   doSetState: PropTypes.func.isRequired,
   dispatchSetCurrentMerchant: PropTypes.func.isRequired,
 };

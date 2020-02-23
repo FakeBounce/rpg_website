@@ -6,7 +6,10 @@ import { gridDimension, gridLength, totalRows } from "../Utils/StyleConstants";
 import Tile from "./Tile";
 import TileGM from "./TileGM";
 import { connect } from "react-redux";
-import { setCurrentTile } from "../../redux/actions/actionsMapInfos";
+import {
+  setCurrentTile,
+  setTownInfos,
+} from "../../redux/actions/actionsMapInfos";
 
 class MapGrid extends Component {
   generateTable = mapToRender => {
@@ -85,7 +88,8 @@ class MapGrid extends Component {
   };
 
   showTownList = town => {
-    this.props.doSetState({
+    const { dispatchSetTownInfos } = this.props;
+    dispatchSetTownInfos({
       isTownShowed: true,
       merchantsList: town.merchantsList || [],
       questsList: town.questsList || [],
@@ -93,7 +97,8 @@ class MapGrid extends Component {
   };
 
   cancelTownList = () => {
-    this.props.doSetState({
+    const { dispatchSetTownInfos } = this.props;
+    dispatchSetTownInfos({
       isTownShowed: false,
       merchantsList: [],
       questsList: [],
@@ -114,6 +119,9 @@ const mapDispatchToProps = dispatch => {
     dispatchSetCurrentTile: payload => {
       dispatch(setCurrentTile(payload));
     },
+    dispatchSetTownInfos: payload => {
+      dispatch(setTownInfos(payload));
+    },
   };
 };
 
@@ -130,7 +138,7 @@ const mapStateToProps = store => ({
 MapGrid.propTypes = {
   setTexture: PropTypes.func.isRequired,
   dispatchSetCurrentTile: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
+  dispatchSetTownInfos: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapGrid);

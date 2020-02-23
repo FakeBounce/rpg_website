@@ -7,11 +7,12 @@ import SelectMapper from "../Utils/SelectMapper";
 import firebase from "firebase";
 import { connect } from "react-redux";
 import { CALL_PRINT_ERROR } from "../../redux/actionsTypes/actionsTypesAppState";
+import { Button } from "semantic-ui-react";
+import { cursorPointer } from "../Utils/StyleConstants";
 
 const styledMapSelect = {
   position: "relative",
   display: "inline-block",
-  marginTop: 15,
   width: 70,
   height: 19,
 };
@@ -74,45 +75,50 @@ const NewStoryForm = props => {
 
   const { createStory } = props;
   return (
-    <div
-      style={{
-        marginTop: 30,
-        width: "25%",
-        height: "50%",
-        border: "1px solid black",
-        textAlign: "center",
-      }}
-    >
-      <div style={{ width: "100%", display: "block", position: "relative" }}>
-        <input
-          type="text"
-          name="name"
-          placeholder="name"
-          value={name}
-          onChange={e => {
-            setName(e.target.value);
-          }}
-          style={{ width: "80%", marginTop: 15 }}
-        />
-      </div>
+    <>
       <div
         style={{
-          width: "100%",
-          display: "block",
-          position: "relative",
-          textAlign: "center",
+          marginTop: 30,
+          width: "50%",
+          height: "50%",
+          border: "1px solid white",
+          borderRadius: 20,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-around",
         }}
       >
-        <SelectMapper
-          value={map}
-          onChange={val => {
-            setMap(val);
+        <div style={{ width: "100%", display: "block", position: "relative" }}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Story name"
+            value={name}
+            onChange={e => {
+              setName(e.target.value);
+            }}
+            style={{ width: "80%", marginTop: 15 }}
+          />
+        </div>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "center",
+            marginTop: 20,
           }}
-          mapArray={mapNames}
-          style={styledMapSelect}
-        />
-      </div>
-      {name !== "" && (
+        >
+          Choose a map to start with :
+          <SelectMapper
+            value={map}
+            onChange={val => {
+              setMap(val);
+            }}
+            mapArray={mapNames}
+            style={styledMapSelect}
+          />
+        </div>
         <div
           style={{
             width: "100%",
@@ -121,26 +127,49 @@ const NewStoryForm = props => {
             textAlign: "center",
           }}
         >
-          {icon === "" && <FileUploader onDrop={onDrop} />}
+          {icon === "" && (
+            <FileUploader
+              onDrop={onDrop}
+              fileContainerStyle={{ backgroundColor: "#2c3e50" }}
+              buttonStyles={{ cursor: cursorPointer }}
+            />
+          )}
           {icon !== "" && (
-            <div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <img
                 src={icon}
-                style={{ maxWidth: "50px", maxHeight: "50px" }}
+                style={{
+                  maxWidth: 200,
+                  maxHeight: 200,
+                  borderRadius: 100,
+                }}
                 alt={`${name}`}
               />
-              <button onClick={removePicture}>Remove picture</button>
+              <Button
+                secondary
+                onClick={removePicture}
+                style={{ cursor: cursorPointer }}
+              >
+                Remove picture
+              </Button>
             </div>
           )}
         </div>
-      )}
+      </div>
 
       {name !== "" && map !== "" && iconPath !== "" && (
-        <ButtonLarge onClick={createStory} style={{ marginTop: 15 }}>
+        <ButtonLarge onClick={createStory} style={{ marginTop: 20 }}>
           Create story
         </ButtonLarge>
       )}
-    </div>
+    </>
   );
 };
 

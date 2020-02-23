@@ -42,8 +42,8 @@ const sounds = (state = initialState, action) => {
     case TOGGLE_MUSIC: {
       return {
         ...state,
-        music: { ...state.music, musicMute: !state.musicMute },
-        noise: { ...state.noise, noiseMute: !state.noiseMute },
+        music: { ...state.music, musicMute: !state.music.musicMute },
+        noise: { ...state.noise, noiseMute: !state.noise.noiseMute },
       };
     }
     case TOGGLE_MUSIC_FIRST: {

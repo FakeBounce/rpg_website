@@ -14,6 +14,7 @@ import {
   SET_TEXTURE_TO_APPLY,
   SET_ALL_TOWNS,
   SET_ALL_QUESTS,
+  SET_TOWN_INFOS,
 } from "../actionsTypes/actionsTypesMapInfos";
 import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
 
@@ -31,6 +32,11 @@ const initialState = {
   quests: [],
   currentQuest: -1,
   isQuestShowed: false,
+  townInfos: {
+    isTownShowed: false,
+    merchantsList: [],
+    questsList: [],
+  },
 };
 
 const mapInfos = (state = initialState, action) => {
@@ -125,6 +131,15 @@ const mapInfos = (state = initialState, action) => {
       return {
         ...state,
         quests: action.payload,
+      };
+    }
+    case SET_TOWN_INFOS: {
+      return {
+        ...state,
+        townInfos: {
+          ...state.townInfos,
+          ...action.payload,
+        },
       };
     }
     case RESET_APP: {

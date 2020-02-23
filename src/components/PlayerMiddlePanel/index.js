@@ -402,9 +402,7 @@ class PlayerMiddlePanel extends Component {
       isTownShowed,
       itemsList,
       itemToDescribe,
-      merchantsList,
       merchants,
-      questsList,
     } = this.props;
 
     const {
@@ -420,11 +418,8 @@ class PlayerMiddlePanel extends Component {
       <div style={styledPlayerMapContainer}>
         {isTownShowed ? (
           <Fragment>
-            <QuestPanel
-              questsList={questsList}
-            />
+            <QuestPanel />
             <MerchantPanel
-              merchantsList={merchantsList}
               doSetState={doSetState}
             />
             {isItemShowed ? (
@@ -505,6 +500,7 @@ const mapStateToProps = store => ({
   character: store.character,
   currentMerchant: store.merchants.currentMerchant,
   merchants: store.merchants.merchantList,
+  isTownShowed: store.mapInfos.isTownShowed,
 });
 
 PlayerMiddlePanel.propTypes = {
@@ -512,9 +508,6 @@ PlayerMiddlePanel.propTypes = {
   itemsList: PropTypes.array.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,
   itemToDescribe: PropTypes.object.isRequired,
-  isTownShowed: PropTypes.bool.isRequired,
-  merchantsList: PropTypes.array.isRequired,
-  questsList: PropTypes.array.isRequired,
   buyItem: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import PropTypes from "prop-types";
 import firebase from "firebase";
@@ -10,8 +10,8 @@ import {
 import CharacterPanel from "../components/CharacterPanel";
 import ExchangePanel from "../components/ExchangePanel";
 import SongPanel from "../components/SongPanel";
-import { listenSong } from "../components/Utils/DatabaseFunctions";
 import { connect } from "react-redux";
+import { useChatInputContext } from "../contexts/chatInputContext";
 
 const styles = {
   RightPanel: {
@@ -33,30 +33,21 @@ const RightPanel = props => {
     currentExchangeCharacter: null,
     isOnChar: true,
   });
+  const { setChatInput } = useChatInputContext();
 
   const chatWithTeamMember = receiverPseudo => {
-    const { doSetState } = props;
     if (receiverPseudo === "GM") {
-      doSetState({
-        chatInput: `/gmw `,
-      });
+      setChatInput(`/gmw `);
     } else {
-      doSetState({
-        chatInput: `/w ${receiverPseudo} `,
-      });
+      setChatInput(`/w ${receiverPseudo} `);
     }
   };
 
   const goldWithTeamMember = receiverPseudo => {
-    const { doSetState } = props;
     if (receiverPseudo === "GM") {
-      doSetState({
-        chatInput: `/goldgm `,
-      });
+      setChatInput(`/goldgm `);
     } else {
-      doSetState({
-        chatInput: `/gold ${receiverPseudo} `,
-      });
+      setChatInput(`/gold ${receiverPseudo} `);
     }
   };
 
@@ -127,7 +118,7 @@ const RightPanel = props => {
   };
 
   const onItemUse = (i, value) => {
-    const { character, currentStory, uid, doSetState, triggerError } = props;
+    const { character, currentStory, uid, triggerError } = props;
 
     if (value > -1) {
       const newCharacterItems = [...character.items];
@@ -142,10 +133,6 @@ const RightPanel = props => {
         ...character,
         items: newCharacterItems,
       };
-
-      doSetState({
-        character: newCharacter,
-      });
 
       firebase
         .database()

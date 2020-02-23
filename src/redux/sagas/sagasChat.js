@@ -7,7 +7,6 @@ import {
   takeEvery,
   takeLatest,
 } from "redux-saga/effects";
-import { eventChannel } from "redux-saga";
 
 import * as actionsTypesChat from "../actionsTypes/actionsTypesChat";
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
@@ -16,6 +15,7 @@ import * as actionsAppState from "../actions/actionsAppState";
 import { getTranslations } from "../../i18n";
 import { currentStorySelector } from "../../selectors";
 import firebase from "firebase";
+import { eventChannel } from "redux-saga";
 
 function* chatError(error = getTranslations("error.transfer.failed")) {
   yield put(actionsAppState.printError(error));
@@ -24,10 +24,10 @@ function* chatError(error = getTranslations("error.transfer.failed")) {
   yield put(actionsAppState.printError(""));
 }
 
-function chatHistoryChannel(currentStory) {
+function chatHistoryChannel(path) {
   const ref = firebase
     .database()
-    .ref("/stories/" + currentStory + "/chat")
+    .ref(path)
     .limitToLast(50);
 
   return eventChannel(emit => {
@@ -42,7 +42,10 @@ function chatHistoryChannel(currentStory) {
 
 function* listenChatHistory() {
   const currentStory = yield select(currentStorySelector);
-  const channel = yield call(chatHistoryChannel, currentStory);
+  const channel = yield call(
+    chatHistoryChannel,
+    "/stories/" + currentStory + "/chat",
+  );
 
   yield takeEvery(channel, function*(data) {
     yield put(actionsChat.setChatHistory(data));
