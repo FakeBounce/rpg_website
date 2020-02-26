@@ -13,8 +13,9 @@ import * as actionsCharacter from "../actions/actionsCharacter";
 import * as actionsAppState from "../actions/actionsAppState";
 import { getTranslations } from "../../i18n";
 import { currentStorySelector, currentUidSelector } from "../../selectors";
-import { firebaseDbSet, onValueChannel } from "./api";
+import { firebaseDbOnce, firebaseDbSet, onValueChannel } from "./api";
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
+import { setCharacter } from "../actions/actionsCharacter";
 
 function* characterError(error = getTranslations("error.transfer.failed")) {
   yield put(actionsAppState.printError(error));
@@ -80,5 +81,45 @@ export function* watchCallListenCharacter() {
   yield takeLatest(
     actionsTypesCharacter.CALL_LISTEN_CHARACTER,
     listenCharacter,
+  );
+}
+
+function* listenOtherCharacter({ payload }) {
+  try {
+    const currentStory = yield select(currentStorySelector);
+    const newCharacter = yield call(
+      firebaseDbOnce,
+      "/stories/" + currentStory + "/characters/" + payload + "/character",
+    );
+    yield put(setCharacter(newCharacter));
+
+    const channel = yield call(
+      onValueChannel,
+      "/stories/" + currentStory + "/characters/" + payload + "/character",
+    );
+    console.log(
+      "path",
+      "/stories/" + currentStory + "/characters/" + payload + "/character",
+    );
+    yield takeEvery(channel, function*(data) {
+      yield put(actionsCharacter.setCharacter(data));
+    });
+
+    yield take([
+      actionsTypesAppState.CANCEL_ALL_WATCH,
+      actionsTypesAppState.RESET_APP,
+    ]);
+    channel.close();
+  } catch (error) {
+    console.log("listenCharacter try saga err:", { error });
+
+    yield call(characterError);
+  }
+}
+
+export function* watchCallListenOtherCharacter() {
+  yield takeLatest(
+    actionsTypesCharacter.CALL_LISTEN_OTHER_CHARACTER,
+    listenOtherCharacter,
   );
 }

@@ -12,6 +12,22 @@ import ExchangePanel from "../components/ExchangePanel";
 import SongPanel from "../components/SongPanel";
 import { connect } from "react-redux";
 import { useChatInputContext } from "../contexts/chatInputContext";
+import {
+  CALL_LISTEN_MUSIC,
+  CALL_LISTEN_NOISE,
+  CALL_LISTEN_SONG,
+  CALL_LOAD_MUSIC,
+  CALL_LOAD_NOISE,
+  CALL_LOAD_SONG,
+} from "../redux/actionsTypes/actionsTypesSounds";
+import { toggleMusic } from "../redux/actions/actionsSounds";
+import {
+  setGameMaster,
+  togglePlayerMastering,
+  updateCurrentStory,
+} from "../redux/actions/actionsAppState";
+import { CALL_LISTEN_CHARACTER } from "../redux/actionsTypes/actionsTypesCharacter";
+import { callListenOtherCharacter } from "../redux/actions/actionsCharacter";
 
 const styles = {
   RightPanel: {
@@ -249,7 +265,7 @@ const RightPanel = props => {
   };
 
   const modifyCurrentCharacter = uid => {
-    const { currentStory, isGameMaster, doSetState } = props;
+    const { currentStory, isGameMaster, dispatchListenCharacter } = props;
 
     if (isGameMaster) {
       firebase
@@ -258,15 +274,8 @@ const RightPanel = props => {
           "stories/" + currentStory + "/characters/" + props.uid + "/character",
         )
         .off();
-      firebase
-        .database()
-        .ref("stories/" + currentStory + "/characters/" + uid + "/character")
-        .on("value", snapshot => {
-          doSetState({
-            uid,
-            character: snapshot.val(),
-          });
-        });
+
+      dispatchListenCharacter(uid);
     }
   };
 
@@ -352,6 +361,14 @@ const RightPanel = props => {
   );
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchListenCharacter: payload => {
+      dispatch(callListenOtherCharacter(payload));
+    },
+  };
+};
+
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   isGameMaster: store.appState.isGameMaster,
@@ -365,6 +382,7 @@ RightPanel.propTypes = {
   onChange: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
   onChangeMusics: PropTypes.func.isRequired,
+  dispatchListenCharacter: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(RightPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(RightPanel);
