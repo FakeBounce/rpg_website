@@ -175,7 +175,7 @@ const NewStoryForm = props => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    dispatchCallPrintError: payload => {
+      dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
     },
   };

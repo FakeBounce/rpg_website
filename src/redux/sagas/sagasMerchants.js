@@ -18,7 +18,6 @@ import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
 
 function* merchantsError(error = getTranslations("error.transfer.failed")) {
   yield put(actionsAppState.printError(error));
-
   yield delay(5000);
   yield put(actionsAppState.printError(""));
 }

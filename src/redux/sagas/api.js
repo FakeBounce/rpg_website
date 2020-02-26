@@ -28,14 +28,18 @@ export const firebaseDbOnce = (path = "", once = "value") => {
 };
 
 export function onValueChannel(path = "") {
-  const ref = firebase.database().ref(path);
+  try {
+    const ref = firebase.database().ref(path);
 
-  return eventChannel(emit => {
-    const callback = ref.on("value", snapshot => {
-      emit(snapshot.val());
+    return eventChannel(emit => {
+      const callback = ref.on("value", snapshot => {
+        emit(snapshot.val());
+      });
+
+      // unsubscribe function
+      return () => ref.off("value", callback);
     });
-
-    // unsubscribe function
-    return () => ref.off("value", callback);
-  });
+  } catch (error) {
+    console.log("An error occured:", error);
+  }
 }

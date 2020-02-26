@@ -119,7 +119,9 @@ class SoundPanel extends PureComponent {
       onChangeMusics,
       resetSounds,
       currentMusicName,
-      musicVolume,
+      isMusicFirst,
+      musicVolumeFirst,
+      musicVolumeSecond,
       noise: { noiseName, noiseVolume },
     } = this.props;
 
@@ -140,8 +142,8 @@ class SoundPanel extends PureComponent {
             }
             min="0"
             max="100"
-            name="musicVolume"
-            value={musicVolume}
+            name={isMusicFirst ? "musicVolumeFirst" : "musicVolumeSecond"}
+            value={isMusicFirst ? musicVolumeFirst : musicVolumeSecond}
           />
         </div>
         <div style={styledMusicContainer}>
@@ -241,7 +243,9 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = store => ({
   currentMusicName: currentMusicNameSelector(store),
-  musicVolume: store.sounds.music.musicVolume,
+  musicVolumeFirst: store.sounds.music.musicVolumeFirst,
+  musicVolumeSecond: store.sounds.music.musicVolumeSecond,
+  isMusicFirst: store.sounds.music.isMusicFirst,
   noise: store.sounds.noise,
 });
 

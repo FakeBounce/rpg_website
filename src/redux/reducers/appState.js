@@ -26,6 +26,7 @@ const initialState = {
 const appState = (state = initialState, action) => {
   switch (action.type) {
     case PRINT_ERROR: {
+      console.log("printingError", action);
       return {
         ...state,
         error: action.payload,

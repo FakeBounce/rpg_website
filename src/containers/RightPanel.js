@@ -12,21 +12,6 @@ import ExchangePanel from "../components/ExchangePanel";
 import SongPanel from "../components/SongPanel";
 import { connect } from "react-redux";
 import { useChatInputContext } from "../contexts/chatInputContext";
-import {
-  CALL_LISTEN_MUSIC,
-  CALL_LISTEN_NOISE,
-  CALL_LISTEN_SONG,
-  CALL_LOAD_MUSIC,
-  CALL_LOAD_NOISE,
-  CALL_LOAD_SONG,
-} from "../redux/actionsTypes/actionsTypesSounds";
-import { toggleMusic } from "../redux/actions/actionsSounds";
-import {
-  setGameMaster,
-  togglePlayerMastering,
-  updateCurrentStory,
-} from "../redux/actions/actionsAppState";
-import { CALL_LISTEN_CHARACTER } from "../redux/actionsTypes/actionsTypesCharacter";
 import { callListenOtherCharacter } from "../redux/actions/actionsCharacter";
 
 const styles = {
