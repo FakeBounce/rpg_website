@@ -93,6 +93,7 @@ class CharacterAttributes extends PureComponent {
     const { currentAttribute, currentValue } = this.state;
 
     if (!character || !character.attributes) return null;
+
     return (
       <div style={styles.characterAttributeInfos}>
         <div style={styles.BoxHeader}>Attributes :</div>

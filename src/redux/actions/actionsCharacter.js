@@ -13,3 +13,10 @@ export const callSetCharacter = payload => {
     payload,
   };
 };
+
+export const callListenOtherCharacter = payload => {
+  return {
+    type: actionsTypesCharacter.CALL_LISTEN_OTHER_CHARACTER,
+    payload,
+  };
+};

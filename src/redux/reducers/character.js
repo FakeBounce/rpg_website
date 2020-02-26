@@ -20,7 +20,7 @@ const character = (state = initialState, action) => {
     case SET_CHARACTER: {
       return {
         ...state,
-        error: action.payload,
+        ...action.payload,
       };
     }
     case RESET_APP: {

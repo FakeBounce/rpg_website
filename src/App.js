@@ -567,6 +567,7 @@ class App extends Component {
 
   triggerError = error => {
     const { dispatchCallPrintError } = this.props;
+    console.log("trigger", error);
     dispatchCallPrintError(error.message);
   };
 
