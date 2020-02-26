@@ -108,20 +108,14 @@ class Header extends Component {
   render() {
     const {
       accessChatHelp,
-      bestiaryTitle,
-      chatHelpTitle,
       eventTitle,
       hydrateMerchants,
       isGameMaster,
-      merchantTitle,
-      musicMute,
       selectAnotherCharacter,
-      signOut,
       // title,
       toggleBestiary,
       toggleMerchantList,
       toggleEvent,
-      toggleMusic,
       dispatchTogglePlayerView,
     } = this.props;
     const { hasHydrated, items } = this.state;

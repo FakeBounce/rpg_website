@@ -118,14 +118,12 @@ export function* watchCallStopSong() {
   yield takeLatest(actionsTypesSounds.CALL_STOP_SONG, callStopSong);
 }
 
-
-
-export function* callLoadSong(params) {
+export function* callLoadSong({payload}) {
   try {
     const currentStory = yield select(currentStorySelector);
     if (currentStory > -1) {
       firebaseDbSet("/stories/" + currentStory + "/song", {
-        ...params,
+        ...payload,
       }).catch(error => {
         console.log("callLoadSong set saga err:", { error });
       });
@@ -135,7 +133,6 @@ export function* callLoadSong(params) {
     }
   } catch (error) {
     console.log("callLoadSong try saga err:", { error });
-
     yield call(soundsError);
   }
 
@@ -146,21 +143,21 @@ export function* watchCallLoadSong() {
   yield takeLatest(actionsTypesSounds.CALL_LOAD_SONG, callLoadSong);
 }
 
-export function* callLoadMusic(params) {
+export function* callLoadMusic({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
     if (currentStory > -1) {
-      firebaseDbSet("/stories/" + currentStory + "/song", {
-        ...params,
+      firebaseDbSet("/stories/" + currentStory + "/music", {
+        ...payload,
       }).catch(error => {
-        console.log("callLoadSong set saga err:", { error });
+        console.log("callLoadMusic set saga err:", { error });
       });
       // yield call(actionsSounds.loadMusic, params);
     } else {
       yield call(soundsError, "No story selected");
     }
   } catch (error) {
-    console.log("callLoadSong try saga err:", { error });
+    console.log("callLoadMusic try saga err:", { error });
 
     yield call(soundsError);
   }
@@ -172,12 +169,12 @@ export function* watchCallLoadMusic() {
   yield takeLatest(actionsTypesSounds.CALL_LOAD_MUSIC, callLoadMusic);
 }
 
-export function* callLoadNoise(params) {
+export function* callLoadNoise({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
     if (currentStory > -1) {
       firebaseDbSet("/stories/" + currentStory + "/noise", {
-        ...params,
+        ...payload,
       }).catch(error => {
         console.log("callLoadNoise set saga err:", { error });
       });

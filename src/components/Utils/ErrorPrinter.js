@@ -6,8 +6,8 @@ const ErrorPrinter = ({ error }) => {
   const { notify } = useToastContext();
 
   useEffect(() => {
-    console.log("error", error);
     if (error && error !== "") {
+      console.log("error", error);
       notify(error.toString(), "error", {
         toastId: "error",
       });

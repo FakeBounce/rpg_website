@@ -695,7 +695,7 @@ const mapDispatchToProps = dispatch => {
     dispatchSetCurrentEvent: payload => {
       dispatch(setCurrentEvent(payload));
     },
-    dispatchCallPrintError: payload => {
+      dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
     },
   };

@@ -9,7 +9,6 @@ import { firebaseDbSet } from "./api";
 
 function* userInfosError(error = getTranslations("error.transfer.failed")) {
   yield put(actionsAppState.printError(error));
-
   yield delay(5000);
   yield put(actionsAppState.printError(""));
 }

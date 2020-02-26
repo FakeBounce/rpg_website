@@ -272,7 +272,7 @@ const mapDispatchToProps = dispatch => {
     dispatchCallListenUsers: () => {
       dispatch({ type: CALL_LISTEN_STORY_USERS });
     },
-    dispatchCallPrintError: payload => {
+      dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
     },
     dispatchSetAllCharacters: payload => {

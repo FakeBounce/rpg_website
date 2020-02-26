@@ -121,7 +121,7 @@ const mapDispatchToProps = dispatch => {
     dispatchSetCurrentMerchant: payload => {
       dispatch(setCurrentMerchant(payload));
     },
-    dispatchCallPrintError: payload => {
+      dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
     },
   };

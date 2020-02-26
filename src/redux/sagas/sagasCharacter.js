@@ -24,14 +24,14 @@ function* characterError(error = getTranslations("error.transfer.failed")) {
   yield put(actionsAppState.printError(""));
 }
 
-export function* callSetCharacter(params) {
+export function* callSetCharacter({payload}) {
   try {
     const currentStory = yield select(currentStorySelector);
     const currentUid = yield select(currentUidSelector);
     if (currentStory > -1) {
       firebaseDbSet(
         "stories/" + currentStory + "/characters/" + currentUid + "/character",
-        params,
+        payload,
       ).catch(error => {
         console.log("callLoadNoise set saga err:", { error });
       });

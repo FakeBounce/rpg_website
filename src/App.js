@@ -161,20 +161,20 @@ class App extends Component {
     //   });
     // });
 
-    // firebase
-    //   .database()
-    //   .ref("stories/" + 0 + "/artefacts")
-    //   .once("value")
-    //   .then(snapshot => {
-    //     firebase
-    //       .database()
-    //       .ref("stories/" + 1 + "/artefacts")
-    //       .set(snapshot.val())
-    //       .catch(error => {
-    //         // Handle Errors here.
-    //         this.triggerError(error);
-    //       });
-    //   });
+    firebase
+      .database()
+      .ref("stories/" + 1 + "/music")
+      .once("value")
+      .then(snapshot => {
+        firebase
+          .database()
+          .ref("stories/" + 0 + "/music")
+          .set(snapshot.val())
+          .catch(error => {
+            // Handle Errors here.
+            this.triggerError(error);
+          });
+      });
   }
 
   loadMerchantsAndItems = () => {
@@ -348,6 +348,7 @@ class App extends Component {
         isMusicTransition,
       },
       music,
+      song,
     } = this.props;
     const obj = {};
     obj[name] = value;
@@ -400,31 +401,50 @@ class App extends Component {
         }
       }
     } else {
-      this.setState(
-        state => ({
-          ...state,
-          ...obj,
-        }),
-        () => {
-          if (name === "songName") {
-            this.debouncedSavingSound();
-          } else {
-            this.debouncedSavingMusic();
-          }
-        },
-      );
+      if (
+        name === "songName" ||
+        name === "songStatus" ||
+        name === "songVolume"
+      ) {
+        this.debouncedSavingSound({ ...song, ...obj });
+      } else if (
+        name === "noiseName" ||
+        name === "noiseStatus" ||
+        name === "noiseVolume"
+      ) {
+        this.debouncedSavingNoise({ ...music, ...obj });
+      } else {
+        this.debouncedSavingMusic({ ...music, ...obj });
+      }
     }
   };
 
-  debouncedSavingSound = debounce(() => this.props.dispatchLoadSong(), 300, {
-    leading: true,
-    maxWait: 2000,
-  });
+  debouncedSavingSound = debounce(
+    params => this.props.dispatchLoadSong(params),
+    300,
+    {
+      leading: true,
+      maxWait: 2000,
+    },
+  );
 
-  debouncedSavingMusic = debounce(() => this.props.dispatchLoadMusic(), 300, {
-    leading: true,
-    maxWait: 2000,
-  });
+  debouncedSavingMusic = debounce(
+    params => this.props.dispatchLoadMusic(params),
+    300,
+    {
+      leading: true,
+      maxWait: 2000,
+    },
+  );
+
+  debouncedSavingNoise = debounce(
+    params => this.props.dispatchLoadNoise(params),
+    300,
+    {
+      leading: true,
+      maxWait: 2000,
+    },
+  );
 
   saveMusic = () => {
     const {
@@ -662,7 +682,7 @@ class App extends Component {
                   }}
                   onClick={this.toggleMusic}
                   circular
-                  name={musicMute ? "volume up" : "volume off"}
+                  name={!musicMute ? "volume up" : "volume off"}
                   inverted
                   color={"black"}
                 />
