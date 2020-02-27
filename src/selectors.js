@@ -1,6 +1,8 @@
 // import { createSelector } from 'reselect'
 
 export const itemListSelector = state => state.items.items;
+export const noiseSelector = state => state.sounds.noise;
+export const songSelector = state => state.sounds.song;
 export const currentStorySelector = state => state.appState.currentStory;
 export const storiesSelector = state => state.appState.stories;
 export const isGameMasterSelector = state =>

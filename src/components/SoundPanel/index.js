@@ -1,6 +1,5 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 
 import {
   cursorPointer,
@@ -8,8 +7,8 @@ import {
   widthRightPanel,
 } from "../Utils/StyleConstants";
 import { musics, noises } from "../Utils/Constants";
-import { CALL_RESET_SOUNDS } from "../../redux/actionsTypes/actionsTypesSounds";
 import { currentMusicNameSelector } from "../../selectors";
+import useSounds from "../../hooks/useSounds";
 
 const styledBoxHeaderMusic = {
   width: "100%",
@@ -102,156 +101,126 @@ const styledResetSoundButton = {
   zIndex: 2,
 };
 
-class SoundPanel extends PureComponent {
-  changeCurrentMusic = m => {
-    const { onChangeMusics } = this.props;
-    onChangeMusics("musicName", m);
-  };
+const SoundPanel = () => {
+  const { onChangeMusics, changeCurrentMusic, changeCurrentNoise, resetSounds } = useSounds();
 
-  changeCurrentNoise = n => {
-    const { onChangeMusics } = this.props;
-    onChangeMusics("noiseName", n);
-    onChangeMusics("noiseStatus", "PLAYING");
-  };
+  const {
+    currentMusicName,
+    isMusicFirst,
+    musicVolumeFirst,
+    musicVolumeSecond,
+    noise: { noiseName, noiseVolume },
+  } = useSelector(store => ({
+    currentMusicName: currentMusicNameSelector(store),
+    musicVolumeFirst: store.sounds.music.musicVolumeFirst,
+    musicVolumeSecond: store.sounds.music.musicVolumeSecond,
+    isMusicFirst: store.sounds.music.isMusicFirst,
+    noise: store.sounds.noise,
+  }));
 
-  render() {
-    const {
-      onChangeMusics,
-      resetSounds,
-      currentMusicName,
-      isMusicFirst,
-      musicVolumeFirst,
-      musicVolumeSecond,
-      noise: { noiseName, noiseVolume },
-    } = this.props;
-
-    return (
-      <div style={styledMapSide}>
-        <button onClick={resetSounds} style={styledResetSoundButton}>
-          Reset
-        </button>
-        <div style={styledBoxHeaderMusic}>
-          Modifier la musique ({currentMusicName})
-        </div>
-        <div style={styledMusicVolume}>
-          Volume :
-          <input
-            type="range"
-            onChange={e =>
-              onChangeMusics(e.target.name, parseInt(e.target.value, 10))
-            }
-            min="0"
-            max="100"
-            name={isMusicFirst ? "musicVolumeFirst" : "musicVolumeSecond"}
-            value={isMusicFirst ? musicVolumeFirst : musicVolumeSecond}
-          />
-        </div>
-        <div style={styledMusicContainer}>
-          {musics.map((m, i) => {
-            if (i < musics.length / 2) {
-              return (
-                <div
-                  key={`music-${m}`}
-                  style={styledAudioFile}
-                  onClick={() => this.changeCurrentMusic(m)}
-                >
-                  {m}
-                </div>
-              );
-            }
-            return null;
-          })}
-        </div>
-        <div style={styledMusicContainer2}>
-          {musics.map((m, i) => {
-            if (i >= musics.length / 2) {
-              return (
-                <div
-                  key={`music-${m}`}
-                  style={styledAudioFile}
-                  onClick={() => this.changeCurrentMusic(m)}
-                >
-                  {m}
-                </div>
-              );
-            }
-            return null;
-          })}
-        </div>
-        <div style={styledBoxHeaderNoise}>
-          Modifier les bruits ({noiseName})
-        </div>
-        <div style={styledNoiseVolume}>
-          Volume :
-          <input
-            type="range"
-            onChange={e =>
-              onChangeMusics(e.target.name, parseInt(e.target.value, 10))
-            }
-            min="0"
-            max="100"
-            name="noiseVolume"
-            value={noiseVolume}
-          />
-        </div>
-
-        <div style={styledNoiseContainer}>
-          {noises.map((n, i) => {
-            if (i < noises.length / 2) {
-              return (
-                <div
-                  key={`noise-${n}`}
-                  style={styledAudioFile}
-                  onClick={() => this.changeCurrentNoise(n)}
-                >
-                  {n}
-                </div>
-              );
-            }
-            return null;
-          })}
-        </div>
-
-        <div style={styledNoiseContainer2}>
-          {noises.map((n, i) => {
-            if (i >= noises.length / 2) {
-              return (
-                <div
-                  key={`noise-${n}`}
-                  style={styledAudioFile}
-                  onClick={() => this.changeCurrentNoise(n)}
-                >
-                  {n}
-                </div>
-              );
-            }
-            return null;
-          })}
-        </div>
+  return (
+    <div style={styledMapSide}>
+      <button onClick={resetSounds} style={styledResetSoundButton}>
+        Reset
+      </button>
+      <div style={styledBoxHeaderMusic}>
+        Modifier la musique ({currentMusicName})
       </div>
-    );
-  }
-}
+      <div style={styledMusicVolume}>
+        Volume :
+        <input
+          type="range"
+          onChange={e =>
+            onChangeMusics(e.target.name, parseInt(e.target.value, 10))
+          }
+          min="0"
+          max="100"
+          name={isMusicFirst ? "musicVolumeFirst" : "musicVolumeSecond"}
+          value={isMusicFirst ? musicVolumeFirst : musicVolumeSecond}
+        />
+      </div>
+      <div style={styledMusicContainer}>
+        {musics.map((m, i) => {
+          if (i < musics.length / 2) {
+            return (
+              <div
+                key={`music-${m}`}
+                style={styledAudioFile}
+                onClick={() => changeCurrentMusic(m)}
+              >
+                {m}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
+      <div style={styledMusicContainer2}>
+        {musics.map((m, i) => {
+          if (i >= musics.length / 2) {
+            return (
+              <div
+                key={`music-${m}`}
+                style={styledAudioFile}
+                onClick={() => changeCurrentMusic(m)}
+              >
+                {m}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
+      <div style={styledBoxHeaderNoise}>Modifier les bruits ({noiseName})</div>
+      <div style={styledNoiseVolume}>
+        Volume :
+        <input
+          type="range"
+          onChange={e =>
+            onChangeMusics(e.target.name, parseInt(e.target.value, 10))
+          }
+          min="0"
+          max="100"
+          name="noiseVolume"
+          value={noiseVolume}
+        />
+      </div>
 
-const mapDispatchToProps = dispatch => {
-  return {
-    resetSounds: () => {
-      dispatch({ type: CALL_RESET_SOUNDS });
-    },
-  };
+      <div style={styledNoiseContainer}>
+        {noises.map((n, i) => {
+          if (i < noises.length / 2) {
+            return (
+              <div
+                key={`noise-${n}`}
+                style={styledAudioFile}
+                onClick={() => changeCurrentNoise(n)}
+              >
+                {n}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
+
+      <div style={styledNoiseContainer2}>
+        {noises.map((n, i) => {
+          if (i >= noises.length / 2) {
+            return (
+              <div
+                key={`noise-${n}`}
+                style={styledAudioFile}
+                onClick={() => changeCurrentNoise(n)}
+              >
+                {n}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
+    </div>
+  );
 };
 
-const mapStateToProps = store => ({
-  currentMusicName: currentMusicNameSelector(store),
-  musicVolumeFirst: store.sounds.music.musicVolumeFirst,
-  musicVolumeSecond: store.sounds.music.musicVolumeSecond,
-  isMusicFirst: store.sounds.music.isMusicFirst,
-  noise: store.sounds.noise,
-});
-
-SoundPanel.propTypes = {
-  resetSounds: PropTypes.func.isRequired,
-  onChangeMusics: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SoundPanel);
+export default SoundPanel;

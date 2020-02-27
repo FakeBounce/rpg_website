@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { heightLeft, widthLeft } from "../components/Utils/StyleConstants";
-
-import PropTypes from "prop-types";
 import EventPanel from "../components/EventPanel";
 import MapEditionPanel from "../components/MapEditionPanel";
 import StoryQuestsAndMerchantsPanel from "../components/StoryQuestsAndMerchantsPanel";
@@ -74,9 +72,7 @@ class GMMapPanel extends Component {
           <TownPanel toggleRightPanel={this.toggleRightPanel} />
         )}
         {currentTown > -1 && (
-          <StoryQuestsAndMerchantsPanel
-            isOnQuest={isOnQuest}
-          />
+          <StoryQuestsAndMerchantsPanel isOnQuest={isOnQuest} />
         )}
       </div>
     );
@@ -87,9 +83,5 @@ const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   currentTown: store.appState.currentTown,
 });
-
-GMMapPanel.propTypes = {
-  onChangeMusics: PropTypes.func.isRequired,
-};
 
 export default connect(mapStateToProps)(GMMapPanel);

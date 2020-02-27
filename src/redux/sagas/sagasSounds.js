@@ -11,7 +11,7 @@ import {
 import * as actionsTypesSounds from "../actionsTypes/actionsTypesSounds";
 import * as actionsSounds from "../actions/actionsSounds";
 import * as actionsAppState from "../actions/actionsAppState";
-import { currentStorySelector } from "../../selectors";
+import { currentStorySelector, noiseSelector, songSelector } from "../../selectors";
 import { getTranslations } from "../../i18n";
 import { firebaseDbSet, onValueChannel } from "./api";
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
@@ -28,21 +28,25 @@ export function* callResetSounds() {
     const currentStory = yield select(currentStorySelector);
     if (currentStory > -1) {
       firebaseDbSet("/stories/" + currentStory + "/music", {
-        musicVolume: 50,
+        musicMute: false,
         musicNameFirst: "",
-        musicVolumeFirst: 0,
         musicNameSecond: "",
-        musicVolumeSecond: 0,
         musicStatusFirst: "STOPPED",
         musicStatusSecond: "STOPPED",
+        musicVolume: 50,
+        musicVolumeFirst: 50,
+        musicVolumeSecond: 0,
+        isMusicFirst: true,
+        isMusicTransition: false,
       }).catch(error => {
         console.log("callResetSounds saga err:", { error });
       });
 
       firebaseDbSet("/stories/" + currentStory + "/noise", {
+        noiseMute: false,
         noiseName: "",
-        noiseVolume: 50,
         noiseStatus: "STOPPED",
+        noiseVolume: 50,
       }).catch(error => {
         console.log("callResetSounds set saga err:", { error });
       });
@@ -67,8 +71,10 @@ export function* watchCallResetSounds() {
 export function* callStopNoise() {
   try {
     const currentStory = yield select(currentStorySelector);
+    const noise = yield select(noiseSelector);
     if (currentStory > -1) {
       firebaseDbSet("/stories/" + currentStory + "/noise", {
+        ...noise,
         noiseStatus: "STOPPED",
         noiseName: "",
       }).catch(error => {
@@ -94,10 +100,12 @@ export function* watchCallStopNoise() {
 export function* callStopSong() {
   try {
     const currentStory = yield select(currentStorySelector);
+    const song = yield select(songSelector);
     if (currentStory > -1) {
       firebaseDbSet("/stories/" + currentStory + "/song", {
-        songStatus: "STOPPED",
+        ...song,
         songName: "",
+        songStatus: "STOPPED",
       }).catch(error => {
         console.log("callStopSong set saga err:", { error });
       });
@@ -118,7 +126,7 @@ export function* watchCallStopSong() {
   yield takeLatest(actionsTypesSounds.CALL_STOP_SONG, callStopSong);
 }
 
-export function* callLoadSong({payload}) {
+export function* callLoadSong({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
     if (currentStory > -1) {
@@ -127,6 +135,7 @@ export function* callLoadSong({payload}) {
       }).catch(error => {
         console.log("callLoadSong set saga err:", { error });
       });
+
       // yield call(actionsSounds.loadSong, params);
     } else {
       yield call(soundsError, "No story selected");

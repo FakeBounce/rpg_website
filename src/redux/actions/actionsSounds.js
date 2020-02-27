@@ -41,18 +41,6 @@ export const loadNoise = payload => {
   };
 };
 
-export const stopNoise = () => {
-  return {
-    type: actionTypesSounds.STOP_NOISE,
-  };
-};
-
-export const stopSong = () => {
-  return {
-    type: actionTypesSounds.STOP_SONG,
-  };
-};
-
 export const toggleMusicFirst = payload => {
   return {
     type: actionTypesSounds.TOGGLE_MUSIC_FIRST,

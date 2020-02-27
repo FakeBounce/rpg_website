@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import firebase from "firebase";
-import debounce from "lodash/debounce";
 import { connect } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -11,7 +10,7 @@ import HasNoNickname from "./components/NicknameSelection/HasNoNickname";
 import CharacterSelection from "./components/CharacterSelection/CharacterSelection";
 import StoriesPanel from "./components/StoryPanel";
 
-import { bestiary, defaultState } from "./components/Utils/Constants";
+import { defaultState } from "./components/Utils/Constants";
 import GameScreen from "./containers/GameScreen";
 import SoundPlayer from "./components/SoundPlayer/SoundPlayer";
 import {
@@ -53,9 +52,6 @@ import {
   CALL_LISTEN_MUSIC,
   CALL_LISTEN_NOISE,
   CALL_LISTEN_SONG,
-  CALL_LOAD_MUSIC,
-  CALL_LOAD_NOISE,
-  CALL_LOAD_SONG,
 } from "./redux/actionsTypes/actionsTypesSounds";
 import {
   CALL_LISTEN_CURRENT_EVENT,
@@ -80,8 +76,7 @@ import { CALL_LISTEN_BESTIARY } from "./redux/actionsTypes/actionsTypesBestiary"
 import { CALL_LISTEN_TEAM_CHARACTERS } from "./redux/actionsTypes/actionsTypesTeam";
 import { CALL_LISTEN_CHARACTER } from "./redux/actionsTypes/actionsTypesCharacter";
 import { CALL_GET_ITEM_LIST } from "./redux/actionsTypes/actionsTypesItems";
-import { Button, Icon } from "semantic-ui-react";
-import ButtonLarge from "./components/Utils/ButtonLarge";
+import { Icon } from "semantic-ui-react";
 import { cursorPointer } from "./components/Utils/StyleConstants";
 
 class App extends Component {
@@ -112,7 +107,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { dispatchCallSetTilesTypes, currentStory } = this.props;
+    const { dispatchCallSetTilesTypes } = this.props;
     dispatchCallSetTilesTypes();
     loadAllItems(this.doSetState);
 
@@ -161,20 +156,50 @@ class App extends Component {
     //   });
     // });
 
-    firebase
-      .database()
-      .ref("stories/" + 1 + "/music")
-      .once("value")
-      .then(snapshot => {
-        firebase
-          .database()
-          .ref("stories/" + 0 + "/music")
-          .set(snapshot.val())
-          .catch(error => {
-            // Handle Errors here.
-            this.triggerError(error);
-          });
-      });
+    // firebase
+    //   .database()
+    //   .ref("stories/" + 1 + "/music")
+    //   .once("value")
+    //   .then(snapshot => {
+    //     firebase
+    //       .database()
+    //       .ref("stories/" + 0 + "/music")
+    //       .set(snapshot.val())
+    //       .catch(error => {
+    //         // Handle Errors here.
+    //         this.triggerError(error);
+    //       });
+    //   });
+    //
+    // firebase
+    //   .database()
+    //   .ref("stories/" + 1 + "/noise")
+    //   .once("value")
+    //   .then(snapshot => {
+    //     firebase
+    //       .database()
+    //       .ref("stories/" + 0 + "/noise")
+    //       .set(snapshot.val())
+    //       .catch(error => {
+    //         // Handle Errors here.
+    //         this.triggerError(error);
+    //       });
+    //   });
+    //
+    // firebase
+    //   .database()
+    //   .ref("stories/" + 1 + "/song")
+    //   .once("value")
+    //   .then(snapshot => {
+    //     firebase
+    //       .database()
+    //       .ref("stories/" + 0 + "/song")
+    //       .set(snapshot.val())
+    //       .catch(error => {
+    //         // Handle Errors here.
+    //         this.triggerError(error);
+    //       });
+    //   });
   }
 
   loadMerchantsAndItems = () => {
@@ -336,157 +361,6 @@ class App extends Component {
       });
   };
 
-  onChangeMusics = (name, value) => {
-    const {
-      currentStory,
-      dispatchCallPrintError,
-      music: {
-        musicNameFirst,
-        musicNameSecond,
-        musicVolume,
-        isMusicFirst,
-        isMusicTransition,
-      },
-      music,
-      song,
-    } = this.props;
-    const obj = {};
-    obj[name] = value;
-    if (name === "musicName") {
-      if (!isMusicTransition) {
-        if (isMusicFirst) {
-          for (let i = 1; i < 21; i++) {
-            setTimeout(() => {
-              firebase
-                .database()
-                .ref("/stories/" + currentStory + "/music")
-                .set({
-                  ...music,
-                  musicVolumeFirst: musicVolume * ((100 - i * 5) / 100),
-                  musicVolumeSecond: musicVolume * ((i * 5) / 100),
-                  isMusicTransition: i !== 20,
-                  musicStatusFirst:
-                    i !== 20 && musicNameFirst !== "" ? "PLAYING" : "STOPPED",
-                  musicStatusSecond: "PLAYING",
-                  musicNameSecond: value,
-                  isMusicFirst: false,
-                })
-                .catch(error => {
-                  dispatchCallPrintError(error);
-                });
-            }, i * 300);
-          }
-        } else {
-          for (let i = 1; i < 21; i++) {
-            setTimeout(() => {
-              firebase
-                .database()
-                .ref("/stories/" + currentStory + "/music")
-                .set({
-                  ...music,
-                  musicVolumeSecond: (musicVolume * (100 - i * 5)) / 100,
-                  musicVolumeFirst: musicVolume * ((i * 5) / 100),
-                  isMusicTransition: i !== 20,
-                  musicStatusSecond:
-                    i !== 20 && musicNameSecond !== "" ? "PLAYING" : "STOPPED",
-                  musicStatusFirst: "PLAYING",
-                  musicNameFirst: value,
-                  isMusicFirst: true,
-                })
-                .catch(error => {
-                  dispatchCallPrintError(error);
-                });
-            }, i * 300);
-          }
-        }
-      }
-    } else {
-      if (
-        name === "songName" ||
-        name === "songStatus" ||
-        name === "songVolume"
-      ) {
-        this.debouncedSavingSound({ ...song, ...obj });
-      } else if (
-        name === "noiseName" ||
-        name === "noiseStatus" ||
-        name === "noiseVolume"
-      ) {
-        this.debouncedSavingNoise({ ...music, ...obj });
-      } else {
-        this.debouncedSavingMusic({ ...music, ...obj });
-      }
-    }
-  };
-
-  debouncedSavingSound = debounce(
-    params => this.props.dispatchLoadSong(params),
-    300,
-    {
-      leading: true,
-      maxWait: 2000,
-    },
-  );
-
-  debouncedSavingMusic = debounce(
-    params => this.props.dispatchLoadMusic(params),
-    300,
-    {
-      leading: true,
-      maxWait: 2000,
-    },
-  );
-
-  debouncedSavingNoise = debounce(
-    params => this.props.dispatchLoadNoise(params),
-    300,
-    {
-      leading: true,
-      maxWait: 2000,
-    },
-  );
-
-  saveMusic = () => {
-    const {
-      isMusicFirst,
-      musicNameFirst,
-      musicNameSecond,
-      musicStatusFirst,
-      musicStatusSecond,
-      musicVolume,
-      noiseName,
-      noiseStatus,
-      noiseVolume,
-    } = this.state;
-    const { currentStory, dispatchCallPrintError } = this.props;
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/noise")
-      .set({
-        noiseName,
-        noiseStatus,
-        noiseVolume,
-      })
-      .catch(error => {
-        dispatchCallPrintError(error);
-      });
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/music")
-      .set({
-        musicNameFirst,
-        musicNameSecond,
-        musicStatusFirst,
-        musicStatusSecond,
-        musicVolume,
-        musicVolumeFirst: isMusicFirst ? musicVolume : 0,
-        musicVolumeSecond: isMusicFirst ? 0 : musicVolume,
-      })
-      .catch(error => {
-        dispatchCallPrintError(error);
-      });
-  };
-
   chooseStory = i => {
     const {
       dispatchTogglePlayerMastering,
@@ -625,7 +499,6 @@ class App extends Component {
                 doSetState={this.doSetState}
                 hydrateMerchants={this.hydrateMerchants}
                 onChange={this.onChange}
-                onChangeMusics={this.onChangeMusics}
                 selectAnotherCharacter={this.selectAnotherCharacter}
                 signOut={this.signOut}
                 toggleBestiary={this.toggleBestiary}
@@ -709,15 +582,6 @@ const mapDispatchToProps = dispatch => {
     dispatchToggleMusic: () => {
       dispatch(toggleMusic());
     },
-    dispatchLoadSong: payload => {
-      dispatch({ type: CALL_LOAD_SONG, payload });
-    },
-    dispatchLoadMusic: payload => {
-      dispatch({ type: CALL_LOAD_MUSIC, payload });
-    },
-    dispatchLoadNoise: payload => {
-      dispatch({ type: CALL_LOAD_NOISE, payload });
-    },
     dispatchTogglePlayerMastering: payload => {
       dispatch(togglePlayerMastering(payload));
     },
@@ -789,7 +653,6 @@ const mapStateToProps = store => ({
   characters: store.userInfos.characters,
   merchants: store.merchants.merchantList,
   items: store.items.items,
-  music: store.sounds.music,
   musicMute: store.sounds.music.musicMute,
 });
 
@@ -817,9 +680,6 @@ App.propTypes = {
   dispatchCallListenBestiary: PropTypes.func.isRequired,
   dispatchCallListenTeamCharacters: PropTypes.func.isRequired,
   dispatchCallGetItemList: PropTypes.func.isRequired,
-  dispatchLoadSong: PropTypes.func.isRequired,
-  dispatchLoadNoise: PropTypes.func.isRequired,
-  dispatchLoadMusic: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
