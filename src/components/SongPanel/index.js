@@ -4,7 +4,9 @@ import { songs, colors } from "../Utils/Constants";
 
 import PropTypes from "prop-types";
 import ButtonLarge from "../Utils/ButtonLarge";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
+import useSounds from "../../hooks/useSounds";
+import { currentMusicNameSelector } from "../../selectors";
 
 const styles = {
   CharPanel: {
@@ -47,90 +49,77 @@ const styledAudioFile = {
   borderBottom: "1px solid black",
 };
 
-class SongPanel extends PureComponent {
-  changeCurrentSong = m => {
-    const { onChangeSongs } = this.props;
-    onChangeSongs("songName", m);
-    onChangeSongs("songStatus", "PLAYING");
-  };
+const SongPanel = ({ props }) => {
+  const { onChangeMusics, changeCurrentSong, resetSongs } = useSounds();
 
-  render() {
-    const {
-      onChangeSongs,
-      resetSongs,
-      song: { songName, songVolume },
-      toggleIsOnChar,
-    } = this.props;
+  const {
+    song: { songName, songVolume },
+  } = useSelector(store => ({
+    song: store.sounds.song,
+  }));
 
-    return (
-      <div style={styles.CharPanel}>
-        <div style={styles.CharacterBox}>
-          <button
-            onClick={resetSongs}
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              cursor: cursorPointer,
-              zIndex: 2,
-            }}
-          >
-            Reset
-          </button>
-          <div style={styledBoxHeaderMusic}>
-            Modifier la musique ({songName})
-          </div>
-          <div style={styledMusicVolume}>
-            Volume :
-            <input
-              type="range"
-              onChange={e =>
-                onChangeSongs(e.target.name, parseInt(e.target.value, 10))
-              }
-              min="0"
-              max="100"
-              name="songVolume"
-              value={songVolume}
-            />
-          </div>
-          <div style={styledMusicContainer} className="scrollbar">
-            {songs.map((m, i) => {
-              return (
-                <div
-                  key={`song-${m}`}
-                  style={styledAudioFile}
-                  onClick={() => this.changeCurrentSong(m)}
-                >
-                  {m}
-                </div>
-              );
-            })}
-          </div>
-          <ButtonLarge
-            onClick={toggleIsOnChar}
-            style={{
-              position: "absolute",
-              bottom: 0,
-              right: 0,
-              width: 124,
-            }}
-          >
-            Play music
-          </ButtonLarge>
+  const { toggleIsOnChar } = props;
+
+  return (
+    <div style={styles.CharPanel}>
+      <div style={styles.CharacterBox}>
+        <button
+          onClick={resetSongs}
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            cursor: cursorPointer,
+            zIndex: 2,
+          }}
+        >
+          Reset
+        </button>
+        <div style={styledBoxHeaderMusic}>Modifier la musique ({songName})</div>
+        <div style={styledMusicVolume}>
+          Volume :
+          <input
+            type="range"
+            onChange={e =>
+              onChangeMusics(e.target.name, parseInt(e.target.value, 10))
+            }
+            min="0"
+            max="100"
+            name="songVolume"
+            value={songVolume}
+          />
         </div>
+        <div style={styledMusicContainer} className="scrollbar">
+          {songs.map((m, i) => {
+            return (
+              <div
+                key={`song-${m}`}
+                style={styledAudioFile}
+                onClick={() => changeCurrentSong(m)}
+              >
+                {m}
+              </div>
+            );
+          })}
+        </div>
+        <ButtonLarge
+          onClick={toggleIsOnChar}
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            width: 124,
+          }}
+        >
+          Play music
+        </ButtonLarge>
       </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  song: store.sounds.song,
-});
-
-SongPanel.propTypes = {
-  resetSongs: PropTypes.func.isRequired,
-  toggleIsOnChar: PropTypes.func.isRequired,
-  onChangeSongs: PropTypes.func.isRequired,
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(SongPanel);
+SongPanel.propTypes = {
+  toggleIsOnChar: PropTypes.func.isRequired,
+};
+
+export default SongPanel;

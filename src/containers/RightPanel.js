@@ -271,21 +271,6 @@ const RightPanel = props => {
     });
   };
 
-  const resetSongs = () => {
-    const { currentStory } = props;
-    firebase
-      .database()
-      .ref("/stories/" + currentStory + "/song")
-      .set({
-        songVolume: 50,
-        songName: "",
-        songStatus: "STOPPED",
-      })
-      .catch(error => {
-        triggerError(error);
-      });
-  };
-
   const toggleIsOnChar = () => {
     setPanelState({
       ...panelState,
@@ -293,7 +278,7 @@ const RightPanel = props => {
     });
   };
 
-  const { triggerError, onChangeMusics } = props;
+  const { triggerError } = props;
 
   const {
     status,
@@ -323,8 +308,6 @@ const RightPanel = props => {
         />
       ) : (
         <SongPanel
-          resetSongs={resetSongs}
-          onChangeSongs={onChangeMusics}
           toggleIsOnChar={toggleIsOnChar}
         />
       )}
@@ -366,7 +349,6 @@ RightPanel.propTypes = {
   doSetState: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
-  onChangeMusics: PropTypes.func.isRequired,
   dispatchListenCharacter: PropTypes.func.isRequired,
 };
 
