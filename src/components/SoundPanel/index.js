@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import {
@@ -6,66 +6,62 @@ import {
   heightLeft,
   widthRightPanel,
 } from "../Utils/StyleConstants";
-import { musics, noises } from "../Utils/Constants";
+import { colors, musics, noises } from "../Utils/Constants";
 import { currentMusicNameSelector } from "../../selectors";
 import useSounds from "../../hooks/useSounds";
+import { Menu, Button } from "semantic-ui-react";
 
 const styledBoxHeaderMusic = {
-  width: "100%",
   height: "20px",
-  marginBottom: "5px",
   textAlign: "center",
-  position: "absolute",
-  display: "block",
 };
 
 const styledBoxHeaderNoise = {
-  width: "100%",
+  width: "50%",
   height: "20px",
-  marginBottom: "5px",
   textAlign: "center",
-  position: "absolute",
-  display: "block",
-  top: `${(heightLeft - 1 - 45 * 2) / 2 + 45}px`,
 };
 
 const styledMapSide = {
   width: `${widthRightPanel}px`,
   height: `${heightLeft}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
+  display: "flex",
+  flexDirection: "column",
   position: "relative",
+  justifyContent: "space-between",
 };
 
 const styledMusicVolume = {
-  width: "100%",
-  position: "absolute",
-  height: "25px",
-  top: "20px",
+  width: "50%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 
 const styledNoiseVolume = {
+  width: "50%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const styledMusicControlsContainer = {
   width: "100%",
-  position: "absolute",
-  height: "25px",
-  top: `${(heightLeft - 1 - 45 * 2) / 2 + 45 + 20}px`,
+  display: "flex",
+  flexDirection: "row",
+  marginTop: 10,
+  marginBottom: 10,
+};
+
+const styledMusicListContainer = {
+  width: "100%",
+  overflowY: "auto",
+  display: "flex",
+  flexDirection: "row",
 };
 
 const styledMusicContainer = {
   width: "50%",
-  position: "absolute",
-  height: `${(heightLeft - 1 - 45 * 2) / 2}px`,
-  top: "45px",
-  overflowY: "auto",
-};
-
-const styledMusicContainer2 = {
-  width: "50%",
-  position: "absolute",
-  height: `${(heightLeft - 1 - 45 * 2) / 2}px`,
-  left: "50%",
-  top: "45px",
   overflowY: "auto",
 };
 
@@ -90,19 +86,38 @@ const styledAudioFile = {
   width: "100%",
   height: "30px",
   cursor: cursorPointer,
-  borderBottom: "1px solid black",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderBottom: "1px solid white",
+  borderLeft: "1px solid white",
+};
+
+const styledAudioFileSelected = {
+  width: "100%",
+  height: "30px",
+  cursor: cursorPointer,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "#547494",
+  borderBottom: "1px solid white",
+  borderLeft: "1px solid white",
 };
 
 const styledResetSoundButton = {
-  position: "absolute",
-  left: 0,
-  top: 0,
   cursor: cursorPointer,
-  zIndex: 2,
 };
 
 const SoundPanel = () => {
-  const { onChangeMusics, changeCurrentMusic, changeCurrentNoise, resetSounds } = useSounds();
+  const [activeMusicItem, setActiveMusicItem] = useState("boss");
+  const [activeNoiseItem, setActiveNoiseItem] = useState("others");
+  const {
+    onChangeMusics,
+    changeCurrentMusic,
+    changeCurrentNoise,
+    resetSounds,
+  } = useSounds();
 
   const {
     currentMusicName,
@@ -120,104 +135,191 @@ const SoundPanel = () => {
 
   return (
     <div style={styledMapSide}>
-      <button onClick={resetSounds} style={styledResetSoundButton}>
-        Reset
-      </button>
-      <div style={styledBoxHeaderMusic}>
-        Modifier la musique ({currentMusicName})
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div style={styledMusicControlsContainer}>
+          <Button primary onClick={resetSounds} style={styledResetSoundButton}>
+            Reset
+          </Button>
+          <div style={styledBoxHeaderMusic}>
+            Modifier la musique ({currentMusicName || "None"})
+          </div>
+          <div style={styledMusicVolume}>
+            <input
+              type="range"
+              onChange={e =>
+                onChangeMusics(e.target.name, parseInt(e.target.value, 10))
+              }
+              min="0"
+              max="100"
+              name={isMusicFirst ? "musicVolumeFirst" : "musicVolumeSecond"}
+              value={isMusicFirst ? musicVolumeFirst : musicVolumeSecond}
+            />
+          </div>
+        </div>
+        <div>
+          <Menu attached="top" tabular>
+            {Object.keys(musics).map(mKey => {
+              return (
+                <Menu.Item
+                  name={mKey}
+                  active={activeMusicItem === mKey.toLowerCase()}
+                  onClick={() => {
+                    setActiveMusicItem(mKey);
+                  }}
+                  style={{
+                    width: 75,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 0,
+                    backgroundColor: colors.background,
+                    color: "white",
+                    cursor: cursorPointer,
+                  }}
+                />
+              );
+            })}
+          </Menu>
+          <div style={styledMusicListContainer}>
+            <div style={styledMusicContainer}>
+              {musics[activeMusicItem].map((m, i) => {
+                if (i < musics[activeMusicItem].length / 2) {
+                  return (
+                    <div
+                      key={`music-${m}`}
+                      style={
+                        currentMusicName === m
+                          ? styledAudioFileSelected
+                          : styledAudioFile
+                      }
+                      onClick={() => changeCurrentMusic(m)}
+                    >
+                      {currentMusicName === m ? `${m} (Playing)` : m}
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+            <div style={styledMusicContainer}>
+              {musics[activeMusicItem].map((m, i) => {
+                if (i >= musics[activeMusicItem].length / 2) {
+                  return (
+                    <div
+                      key={`music-${m}`}
+                      style={
+                        currentMusicName === m
+                          ? styledAudioFileSelected
+                          : styledAudioFile
+                      }
+                      onClick={() => changeCurrentMusic(m)}
+                    >
+                      {currentMusicName === m ? `${m} (Playing)` : m}
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          </div>
+        </div>
       </div>
-      <div style={styledMusicVolume}>
-        Volume :
-        <input
-          type="range"
-          onChange={e =>
-            onChangeMusics(e.target.name, parseInt(e.target.value, 10))
-          }
-          min="0"
-          max="100"
-          name={isMusicFirst ? "musicVolumeFirst" : "musicVolumeSecond"}
-          value={isMusicFirst ? musicVolumeFirst : musicVolumeSecond}
-        />
-      </div>
-      <div style={styledMusicContainer}>
-        {musics.map((m, i) => {
-          if (i < musics.length / 2) {
-            return (
-              <div
-                key={`music-${m}`}
-                style={styledAudioFile}
-                onClick={() => changeCurrentMusic(m)}
-              >
-                {m}
-              </div>
-            );
-          }
-          return null;
-        })}
-      </div>
-      <div style={styledMusicContainer2}>
-        {musics.map((m, i) => {
-          if (i >= musics.length / 2) {
-            return (
-              <div
-                key={`music-${m}`}
-                style={styledAudioFile}
-                onClick={() => changeCurrentMusic(m)}
-              >
-                {m}
-              </div>
-            );
-          }
-          return null;
-        })}
-      </div>
-      <div style={styledBoxHeaderNoise}>Modifier les bruits ({noiseName})</div>
-      <div style={styledNoiseVolume}>
-        Volume :
-        <input
-          type="range"
-          onChange={e =>
-            onChangeMusics(e.target.name, parseInt(e.target.value, 10))
-          }
-          min="0"
-          max="100"
-          name="noiseVolume"
-          value={noiseVolume}
-        />
-      </div>
-
-      <div style={styledNoiseContainer}>
-        {noises.map((n, i) => {
-          if (i < noises.length / 2) {
-            return (
-              <div
-                key={`noise-${n}`}
-                style={styledAudioFile}
-                onClick={() => changeCurrentNoise(n)}
-              >
-                {n}
-              </div>
-            );
-          }
-          return null;
-        })}
-      </div>
-
-      <div style={styledNoiseContainer2}>
-        {noises.map((n, i) => {
-          if (i >= noises.length / 2) {
-            return (
-              <div
-                key={`noise-${n}`}
-                style={styledAudioFile}
-                onClick={() => changeCurrentNoise(n)}
-              >
-                {n}
-              </div>
-            );
-          }
-          return null;
-        })}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "40%",
+        }}
+      >
+        <div style={styledMusicControlsContainer}>
+          <div style={styledBoxHeaderNoise}>
+            Modifier les bruits ({noiseName || "None"})
+          </div>
+          <div style={styledNoiseVolume}>
+            <input
+              type="range"
+              onChange={e =>
+                onChangeMusics(e.target.name, parseInt(e.target.value, 10))
+              }
+              min="0"
+              max="100"
+              name="noiseVolume"
+              value={noiseVolume}
+            />
+          </div>
+        </div>
+        <div>
+          <Menu attached="top" tabular>
+            {Object.keys(noises).map(mKey => {
+              return (
+                <Menu.Item
+                  name={mKey}
+                  active={activeNoiseItem === mKey.toLowerCase()}
+                  onClick={() => {
+                    setActiveNoiseItem(mKey);
+                  }}
+                  style={{
+                    width: 75,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 0,
+                    backgroundColor: colors.background,
+                    color: "white",
+                    cursor: cursorPointer,
+                  }}
+                />
+              );
+            })}
+          </Menu>
+          <div style={styledMusicListContainer}>
+            <div style={styledMusicContainer}>
+              {noises[activeNoiseItem].map((m, i) => {
+                if (i < noises[activeNoiseItem].length / 2) {
+                  return (
+                    <div
+                      key={`noise-${m}`}
+                      style={
+                        noiseName === m
+                          ? styledAudioFileSelected
+                          : styledAudioFile
+                      }
+                      onClick={() => changeCurrentNoise(m)}
+                    >
+                      {noiseName === m ? `${m} (Playing)` : m}
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+            <div style={styledMusicContainer}>
+              {noises[activeNoiseItem].map((m, i) => {
+                if (i >= noises[activeNoiseItem].length / 2) {
+                  return (
+                    <div
+                      key={`noise-${m}`}
+                      style={
+                        noiseName === m
+                          ? styledAudioFileSelected
+                          : styledAudioFile
+                      }
+                      onClick={() => changeCurrentNoise(m)}
+                    >
+                      {noiseName === m ? `${m} (Playing)` : m}
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
