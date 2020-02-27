@@ -1,12 +1,11 @@
-import React, { PureComponent } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
+
+import useSounds from "../../hooks/useSounds";
 import { cursorPointer, heightLeft } from "../Utils/StyleConstants";
 import { songs, colors } from "../Utils/Constants";
-
-import PropTypes from "prop-types";
 import ButtonLarge from "../Utils/ButtonLarge";
-import { connect, useSelector } from "react-redux";
-import useSounds from "../../hooks/useSounds";
-import { currentMusicNameSelector } from "../../selectors";
 
 const styles = {
   CharPanel: {
