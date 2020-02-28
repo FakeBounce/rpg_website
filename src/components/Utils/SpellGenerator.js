@@ -2,12 +2,13 @@ import React, { PureComponent } from "react";
 
 import { spellModeList, spellTypeList, toSemanticUIOptions } from "./Constants";
 import { connect } from "react-redux";
-import { Button, Select, Input } from "semantic-ui-react";
+import { Button, Select, Input, Progress } from "semantic-ui-react";
 import { cursorPointer } from "./StyleConstants";
 
 const styledSpellContainer = {
   position: "relative",
   display: "flex",
+  overflow: "auto",
   flexDirection: "column",
   padding: 10,
 };
@@ -34,6 +35,7 @@ const styledFormResultContainer = {
   justifyContent: "center",
   alignItems: "center",
   marginTop: 10,
+  paddingBottom: 50,
 };
 
 const styledFormButton = {
@@ -221,10 +223,9 @@ class SpellGenerator extends PureComponent {
           Element desired :
           <Select
             value={generatedSpellType}
-            onChange={(e, {value}) => {
+            onChange={(e, { value }) => {
               this.onChange("generatedSpellType", value);
             }}
-            placeholder="Select your country"
             options={toSemanticUIOptions(spellTypeList)}
           />
         </div>
@@ -232,10 +233,9 @@ class SpellGenerator extends PureComponent {
           Kind of spell :
           <Select
             value={generatedSpellMode}
-            onChange={(e, {value}) => {
+            onChange={(e, { value }) => {
               this.onChange("generatedSpellMode", value);
             }}
-            placeholder="Select your country"
             options={toSemanticUIOptions(spellModeList)}
           />
         </div>
@@ -246,10 +246,55 @@ class SpellGenerator extends PureComponent {
         </div>
         {generatedSpell !== null && (
           <div style={styledFormResultContainer}>
-            <div>Name : {generatedSpell.name}</div>
-            <div>Mode : {generatedSpell.mode}</div>
-            <div>Type : {generatedSpell.type}</div>
-            <div>Power : {generatedSpell.rarity}</div>
+            <div
+              style={{
+                width: 165,
+                height: 230,
+                display: "block",
+                backgroundImage: "url(./quests/empty_notice.png)",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 35,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 20,
+                  marginBottom: 20,
+                  color: "black",
+                  textAlign: "center",
+                }}
+              >
+                {generatedSpell.name}
+              </div>
+              <div
+                style={{
+                  marginBottom: 20,
+                  color: "black",
+                  textAlign: "center",
+                }}
+              >
+                {generatedSpell.mode}
+              </div>
+              <div
+                style={{
+                  marginBottom: 20,
+                  color: "black",
+                  textAlign: "center",
+                }}
+              >
+                {generatedSpell.type}
+              </div>
+              <Progress
+                value={generatedSpell.rarity}
+                total="10"
+                progress="ratio"
+                color="red"
+              />
+            </div>
           </div>
         )}
       </div>

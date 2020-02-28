@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { cursorPointer } from "../Utils/StyleConstants";
-import { musics } from "../Utils/Constants";
+import { colors, musics } from "../Utils/Constants";
 import { currentMusicNameSelector } from "../../selectors";
 import useSounds from "../../hooks/useSounds";
 
@@ -36,7 +36,7 @@ const styledAudioFileSelected = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  backgroundColor: "#547494",
+  backgroundColor: colors.backgroundSelected,
   borderBottom: "1px solid white",
   borderLeft: "1px solid white",
 };
