@@ -1,11 +1,17 @@
 import React, { Component } from "react";
-import { heightLeft, widthLeft } from "../components/Utils/StyleConstants";
+import {
+  cursorPointer,
+  heightLeft,
+  widthLeft,
+} from "../components/Utils/StyleConstants";
 import EventPanel from "../components/EventPanel";
 import MapEditionPanel from "../components/MapEditionPanel";
 import StoryQuestsAndMerchantsPanel from "../components/StoryQuestsAndMerchantsPanel";
 import TownPanel from "../components/TownPanel";
 import SpellGenerator from "../components/Utils/SpellGenerator";
 import { connect } from "react-redux";
+import { Menu } from "semantic-ui-react";
+import { colors } from "../components/Utils/Constants";
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -28,9 +34,9 @@ const styledContainer = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
   overflow: "auto",
-  display: "inline-block",
-  float: "left",
-  position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  borderRight: "1px solid white",
 };
 
 class GMMapPanel extends Component {
@@ -63,7 +69,33 @@ class GMMapPanel extends Component {
         <MapEditionPanel />
         <div style={styledMapSide}>
           <div style={styledContainer}>
-            Générateur de sorts : <br />
+            <div
+              style={{
+                marginTop: 10,
+                marginBottom: 10,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Menu attached="top" tabular>
+                <Menu.Item
+                  name={"SpellGenerator"}
+                  active={true}
+                  style={{
+                    width: 150,
+                    marginLeft: widthLeft / 4 - 75,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 0,
+                    backgroundColor: colors.background,
+                    color: "white",
+                    cursor: cursorPointer,
+                  }}
+                />
+              </Menu>
+            </div>
             <SpellGenerator />
           </div>
         </div>
