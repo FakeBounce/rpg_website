@@ -1,29 +1,33 @@
 import React, { Component } from "react";
-import { eventList } from "../Utils/Constants";
+import { eventList, toSemanticUIOptions } from "../Utils/Constants";
 
 import PropTypes from "prop-types";
+import { Select } from "semantic-ui-react";
+
+const styledEventTypeContainer = {
+  marginTop: 10,
+  marginBottom: 10,
+  paddingLeft: 10,
+  paddingRight: 10,
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+};
 
 class EventTypeSelector extends Component {
   render() {
     const { eventType, onChange } = this.props;
     return (
-      <div>
-        Choose event type :
-        <select
+      <div style={styledEventTypeContainer}>
+        <div>Event type :</div>
+        <Select
           value={eventType}
-          name="eventType"
-          onChange={e => {
-            onChange(e.target.name, e.target.value);
+          onChange={(e, { value }) => {
+            onChange("eventType", value);
           }}
-        >
-          {eventList.map(e => {
-            return (
-              <option key={e} value={e}>
-                {e}
-              </option>
-            );
-          })}
-        </select>
+          placeholder="Select your event type"
+          options={toSemanticUIOptions(eventList)}
+        />
       </div>
     );
   }

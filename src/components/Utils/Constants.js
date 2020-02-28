@@ -596,7 +596,7 @@ export const attributes = [
   "luck", // Tout et n'importe quoi
 ];
 
-export const eventList = ["nothing", "gold", "item", "debt", "draw"];
+export const eventList = ["gold", "item", "debt", "draw"];
 export const spellTypeList = [
   "Chaos",
   "Eau",
@@ -1004,6 +1004,7 @@ export const chatCommands = [
 
 export const colors = {
   background: "#34495e",
+  backgroundSelected: "#547494",
   text: "#f3f3f3",
   textSeen: "yellow",
   borders: "#f3f3f3",

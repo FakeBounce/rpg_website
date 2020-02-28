@@ -33,7 +33,6 @@ const styledMiddlePanel = {
 const styledContainer = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
-  overflow: "auto",
   display: "flex",
   flexDirection: "column",
   borderRight: "1px solid white",

@@ -4,9 +4,10 @@ import EventViewers from "./EventViewers";
 import EventItemForm from "./EventItemForm";
 import EventGoldForm from "./EventGoldForm";
 import EventTypeSelector from "./EventTypeSelector";
-import { heightLeft } from "../Utils/StyleConstants";
+import { cursorPointer, heightLeft, widthLeft } from "../Utils/StyleConstants";
 import { colors } from "../Utils/Constants";
 import { connect } from "react-redux";
+import { Button, Menu } from "semantic-ui-react";
 
 const styledEventContainer = {
   width: "50%",
@@ -14,11 +15,45 @@ const styledEventContainer = {
   position: "relative",
   float: "left",
   display: "inline-block",
-  overflowY: "auto",
   alignItems: "center",
   backgroundColor: colors.background,
   color: colors.text,
   borderBottom: "1px solid white",
+};
+
+const styledEventFormContainer = {
+  height: `${heightLeft / 2 - 61}px`,
+  display: "flex",
+  flexDirection: "column",
+  overflowY: "auto",
+};
+
+const styledEventMenuContainer = {
+  marginTop: 10,
+  marginBottom: 10,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const styledEventButtonContainer = {
+  marginTop: 10,
+  marginBottom: 20,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const styledEventMenuItem = {
+  width: 150,
+  marginLeft: widthLeft / 4 - 75,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: 0,
+  backgroundColor: colors.background,
+  color: "white",
+  cursor: cursorPointer,
 };
 
 class EventPanel extends Component {
@@ -29,6 +64,24 @@ class EventPanel extends Component {
     descriptionEvent: "",
     itemEvent: {},
     viewers: [],
+  };
+
+  addAllViewers = () => {
+    const { storyCharacters } = this.props;
+    const newViewersTab = storyCharacters.map(sc => {
+      return sc.userUid;
+    });
+    this.setState(state => ({
+      ...state,
+      viewers: newViewersTab,
+    }));
+  };
+
+  removeAllViewers = () => {
+    this.setState(state => ({
+      ...state,
+      viewers: [],
+    }));
   };
 
   addToViewer = uid => {
@@ -146,30 +199,49 @@ class EventPanel extends Component {
     } = this.state;
     return (
       <div style={styledEventContainer} className="scrollbar">
-        <EventTypeSelector eventType={eventType} onChange={this.onChange} />
-        {(eventType === "gold" || eventType === "debt") && (
-          <EventGoldForm
-            goldEvent={goldEvent}
-            descriptionEvent={descriptionEvent}
-            onChange={this.onChange}
-            eventType={eventType}
+        <div style={styledEventMenuContainer}>
+          <Menu attached="top" tabular>
+            <Menu.Item
+              name={"Events"}
+              active={true}
+              style={styledEventMenuItem}
+            />
+          </Menu>
+        </div>
+        <div style={styledEventFormContainer} className="scrollbar">
+          <EventTypeSelector eventType={eventType} onChange={this.onChange} />
+          {(eventType === "gold" || eventType === "debt") && (
+            <EventGoldForm
+              goldEvent={goldEvent}
+              descriptionEvent={descriptionEvent}
+              onChange={this.onChange}
+              eventType={eventType}
+            />
+          )}
+          {eventType === "item" && (
+            <EventItemForm
+              descriptionEvent={descriptionEvent}
+              quantityEvent={quantityEvent}
+              itemEvent={itemEvent}
+              onChange={this.onChange}
+            />
+          )}
+          <EventViewers
+            viewers={viewers}
+            removeToViewer={this.removeToViewer}
+            addToViewer={this.addToViewer}
+            addAllViewers={this.addAllViewers}
+            removeAllViewers={this.removeAllViewers}
           />
-        )}
-        {eventType === "item" && (
-          <EventItemForm
-            descriptionEvent={descriptionEvent}
-            quantityEvent={quantityEvent}
-            itemEvent={itemEvent}
-            onChange={this.onChange}
-          />
-        )}
-        {eventType === "draw" && <Fragment />}
-        <EventViewers
-          viewers={viewers}
-          removeToViewer={this.removeToViewer}
-          addToViewer={this.addToViewer}
-        />
-        <button onClick={this.createEvent}>Create</button>
+          <div style={styledEventButtonContainer}>
+            <Button
+              primary
+              onClick={this.createEvent}
+            >
+              Create
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -179,6 +251,7 @@ const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   gameMaster: store.appState.gameMaster,
   eventHistory: store.events.history,
+  storyCharacters: store.team.characters,
 });
 
 export default connect(mapStateToProps)(EventPanel);
