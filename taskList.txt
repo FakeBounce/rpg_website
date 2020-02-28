@@ -134,5 +134,6 @@ v3.0.0
 66) Panneau de quête style onglet bestiaire
 67) Drag n drop carte /  molette zoom
 68) Salons de chat
+69) Possibiliter de générer un sort après un jet de magie
 
 BDD : https://rpgwebsite-8a535.firebaseio.com/

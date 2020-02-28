@@ -1,13 +1,45 @@
 import React, { PureComponent } from "react";
 
-import { spellModeList, spellTypeList, colors } from "./Constants";
+import { spellModeList, spellTypeList, toSemanticUIOptions } from "./Constants";
 import { connect } from "react-redux";
+import { Button, Select, Input } from "semantic-ui-react";
+import { cursorPointer } from "./StyleConstants";
 
 const styledSpellContainer = {
   position: "relative",
-  float: "left",
-  display: "inline-block",
-  overflowY: "auto",
+  display: "flex",
+  flexDirection: "column",
+  padding: 10,
+};
+
+const styledFormContainer = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginTop: 5,
+  marginBottom: 5,
+};
+
+const styledFormButtonContainer = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: 20,
+  marginBottom: 20,
+};
+
+const styledFormResultContainer = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: 10,
+};
+
+const styledFormButton = {
+  height: 25,
+  padding: "5px 15px",
+  cursor: cursorPointer,
 };
 
 const noSpell = {
@@ -172,57 +204,48 @@ class SpellGenerator extends PureComponent {
 
     return (
       <div style={styledSpellContainer} className="scrollbar">
-        <input
-          type="number"
-          placeholder="Valeur du dé"
-          name="rollValue"
-          value={rollValue}
-          onChange={e => {
-            this.onChange(e.target.name, parseInt(e.target.value, 10));
-          }}
-        />
-        <select
-          value={generatedSpellType}
-          onChange={e => {
-            this.onChange("generatedSpellType", e.target.value);
-          }}
-        >
-          {spellTypeList.map(stl => {
-            return (
-              <option key={stl} value={stl}>
-                {stl}
-              </option>
-            );
-          })}
-        </select>
-        <select
-          value={generatedSpellMode}
-          onChange={e => {
-            this.onChange("generatedSpellMode", e.target.value);
-          }}
-        >
-          {spellModeList.map(stl => {
-            return (
-              <option key={stl} value={stl}>
-                {stl}
-              </option>
-            );
-          })}
-        </select>
-        <button
-          onClick={this.generateSpell}
-          style={{
-            background: `url('/common/button2.png') no-repeat`,
-            backgroundSize: "cover",
-            height: 25,
-            color: colors.text,
-            padding: "5px 15px",
-          }}
-        >
-          Generate spell
-        </button>
+        <div style={styledFormContainer}>
+          Score made :
+          <Input
+            focus
+            type="number"
+            placeholder="Valeur du dé"
+            name="rollValue"
+            value={rollValue}
+            onChange={e => {
+              this.onChange(e.target.name, parseInt(e.target.value, 10));
+            }}
+          />
+        </div>
+        <div style={styledFormContainer}>
+          Element desired :
+          <Select
+            value={generatedSpellType}
+            onChange={(e, {value}) => {
+              this.onChange("generatedSpellType", value);
+            }}
+            placeholder="Select your country"
+            options={toSemanticUIOptions(spellTypeList)}
+          />
+        </div>
+        <div style={styledFormContainer}>
+          Kind of spell :
+          <Select
+            value={generatedSpellMode}
+            onChange={(e, {value}) => {
+              this.onChange("generatedSpellMode", value);
+            }}
+            placeholder="Select your country"
+            options={toSemanticUIOptions(spellModeList)}
+          />
+        </div>
+        <div style={styledFormButtonContainer}>
+          <Button primary onClick={this.generateSpell} style={styledFormButton}>
+            Generate spell
+          </Button>
+        </div>
         {generatedSpell !== null && (
-          <div>
+          <div style={styledFormResultContainer}>
             <div>Name : {generatedSpell.name}</div>
             <div>Mode : {generatedSpell.mode}</div>
             <div>Type : {generatedSpell.type}</div>

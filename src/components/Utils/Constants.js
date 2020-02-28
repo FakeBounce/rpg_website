@@ -421,6 +421,8 @@ export const musics = {
     "Combat_colisee_1",
     "Combat_colisee_2",
     "Combat_colisee_3",
+    "Duel_intense",
+    "Embuscade",
   ],
   calm: [
     "Auberge",
@@ -446,8 +448,6 @@ export const musics = {
     "Cimetierre",
     "Death",
     "Drame",
-    "Duel_intense",
-    "Embuscade",
     "Foret_dark",
     "Foret_sombre",
     "Foret_mysterieux",
@@ -616,6 +616,14 @@ export const spellTypeList = [
   "Sacré",
 ];
 export const spellModeList = ["Offensif", "Défensif", "Failed"];
+
+export const toSemanticUIOptions = (options = []) => {
+  return options.map(o => ({
+    key: o,
+    value: o,
+    text: o,
+  }));
+};
 
 export const bestiary = [
   {
