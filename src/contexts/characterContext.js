@@ -33,16 +33,15 @@ function CharacterProvider(props) {
       setName(props.name);
       setIcon(props.icon);
       setIconPath(props.iconPath);
-      setDescription(props.iconPath);
-      setSkills(props.iconPath);
-      setAbilites(props.iconPath);
-      setWeapons(props.iconPath);
-      setItems(props.iconPath);
-      setTotalPointsleft(props.name);
-      setAttributes(props.name);
+      setDescription(props.description);
+      setSkills(props.skills);
+      setAbilites(props.abilities);
+      setWeapons(props.weapons);
+      setItems(props.items);
+      setAttributes(props.attributes);
       setTotalPointsleft(props.totalPointsleft);
     }
-  }, [props.isAnUpdate]);
+  }, [props]);
 
   const onChangeAttribute = (name, value) => {
     let pointsLeft = 450;
