@@ -1,6 +1,6 @@
 import {
   call,
-  delay,
+  // delay,
   put,
   select,
   take,
@@ -11,18 +11,18 @@ import {
 import * as actionsTypesChat from "../actionsTypes/actionsTypesChat";
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
 import * as actionsChat from "../actions/actionsChat";
-import * as actionsAppState from "../actions/actionsAppState";
-import { getTranslations } from "../../i18n";
+// import * as actionsAppState from "../actions/actionsAppState";
+// import { getTranslations } from "../../i18n";
 import { currentStorySelector } from "../../selectors";
 import firebase from "firebase";
 import { eventChannel } from "redux-saga";
 
-function* chatError(error = getTranslations("error.transfer.failed")) {
-  yield put(actionsAppState.printError(error));
-
-  yield delay(5000);
-  yield put(actionsAppState.printError(""));
-}
+// function* chatError(error = getTranslations("error.transfer.failed")) {
+//   yield put(actionsAppState.printError(error));
+//
+//   yield delay(5000);
+//   yield put(actionsAppState.printError(""));
+// }
 
 function chatHistoryChannel(path) {
   const ref = firebase

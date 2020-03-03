@@ -2,7 +2,7 @@ import {
   call,
   put,
   select,
-  delay,
+  // delay,
   takeLatest,
   take,
   takeEvery,
@@ -10,18 +10,18 @@ import {
 
 import * as actionsTypesEvents from "../actionsTypes/actionsTypesEvents";
 import * as actionsEvents from "../actions/actionsEvents";
-import * as actionsAppState from "../actions/actionsAppState";
-import { getTranslations } from "../../i18n";
+// import * as actionsAppState from "../actions/actionsAppState";
+// import { getTranslations } from "../../i18n";
 import { currentStorySelector } from "../../selectors";
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
 import { onValueChannel } from "./api";
 
-function* eventsError(error = getTranslations("error.transfer.failed")) {
-  yield put(actionsAppState.printError(error));
-
-  yield delay(5000);
-  yield put(actionsAppState.printError(""));
-}
+// function* eventsError(error = getTranslations("error.transfer.failed")) {
+//   yield put(actionsAppState.printError(error));
+//
+//   yield delay(5000);
+//   yield put(actionsAppState.printError(""));
+// }
 
 function* listenCurrentEvent() {
   const currentStory = yield select(currentStorySelector);
