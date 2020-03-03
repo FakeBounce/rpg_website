@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import firebase from "firebase";
-import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
-import { heightHeader, heightLeft, widthLeft } from "../Utils/StyleConstants";
-import { colors } from "../Utils/Constants";
+import {
+  cursorPointer,
+  heightHeader,
+  heightLeft,
+  widthLeft,
+} from "../Utils/StyleConstants";
+import { chatTabs, colors } from "../Utils/Constants";
 import ChatBar from "./ChatBar";
 import ChatDicesRow from "./ChatDicesRow";
 import ChatHistory from "./ChatHistory";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CALL_PRINT_ERROR } from "../../redux/actionsTypes/actionsTypesAppState";
 import { useChatInputContext } from "../../contexts/chatInputContext";
+import { Menu } from "semantic-ui-react";
 
 const styledChatPanel = {
   width: widthLeft / 2,
@@ -21,10 +26,82 @@ const styledChatPanel = {
   fontSize: 15,
 };
 
-const ChatPanel = props => {
+const styledChatMenuItem = {
+  width: 75,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: 0,
+  backgroundColor: colors.background,
+  color: "white",
+  cursor: cursorPointer,
+};
+
+const ChatPanel = () => {
   const [gmCommands, setGmCommands] = useState(false);
+  const [activeChatTab, setActiveChatTab] = useState("");
+  const [whispersTab, setWhispersTab] = useState([]);
   const [bonus, setBonus] = useState(0);
   const { chatInput, setChatInput } = useChatInputContext();
+  const dispatch = useDispatch();
+  const {
+    currentStory,
+    isGameMaster,
+    gameMaster,
+    pseudo,
+    uid,
+    character,
+    storyCharacters,
+    users,
+    history,
+  } = useSelector(store => ({
+    currentStory: store.appState.currentStory,
+    isGameMaster: store.appState.isGameMaster,
+    gameMaster: store.appState.gameMaster,
+    pseudo: store.userInfos.pseudo,
+    uid: store.userInfos.uid,
+    character: store.character,
+    storyCharacters: store.team.characters,
+    history: store.chat.history,
+    users: store.appState.users,
+  }));
+
+  const getWhispers = () => {
+    let privateTabs = [...whispersTab];
+    Object.keys(history).map(key => {
+      if (history[key].viewers && isAViewer(history[key].viewers)) {
+        history[key].viewers.map(v => {
+          if (v !== pseudo) {
+            privateTabs.push(v);
+          }
+          return null;
+        });
+      }
+      return null;
+    });
+    setWhispersTab(privateTabs);
+  };
+
+  useEffect(() => {
+    getWhispers();
+  }, [history]);
+
+  const isAViewer = viewersTab => {
+    const { pseudo, isGameMaster } = this.props;
+    let canSeeMessage = false;
+
+    viewersTab.map(viewer => {
+      if ((viewer === "gm" && isGameMaster) || viewer === pseudo) {
+        canSeeMessage = true;
+      }
+      return null;
+    });
+    return canSeeMessage;
+  };
+
+  const dispatchCallPrintError = payload => {
+    dispatch({ type: CALL_PRINT_ERROR, payload });
+  };
 
   const toggleGMCommands = () => {
     setGmCommands(!gmCommands);
@@ -41,7 +118,6 @@ const ChatPanel = props => {
   };
 
   const talkInChat = () => {
-    const { pseudo, character, isGameMaster } = props;
     let noMagicWord = true;
     if (chatInput !== "") {
       if (chatInput.length >= 3) {
@@ -188,8 +264,6 @@ const ChatPanel = props => {
   };
 
   const whisperPlayerAction = () => {
-    const { pseudo, character, users, isGameMaster } = props;
-
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput.trim().split("/w ");
     let hasWhisperAction = false;
@@ -226,7 +300,6 @@ const ChatPanel = props => {
   };
 
   const whisperGMAction = () => {
-    const { pseudo, character, users, gameMaster, isGameMaster } = props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput.trim().split("/gmw ");
     let hasWhisperAction = false;
@@ -256,7 +329,6 @@ const ChatPanel = props => {
   };
 
   const whisperTeamAction = () => {
-    const { users, gameMaster, isGameMaster, character } = props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput.trim().split("/tmw ");
     let hasWhisperAction = false;
@@ -285,7 +357,6 @@ const ChatPanel = props => {
   };
 
   const diceAction = (limiter, viewers = null) => {
-    const { character, isGameMaster } = props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
@@ -304,13 +375,6 @@ const ChatPanel = props => {
   };
 
   const sendGoldGMAction = () => {
-    const {
-      character,
-      uid,
-      currentStory,
-      isGameMaster,
-      dispatchCallPrintError,
-    } = props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
@@ -349,15 +413,6 @@ const ChatPanel = props => {
   };
 
   const sendGoldAction = () => {
-    const {
-      pseudo,
-      storyCharacters,
-      character,
-      uid,
-      currentStory,
-      isGameMaster,
-      dispatchCallPrintError,
-    } = props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
@@ -430,15 +485,6 @@ const ChatPanel = props => {
   };
 
   const sendTeamGoldAction = () => {
-    const {
-      pseudo,
-      storyCharacters,
-      character,
-      currentStory,
-      gameMaster,
-      isGameMaster,
-      dispatchCallPrintError,
-    } = props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const splittedString = chatInput
       .toLowerCase()
@@ -497,10 +543,9 @@ const ChatPanel = props => {
   };
 
   const attributeAction = (attribute, isGm = false) => {
-    const { pseudo, character, isGameMaster } = props;
     const realPseudo = isGameMaster ? "GM" : character.name;
     const dice = Math.floor(Math.random() * parseInt(100, 10) + 1);
-    let message = "";
+    let message;
     let bonusMessage = "";
 
     if (bonus > 0) {
@@ -535,7 +580,6 @@ const ChatPanel = props => {
   };
 
   const sendChatInput = (input, talking = "") => {
-    const { currentStory, dispatchCallPrintError } = props;
     firebase
       .database()
       .ref("/stories/" + currentStory + "/chat/")
@@ -550,7 +594,6 @@ const ChatPanel = props => {
   };
 
   const onDrop = picture => {
-    const { currentStory, dispatchCallPrintError } = props;
     const newPostKey = firebase
       .database()
       .ref("/stories/" + currentStory + "/chat/")
@@ -598,7 +641,33 @@ const ChatPanel = props => {
 
   return (
     <div style={styledChatPanel}>
-      <ChatHistory />
+      <Menu attached="top" tabular>
+        {chatTabs.map(ct => {
+          return (
+            <Menu.Item
+              name={ct}
+              active={activeChatTab === ct.toLowerCase()}
+              onClick={() => {
+                setActiveChatTab(ct);
+              }}
+              style={styledChatMenuItem}
+            />
+          );
+        })}
+        {whispersTab.map(ct => {
+          return (
+            <Menu.Item
+              name={ct}
+              active={activeChatTab === ct.toLowerCase()}
+              onClick={() => {
+                setActiveChatTab(ct);
+              }}
+              style={styledChatMenuItem}
+            />
+          );
+        })}
+      </Menu>
+      <ChatHistory activeChatTab={activeChatTab} />
       <ChatDicesRow
         bonus={bonus}
         gmCommands={gmCommands}
@@ -616,26 +685,4 @@ const ChatPanel = props => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-      dispatchCallPrintError: payload => {
-      dispatch({ type: CALL_PRINT_ERROR, payload });
-    },
-  };
-};
-
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-  isGameMaster: store.appState.isGameMaster,
-  gameMaster: store.appState.gameMaster,
-  pseudo: store.userInfos.pseudo,
-  uid: store.userInfos.uid,
-  character: store.character,
-  storyCharacters: store.team.characters,
-});
-
-ChatPanel.propTypes = {
-  dispatchCallPrintError: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChatPanel);
+export default ChatPanel;

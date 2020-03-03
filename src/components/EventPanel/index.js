@@ -1,13 +1,14 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import firebase from "firebase";
 import EventViewers from "./EventViewers";
 import EventItemForm from "./EventItemForm";
 import EventGoldForm from "./EventGoldForm";
 import EventTypeSelector from "./EventTypeSelector";
-import { cursorPointer, heightLeft, widthLeft } from "../Utils/StyleConstants";
+import { heightLeft } from "../Utils/StyleConstants";
 import { colors } from "../Utils/Constants";
 import { connect } from "react-redux";
-import { Button, Menu } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
+import EventHeader from "./EventHeader";
 
 const styledEventContainer = {
   width: "50%",
@@ -28,32 +29,12 @@ const styledEventFormContainer = {
   overflowY: "auto",
 };
 
-const styledEventMenuContainer = {
-  marginTop: 10,
-  marginBottom: 10,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
 const styledEventButtonContainer = {
   marginTop: 10,
   marginBottom: 20,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-};
-
-const styledEventMenuItem = {
-  width: 150,
-  marginLeft: widthLeft / 4 - 75,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: 0,
-  backgroundColor: colors.background,
-  color: "white",
-  cursor: cursorPointer,
 };
 
 class EventPanel extends Component {
@@ -198,16 +179,8 @@ class EventPanel extends Component {
       viewers,
     } = this.state;
     return (
-      <div style={styledEventContainer} className="scrollbar">
-        <div style={styledEventMenuContainer}>
-          <Menu attached="top" tabular>
-            <Menu.Item
-              name={"Events"}
-              active={true}
-              style={styledEventMenuItem}
-            />
-          </Menu>
-        </div>
+      <div style={styledEventContainer}>
+        <EventHeader />
         <div style={styledEventFormContainer} className="scrollbar">
           <EventTypeSelector eventType={eventType} onChange={this.onChange} />
           {(eventType === "gold" || eventType === "debt") && (
@@ -234,10 +207,7 @@ class EventPanel extends Component {
             removeAllViewers={this.removeAllViewers}
           />
           <div style={styledEventButtonContainer}>
-            <Button
-              primary
-              onClick={this.createEvent}
-            >
+            <Button primary onClick={this.createEvent}>
               Create
             </Button>
           </div>

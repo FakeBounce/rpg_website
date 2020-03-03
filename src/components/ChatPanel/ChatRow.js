@@ -20,10 +20,10 @@ const styles = {
 
 class ChatRow extends Component {
   render() {
-    const { pseudo, message, image, characterName } = this.props;
+    const { pseudo, message, image, characterName, color } = this.props;
 
     return (
-      <div style={styles.ChatRow}>
+      <div style={{ ...styles.ChatRow, color }}>
         {characterName
           ? `@${characterName}: ${message}`
           : pseudo
@@ -46,6 +46,7 @@ ChatRow.defaultProps = {
 };
 
 ChatRow.propTypes = {
+  color: PropTypes.string,
   characterName: PropTypes.string,
   image: PropTypes.string,
   message: PropTypes.string.isRequired,

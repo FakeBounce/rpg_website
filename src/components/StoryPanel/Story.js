@@ -22,9 +22,9 @@ const styles = {
 
 const Story = ({ wallpaper, triggerError, name, chooseStory }) => {
   const [icon, setIcon] = useState("");
-  let storageRef = firebase.storage().ref();
 
   useEffect(() => {
+    let storageRef = firebase.storage().ref();
     storageRef
       .child(wallpaper)
       .getDownloadURL()
@@ -35,7 +35,7 @@ const Story = ({ wallpaper, triggerError, name, chooseStory }) => {
         // Handle any errors
         triggerError(error);
       });
-  }, [wallpaper]);
+  }, [wallpaper, triggerError]);
 
   return (
     <div
