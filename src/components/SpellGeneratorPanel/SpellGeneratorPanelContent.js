@@ -1,9 +1,14 @@
 import React, { PureComponent } from "react";
 
-import { spellModeList, spellTypeList, toSemanticUIOptions } from "./Constants";
+import {
+  spellModeList,
+  spellTypeList,
+  toSemanticUIOptions,
+} from "../Utils/Constants";
 import { connect } from "react-redux";
-import { Button, Select, Input, Progress } from "semantic-ui-react";
-import { cursorPointer, widthLeft } from "./StyleConstants";
+import { Button, Select, Input } from "semantic-ui-react";
+import { cursorPointer } from "../Utils/StyleConstants";
+import SpellGeneratorPanelResult from "./SpellGeneratorPanelResult";
 
 const styledSpellContainer = {
   position: "relative",
@@ -29,15 +34,6 @@ const styledFormButtonContainer = {
   marginBottom: 20,
 };
 
-const styledFormResultContainer = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  marginTop: 10,
-  paddingBottom: 50,
-};
-
 const styledFormButton = {
   height: 25,
   padding: "5px 15px",
@@ -51,7 +47,7 @@ const noSpell = {
   type: "None",
 };
 
-class SpellGenerator extends PureComponent {
+class SpellGeneratorPanelContent extends PureComponent {
   state = {
     generatedSpell: null,
     generatedSpellType: "Feu",
@@ -245,57 +241,7 @@ class SpellGenerator extends PureComponent {
           </Button>
         </div>
         {generatedSpell !== null && (
-          <div style={styledFormResultContainer}>
-            <div
-              style={{
-                width: `${widthLeft / 4}px`,
-                height: `${(widthLeft / 4) * 1.388}px`,
-                display: "block",
-                backgroundImage: "url(./quests/empty_notice.png)",
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                paddingLeft: 10,
-                paddingRight: 10,
-                paddingTop: 35,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 20,
-                  marginBottom: 20,
-                  color: "black",
-                  textAlign: "center",
-                }}
-              >
-                {generatedSpell.name}
-              </div>
-              <div
-                style={{
-                  marginBottom: 20,
-                  color: "black",
-                  textAlign: "center",
-                }}
-              >
-                {generatedSpell.mode}
-              </div>
-              <div
-                style={{
-                  marginBottom: 20,
-                  color: "black",
-                  textAlign: "center",
-                }}
-              >
-                {generatedSpell.type}
-              </div>
-              <Progress
-                value={generatedSpell.rarity}
-                total="10"
-                progress="ratio"
-                color="red"
-              />
-            </div>
-          </div>
+          <SpellGeneratorPanelResult generatedSpell={generatedSpell} />
         )}
       </div>
     );
@@ -306,4 +252,4 @@ const mapStateToProps = store => ({
   items: store.items.items,
 });
 
-export default connect(mapStateToProps)(SpellGenerator);
+export default connect(mapStateToProps)(SpellGeneratorPanelContent);
