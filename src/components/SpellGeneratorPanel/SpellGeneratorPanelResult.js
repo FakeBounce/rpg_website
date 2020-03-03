@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import { Progress } from "semantic-ui-react";
 import { widthLeft } from "../Utils/StyleConstants";
 import PropTypes from "prop-types";
@@ -39,30 +38,26 @@ const styledFormResultItem = {
   textAlign: "center",
 };
 
-class SpellGeneratorPanelResult extends Component {
-  render() {
-    const { generatedSpell } = this.props;
-
-    return (
-      <div style={styledFormResultContainer}>
-        <div style={styledImageContainer}>
-          <div style={styledFormResultFirstItem}>{generatedSpell.name}</div>
-          <div style={styledFormResultItem}>{generatedSpell.mode}</div>
-          <div style={styledFormResultItem}>{generatedSpell.type}</div>
-          <Progress
-            value={generatedSpell.rarity}
-            total="10"
-            progress="ratio"
-            color="red"
-          />
-        </div>
+const SpellGeneratorPanelResult = ({ generatedSpell }) => {
+  return (
+    <div style={styledFormResultContainer}>
+      <div style={styledImageContainer}>
+        <div style={styledFormResultFirstItem}>{generatedSpell.name}</div>
+        <div style={styledFormResultItem}>{generatedSpell.mode}</div>
+        <div style={styledFormResultItem}>{generatedSpell.type}</div>
+        <Progress
+          value={generatedSpell.rarity}
+          total="10"
+          progress="ratio"
+          color="red"
+        />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 SpellGeneratorPanelResult.propTypes = {
   generatedSpell: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps)(SpellGeneratorPanelResult);
+export default SpellGeneratorPanelResult;
