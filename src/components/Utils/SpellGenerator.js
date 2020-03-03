@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 import { spellModeList, spellTypeList, toSemanticUIOptions } from "./Constants";
 import { connect } from "react-redux";
 import { Button, Select, Input, Progress } from "semantic-ui-react";
-import { cursorPointer } from "./StyleConstants";
+import { cursorPointer, widthLeft } from "./StyleConstants";
 
 const styledSpellContainer = {
   position: "relative",
@@ -248,8 +248,8 @@ class SpellGenerator extends PureComponent {
           <div style={styledFormResultContainer}>
             <div
               style={{
-                width: 165,
-                height: 230,
+                width: `${widthLeft / 4}px`,
+                height: `${(widthLeft / 4) * 1.388}px`,
                 display: "block",
                 backgroundImage: "url(./quests/empty_notice.png)",
                 backgroundSize: "cover",
