@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import firebase from "firebase";
+import { DraggableCore } from "react-draggable";
 import "./Grid.css";
 
 import {
@@ -13,7 +15,6 @@ import {
 import MapZoom from "./MapZoom";
 import MapArrows from "./MapArrows";
 import MapGrid from "./MapGrid";
-import { connect } from "react-redux";
 import { CALL_PRINT_ERROR } from "../../redux/actionsTypes/actionsTypesAppState";
 
 const styledMap = {
@@ -90,12 +91,23 @@ class MapGenerator extends PureComponent {
       });
   };
 
+  eventLogger = (e, data) => {
+    console.log("Event: ", e);
+    console.log("Data: ", data);
+  };
+
   render() {
     return (
       <div className="map" style={styledMap}>
         <MapZoom />
         <MapArrows />
-        <div
+        <DraggableCore
+          onDrag={e => {
+            console.log("e", e);
+          }}
+          onStop={e => {
+            console.log("e2", e);
+          }}
           className="map-mover"
           style={{
             width: totalRows * gridDimension,
@@ -105,7 +117,7 @@ class MapGenerator extends PureComponent {
           }}
         >
           <MapGrid setTexture={this.setTexture} />
-        </div>
+        </DraggableCore>
       </div>
     );
   }
@@ -113,7 +125,7 @@ class MapGenerator extends PureComponent {
 
 const mapDispatchToProps = dispatch => {
   return {
-      dispatchCallPrintError: payload => {
+    dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
     },
   };

@@ -398,6 +398,8 @@ export const towns = [
   },
 ];
 
+export const chatTabs = ["All", "GM", "TEAM"];
+
 export const musics = {
   boss: [
     "Boss_crescendo",
@@ -1012,6 +1014,10 @@ export const colors = {
   beastSelected: "red",
   PNJSelected: "red",
   GMSelected: "purple",
+  chatAll: "white",
+  chatTeam: "#63B3ED",
+  chatGM: "#F6AD55",
+  chatWhisper: "#F687B3",
 };
 
 export const statusList = [

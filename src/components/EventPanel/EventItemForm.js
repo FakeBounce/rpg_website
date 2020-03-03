@@ -5,6 +5,7 @@ import { sortAlphabetical } from "../Utils/Functions";
 import SelectMapper from "../Utils/SelectMapper";
 import { itemEventTypes } from "../Utils/Constants";
 import { connect } from "react-redux";
+import { Input } from "semantic-ui-react";
 
 const styledItemList = {
   width: "100%",
@@ -13,6 +14,16 @@ const styledItemList = {
   float: "left",
   position: "relative",
   overflowY: "auto",
+};
+
+const styledEventItemFormInputsContainer = {
+  marginTop: 10,
+  marginBottom: 10,
+  paddingLeft: 10,
+  paddingRight: 10,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
 };
 
 class EventItemForm extends PureComponent {
@@ -97,10 +108,11 @@ class EventItemForm extends PureComponent {
       <div>
         <div>
           Filter :
-          <input
+          <Input
             type="text"
             value={filterText}
             name="filterText"
+            placeholder={"Name to filter"}
             onChange={e => {
               this.onChangeFilter(e.target.name, e.target.value);
             }}
@@ -130,22 +142,27 @@ class EventItemForm extends PureComponent {
             );
           })}
         </div>
-        <input
-          type="number"
-          value={quantityEvent}
-          name="quantityEvent"
-          onChange={e => {
-            onChange(e.target.name, e.target.value);
-          }}
-        />
-        <input
-          type="text"
-          value={descriptionEvent}
-          name="descriptionEvent"
-          onChange={e => {
-            onChange(e.target.name, e.target.value);
-          }}
-        />
+        <div style={styledEventItemFormInputsContainer}>
+          <Input
+            type="number"
+            value={quantityEvent}
+            name="quantityEvent"
+            onChange={e => {
+              onChange(e.target.name, e.target.value);
+            }}
+            style={{ maxWidth: "40%" }}
+          />
+          <Input
+            type="text"
+            value={descriptionEvent}
+            name="descriptionEvent"
+            onChange={e => {
+              onChange(e.target.name, e.target.value);
+            }}
+            placeholder="Event description"
+            style={{ maxWidth: "50%" }}
+          />
+        </div>
       </div>
     );
   }
