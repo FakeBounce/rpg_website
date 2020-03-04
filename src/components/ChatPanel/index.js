@@ -730,31 +730,38 @@ const ChatPanel = () => {
                     setChatInput(`/gmw `);
                   }
                 }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                {ctKey}
                 {whispersTab[ctKey].message > 0 && (
                   <Button
                     circular
                     style={{
                       color: colors.text,
                       backgroundColor: colors.red300,
-                      padding: 5,
+                      padding: 2,
                       fontSize: 10,
                       borderRadius: 50,
-                      width: 20,
+                      width: 15,
+                      height: 15,
                       cursor: cursorPointer,
                     }}
                   >
                     {whispersTab[ctKey].message}
                   </Button>
                 )}
+                {ctKey}
               </div>
               <Button
                 circular
                 style={{
                   position: "absolute",
-                  top: 0,
-                  right: -5,
+                  top: -2,
+                  left: -5,
                   maxWidth: 14,
                   maxHeight: 14,
                   padding: 0,
