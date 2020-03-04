@@ -12,7 +12,6 @@ import {
 import { setIsAuth, setIsAdmin } from "../../redux/actions/actionsAppState";
 import {
   CALL_GET_ALL_STORIES,
-  CALL_LISTEN_STORY_USERS,
   CALL_PRINT_ERROR,
 } from "../../redux/actionsTypes/actionsTypesAppState";
 import { Button } from "semantic-ui-react";
@@ -45,7 +44,6 @@ class IsNotAuth extends Component {
       dispatchSetIsAuth,
       dispatchSetIsAdmin,
       dispatchCallGetStories,
-      dispatchCallListenUsers,
       dispatchCallPrintError,
     } = this.props;
     const { email, password } = this.state;
@@ -68,7 +66,6 @@ class IsNotAuth extends Component {
               pseudo: snapshot.val().pseudo,
               characters: snapshot.val().characters,
             });
-            dispatchCallListenUsers();
             dispatchCallGetStories();
             localStorage.setItem(
               "appState",
@@ -97,7 +94,6 @@ class IsNotAuth extends Component {
       dispatchSetUserInfos,
       dispatchSetIsAuth,
       dispatchCallGetStories,
-      dispatchCallListenUsers,
     } = this.props;
     const { email, password } = this.state;
     firebase
@@ -121,7 +117,6 @@ class IsNotAuth extends Component {
           password,
         });
         dispatchSetUid(firebase.auth().currentUser.uid);
-        dispatchCallListenUsers();
         dispatchCallGetStories();
       })
       .catch(error => {
@@ -269,10 +264,7 @@ const mapDispatchToProps = dispatch => {
     dispatchCallGetStories: () => {
       dispatch({ type: CALL_GET_ALL_STORIES });
     },
-    dispatchCallListenUsers: () => {
-      dispatch({ type: CALL_LISTEN_STORY_USERS });
-    },
-      dispatchCallPrintError: payload => {
+    dispatchCallPrintError: payload => {
       dispatch({ type: CALL_PRINT_ERROR, payload });
     },
     dispatchSetAllCharacters: payload => {
@@ -287,7 +279,6 @@ IsNotAuth.propTypes = {
   dispatchSetIsAuth: PropTypes.func.isRequired,
   dispatchSetIsAdmin: PropTypes.func.isRequired,
   dispatchCallGetStories: PropTypes.func.isRequired,
-  dispatchCallListenUsers: PropTypes.func.isRequired,
   dispatchCallPrintError: PropTypes.func.isRequired,
   dispatchSetAllCharacters: PropTypes.func.isRequired,
 };

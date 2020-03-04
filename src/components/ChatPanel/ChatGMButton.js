@@ -9,7 +9,7 @@ const styledChatButtonGMActive = {
   display: 'inline-block',
   textAlign: 'center',
   padding: '0px',
-  backgroundColor: colors.GMSelected,
+  backgroundColor: colors.purple400,
   color: colors.text,
 };
 

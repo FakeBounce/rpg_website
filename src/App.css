@@ -61,3 +61,25 @@ button, input, select {
 {
   border: 2px solid white;
 }
+
+.dice-result-success
+{
+  color: #38A169;
+}
+
+.dice-result-fail
+{
+  color: #C53030
+}
+
+.dice-status-success
+{
+  text-decoration: underline;
+  color: #38A169;
+}
+
+.dice-status-fail
+{
+  text-decoration: underline;
+  color: #C53030;
+}

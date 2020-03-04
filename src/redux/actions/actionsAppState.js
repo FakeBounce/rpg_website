@@ -55,6 +55,13 @@ export const setAllStories = payload => {
   };
 };
 
+export const callListenStoryUsers = payload => {
+  return {
+    type: actionsTypesAppState.CALL_LISTEN_STORY_USERS,
+    payload,
+  };
+};
+
 export const setStoryUsers = payload => {
   return {
     type: actionsTypesAppState.SET_STORY_USERS,

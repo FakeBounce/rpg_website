@@ -398,7 +398,7 @@ export const towns = [
   },
 ];
 
-export const chatTabs = ["All", "GM", "TEAM"];
+export const chatTabs = ["All", "Team", "Dices"];
 
 export const musics = {
   boss: [
@@ -1008,16 +1008,20 @@ export const colors = {
   background: "#34495e",
   backgroundSelected: "#547494",
   text: "#f3f3f3",
-  textSeen: "yellow",
+  textSeen: "#F6E05E",
   borders: "#f3f3f3",
-  selected: "red",
-  beastSelected: "red",
-  PNJSelected: "red",
-  GMSelected: "purple",
+  red300: "#E53E3E",
+  purple400: "#9F7AEA",
   chatAll: "white",
   chatTeam: "#63B3ED",
   chatGM: "#F6AD55",
+  yellow300: "#F6E05E",
+  pink300: "#F687B3",
   chatWhisper: "#F687B3",
+  backgroundHealthbar: "#ddd",
+  backgroundBar: "#c54",
+  backgroundHit: "rgba(255,255,255,0.6)",
+  healthBarText: "black",
 };
 
 export const statusList = [

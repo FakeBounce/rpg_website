@@ -27,7 +27,7 @@ const styledTripleTabSelected = {
   display: 'inline-block',
   position: 'relative',
   cursor: cursorPointer,
-  color: 'red',
+  color: colors.red300,
 };
 
 class ShopHeaderBlacksmith extends Component {

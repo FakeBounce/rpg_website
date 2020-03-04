@@ -5,6 +5,7 @@ import {
   take,
   takeEvery,
   call,
+  all,
 } from "redux-saga/effects";
 
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
@@ -62,11 +63,11 @@ export function* watchCallGetStories() {
   yield takeLatest(actionsTypesAppState.CALL_GET_ALL_STORIES, getStories);
 }
 
-function* listenStoryUsers() {
-  const channel = yield call(onValueChannel, "/users");
+export function* listenStoryUser(userId) {
+  const channel = yield call(onValueChannel, `/users/${userId}`);
 
   yield takeEvery(channel, function*(data) {
-    yield put(actionsAppState.setStoryUsers(data));
+    yield put(actionsAppState.setStoryUsers({ [userId]: data }));
   });
 
   yield take([
@@ -74,6 +75,12 @@ function* listenStoryUsers() {
     actionsTypesAppState.RESET_APP,
   ]);
   channel.close();
+}
+
+function* listenStoryUsers({ payload }) {
+  if (payload && payload.length > 0) {
+    yield all(payload.map(userId => call(listenStoryUser, userId)));
+  }
 }
 
 export function* watchCallListenStoryUsers() {

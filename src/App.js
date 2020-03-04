@@ -10,7 +10,7 @@ import HasNoNickname from "./components/NicknameSelection/HasNoNickname";
 import CharacterSelection from "./components/CharacterSelection/CharacterSelection";
 import StoriesPanel from "./components/StoryPanel";
 
-import { defaultState } from "./components/Utils/Constants";
+import { colors, defaultState } from "./components/Utils/Constants";
 import GameScreen from "./containers/GameScreen";
 import SoundPlayer from "./components/SoundPlayer/SoundPlayer";
 import {
@@ -542,7 +542,7 @@ class App extends Component {
                   circular
                   inverted
                   name="shutdown"
-                  color="red"
+                  color={colors.red300}
                 />
               )}
               {isAuth && (
