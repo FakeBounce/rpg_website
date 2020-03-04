@@ -12,7 +12,7 @@ import * as actionsTypesTeam from "../actionsTypes/actionsTypesTeam";
 import * as actionsTeam from "../actions/actionsTeam";
 import * as actionsAppState from "../actions/actionsAppState";
 import { getTranslations } from "../../i18n";
-import { currentStorySelector } from "../../selectors";
+import { currentStorySelector, currentStoryUsers } from "../../selectors";
 import { onValueChannel } from "./api";
 import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
 
@@ -31,14 +31,21 @@ function* listenTeam() {
     );
 
     yield takeEvery(channel, function*(data) {
+      const currentUsers = yield select(currentStoryUsers);
       const charactersFromStories = [];
+      const usersFromStories = [];
       if (typeof data !== "undefined" && data) {
         Object.keys(data).map(key => {
           charactersFromStories.push(data[key].character);
+          usersFromStories.push(key);
           return null;
         });
       }
       yield put(actionsTeam.setTeamCharacters(charactersFromStories));
+      if(currentUsers.length !== usersFromStories.length)
+      {
+        yield put(actionsAppState.callListenStoryUsers(usersFromStories));
+      }
     });
 
     yield take([

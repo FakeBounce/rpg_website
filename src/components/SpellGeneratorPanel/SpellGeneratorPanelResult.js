@@ -2,6 +2,7 @@ import React from "react";
 import { Progress } from "semantic-ui-react";
 import { widthLeft } from "../Utils/StyleConstants";
 import PropTypes from "prop-types";
+import { colors } from "../Utils/Constants";
 
 const styledImageContainer = {
   width: `${widthLeft / 4}px`,
@@ -49,7 +50,7 @@ const SpellGeneratorPanelResult = ({ generatedSpell }) => {
           value={generatedSpell.rarity}
           total="10"
           progress="ratio"
-          color="red"
+          color={colors.red300}
         />
       </div>
     </div>

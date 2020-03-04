@@ -56,7 +56,7 @@ const styledInfos = {
 const styledTitle = {
   fontSize: 22,
   fontWeight: "bolder",
-  color: colors.beastSelected,
+  color: colors.red300,
 };
 
 const styledAttribute = {

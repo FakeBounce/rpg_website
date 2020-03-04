@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { defaultStory } from "../Utils/Constants";
+import { colors, defaultStory } from "../Utils/Constants";
 import firebase from "firebase";
 import { loadStories } from "../Utils/DatabaseFunctions";
 import NewStoryForm from "./NewStoryForm";
@@ -83,7 +83,7 @@ class NewStory extends Component {
             circular
             inverted
             name="cancel"
-            color="red"
+            color={colors.red300}
           />
           <h1 style={styledNewStoryTitle}>Create your story</h1>
         </div>

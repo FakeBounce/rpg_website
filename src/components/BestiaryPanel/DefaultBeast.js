@@ -5,6 +5,7 @@ import {
   widthLeftBestiary,
   widthTextBestiary,
 } from '../Utils/StyleConstants';
+import { colors } from "../Utils/Constants";
 
 const styledImage = {
   position: 'relative',
@@ -24,7 +25,7 @@ const styledContainer = {
 const styledTitle = {
   fontSize: 22,
   fontWeight: 'bolder',
-  color: 'red',
+  color: colors.red300,
 };
 
 class DefaultBeast extends Component {

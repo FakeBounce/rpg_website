@@ -77,7 +77,7 @@ const appState = (state = initialState, action) => {
     case SET_STORY_USERS: {
       return {
         ...state,
-        users: action.payload,
+        users: { ...state.users, ...action.payload },
       };
     }
     case RESET_APP: {

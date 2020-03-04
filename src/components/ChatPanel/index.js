@@ -14,7 +14,7 @@ import ChatHistory from "./ChatHistory";
 import { useDispatch, useSelector } from "react-redux";
 import { CALL_PRINT_ERROR } from "../../redux/actionsTypes/actionsTypesAppState";
 import { useChatInputContext } from "../../contexts/chatInputContext";
-import { Menu } from "semantic-ui-react";
+import { Menu, Button, Icon } from "semantic-ui-react";
 
 const styledChatPanel = {
   width: widthLeft / 2,
@@ -27,20 +27,21 @@ const styledChatPanel = {
 };
 
 const styledChatMenuItem = {
-  width: 75,
+  maxWidth: 80,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   padding: 0,
   backgroundColor: colors.background,
-  color: "white",
+  color: colors.text,
   cursor: cursorPointer,
 };
 
 const ChatPanel = () => {
   const [gmCommands, setGmCommands] = useState(false);
-  const [activeChatTab, setActiveChatTab] = useState("");
-  const [whispersTab, setWhispersTab] = useState([]);
+  const [activeChatTab, setActiveChatTab] = useState("All");
+  const [lastKey, setLastKey] = useState("");
+  const [whispersTab, setWhispersTab] = useState({});
   const [bonus, setBonus] = useState(0);
   const { chatInput, setChatInput } = useChatInputContext();
   const dispatch = useDispatch();
@@ -67,27 +68,41 @@ const ChatPanel = () => {
   }));
 
   const getWhispers = () => {
-    let privateTabs = [...whispersTab];
-    Object.keys(history).map(key => {
-      if (history[key].viewers && isAViewer(history[key].viewers)) {
-        history[key].viewers.map(v => {
-          if (v !== pseudo) {
-            privateTabs.push(v);
+    let privateTabs = { ...whispersTab };
+    const row = history[lastKey];
+    if (row.viewers && isAViewer(row.viewers)) {
+      if (row.channel && row.channel === "Private") {
+        row.viewers.map(v => {
+          if (
+            (v !== pseudo && !isGameMaster) ||
+            (isGameMaster && v.toLowerCase() !== "gm")
+          ) {
+            if (privateTabs[v] && privateTabs[v].message) {
+              privateTabs[v].message = privateTabs[v].message + 1;
+            } else {
+              privateTabs[v] = { message: 1 };
+            }
           }
           return null;
         });
       }
-      return null;
-    });
+    }
     setWhispersTab(privateTabs);
   };
 
   useEffect(() => {
-    getWhispers();
+    if (lastKey !== "") {
+      getWhispers();
+    }
+  }, [lastKey]);
+
+  useEffect(() => {
+    if (lastKey !== Object.keys(history)[Object.keys(history).length - 1]) {
+      setLastKey(Object.keys(history)[Object.keys(history).length - 1]);
+    }
   }, [history]);
 
   const isAViewer = viewersTab => {
-    const { pseudo, isGameMaster } = this.props;
     let canSeeMessage = false;
 
     viewersTab.map(viewer => {
@@ -258,6 +273,7 @@ const ChatPanel = () => {
           message: chatInput,
           pseudo,
           characterName: isGameMaster ? "GM" : character.name,
+          channel: "All",
         });
       }
     }
@@ -280,15 +296,11 @@ const ChatPanel = () => {
 
           sendChatInput(
             {
-              message: `@${realPseudo}, you say to @${users[key].pseudo} :${textToSend}`,
-              viewers: [pseudo],
-            },
-            "/w " + users[key].pseudo + " ",
-          );
-          sendChatInput(
-            {
-              message: `@${realPseudo} tells you secretly :${textToSend}`,
-              viewers: [users[key].pseudo],
+              message: `${textToSend}`,
+              channel: "Private",
+              sender: isGameMaster ? "gm" : realPseudo,
+              receiver: users[key].pseudo,
+              viewers: [isGameMaster ? "gm" : pseudo, users[key].pseudo],
             },
             "/w " + users[key].pseudo + " ",
           );
@@ -309,15 +321,11 @@ const ChatPanel = () => {
         if (key === gameMaster) {
           sendChatInput(
             {
-              message: `@${realPseudo}, you say to GM :${splittedString[1]}`,
-              viewers: [pseudo],
-            },
-            "/gmw ",
-          );
-          sendChatInput(
-            {
-              message: `@${realPseudo} tells GM secretly :${splittedString[1]}`,
-              viewers: [users[key].pseudo],
+              message: `${splittedString[1]}`,
+              sender: realPseudo,
+              receiver: "gm",
+              channel: "Private",
+              viewers: [pseudo, "gm"],
             },
             "/gmw ",
           );
@@ -347,6 +355,7 @@ const ChatPanel = () => {
       sendChatInput(
         {
           message: `@${realPseudo} tells to team :${splittedString[1]}`,
+          channel: "Team",
           viewers: team,
         },
         "/tmw ",
@@ -364,12 +373,23 @@ const ChatPanel = () => {
       .split(limiter)[1];
     const isnum = /^\d+$/.test(splittedString);
     if (isnum) {
-      sendChatInput({
-        message: `@${realPseudo} launched a D${splittedString}. Result : ${Math.floor(
-          Math.random() * parseInt(splittedString, 10) + 1,
-        )}`,
-        viewers,
-      });
+      if (viewers) {
+        sendChatInput({
+          message: `@${realPseudo} launched a D${splittedString}. Result : ${Math.floor(
+            Math.random() * parseInt(splittedString, 10) + 1,
+          )}`,
+          sender: realPseudo,
+          channel: "Private",
+          viewers,
+        });
+      } else {
+        sendChatInput({
+          message: `@${realPseudo} launched a D${splittedString}. Result : ${Math.floor(
+            Math.random() * parseInt(splittedString, 10) + 1,
+          )}`,
+          channel: "Dices",
+        });
+      }
     }
     return isnum;
   };
@@ -389,6 +409,7 @@ const ChatPanel = () => {
         ) {
           sendChatInput({
             message: `@${realPseudo} gave ${splittedString[1]} gold to the GameMaster. He is very thankfull !`,
+            channel: "All",
           });
           firebase
             .database()
@@ -435,10 +456,12 @@ const ChatPanel = () => {
           ) {
             sendChatInput({
               message: `You gave ${splittedString[2]} gold to ${splittedString[1]}.`,
+              channel: "All",
               viewers: [pseudo],
             });
             sendChatInput({
               message: `@${realPseudo} gave ${splittedString[2]} gold to you.`,
+              channel: "All",
               viewers: [splittedString[1]],
             });
 
@@ -509,6 +532,7 @@ const ChatPanel = () => {
 
             sendChatInput({
               message: `@${realPseudo} gave ${splittedString[1]} gold to the team (${goldForEach} each).`,
+              channel: "Team",
             });
 
             let updates = {};
@@ -570,11 +594,15 @@ const ChatPanel = () => {
     if (isGm || gmCommands) {
       sendChatInput({
         message,
+        sender: realPseudo,
+        receiver: "gm",
+        channel: "Private",
         viewers: ["gm", pseudo],
       });
     } else {
       sendChatInput({
         message,
+        channel: "Dices",
       });
     }
   };
@@ -591,6 +619,10 @@ const ChatPanel = () => {
         // Handle Errors here.
         dispatchCallPrintError(error);
       });
+  };
+
+  const removeMessagesToRead = privateTalker => {
+    setWhispersTab({ ...whispersTab, [privateTalker]: { message: 0 } });
   };
 
   const onDrop = picture => {
@@ -639,31 +671,108 @@ const ChatPanel = () => {
       });
   };
 
+  const closeWhisperTab = key => () => {
+    console.log("here");
+    const oldTab = { ...whispersTab };
+    delete oldTab[key];
+    console.log("oldTab", oldTab);
+    if (activeChatTab === key) {
+      console.log("settingTabChat");
+      setActiveChatTab("All");
+      setChatInput("");
+    }
+    setWhispersTab(oldTab);
+  };
+
   return (
     <div style={styledChatPanel}>
-      <Menu attached="top" tabular>
+      <Menu
+        attached="top"
+        tabular
+        style={{ overflowX: "auto", overflowY: "hidden" }}
+      >
         {chatTabs.map(ct => {
+          if (isGameMaster && ct === "Team") return null;
           return (
             <Menu.Item
               name={ct}
-              active={activeChatTab === ct.toLowerCase()}
+              active={activeChatTab === ct}
               onClick={() => {
                 setActiveChatTab(ct);
+                if (ct === "Team") {
+                  setChatInput(`/tmw `);
+                }
+                if (ct === "Dices") {
+                  setChatInput(`/dice`);
+                }
+                if (ct === "All") {
+                  setChatInput("");
+                }
               }}
               style={styledChatMenuItem}
             />
           );
         })}
-        {whispersTab.map(ct => {
+        {Object.keys(whispersTab).map(ctKey => {
           return (
             <Menu.Item
-              name={ct}
-              active={activeChatTab === ct.toLowerCase()}
-              onClick={() => {
-                setActiveChatTab(ct);
-              }}
+              name={ctKey}
+              active={activeChatTab === ctKey}
               style={styledChatMenuItem}
-            />
+            >
+              <div
+                onClick={() => {
+                  setActiveChatTab(ctKey);
+                  removeMessagesToRead(ctKey);
+                  if (ctKey.toLowerCase() !== "gm") {
+                    setChatInput(`/w ${ctKey} `);
+                  } else {
+                    setChatInput(`/gmw `);
+                  }
+                }}
+              >
+                {ctKey}
+                {whispersTab[ctKey].message > 0 && (
+                  <Button
+                    circular
+                    style={{
+                      color: colors.text,
+                      backgroundColor: colors.red300,
+                      padding: 5,
+                      fontSize: 10,
+                      borderRadius: 50,
+                      width: 20,
+                      cursor: cursorPointer,
+                    }}
+                  >
+                    {whispersTab[ctKey].message}
+                  </Button>
+                )}
+              </div>
+              <Button
+                circular
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: -5,
+                  maxWidth: 14,
+                  maxHeight: 14,
+                  padding: 0,
+                  margin: 0,
+                  cursor: cursorPointer,
+                  display: "flex",
+                }}
+                onClick={closeWhisperTab(ctKey)}
+              >
+                <Icon
+                  circular
+                  size={"tiny"}
+                  name={"close"}
+                  color={"black"}
+                  style={{ margin: 0 }}
+                />
+              </Button>
+            </Menu.Item>
           );
         })}
       </Menu>

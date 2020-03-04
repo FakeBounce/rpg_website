@@ -28,7 +28,7 @@ const styledDoubleTabSelected = {
   display: 'inline-block',
   position: 'relative',
   cursor: cursorPointer,
-  color: colors.selected,
+  color: colors.red300,
 };
 
 class ShopHeaderEnhancements extends Component {

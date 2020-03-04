@@ -22,13 +22,14 @@ class MapEditionTile extends Component {
         style={{
           ...styledGrid,
           border: isSelected ? "1px solid red" : "none",
+          borderColor: colors.red300,
           borderLeft: "1px solid black",
           backgroundColor:
             tileKey === "Fog"
               ? "black"
               : tileKey === "NoFog"
-                ? colors.text
-                : tile.backgroundColor,
+              ? colors.text
+              : tile.backgroundColor,
         }}
         onClick={action}
       >
