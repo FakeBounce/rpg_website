@@ -1,20 +1,14 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { chatDices } from '../Utils/Constants';
-import ChatDice from './ChatDice';
+import React  from "react";
+import { chatDices } from "../Utils/Constants";
+import ChatDice from "./ChatDice";
+import useChat from "../../hooks/useChat";
 
-class ChatDices extends PureComponent {
-  render() {
-    const { launchCommand } = this.props;
+const ChatDices = () => {
+  const { launchCommand } = useChat();
 
-    return chatDices.map(d => {
-      return <ChatDice key={d.tip} launchCommand={launchCommand} {...d} />;
-    });
-  }
-}
-
-ChatDices.propTypes = {
-  launchCommand: PropTypes.func.isRequired,
+  return chatDices.map(d => {
+    return <ChatDice key={d.tip} launchCommand={launchCommand} {...d} />;
+  });
 };
 
 export default ChatDices;

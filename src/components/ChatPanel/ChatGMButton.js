@@ -1,14 +1,14 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { colors } from '../Utils/Constants';
+import React from "react";
+import { colors } from "../Utils/Constants";
+import useChat from "../../hooks/useChat";
 
 const styledChatButtonGMActive = {
   width: 40,
   height: 26,
-  float: 'right',
-  display: 'inline-block',
-  textAlign: 'center',
-  padding: '0px',
+  float: "right",
+  display: "inline-block",
+  textAlign: "center",
+  padding: "0px",
   backgroundColor: colors.purple400,
   color: colors.text,
 };
@@ -16,30 +16,23 @@ const styledChatButtonGMActive = {
 const styledChatButtonGM = {
   width: 40,
   height: 26,
-  float: 'right',
-  display: 'inline-block',
-  textAlign: 'center',
-  padding: '0px',
+  float: "right",
+  display: "inline-block",
+  textAlign: "center",
+  padding: "0px",
 };
 
-class ChatGMButton extends PureComponent {
-  render() {
-    const { gmCommands, toggleGMCommands } = this.props;
+const ChatGMButton = () => {
+  const { gmCommands, toggleGMCommands } = useChat();
 
-    return (
-      <button
-        style={gmCommands ? styledChatButtonGMActive : styledChatButtonGM}
-        onClick={toggleGMCommands}
-      >
-        GM
-      </button>
-    );
-  }
-}
-
-ChatGMButton.propTypes = {
-  gmCommands: PropTypes.bool.isRequired,
-  toggleGMCommands: PropTypes.func.isRequired,
+  return (
+    <button
+      style={gmCommands ? styledChatButtonGMActive : styledChatButtonGM}
+      onClick={toggleGMCommands}
+    >
+      GM
+    </button>
+  );
 };
 
 export default ChatGMButton;
