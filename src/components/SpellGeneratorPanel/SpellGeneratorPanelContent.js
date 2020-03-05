@@ -1,11 +1,11 @@
-import React, { PureComponent } from "react";
+import React, { useState } from "react";
 
 import {
   spellModeList,
   spellTypeList,
   toSemanticUIOptions,
 } from "../Utils/Constants";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Select, Input } from "semantic-ui-react";
 import { cursorPointer } from "../Utils/StyleConstants";
 import SpellGeneratorPanelResult from "./SpellGeneratorPanelResult";
@@ -47,26 +47,17 @@ const noSpell = {
   type: "None",
 };
 
-class SpellGeneratorPanelContent extends PureComponent {
-  state = {
-    generatedSpell: null,
-    generatedSpellType: "Feu",
-    generatedSpellMode: "Offensif",
-    rollValue: 50,
-  };
+const SpellGeneratorPanelContent = () => {
+  const [generatedSpell, setGeneratedSpell] = useState(null);
+  const [generatedSpellType, setGeneratedSpellType] = useState("Feu");
+  const [generatedSpellMode, setGeneratedSpellMode] = useState("Offensif");
+  const [rollValue, setRollValue] = useState(50);
 
-  onChange = (name, value) => {
-    const obj = {};
-    obj[name] = value;
-    this.setState(state => ({
-      ...state,
-      ...obj,
-    }));
-  };
+  const { items } = useSelector(store => ({
+    items: store.items.items,
+  }));
 
-  generateSpell = () => {
-    const { generatedSpellType, generatedSpellMode, rollValue } = this.state;
-    const { items } = this.props;
+  const generateSpell = () => {
     if (items && items.spells) {
       const filteredSpells = [];
       Object.keys(items.spells).map(key => {
@@ -91,15 +82,9 @@ class SpellGeneratorPanelContent extends PureComponent {
           10,
         );
         if (targetedSpells.length > 0) {
-          this.setState(state => ({
-            ...state,
-            generatedSpell: targetedSpells[choosedSpell],
-          }));
+          setGeneratedSpell(targetedSpells[choosedSpell]);
         } else {
-          this.setState(state => ({
-            ...state,
-            generatedSpell: noSpell,
-          }));
+          setGeneratedSpell(noSpell);
         }
       } else {
         const targetedSpells = [];
@@ -178,78 +163,59 @@ class SpellGeneratorPanelContent extends PureComponent {
             Math.random() * randomRaritySpell.length,
             10,
           );
-          this.setState(state => ({
-            ...state,
-            generatedSpell: randomRaritySpell[choosedSpell],
-          }));
+          setGeneratedSpell(randomRaritySpell[choosedSpell]);
         } else {
-          this.setState(state => ({
-            ...state,
-            generatedSpell: noSpell,
-          }));
+          setGeneratedSpell(noSpell);
         }
       }
     }
   };
 
-  render() {
-    const {
-      generatedSpell,
-      generatedSpellType,
-      generatedSpellMode,
-      rollValue,
-    } = this.state;
-
-    return (
-      <div style={styledSpellContainer} className="scrollbar">
-        <div style={styledFormContainer}>
-          Score made :
-          <Input
-            focus
-            type="number"
-            placeholder="Valeur du dé"
-            name="rollValue"
-            value={rollValue}
-            onChange={e => {
-              this.onChange(e.target.name, parseInt(e.target.value, 10));
-            }}
-          />
-        </div>
-        <div style={styledFormContainer}>
-          Element desired :
-          <Select
-            value={generatedSpellType}
-            onChange={(e, { value }) => {
-              this.onChange("generatedSpellType", value);
-            }}
-            options={toSemanticUIOptions(spellTypeList)}
-          />
-        </div>
-        <div style={styledFormContainer}>
-          Kind of spell :
-          <Select
-            value={generatedSpellMode}
-            onChange={(e, { value }) => {
-              this.onChange("generatedSpellMode", value);
-            }}
-            options={toSemanticUIOptions(spellModeList)}
-          />
-        </div>
-        <div style={styledFormButtonContainer}>
-          <Button primary onClick={this.generateSpell} style={styledFormButton}>
-            Generate spell
-          </Button>
-        </div>
-        {generatedSpell !== null && (
-          <SpellGeneratorPanelResult generatedSpell={generatedSpell} />
-        )}
+  return (
+    <div style={styledSpellContainer} className="scrollbar">
+      <div style={styledFormContainer}>
+        Score made :
+        <Input
+          focus
+          type="number"
+          placeholder="Valeur du dé"
+          name="rollValue"
+          value={rollValue}
+          onChange={e => {
+            setRollValue(parseInt(e.target.value, 10));
+          }}
+        />
       </div>
-    );
-  }
-}
+      <div style={styledFormContainer}>
+        Element desired :
+        <Select
+          value={generatedSpellType}
+          onChange={(e, { value }) => {
+            setGeneratedSpellType(value);
+          }}
+          options={toSemanticUIOptions(spellTypeList)}
+        />
+      </div>
+      <div style={styledFormContainer}>
+        Kind of spell :
+        <Select
+          value={generatedSpellMode}
+          onChange={(e, { value }) => {
+            setGeneratedSpellMode(value);
+          }}
+          options={toSemanticUIOptions(spellModeList)}
+        />
+      </div>
+      <div style={styledFormButtonContainer}>
+        <Button primary onClick={generateSpell} style={styledFormButton}>
+          Generate spell
+        </Button>
+      </div>
+      {generatedSpell !== null && (
+        <SpellGeneratorPanelResult generatedSpell={generatedSpell} />
+      )}
+    </div>
+  );
+};
 
-const mapStateToProps = store => ({
-  items: store.items.items,
-});
-
-export default connect(mapStateToProps)(SpellGeneratorPanelContent);
+export default SpellGeneratorPanelContent;
