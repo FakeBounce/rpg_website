@@ -1,9 +1,9 @@
-import React, { PureComponent } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import { cursorPointer, heightLeft, imageSize } from "../Utils/StyleConstants";
 import { attributes } from "../Utils/Constants";
 import firebase from "firebase";
 import ButtonLarge from "../Utils/ButtonLarge";
-import { connect } from "react-redux";
 
 const styles = {
   BoxHeader: {
@@ -40,30 +40,26 @@ const styledButton = {
 };
 const styledInput = { width: 30 };
 
-class CharacterAttributes extends PureComponent {
-  state = {
-    currentAttribute: "",
-    currentValue: 0,
+const CharacterAttributes = () => {
+  const [currentAttribute, setCurrentAttribute] = useState("");
+  const [currentValue, setCurrentValue] = useState(0);
+
+  const { currentStory, isGameMaster, character } = useSelector(store => ({
+    currentStory: store.appState.currentStory,
+    isGameMaster: store.appState.isGameMaster,
+    character: store.character,
+  }));
+
+  const onChange = value => {
+    setCurrentValue(value === "" ? 0 : parseInt(value, 10));
   };
 
-  onChange = value => {
-    this.setState(state => ({
-      ...state,
-      currentValue: value === "" ? 0 : parseInt(value, 10),
-    }));
+  const onClick = (name, value) => {
+    setCurrentValue(value);
+    setCurrentAttribute(name);
   };
 
-  onClick = (name, value) => {
-    this.setState(state => ({
-      ...state,
-      currentAttribute: name,
-      currentValue: value,
-    }));
-  };
-
-  validate = () => {
-    const { currentStory, character } = this.props;
-    const { currentAttribute, currentValue } = this.state;
+  const validate = () => {
     firebase
       .database()
       .ref(
@@ -76,11 +72,7 @@ class CharacterAttributes extends PureComponent {
       )
       .set(currentValue)
       .then(() => {
-        this.setState(state => ({
-          ...state,
-          currentAttribute: "",
-          currentValue: 0,
-        }));
+        onClick("", 0);
       })
       .catch(error => {
         // Handle Errors here.
@@ -88,54 +80,43 @@ class CharacterAttributes extends PureComponent {
       });
   };
 
-  render() {
-    const { character, isGameMaster } = this.props;
-    const { currentAttribute, currentValue } = this.state;
+  if (!character || !character.attributes) return null;
 
-    if (!character || !character.attributes) return null;
+  return (
+    <div style={styles.characterAttributeInfos}>
+      <div style={styles.BoxHeader}>Attributes :</div>
+      {attributes.map(a => {
+        const label = a.substring(0, 4);
+        return (
+          <div
+            style={isGameMaster ? styledAttributeGM : styledAttribute}
+            onClick={() => onClick(a, character.attributes[a])}
+            key={"character-attribute-" + a}
+          >
+            {label} :{" "}
+            {isGameMaster && currentAttribute === a ? (
+              <input
+                name={a}
+                value={currentValue}
+                type="number"
+                style={styledInput}
+                onChange={e => {
+                  onChange(e.target.value);
+                }}
+              />
+            ) : (
+              character.attributes[a]
+            )}
+          </div>
+        );
+      })}
+      {currentAttribute !== "" && (
+        <ButtonLarge onClick={validate} style={styledButton}>
+          OK
+        </ButtonLarge>
+      )}
+    </div>
+  );
+};
 
-    return (
-      <div style={styles.characterAttributeInfos}>
-        <div style={styles.BoxHeader}>Attributes :</div>
-        {attributes.map(a => {
-          const label = a.substring(0, 4);
-          return (
-            <div
-              style={isGameMaster ? styledAttributeGM : styledAttribute}
-              onClick={() => this.onClick(a, character.attributes[a])}
-              key={"character-attribute-" + a}
-            >
-              {label} :{" "}
-              {isGameMaster && currentAttribute === a ? (
-                <input
-                  name={a}
-                  value={currentValue}
-                  type="number"
-                  style={styledInput}
-                  onChange={e => {
-                    this.onChange(e.target.value);
-                  }}
-                />
-              ) : (
-                character.attributes[a]
-              )}
-            </div>
-          );
-        })}
-        {currentAttribute !== "" && (
-          <ButtonLarge onClick={this.validate} style={styledButton}>
-            OK
-          </ButtonLarge>
-        )}
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-  isGameMaster: store.appState.isGameMaster,
-  character: store.character,
-});
-
-export default connect(mapStateToProps)(CharacterAttributes);
+export default CharacterAttributes;

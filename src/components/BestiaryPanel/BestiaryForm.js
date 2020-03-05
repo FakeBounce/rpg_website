@@ -1,51 +1,63 @@
-import React, { Component, Fragment } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-
+import { useSelector } from "react-redux";
+import firebase from "firebase";
 import {
   cursorPointer,
   heightLeft,
   widthLeftBestiary,
 } from "../Utils/StyleConstants";
-import firebase from "firebase";
 import FileUploader from "../CharacterCreation/FileUploader";
 import ButtonLarge from "../Utils/ButtonLarge";
 import { initialBestiaryForm } from "../Utils/Constants";
-import { connect } from "react-redux";
 
-class BestiaryForm extends Component {
-  state =
-    this.props.beast !== null
+const BestiaryForm = ({ beast }) => {
+  const [newBeast, setNewBeast] = useState(
+    beast !== null
       ? {
-          name: this.props.beast.name || "",
-          monster: this.props.beast.monster || true,
-          image: this.props.beast.image || "",
-          text1: this.props.beast.text1 || "",
-          text2: this.props.beast.text2 || "",
-          text3: this.props.beast.text3 || "",
-          text4: this.props.beast.text4 || "",
-          age: this.props.beast.age || "",
-          taille: this.props.beast.taille || "",
-          poids: this.props.beast.poids || "",
-          known: this.props.beast.known || false,
-          dangerosity: this.props.beast.dangerosity || "",
+          name: beast.name || "",
+          monster: beast.monster || true,
+          image: beast.image || "",
+          text1: beast.text1 || "",
+          text2: beast.text2 || "",
+          text3: beast.text3 || "",
+          text4: beast.text4 || "",
+          age: beast.age || "",
+          taille: beast.taille || "",
+          poids: beast.poids || "",
+          known: beast.known || false,
+          dangerosity: beast.dangerosity || "",
         }
-      : initialBestiaryForm;
+      : initialBestiaryForm,
+  );
 
-  onChange = (name, value) => {
-    this.setState(state => ({
-      ...state,
-      [name]: value,
-    }));
+  const {
+    name,
+    monster,
+    image,
+    text1,
+    text2,
+    text3,
+    text4,
+    age,
+    taille,
+    poids,
+    known,
+    dangerosity,
+  } = newBeast;
+
+  const { bestiary, currentStory, teamCharacters } = useSelector(store => ({
+    bestiary: store.bestiary.bestiary,
+    currentStory: store.appState.currentStory,
+    teamCharacters: store.team.characters,
+  }));
+
+  const onChange = (name, value) => {
+    setNewBeast({ ...beast, [name]: value });
   };
 
-  onDrop = picture => {
-    // const { triggerError, doSetState } = this.props;
-
-    // const path = 'images/bestiary/' + picture[picture.length - 1].name;
-    this.setState(state => ({
-      ...state,
-      image: picture[picture.length - 1].name,
-    }));
+  const onDrop = picture => {
+    setNewBeast({ ...beast, image: picture[picture.length - 1].name });
 
     // firebase
     //   .storage()
@@ -59,11 +71,8 @@ class BestiaryForm extends Component {
     //       .child(path)
     //       .getDownloadURL()
     //       .then(url => {
-    //         this.setState(state => ({
-    //           ...state,
-    //           image: url,
-    //           imagePath: path,
-    //         }));
+
+    //         setNewBeast({ ...beast, image: url, imagePath: path,});
     //       })
     //       .catch(error => {
     //         // Handle any errors
@@ -72,23 +81,7 @@ class BestiaryForm extends Component {
     //   });
   };
 
-  validate = () => {
-    const {
-      name,
-      monster,
-      image,
-      text1,
-      text2,
-      text3,
-      text4,
-      age,
-      taille,
-      poids,
-      known,
-      dangerosity,
-    } = this.state;
-    const { bestiary, currentStory, teamCharacters } = this.props;
-
+  const validate = () => {
     const newPostKey = firebase
       .database()
       .ref("stories/" + currentStory + "/bestiary")
@@ -169,6 +162,7 @@ class BestiaryForm extends Component {
       .ref("stories/" + currentStory + "/bestiary")
       .set(tempBestiary)
       .catch(error => {
+        console.log("error", error);
         // Handle Errors here.
         // triggerError(error);
       });
@@ -181,177 +175,147 @@ class BestiaryForm extends Component {
     //   .ref("stories/" + currentStory + "/bestiary")
     //   .set(bestiary)
     //   .then(() => {
-    //     this.setState(
-    //       state => ({
-    //         ...initialBestiaryForm,
-    //       }),
-    //       () => {
-    //         populateBestiary(0);
-    //         // populateBestiary(0, doSetState);
-    //       },
-    //     );
+    //      setNewBeast({...initialBestiaryForm})
+    //      populateBestiary(0);
     //   })
     //   .catch(error => {
     //     // Handle Errors here.
-    //     // this.triggerError(error);
+    //     // triggerError(error);
     //     console.log("error", error);
     //   });
   };
 
-  render() {
-    const {
-      name,
-      monster,
-      image,
-      text1,
-      text2,
-      text3,
-      text4,
-      age,
-      taille,
-      poids,
-      known,
-      dangerosity,
-    } = this.state;
-
-    return (
-      <div
-        style={{
-          height: heightLeft,
-          width: widthLeftBestiary,
-          color: "white",
-          position: "relative",
-          float: "left",
+  return (
+    <div
+      style={{
+        height: heightLeft,
+        width: widthLeftBestiary,
+        color: "white",
+        position: "relative",
+        float: "left",
+      }}
+    >
+      <div style={{ height: 25 }}>New Monster</div>
+      Name :
+      <input
+        type="text"
+        value={name}
+        name="name"
+        onChange={e => {
+          onChange(e.target.name, e.target.value);
         }}
-      >
-        <div style={{ height: 25 }}>New Monster</div>
-        Name :
-        <input
-          type="text"
-          value={name}
-          name="name"
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
-          }}
-        />
-        <FileUploader
-          onDrop={this.onDrop}
-          buttonText="+"
-          fileContainerStyle={{
-            width: 20,
-            padding: 0,
-            margin: 0,
-            display: "inline-block",
-          }}
-          buttonStyles={{
-            width: 20,
-            padding: 0,
-            margin: 0,
-            border: "1px solid #3f4257",
-            cursor: cursorPointer,
-          }}
-          withIcon={false}
-          label=""
-        />
-        {image !== "" && (
-          <img src={"./bestiary/" + image} style={{ width: 100 }} alt={image} />
-        )}
-        <div onClick={() => this.onChange("known", !known)}>
-          {known ? "Is known" : "Is unknown"}
-        </div>
-        <div onClick={() => this.onChange("monster", !monster)}>
-          {monster ? "Is a monster" : "Is a NPC"}
-        </div>
-        Text1 :
-        <input
-          type="text"
-          value={text1}
-          name="text1"
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
-          }}
-        />
-        Text2 :
-        <input
-          type="text"
-          value={text2}
-          name="text2"
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
-          }}
-        />
-        Text3 :
-        <input
-          type="text"
-          value={text3}
-          name="text3"
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
-          }}
-        />
-        Text4 :
-        <input
-          type="text"
-          value={text4}
-          name="text4"
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
-          }}
-        />
-        {monster ? (
-          <Fragment>
-            Dangerosity :
-            <input
-              type="text"
-              value={dangerosity}
-              name="dangerosity"
-              onChange={e => {
-                this.onChange(e.target.name, e.target.value);
-              }}
-            />
-          </Fragment>
-        ) : (
-          <Fragment>
-            Age :
-            <input
-              type="text"
-              value={age}
-              name="age"
-              onChange={e => {
-                this.onChange(e.target.name, e.target.value);
-              }}
-            />
-          </Fragment>
-        )}
-        Taille :
-        <input
-          type="text"
-          value={taille}
-          name="taille"
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
-          }}
-        />
-        Poids :
-        <input
-          type="text"
-          value={poids}
-          name="poids"
-          onChange={e => {
-            this.onChange(e.target.name, e.target.value);
-          }}
-        />
-        <ButtonLarge onClick={this.validate}>Submit</ButtonLarge>
+      />
+      <FileUploader
+        onDrop={onDrop}
+        buttonText="+"
+        fileContainerStyle={{
+          width: 20,
+          padding: 0,
+          margin: 0,
+          display: "inline-block",
+        }}
+        buttonStyles={{
+          width: 20,
+          padding: 0,
+          margin: 0,
+          border: "1px solid #3f4257",
+          cursor: cursorPointer,
+        }}
+        withIcon={false}
+        label=""
+      />
+      {image !== "" && (
+        <img src={"./bestiary/" + image} style={{ width: 100 }} alt={image} />
+      )}
+      <div onClick={() => onChange("known", !known)}>
+        {known ? "Is known" : "Is unknown"}
       </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  bestiary: store.bestiary.bestiary,
-  currentStory: store.appState.currentStory,
-  teamCharacters: store.team.characters,
-});
+      <div onClick={() => onChange("monster", !monster)}>
+        {monster ? "Is a monster" : "Is a NPC"}
+      </div>
+      Text1 :
+      <input
+        type="text"
+        value={text1}
+        name="text1"
+        onChange={e => {
+          onChange(e.target.name, e.target.value);
+        }}
+      />
+      Text2 :
+      <input
+        type="text"
+        value={text2}
+        name="text2"
+        onChange={e => {
+          onChange(e.target.name, e.target.value);
+        }}
+      />
+      Text3 :
+      <input
+        type="text"
+        value={text3}
+        name="text3"
+        onChange={e => {
+          onChange(e.target.name, e.target.value);
+        }}
+      />
+      Text4 :
+      <input
+        type="text"
+        value={text4}
+        name="text4"
+        onChange={e => {
+          onChange(e.target.name, e.target.value);
+        }}
+      />
+      {monster ? (
+        <>
+          Dangerosity :
+          <input
+            type="text"
+            value={dangerosity}
+            name="dangerosity"
+            onChange={e => {
+              onChange(e.target.name, e.target.value);
+            }}
+          />
+        </>
+      ) : (
+        <>
+          Age :
+          <input
+            type="text"
+            value={age}
+            name="age"
+            onChange={e => {
+              onChange(e.target.name, e.target.value);
+            }}
+          />
+        </>
+      )}
+      Taille :
+      <input
+        type="text"
+        value={taille}
+        name="taille"
+        onChange={e => {
+          onChange(e.target.name, e.target.value);
+        }}
+      />
+      Poids :
+      <input
+        type="text"
+        value={poids}
+        name="poids"
+        onChange={e => {
+          onChange(e.target.name, e.target.value);
+        }}
+      />
+      <ButtonLarge onClick={validate}>Submit</ButtonLarge>
+    </div>
+  );
+};
 
 BestiaryForm.defaultProps = {
   beast: null,
@@ -361,4 +325,4 @@ BestiaryForm.propTypes = {
   beast: PropTypes.object,
 };
 
-export default connect(mapStateToProps)(BestiaryForm);
+export default BestiaryForm;
