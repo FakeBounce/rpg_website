@@ -1,8 +1,8 @@
-import React, { PureComponent } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 import { colors, tempoImagesList } from "../Utils/Constants";
 import firebase from "firebase";
-import { connect } from "react-redux";
 
 const styledTempContainer = {
   float: "left",
@@ -25,22 +25,21 @@ const styledTempSelect = {
   zIndex: 1,
 };
 
-class TempImage extends PureComponent {
-  state = {
-    tempImage: "noTown.jpg",
-    bestiaryList: null,
-  };
+const TempImage = () => {
+  const [tempImage, setTempImage] = useState("noTown.jpg");
+  const [bestiaryList, setBestiaryList] = useState(null);
 
-  componentDidMount() {
-    const { currentStory, isGameMaster } = this.props;
+  const { currentStory, isGameMaster } = useSelector(store => ({
+    currentStory: store.appState.currentStory,
+    isGameMaster: store.appState.isGameMaster,
+  }));
+
+  useEffect(() => {
     firebase
       .database()
       .ref("stories/" + currentStory + "/tempoImage")
       .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          tempImage: snapshot.val(),
-        }));
+        setTempImage(snapshot.val());
       });
     if (isGameMaster) {
       firebase
@@ -48,16 +47,13 @@ class TempImage extends PureComponent {
         .ref("stories/" + currentStory + "/bestiary")
         .once("value")
         .then(snapshot => {
-          this.setState(state => ({
-            ...state,
-            bestiaryList: snapshot.val(),
-          }));
+          setBestiaryList(snapshot.val());
         });
     }
-  }
+    // eslint-disable-next-line
+  }, []);
 
-  onChange = value => {
-    const { currentStory } = this.props;
+  const onChange = value => {
     firebase
       .database()
       .ref("stories/" + currentStory + "/tempoImage")
@@ -68,49 +64,39 @@ class TempImage extends PureComponent {
       });
   };
 
-  render() {
-    const { isGameMaster } = this.props;
-    const { tempImage, bestiaryList } = this.state;
-
-    return (
-      <div style={styledTempContainer}>
-        {isGameMaster && (
-          <select
-            value={tempImage}
-            onChange={e => {
-              this.onChange(e.target.value);
-            }}
-            style={styledTempSelect}
-          >
-            {tempoImagesList.map(obj => {
+  return (
+    <div style={styledTempContainer}>
+      {isGameMaster && (
+        <select
+          value={tempImage}
+          onChange={e => {
+            onChange(e.target.value);
+          }}
+          style={styledTempSelect}
+        >
+          {tempoImagesList.map(obj => {
+            return (
+              <option key={obj.path} value={obj.path}>
+                {obj.name}
+              </option>
+            );
+          })}
+          {bestiaryList !== null &&
+            Object.keys(bestiaryList).map(bKey => {
               return (
-                <option key={obj.path} value={obj.path}>
-                  {obj.name}
+                <option
+                  key={bestiaryList[bKey].name}
+                  value={"bestiary/" + bestiaryList[bKey].image}
+                >
+                  {bestiaryList[bKey].name}
                 </option>
               );
             })}
-            {bestiaryList !== null &&
-              Object.keys(bestiaryList).map(bKey => {
-                return (
-                  <option
-                    key={bestiaryList[bKey].name}
-                    value={"bestiary/" + bestiaryList[bKey].image}
-                  >
-                    {bestiaryList[bKey].name}
-                  </option>
-                );
-              })}
-          </select>
-        )}
-        <img src={"./" + tempImage} style={styledTempImage} alt={tempImage} />
-      </div>
-    );
-  }
-}
+        </select>
+      )}
+      <img src={"./" + tempImage} style={styledTempImage} alt={tempImage} />
+    </div>
+  );
+};
 
-const mapStateToProps = store => ({
-  isGameMaster: store.appState.isGameMaster,
-  currentStory: store.appState.currentStory,
-});
-
-export default connect(mapStateToProps)(TempImage);
+export default TempImage;
