@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import ReactTooltip from "react-tooltip";
+import { Icon } from "semantic-ui-react";
 import { cursorPointer, heightHeader } from "./StyleConstants";
 import { hydrateAllMerchants, resetStoryMerchants } from "./MerchantsFunctions";
 import Camera from "./Camera";
-import { connect } from "react-redux";
 import { togglePlayerView } from "../../redux/actions/actionsAppState";
-import { Icon } from "semantic-ui-react";
-import ReactTooltip from "react-tooltip";
 import { CALL_GET_ITEM_LIST } from "../../redux/actionsTypes/actionsTypesItems";
 
 const styledHeaderLeft = {
@@ -24,207 +24,193 @@ const styledHeader = {
   // backgroundColor: colors.background,
 };
 
-class Header extends Component {
-  state = {
-    hasHydrated: false,
+const Header = props => {
+  const dispatch = useDispatch();
+  const [hasHydrated, setHasHydrated] = useState(false);
+
+  const {
+    currentStory,
+    isGameMaster,
+    merchants,
+    items,
+  } = useSelector(store => ({
+    currentStory: store.appState.currentStory,
+    isGameMaster: store.appState.isGameMaster,
+    merchants: store.merchants.merchantList,
+    items: store.items.items,
+  }));
+
+  const dispatchTogglePlayerView = () => {
+    dispatch(togglePlayerView());
+  };
+  const dispatchCallGetItemList = () => {
+    dispatch({ type: CALL_GET_ITEM_LIST });
   };
 
-  hydrateMerchants = () => {
-    const { currentStory, merchants, items } = this.props;
+  const {
+    accessChatHelp,
+    isEventHidden,
+    isOnBestiary,
+    isOnMerchantList,
+    onChatHelp,
+    selectAnotherCharacter,
+    toggleBestiary,
+    toggleEvent,
+    toggleMerchantList,
+  } = props;
+
+  const hydrateMerchants = () => {
     hydrateAllMerchants(currentStory, merchants, items, true);
   };
 
-  resetMerchants = () => {
-    const { currentStory, items, dispatchCallGetItemList } = this.props;
+  const resetMerchants = () => {
     if (items.length > 0) {
       resetStoryMerchants(currentStory, items);
-      this.hasHydrated();
+      hydrate();
     } else {
       dispatchCallGetItemList();
     }
   };
 
-  hasHydrated = () => {
-    this.setState(state => ({
-      ...state,
-      hasHydrated: true,
-    }));
+  const hydrate = () => {
+    setHasHydrated(true);
     setTimeout(() => {
-      this.setState(state => ({
-        ...state,
-        hasHydrated: false,
-      }));
+      setHasHydrated(false);
     }, 3000);
   };
 
-  render() {
-    const {
-      accessChatHelp,
-      dispatchTogglePlayerView,
-      isGameMaster,
-      isEventHidden,
-      isOnBestiary,
-      isOnMerchantList,
-      onChatHelp,
-      selectAnotherCharacter,
-      toggleBestiary,
-      toggleEvent,
-      toggleMerchantList,
-    } = this.props;
-    const { hasHydrated } = this.state;
-
-    return (
-      <div style={styledHeader}>
-        <div style={styledHeaderLeft}>
-          <Camera />
-        </div>
+  return (
+    <div style={styledHeader}>
+      <div style={styledHeaderLeft}>
+        <Camera />
+      </div>
+      <Icon
+        style={{
+          position: "absolute",
+          top: 80,
+          right: 20,
+          cursor: cursorPointer,
+        }}
+        onClick={selectAnotherCharacter}
+        circular
+        name={"address book"}
+        inverted
+        color={"black"}
+        data-tip={"Characters"}
+      />
+      <Icon
+        style={{
+          position: "absolute",
+          top: 115,
+          right: 20,
+          cursor: cursorPointer,
+        }}
+        onClick={accessChatHelp}
+        circular
+        name={"chat"}
+        inverted
+        color={onChatHelp ? "blue" : "black"}
+        data-tip={"Chat help"}
+      />
+      <Icon
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 60,
+          cursor: cursorPointer,
+        }}
+        onClick={toggleBestiary}
+        circular
+        name={"bug"}
+        inverted
+        color={isOnBestiary ? "blue" : "black"}
+        data-tip={"Bestiary"}
+      />
+      <Icon
+        style={{
+          position: "absolute",
+          top: 45,
+          right: 60,
+          cursor: cursorPointer,
+        }}
+        onClick={toggleMerchantList}
+        circular
+        name={"gem"}
+        inverted
+        color={isOnMerchantList ? "blue" : "black"}
+        data-tip={"Merchant list"}
+      />
+      {isGameMaster && (
         <Icon
           style={{
             position: "absolute",
             top: 80,
-            right: 20,
+            right: 60,
             cursor: cursorPointer,
           }}
-          onClick={selectAnotherCharacter}
+          onClick={dispatchTogglePlayerView}
           circular
-          name={"address book"}
+          name={"cogs"}
           inverted
           color={"black"}
-          data-tip={"Characters"}
+          data-tip={"Toggle Player View"}
         />
+      )}
+      {isGameMaster && (
         <Icon
           style={{
             position: "absolute",
-            top: 115,
-            right: 20,
+            top: 80,
+            right: 60,
             cursor: cursorPointer,
           }}
-          onClick={accessChatHelp}
+          onClick={toggleEvent}
           circular
-          name={"chat"}
+          name={"time"}
           inverted
-          color={onChatHelp ? "blue" : "black"}
-          data-tip={"Chat help"}
+          color={isEventHidden ? "red" : "green"}
+          data-tip={"Toggle event"}
         />
+      )}
+      {isGameMaster && (
         <Icon
           style={{
             position: "absolute",
             top: 10,
-            right: 60,
+            right: 100,
             cursor: cursorPointer,
           }}
-          onClick={toggleBestiary}
+          onClick={() => {
+            hydrate();
+            hydrateMerchants();
+          }}
           circular
-          name={"bug"}
+          name={"theme"}
           inverted
-          color={isOnBestiary ? "blue" : "black"}
-          data-tip={"Bestiary"}
+          color={hasHydrated ? "green" : "black"}
+          data-tip={"Hydrate merchant"}
         />
+      )}
+      {isGameMaster && (
         <Icon
           style={{
             position: "absolute",
             top: 45,
-            right: 60,
+            right: 100,
             cursor: cursorPointer,
           }}
-          onClick={toggleMerchantList}
+          onClick={resetMerchants}
           circular
-          name={"gem"}
+          name={"cart"}
           inverted
-          color={isOnMerchantList ? "blue" : "black"}
-          data-tip={"Merchant list"}
+          color={hasHydrated ? "green" : "black"}
+          data-tip={"Reset merchant"}
         />
-        {isGameMaster && (
-          <Icon
-            style={{
-              position: "absolute",
-              top: 80,
-              right: 60,
-              cursor: cursorPointer,
-            }}
-            onClick={dispatchTogglePlayerView}
-            circular
-            name={"cogs"}
-            inverted
-            color={"black"}
-            data-tip={"Toggle Player View"}
-          />
-        )}
-        {isGameMaster && (
-          <Icon
-            style={{
-              position: "absolute",
-              top: 80,
-              right: 60,
-              cursor: cursorPointer,
-            }}
-            onClick={toggleEvent}
-            circular
-            name={"time"}
-            inverted
-            color={isEventHidden ? "red" : "green"}
-            data-tip={"Toggle event"}
-          />
-        )}
-        {isGameMaster && (
-          <Icon
-            style={{
-              position: "absolute",
-              top: 10,
-              right: 100,
-              cursor: cursorPointer,
-            }}
-            onClick={() => {
-              this.hasHydrated();
-              this.hydrateMerchants();
-            }}
-            circular
-            name={"theme"}
-            inverted
-            color={hasHydrated ? "green" : "black"}
-            data-tip={"Hydrate merchant"}
-          />
-        )}
-        {isGameMaster && (
-          <Icon
-            style={{
-              position: "absolute",
-              top: 45,
-              right: 100,
-              cursor: cursorPointer,
-            }}
-            onClick={this.resetMerchants}
-            circular
-            name={"cart"}
-            inverted
-            color={hasHydrated ? "green" : "black"}
-            data-tip={"Reset merchant"}
-          />
-        )}
-        <ReactTooltip />
-      </div>
-    );
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchTogglePlayerView: () => {
-      dispatch(togglePlayerView());
-    },
-    dispatchCallGetItemList: () => {
-      dispatch({ type: CALL_GET_ITEM_LIST });
-    },
-  };
+      )}
+      <ReactTooltip />
+    </div>
+  );
 };
-
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-  isGameMaster: store.appState.isGameMaster,
-  musicMute: store.sounds.music.musicMute,
-  merchants: store.merchants.merchantList,
-  items: store.items.items,
-});
 
 Header.propTypes = {
   accessChatHelp: PropTypes.func.isRequired,
@@ -240,4 +226,4 @@ Header.propTypes = {
   toggleMerchantList: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;
