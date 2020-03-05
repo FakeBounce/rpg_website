@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 import BottomPanel from "../components/BottomPanel";
 import ChatCommandsPanel from "../components/ChatCommandsPanel";
@@ -8,19 +8,33 @@ import MiddlePanel from "./MiddlePanel";
 import EventModal from "../components/EventModal/EventModal";
 import BestiaryPanel from "../components/BestiaryPanel";
 import TownsHistoryPanel from "../components/TownsHistoryPanel";
-import { connect } from "react-redux";
 
-class GameScreen extends Component {
-  state = {
-    isEventHidden: false,
-    isOnBestiary: false,
-    onChatHelp: false,
-    isOnMerchantList: false,
-  };
+const GameScreen = props => {
+  const [isEventHidden, setIsEventHidden] = useState(false);
+  const [isOnBestiary, setIsOnBestiary] = useState(false);
+  const [onChatHelp, setOnChatHelp] = useState(false);
+  const [isOnMerchantList, setIsOnMerchantList] = useState(false);
 
-  canReadEvent = () => {
-    const { eventHistory, currentEvent, uid, isGameMaster } = this.props;
-    const { isEventHidden } = this.state;
+  const {
+    bestiary,
+    currentEvent,
+    eventHistory,
+    isGameMaster,
+    merchants,
+    selectAnotherCharacter,
+    towns,
+    uid,
+  } = useSelector(store => ({
+    bestiary: store.bestiary.bestiary,
+    currentEvent: store.events.currentEvent,
+    eventHistory: store.events.history,
+    isGameMaster: store.appState.isGameMaster,
+    merchants: store.merchants.merchantList,
+    towns: store.mapInfos.towns,
+    uid: store.userInfos.uid,
+  }));
+
+  const canReadEvent = () => {
     if (currentEvent > -1) {
       if (eventHistory[currentEvent]) {
         if (eventHistory[currentEvent].isActive) {
@@ -45,127 +59,58 @@ class GameScreen extends Component {
     return false;
   };
 
-  toggleEvent = () => {
-    this.setState(state => ({
-      ...state,
-      isEventHidden: !state.isEventHidden,
-    }));
+  const toggleEvent = () => {
+    setIsEventHidden(!isEventHidden);
   };
 
-  toggleBestiary = () => {
-    this.setState(state => ({
-      ...state,
-      isOnBestiary: !state.isOnBestiary,
-      onChatHelp: false,
-      isOnMerchantList: false,
-    }));
+  const toggleBestiary = () => {
+    setIsOnBestiary(!isOnBestiary);
+    setOnChatHelp(false);
+    setIsOnMerchantList(false);
   };
 
-  toggleMerchantList = () => {
-    this.setState(state => ({
-      ...state,
-      isOnMerchantList: !state.isOnMerchantList,
-      onChatHelp: false,
-      isOnBestiary: false,
-    }));
+  const toggleMerchantList = () => {
+    setIsOnMerchantList(!isOnMerchantList);
+    setOnChatHelp(false);
+    setIsOnBestiary(false);
   };
 
-  accessChatHelp = () => {
-    this.setState(state => ({
-      ...state,
-      onChatHelp: !state.onChatHelp,
-      isOnBestiary: false,
-      isOnMerchantList: false,
-    }));
+  const accessChatHelp = () => {
+    setOnChatHelp(!onChatHelp);
+    setIsOnMerchantList(false);
+    setIsOnBestiary(false);
   };
 
-  render() {
-    const {
-      character,
-      currentEvent,
-      currentStory,
-      doSetState,
-      hydrateMerchants,
-      merchants,
-      selectAnotherCharacter,
-      signOut,
-      stories,
-      toggleMusic,
-      triggerError,
-      bestiary,
-      towns,
-      ...rest
-    } = this.props;
-
-    const {
-      isEventHidden,
-      isOnBestiary,
-      isOnMerchantList,
-      onChatHelp,
-    } = this.state;
-
-    return (
-      <div>
-        <Header
-          accessChatHelp={this.accessChatHelp}
-          isOnBestiary={isOnBestiary}
-          onChatHelp={onChatHelp}
-          isEventHidden={isEventHidden}
-          hydrateMerchants={hydrateMerchants}
-          isOnMerchantList={isOnMerchantList}
-          selectAnotherCharacter={selectAnotherCharacter}
-          title={stories[currentStory].name}
-          toggleBestiary={this.toggleBestiary}
-          toggleEvent={this.toggleEvent}
-          toggleMerchantList={this.toggleMerchantList}
-          toggleMusic={toggleMusic}
-        />
-        {this.canReadEvent() && <EventModal />}
-        {isOnBestiary && bestiary.length > 0 ? (
-          <BestiaryPanel />
-        ) : isOnMerchantList &&
-          towns &&
-          towns.length > 0 &&
-          merchants &&
-          merchants.length > 0 ? (
-          <TownsHistoryPanel />
-        ) : onChatHelp ? (
-          <ChatCommandsPanel />
-        ) : (
-          <MiddlePanel
-            doSetState={doSetState}
-            triggerError={triggerError}
-            {...rest}
-          />
-        )}
-        <BottomPanel />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  bestiary: store.bestiary.bestiary,
-  characters: store.userInfos.characters,
-  currentEvent: store.events.currentEvent,
-  currentStory: store.appState.currentStory,
-  isGameMaster: store.appState.isGameMaster,
-  merchants: store.merchants.merchantList,
-  quests: store.mapInfos.quests,
-  stories: store.appState.stories,
-  towns: store.mapInfos.towns,
-  uid: store.userInfos.uid,
-});
-
-GameScreen.propTypes = {
-  character: PropTypes.object.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  hydrateMerchants: PropTypes.func.isRequired,
-  selectAnotherCharacter: PropTypes.func.isRequired,
-  signOut: PropTypes.func.isRequired,
-  storyCharacters: PropTypes.array.isRequired,
-  toggleMusic: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
+  return (
+    <>
+      <Header
+        accessChatHelp={accessChatHelp}
+        isOnBestiary={isOnBestiary}
+        onChatHelp={onChatHelp}
+        isEventHidden={isEventHidden}
+        isOnMerchantList={isOnMerchantList}
+        selectAnotherCharacter={selectAnotherCharacter}
+        toggleBestiary={toggleBestiary}
+        toggleEvent={toggleEvent}
+        toggleMerchantList={toggleMerchantList}
+      />
+      {canReadEvent() && <EventModal />}
+      {isOnBestiary && bestiary.length > 0 ? (
+        <BestiaryPanel />
+      ) : isOnMerchantList &&
+        towns &&
+        towns.length > 0 &&
+        merchants &&
+        merchants.length > 0 ? (
+        <TownsHistoryPanel />
+      ) : onChatHelp ? (
+        <ChatCommandsPanel />
+      ) : (
+        <MiddlePanel {...props} />
+      )}
+      <BottomPanel />
+    </>
+  );
 };
 
-export default connect(mapStateToProps)(GameScreen);
+export default GameScreen;
