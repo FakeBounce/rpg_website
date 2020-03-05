@@ -5,7 +5,7 @@ const triggerError = error => {
   console.log("Merchants function error : ", error);
 };
 
-export const resetStoryMerchants = (currentStory, items, doSetState) => {
+export const resetStoryMerchants = (currentStory, items) => {
   firebase
     .database()
     .ref("merchants")
@@ -22,11 +22,6 @@ export const resetStoryMerchants = (currentStory, items, doSetState) => {
 
       const newItems = { ...items };
       newItems.artefacts = [...artefactsLeft];
-
-      doSetState({
-        merchants: newMerchants,
-        items: newItems,
-      });
 
       firebase
         .database()
@@ -50,17 +45,11 @@ export const hydrateAllMerchants = (
   currentStory,
   merchants,
   items,
-  doSetState,
   hard = false,
 ) => {
   Object.keys(merchants).map(key => {
     hydrateMerchant(items.artefacts, merchants[key], items, hard);
     return null;
-  });
-
-  doSetState({
-    merchants,
-    items,
   });
 
   // Hydrate DB artefacts

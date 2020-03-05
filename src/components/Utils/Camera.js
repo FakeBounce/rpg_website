@@ -111,7 +111,7 @@ class Camera extends Component {
     //     }));
     //   });
     window.addEventListener("beforeunload", ev => {
-      ev.preventDefault();
+      // ev.preventDefault();
       return this.closeLocalstream();
     });
   }
@@ -120,9 +120,9 @@ class Camera extends Component {
     return this.state !== nextState;
   }
 
-  // componentWillUnmount() {
-  //   this.closeLocalstream();
-  // }
+  componentWillUnmount() {
+    this.closeLocalstream();
+  }
 
   sendMessage = (data, type, id = this.yourId) => {
     const msg = firebase

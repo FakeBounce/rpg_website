@@ -3,40 +3,11 @@ import PropTypes from "prop-types";
 import { cursorPointer, heightHeader } from "./StyleConstants";
 import { resetStoryMerchants } from "./MerchantsFunctions";
 import Camera from "./Camera";
-import ButtonLarge from "./ButtonLarge";
-import firebase from "firebase";
 import { connect } from "react-redux";
 import { togglePlayerView } from "../../redux/actions/actionsAppState";
 import { Icon } from "semantic-ui-react";
 import ReactTooltip from "react-tooltip";
-
-const styledToggling = {
-  position: "absolute",
-  top: 50,
-  right: 100,
-  width: 150,
-};
-
-const styledToggleEvent = {
-  position: "absolute",
-  top: 75,
-  right: 100,
-  width: 150,
-};
-
-const styledHydrateEvent = {
-  position: "absolute",
-  top: 100,
-  right: 100,
-  width: 150,
-};
-
-const styledResetMerchantsEvent = {
-  position: "absolute",
-  top: 0,
-  right: 100,
-  width: 150,
-};
+import { CALL_GET_ITEM_LIST } from "../../redux/actionsTypes/actionsTypesItems";
 
 const styledHeaderLeft = {
   height: heightHeader,
@@ -56,40 +27,15 @@ const styledHeader = {
 class Header extends Component {
   state = {
     hasHydrated: false,
-    items: null,
   };
 
   resetMerchants = () => {
-    const { items } = this.state;
-    const { currentStory, doSetState } = this.props;
-    if (items !== null) {
-      resetStoryMerchants(currentStory, items, doSetState);
+    const { currentStory, items, dispatchCallGetItemList } = this.props;
+    if (items.length > 0) {
+      resetStoryMerchants(currentStory, items);
       this.hasHydrated();
     } else {
-      firebase
-        .database()
-        .ref("/items")
-        .once("value")
-        .then(snapshot => {
-          const tempItems = {};
-          Object.keys(snapshot.val()).map(keyName => {
-            tempItems[keyName] = [];
-            Object.keys(snapshot.val()[keyName]).map(itemKey => {
-              tempItems[keyName].push(snapshot.val()[keyName][itemKey]);
-              return null;
-            });
-            return null;
-          });
-          this.setState(state => ({
-            ...state,
-            items: snapshot.val(),
-          }));
-          resetStoryMerchants(currentStory, tempItems, doSetState);
-          this.hasHydrated();
-        })
-        .catch(e => {
-          console.log("e", e);
-        });
+      dispatchCallGetItemList();
     }
   };
 
@@ -109,17 +55,19 @@ class Header extends Component {
   render() {
     const {
       accessChatHelp,
-      eventTitle,
+      dispatchTogglePlayerView,
       hydrateMerchants,
       isGameMaster,
+      isEventHidden,
+      isOnBestiary,
+      isOnMerchantList,
+      onChatHelp,
       selectAnotherCharacter,
-      // title,
       toggleBestiary,
-      toggleMerchantList,
       toggleEvent,
-      dispatchTogglePlayerView,
+      toggleMerchantList,
     } = this.props;
-    const { hasHydrated, items } = this.state;
+    const { hasHydrated } = this.state;
 
     return (
       <div style={styledHeader}>
@@ -151,7 +99,8 @@ class Header extends Component {
           circular
           name={"chat"}
           inverted
-          color={"black"}
+          color={onChatHelp ? "blue" : "black"}
+          data-tip={"Chat help"}
         />
         <Icon
           style={{
@@ -164,7 +113,8 @@ class Header extends Component {
           circular
           name={"bug"}
           inverted
-          color={"black"}
+          color={isOnBestiary ? "blue" : "black"}
+          data-tip={"Bestiary"}
         />
         <Icon
           style={{
@@ -177,43 +127,75 @@ class Header extends Component {
           circular
           name={"gem"}
           inverted
-          color={"black"}
+          color={isOnMerchantList ? "blue" : "black"}
+          data-tip={"Merchant list"}
         />
         {isGameMaster && (
-          <ButtonLarge
-            style={styledToggling}
+          <Icon
+            style={{
+              position: "absolute",
+              top: 80,
+              right: 60,
+              cursor: cursorPointer,
+            }}
             onClick={dispatchTogglePlayerView}
-          >
-            Toggle Player View
-          </ButtonLarge>
+            circular
+            name={"cogs"}
+            inverted
+            color={"black"}
+            data-tip={"Toggle Player View"}
+          />
         )}
         {isGameMaster && (
-          <ButtonLarge onClick={toggleEvent} style={styledToggleEvent}>
-            {eventTitle}
-          </ButtonLarge>
+          <Icon
+            style={{
+              position: "absolute",
+              top: 80,
+              right: 60,
+              cursor: cursorPointer,
+            }}
+            onClick={toggleEvent}
+            circular
+            name={"time"}
+            inverted
+            color={isEventHidden ? "red" : "green"}
+            data-tip={"Toggle event"}
+          />
         )}
         {isGameMaster && (
-          <ButtonLarge
+          <Icon
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 100,
+              cursor: cursorPointer,
+            }}
             onClick={() => {
               this.hasHydrated();
               hydrateMerchants();
             }}
-            style={styledHydrateEvent}
-          >
-            Hydrate merchants
-            {hasHydrated ? " OK" : ""}
-          </ButtonLarge>
+            circular
+            name={"theme"}
+            inverted
+            color={hasHydrated ? "green" : "black"}
+            data-tip={"Hydrate merchant"}
+          />
         )}
-        {isGameMaster && items !== [] && (
-          <ButtonLarge
-            onClick={() => {
-              this.resetMerchants();
+        {isGameMaster && (
+          <Icon
+            style={{
+              position: "absolute",
+              top: 45,
+              right: 100,
+              cursor: cursorPointer,
             }}
-            style={styledResetMerchantsEvent}
-          >
-            Reset merchants
-            {hasHydrated ? " OK" : ""}
-          </ButtonLarge>
+            onClick={this.resetMerchants}
+            circular
+            name={"cart"}
+            inverted
+            color={hasHydrated ? "green" : "black"}
+            data-tip={"Reset merchant"}
+          />
         )}
         <ReactTooltip />
       </div>
@@ -226,25 +208,28 @@ const mapDispatchToProps = dispatch => {
     dispatchTogglePlayerView: () => {
       dispatch(togglePlayerView());
     },
+    dispatchCallGetItemList: () => {
+      dispatch({ type: CALL_GET_ITEM_LIST });
+    },
   };
 };
 
 const mapStateToProps = store => ({
   isGameMaster: store.appState.isGameMaster,
   musicMute: store.sounds.music.musicMute,
+  items: store.items.items,
 });
 
 Header.propTypes = {
   accessChatHelp: PropTypes.func.isRequired,
-  bestiaryTitle: PropTypes.string.isRequired,
-  chatHelpTitle: PropTypes.string.isRequired,
+  dispatchCallGetItemList: PropTypes.func.isRequired,
   dispatchTogglePlayerView: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  eventTitle: PropTypes.string.isRequired,
   hydrateMerchants: PropTypes.func.isRequired,
-  merchantTitle: PropTypes.string.isRequired,
+  isEventHidden: PropTypes.string.isRequired,
+  isOnBestiary: PropTypes.string.isRequired,
+  isOnMerchantList: PropTypes.string.isRequired,
+  onChatHelp: PropTypes.string.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,
-  signOut: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   toggleBestiary: PropTypes.func.isRequired,
   toggleEvent: PropTypes.func.isRequired,
