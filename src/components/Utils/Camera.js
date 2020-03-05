@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import firebase from "firebase";
 import ButtonLarge from "./ButtonLarge";
-import { heightHeader } from "./StyleConstants";
+import { cursorPointer, heightHeader } from "./StyleConstants";
 import { colors } from "./Constants";
 import { connect } from "react-redux";
+import { Icon } from "semantic-ui-react";
 
 const styledVideoContainer = {
   width: (window.innerWidth - 300) / 7 - 7,
@@ -23,7 +24,7 @@ const styledCall = {
   position: "absolute",
   left: 6,
   top: 15,
-  width: (window.innerWidth - 300) / 7 - 12,
+  cursor: cursorPointer,
 };
 
 const styledMuteImg = {
@@ -60,18 +61,12 @@ const styledRoomImg = {
 };
 
 const styledCameraCadre = {
+  position: "absolute",
+  top: 0,
+  left: 0,
   height: heightHeader,
   width: (window.innerWidth - 300) / 7,
-  position: "relative",
   float: "left",
-};
-
-const styledCadresContainer = {
-  position: "absolute",
-  left: 0,
-  top: 0,
-  height: heightHeader,
-  width: window.innerWidth,
 };
 
 class Camera extends Component {
@@ -106,24 +101,28 @@ class Camera extends Component {
   }
 
   componentDidMount() {
-    firebase
-      .database()
-      .ref("camera/room")
-      .on("value", snapshot => {
-        this.setState(state => ({
-          ...state,
-          room: snapshot.val() || [],
-        }));
-      });
+    // firebase
+    //   .database()
+    //   .ref("camera/room")
+    //   .on("value", snapshot => {
+    //     this.setState(state => ({
+    //       ...state,
+    //       room: snapshot.val() || [],
+    //     }));
+    //   });
+    window.addEventListener("beforeunload", ev => {
+      ev.preventDefault();
+      return this.closeLocalstream();
+    });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return this.state !== nextState;
   }
 
-  componentWillUnmount() {
-    this.closeLocalstream();
-  }
+  // componentWillUnmount() {
+  //   this.closeLocalstream();
+  // }
 
   sendMessage = (data, type, id = this.yourId) => {
     const msg = firebase
@@ -170,7 +169,7 @@ class Camera extends Component {
           .once("value")
           .then(snapshot => {
             Object.keys(snapshot.val()).map(key => {
-              if (key !== this.yourId) {
+              if (key !== this.yourId && snapshot.val()[key].isConnected) {
                 this.friendsVideoLocal[key] = new RTCPeerConnection(
                   this.servers,
                 );
@@ -414,38 +413,38 @@ class Camera extends Component {
   };
 
   createPrivateRoom = key => () => {
-    const { room } = this.state;
-    if (room.length > 0) {
-      const newRoom = [...room, key];
-      firebase
-        .database()
-        .ref("camera/room")
-        .set(newRoom)
-        .catch(error => {
-          // Handle Errors here.
-          console.log("Error", error);
-        });
-    } else {
-      firebase
-        .database()
-        .ref("camera/room")
-        .set([this.yourId, key])
-        .catch(error => {
-          // Handle Errors here.
-          console.log("Error", error);
-        });
-    }
+    // const { room } = this.state;
+    // if (room.length > 0) {
+    //   const newRoom = [...room, key];
+    //   firebase
+    //     .database()
+    //     .ref("camera/room")
+    //     .set(newRoom)
+    //     .catch(error => {
+    //       // Handle Errors here.
+    //       console.log("Error", error);
+    //     });
+    // } else {
+    //   firebase
+    //     .database()
+    //     .ref("camera/room")
+    //     .set([this.yourId, key])
+    //     .catch(error => {
+    //       // Handle Errors here.
+    //       console.log("Error", error);
+    //     });
+    // }
   };
 
   closePrivateRoom = () => {
-    firebase
-      .database()
-      .ref("camera/room")
-      .set([])
-      .catch(error => {
-        // Handle Errors here.
-        console.log("Error", error);
-      });
+    // firebase
+    //   .database()
+    //   .ref("camera/room")
+    //   .set([])
+    //   .catch(error => {
+    //     // Handle Errors here.
+    //     console.log("Error", error);
+    //   });
   };
 
   render() {
@@ -454,44 +453,12 @@ class Camera extends Component {
 
     return (
       <div>
-        <div style={styledCadresContainer}>
-          <img
-            src={"./common/info2.png"}
-            alt="cadre"
-            style={styledCameraCadre}
-          />
-          <img
-            src={"./common/info2.png"}
-            alt="cadre"
-            style={styledCameraCadre}
-          />
-          <img
-            src={"./common/info2.png"}
-            alt="cadre"
-            style={styledCameraCadre}
-          />
-          <img
-            src={"./common/info2.png"}
-            alt="cadre"
-            style={styledCameraCadre}
-          />
-          <img
-            src={"./common/info2.png"}
-            alt="cadre"
-            style={styledCameraCadre}
-          />
-          <img
-            src={"./common/info2.png"}
-            alt="cadre"
-            style={styledCameraCadre}
-          />
-          <img
-            src={"./common/info2.png"}
-            alt="cadre"
-            style={styledCameraCadre}
-          />
-        </div>
         <div style={styledVideoContainer}>
+          <img
+            src={"./common/info2.png"}
+            alt="cadre"
+            style={styledCameraCadre}
+          />
           <video
             ref={audio => {
               this.yourVideo = audio;
@@ -517,6 +484,11 @@ class Camera extends Component {
         {Object.keys(friendsVideoRemote).map(key => {
           return (
             <div style={styledVideoContainer}>
+              <img
+                src={"./common/info2.png"}
+                alt="cadre"
+                style={styledCameraCadre}
+              />
               <video
                 autoPlay
                 style={styledVideo}
@@ -560,9 +532,13 @@ class Camera extends Component {
           );
         })}
         {!isDisabled && (
-          <ButtonLarge onClick={this.showMyFace} style={styledCall}>
-            Call
-          </ButtonLarge>
+          <Icon
+            name="call"
+            onClick={this.showMyFace}
+            circular
+            color={"green"}
+            style={styledCall}
+          />
         )}
       </div>
     );

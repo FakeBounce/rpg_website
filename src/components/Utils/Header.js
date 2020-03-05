@@ -8,6 +8,7 @@ import firebase from "firebase";
 import { connect } from "react-redux";
 import { togglePlayerView } from "../../redux/actions/actionsAppState";
 import { Icon } from "semantic-ui-react";
+import ReactTooltip from "react-tooltip";
 
 const styledToggling = {
   position: "absolute",
@@ -137,6 +138,7 @@ class Header extends Component {
           name={"address book"}
           inverted
           color={"black"}
+          data-tip={"Characters"}
         />
         <Icon
           style={{
@@ -213,6 +215,7 @@ class Header extends Component {
             {hasHydrated ? " OK" : ""}
           </ButtonLarge>
         )}
+        <ReactTooltip />
       </div>
     );
   }

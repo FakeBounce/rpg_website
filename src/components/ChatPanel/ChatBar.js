@@ -1,9 +1,9 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import { widthLeft } from "../Utils/StyleConstants";
 import ChatUploader from "./ChatUploader";
 import ChatInput from "./ChatInput";
 import ChatSubmit from "./ChatSubmit";
+import useChat from "../../hooks/useChat";
 
 const styledChatBar = {
   width: widthLeft / 2,
@@ -13,24 +13,16 @@ const styledChatBar = {
   marginTop: "5px",
 };
 
-class ChatBar extends PureComponent {
-  render() {
-    const { talkInChat, onDrop, handleKeyPress } = this.props;
+const ChatBar = () => {
+  const { talkInChat, onDrop, handleKeyPress } = useChat();
 
-    return (
-      <div style={styledChatBar}>
-        <ChatUploader onDrop={onDrop} />
-        <ChatInput handleKeyPress={handleKeyPress} />
-        <ChatSubmit talkInChat={talkInChat} />
-      </div>
-    );
-  }
-}
-
-ChatBar.propTypes = {
-  talkInChat: PropTypes.func.isRequired,
-  onDrop: PropTypes.func.isRequired,
-  handleKeyPress: PropTypes.func.isRequired,
+  return (
+    <div style={styledChatBar}>
+      <ChatUploader onDrop={onDrop} />
+      <ChatInput handleKeyPress={handleKeyPress} />
+      <ChatSubmit talkInChat={talkInChat} />
+    </div>
+  );
 };
 
 export default ChatBar;
