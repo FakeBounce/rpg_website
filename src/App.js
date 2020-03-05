@@ -38,7 +38,7 @@ import {
 import {
   hydrateStoryArtefacts,
   // resetStoryMerchants,
-  hydrateAllMerchants,
+  // hydrateAllMerchants,
   // hydrateMerchant,
 } from "./components/Utils/MerchantsFunctions";
 import { toggleMusic } from "./redux/actions/actionsSounds";
@@ -214,11 +214,6 @@ class App extends Component {
       // );
     }); // And listen to artefacts on callback
     // resetStoryMerchants(currentStory, this.doSetState);
-  };
-
-  hydrateMerchants = () => {
-    const { currentStory, merchants, items } = this.props;
-    hydrateAllMerchants(currentStory, merchants, items, true);
   };
 
   toggleMusic = () => this.props.dispatchToggleMusic();
@@ -486,11 +481,7 @@ class App extends Component {
               <GameScreen
                 buyItem={this.buyItem}
                 doSetState={this.doSetState}
-                hydrateMerchants={this.hydrateMerchants}
                 selectAnotherCharacter={this.selectAnotherCharacter}
-                toggleBestiary={this.toggleBestiary}
-                toggleMerchantList={this.toggleMerchantList}
-                toggleMusic={this.toggleMusic}
                 triggerError={this.triggerError}
                 {...rest}
               />

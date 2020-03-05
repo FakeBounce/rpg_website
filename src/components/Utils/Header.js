@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { cursorPointer, heightHeader } from "./StyleConstants";
-import { resetStoryMerchants } from "./MerchantsFunctions";
+import { hydrateAllMerchants, resetStoryMerchants } from "./MerchantsFunctions";
 import Camera from "./Camera";
 import { connect } from "react-redux";
 import { togglePlayerView } from "../../redux/actions/actionsAppState";
@@ -27,6 +27,11 @@ const styledHeader = {
 class Header extends Component {
   state = {
     hasHydrated: false,
+  };
+
+  hydrateMerchants = () => {
+    const { currentStory, merchants, items } = this.props;
+    hydrateAllMerchants(currentStory, merchants, items, true);
   };
 
   resetMerchants = () => {
@@ -56,7 +61,6 @@ class Header extends Component {
     const {
       accessChatHelp,
       dispatchTogglePlayerView,
-      hydrateMerchants,
       isGameMaster,
       isEventHidden,
       isOnBestiary,
@@ -172,7 +176,7 @@ class Header extends Component {
             }}
             onClick={() => {
               this.hasHydrated();
-              hydrateMerchants();
+              this.hydrateMerchants();
             }}
             circular
             name={"theme"}
@@ -215,8 +219,10 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = store => ({
+  currentStory: store.appState.currentStory,
   isGameMaster: store.appState.isGameMaster,
   musicMute: store.sounds.music.musicMute,
+  merchants: store.merchants.merchantList,
   items: store.items.items,
 });
 
@@ -224,17 +230,14 @@ Header.propTypes = {
   accessChatHelp: PropTypes.func.isRequired,
   dispatchCallGetItemList: PropTypes.func.isRequired,
   dispatchTogglePlayerView: PropTypes.func.isRequired,
-  hydrateMerchants: PropTypes.func.isRequired,
   isEventHidden: PropTypes.string.isRequired,
   isOnBestiary: PropTypes.string.isRequired,
   isOnMerchantList: PropTypes.string.isRequired,
   onChatHelp: PropTypes.string.isRequired,
   selectAnotherCharacter: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
   toggleBestiary: PropTypes.func.isRequired,
   toggleEvent: PropTypes.func.isRequired,
   toggleMerchantList: PropTypes.func.isRequired,
-  toggleMusic: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
