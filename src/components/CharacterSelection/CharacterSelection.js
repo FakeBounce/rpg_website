@@ -270,7 +270,6 @@ class CharacterSelection extends Component {
       characters,
       keepCharacter,
       uid,
-      signOut,
       triggerError,
     } = this.props;
 
@@ -303,9 +302,6 @@ class CharacterSelection extends Component {
           </div>
           <div style={styledCenterHeader}>
             {isAnUpdate ? "Update a character" : "Create a character"}
-          </div>
-          <div style={styledSideHeaders}>
-            <ButtonLarge onClick={signOut}>Log out</ButtonLarge>
           </div>
         </div>
         <CharacterProvider
@@ -347,7 +343,6 @@ CharacterSelection.propTypes = {
   chooseStory: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
   keepCharacter: PropTypes.func.isRequired,
-  signOut: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
 };
 

@@ -218,19 +218,10 @@ class App extends Component {
 
   hydrateMerchants = () => {
     const { currentStory, merchants, items } = this.props;
-    hydrateAllMerchants(currentStory, merchants, items, this.doSetState, true);
+    hydrateAllMerchants(currentStory, merchants, items, true);
   };
 
   toggleMusic = () => this.props.dispatchToggleMusic();
-
-  onChange = (name, value) => {
-    const obj = {};
-    obj[name] = value;
-    this.setState(state => ({
-      ...state,
-      ...obj,
-    }));
-  };
 
   selectAnotherCharacter = () => {
     this.setState(state => ({
@@ -461,7 +452,6 @@ class App extends Component {
 
   triggerError = error => {
     const { dispatchCallPrintError } = this.props;
-    console.log("trigger", error);
     dispatchCallPrintError(error.message);
   };
 
@@ -488,7 +478,6 @@ class App extends Component {
                 chooseStory={this.chooseStory}
                 doSetState={this.doSetState}
                 keepCharacter={this.keepCharacter}
-                signOut={this.signOut}
                 triggerError={this.triggerError}
               />
             );
@@ -498,9 +487,7 @@ class App extends Component {
                 buyItem={this.buyItem}
                 doSetState={this.doSetState}
                 hydrateMerchants={this.hydrateMerchants}
-                onChange={this.onChange}
                 selectAnotherCharacter={this.selectAnotherCharacter}
-                signOut={this.signOut}
                 toggleBestiary={this.toggleBestiary}
                 toggleMerchantList={this.toggleMerchantList}
                 toggleMusic={this.toggleMusic}

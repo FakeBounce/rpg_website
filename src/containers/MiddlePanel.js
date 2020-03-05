@@ -20,7 +20,6 @@ class MiddlePanel extends Component {
       isOnPlayerView,
       itemsList,
       itemToDescribe,
-      onChange,
       triggerError,
     } = this.props;
 
@@ -28,9 +27,7 @@ class MiddlePanel extends Component {
       <Fragment>
         <MapGenerator />
         {((isGameMaster && isOnPlayerView) || !isGameMaster) && <ChatPanel />}
-        {isGameMaster && !isOnPlayerView && (
-          <GMMapPanel doSetState={doSetState} />
-        )}
+        {isGameMaster && !isOnPlayerView && <GMMapPanel />}
         {(!isGameMaster || isOnPlayerView) && (
           <PlayerMapPanel
             buyItem={buyItem}
@@ -44,15 +41,9 @@ class MiddlePanel extends Component {
         )}
 
         {(!isGameMaster || isOnPlayerView) && (
-          <RightPanel
-            doSetState={doSetState}
-            onChange={onChange}
-            triggerError={triggerError}
-          />
+          <RightPanel triggerError={triggerError} />
         )}
-        {isGameMaster && !isOnPlayerView && (
-          <SoundPanel />
-        )}
+        {isGameMaster && !isOnPlayerView && <SoundPanel />}
       </Fragment>
     );
   }
@@ -70,7 +61,6 @@ MiddlePanel.propTypes = {
   isItemShowed: PropTypes.bool.isRequired,
   itemsList: PropTypes.array.isRequired,
   itemToDescribe: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
 };
 

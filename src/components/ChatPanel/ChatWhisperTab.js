@@ -52,6 +52,9 @@ const ChatWhisperTab = ({ whisperKey }) => {
     closeWhisperTab,
   } = useChat();
 
+  if (!whisperKey || !whispersTab[whisperKey]) {
+    return null;
+  }
   return (
     <Menu.Item
       name={whisperKey}
@@ -62,7 +65,7 @@ const ChatWhisperTab = ({ whisperKey }) => {
         onClick={changeActiveWhisperTab(whisperKey)}
         style={styledChatMenuItemContainer}
       >
-        {whispersTab[whisperKey].message > 0 && (
+        {whispersTab[whisperKey] && whispersTab[whisperKey].message > 0 && (
           <Button circular style={styledChatMenuItemNotif}>
             {whispersTab[whisperKey].message}
           </Button>

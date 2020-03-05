@@ -346,8 +346,6 @@ const mapStateToProps = store => ({
 });
 
 RightPanel.propTypes = {
-  doSetState: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
   triggerError: PropTypes.func.isRequired,
   dispatchListenCharacter: PropTypes.func.isRequired,
 };
