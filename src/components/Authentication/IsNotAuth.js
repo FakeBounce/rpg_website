@@ -1,53 +1,73 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import firebase from "firebase";
 import Logs from "./Logs";
 import { defaultState } from "../Utils/Constants";
-import {
-  setAllCharacters,
-  setUid,
-  setUserInfos,
-} from "../../redux/actions/actionsUserInfos";
+import { setUid, setUserInfos } from "../../redux/actions/actionsUserInfos";
 import { setIsAuth, setIsAdmin } from "../../redux/actions/actionsAppState";
 import {
   CALL_GET_ALL_STORIES,
   CALL_PRINT_ERROR,
 } from "../../redux/actionsTypes/actionsTypesAppState";
-import { Button } from "semantic-ui-react";
-import { cursorPointer } from "../Utils/StyleConstants";
+import AuthButtons from "./AuthButtons";
+import AuthForm from "./AuthForm";
 
-class IsNotAuth extends Component {
-  state = {
-    email: "",
-    password: "",
+const styledAuthContainer = {
+  height: "100%",
+  display: "flex",
+};
+const styledAuthLeftContainer = { width: "50%", height: "100%" };
+const styledAuthHeader = {
+  position: "absolute",
+  width: "100%",
+  top: 30,
+  display: "flex",
+  justifyContent: "center",
+  letterSpacing: 13,
+};
+
+const styledAuthRightContainer = {
+  width: "50%",
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-evenly",
+  alignItems: "center",
+  paddingTop: 70,
+  paddingBottom: 50,
+  paddingLeft: 30,
+};
+
+const IsNotAuth = () => {
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatchSetUserInfos = payload => {
+    dispatch(setUserInfos(payload));
+  };
+  const dispatchSetUid = payload => {
+    dispatch(setUid(payload));
+  };
+  const dispatchSetIsAuth = payload => {
+    dispatch(setIsAuth(payload));
+  };
+  const dispatchSetIsAdmin = payload => {
+    dispatch(setIsAdmin(payload));
+  };
+  const dispatchCallGetStories = () => {
+    dispatch({ type: CALL_GET_ALL_STORIES });
+  };
+  const dispatchCallPrintError = payload => {
+    dispatch({ type: CALL_PRINT_ERROR, payload });
   };
 
-  onChange = (name, value) => {
-    const obj = {};
-    obj[name] = value;
-    this.setState(state => ({
-      ...state,
-      ...obj,
-    }));
-  };
-
-  handleKeyPress = event => {
+  const handleKeyPress = event => {
     if (event.key === "Enter") {
-      this.signIn();
+      signIn();
     }
   };
 
-  signIn = () => {
-    const {
-      dispatchSetUserInfos,
-      dispatchSetIsAuth,
-      dispatchSetIsAdmin,
-      dispatchCallGetStories,
-      dispatchCallPrintError,
-    } = this.props;
-    const { email, password } = this.state;
-
+  const signIn = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -87,15 +107,7 @@ class IsNotAuth extends Component {
       });
   };
 
-  signUp = () => {
-    const {
-      dispatchCallPrintError,
-      dispatchSetUid,
-      dispatchSetUserInfos,
-      dispatchSetIsAuth,
-      dispatchCallGetStories,
-    } = this.props;
-    const { email, password } = this.state;
+  const signUp = () => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -125,162 +137,31 @@ class IsNotAuth extends Component {
       });
   };
 
-  render() {
-    const { email, password } = this.state;
-
-    return (
-      <div
-        style={{
-          height: "100%",
-          display: "flex",
-        }}
-      >
-        <h1
-          style={{
-            position: "absolute",
-            width: "100%",
-            top: 30,
-            display: "flex",
-            justifyContent: "center",
-            letterSpacing: 13,
-          }}
-        >
-          RPG PLAYER
-        </h1>
-        <div style={{ width: "50%", height: "100%" }}>
-          <img
-            src={"./common/homepage.jpg"}
-            alt={"homepage"}
-            style={{ width: "100%", height: "100%" }}
-          />
-        </div>
-        <div
-          style={{
-            width: "50%",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-            paddingTop: 70,
-            paddingBottom: 50,
-            paddingLeft: 30,
-          }}
-        >
-          <div>
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                paddingBottom: 30,
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <input
-                  type="text"
-                  name="email"
-                  placeholder="email"
-                  autoComplete="on"
-                  value={email}
-                  onChange={e => {
-                    this.onChange(e.target.name, e.target.value);
-                  }}
-                  onKeyPress={this.handleKeyPress}
-                  style={{ minWidth: 200, marginBottom: 20 }}
-                />
-              </div>
-              <input
-                type="password"
-                name="password"
-                placeholder="password"
-                autoComplete="on"
-                value={password}
-                onChange={e => {
-                  this.onChange(e.target.name, e.target.value);
-                }}
-                onKeyPress={this.handleKeyPress}
-                style={{ minWidth: 200, marginBottom: 20 }}
-              />
-            </div>
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-around",
-                alignItems: "center",
-                marginBottom: 30,
-              }}
-            >
-              <Button.Group>
-                <Button
-                  onClick={this.signIn}
-                  primary
-                  style={{ width: 120, cursor: cursorPointer }}
-                >
-                  Sign In
-                </Button>
-                <Button.Or />
-                <Button
-                  onClick={this.signUp}
-                  positive
-                  style={{ width: 120, cursor: cursorPointer }}
-                >
-                  Sign Up
-                </Button>
-              </Button.Group>
-            </div>
-          </div>
-          <Logs />
-        </div>
+  return (
+    <div style={styledAuthContainer}>
+      <h1 style={styledAuthHeader}>RPG PLAYER</h1>
+      <div style={styledAuthLeftContainer}>
+        <img
+          src={"./common/homepage.jpg"}
+          alt={"homepage"}
+          style={{ width: "100%", height: "100%" }}
+        />
       </div>
-    );
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchSetUserInfos: payload => {
-      dispatch(setUserInfos(payload));
-    },
-    dispatchSetUid: payload => {
-      dispatch(setUid(payload));
-    },
-    dispatchSetIsAuth: payload => {
-      dispatch(setIsAuth(payload));
-    },
-    dispatchSetIsAdmin: payload => {
-      dispatch(setIsAdmin(payload));
-    },
-    dispatchCallGetStories: () => {
-      dispatch({ type: CALL_GET_ALL_STORIES });
-    },
-    dispatchCallPrintError: payload => {
-      dispatch({ type: CALL_PRINT_ERROR, payload });
-    },
-    dispatchSetAllCharacters: payload => {
-      dispatch(setAllCharacters(payload));
-    },
-  };
+      <div style={styledAuthRightContainer}>
+        <div>
+          <AuthForm
+            email={email}
+            password={password}
+            handleKeyPress={handleKeyPress}
+            setEmail={setEmail}
+            setPassword={setPassword}
+          />
+          <AuthButtons signIn={signIn} signUp={signUp} />
+        </div>
+        <Logs />
+      </div>
+    </div>
+  );
 };
 
-IsNotAuth.propTypes = {
-  dispatchSetUserInfos: PropTypes.func.isRequired,
-  dispatchSetUid: PropTypes.func.isRequired,
-  dispatchSetIsAuth: PropTypes.func.isRequired,
-  dispatchSetIsAdmin: PropTypes.func.isRequired,
-  dispatchCallGetStories: PropTypes.func.isRequired,
-  dispatchCallPrintError: PropTypes.func.isRequired,
-  dispatchSetAllCharacters: PropTypes.func.isRequired,
-};
-
-export default connect(null, mapDispatchToProps)(IsNotAuth);
+export default IsNotAuth;
