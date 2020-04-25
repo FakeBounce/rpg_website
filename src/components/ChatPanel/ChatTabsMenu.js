@@ -23,7 +23,6 @@ const ChatTabsMenu = () => {
     isGameMaster: store.appState.isGameMaster,
   }));
 
-  console.log('activeChatTab',activeChatTab);
   return (
     <Menu
       attached="top"

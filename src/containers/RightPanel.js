@@ -78,22 +78,28 @@ const RightPanel = props => {
   const onLifeChange = () => {
     const {
       character: { health, maxHealth },
+      characterUid,
       currentStory,
-      uid,
       triggerError,
     } = props;
     const { damageTaken } = panelState;
 
+    console.log("damageTaken", damageTaken);
     const healthLeft =
       parseInt(health, 10) + damageTaken < 0
         ? 0
         : parseInt(health, 10) + damageTaken > maxHealth
         ? maxHealth
         : parseInt(health, 10) + damageTaken;
+
     firebase
       .database()
       .ref(
-        "stories/" + currentStory + "/characters/" + uid + "/character/health",
+        "stories/" +
+          currentStory +
+          "/characters/" +
+          characterUid +
+          "/character/health",
       )
       .set(parseInt(healthLeft, 10))
       .catch(error => {
@@ -103,13 +109,17 @@ const RightPanel = props => {
   };
 
   const onStatusChange = () => {
-    const { currentStory, uid, triggerError } = props;
+    const { characterUid, currentStory, triggerError } = props;
     const { status } = panelState;
 
     firebase
       .database()
       .ref(
-        "stories/" + currentStory + "/characters/" + uid + "/character/status",
+        "stories/" +
+          currentStory +
+          "/characters/" +
+          characterUid +
+          "/character/status",
       )
       .set(status)
       .catch(error => {
@@ -119,7 +129,7 @@ const RightPanel = props => {
   };
 
   const onItemUse = (i, value) => {
-    const { character, currentStory, uid, triggerError } = props;
+    const { characterUid, character, currentStory, triggerError } = props;
 
     if (value > -1) {
       const newCharacterItems = [...character.items];
@@ -137,7 +147,13 @@ const RightPanel = props => {
 
       firebase
         .database()
-        .ref("stories/" + currentStory + "/characters/" + uid + "/character")
+        .ref(
+          "stories/" +
+            currentStory +
+            "/characters/" +
+            characterUid +
+            "/character",
+        )
         .set(newCharacter)
         .catch(error => {
           // Handle Errors here.
@@ -189,7 +205,7 @@ const RightPanel = props => {
   };
 
   const onWeaponExchange = (i, givableItem) => {
-    const { character, currentStory, uid, triggerError } = props;
+    const { characterUid, character, currentStory, triggerError } = props;
     const { currentExchangeCharacter } = panelState;
 
     const newCharacterItems = currentExchangeCharacter.weapons
@@ -215,7 +231,13 @@ const RightPanel = props => {
 
         firebase
           .database()
-          .ref("stories/" + currentStory + "/characters/" + uid + "/character")
+          .ref(
+            "stories/" +
+              currentStory +
+              "/characters/" +
+              characterUid +
+              "/character",
+          )
           .set(character)
           .catch(error => {
             // Handle Errors here.
@@ -230,7 +252,13 @@ const RightPanel = props => {
 
   // for GM only
   const onGoldChange = () => {
-    const { character, currentStory, uid, isGameMaster, triggerError } = props;
+    const {
+      character,
+      currentStory,
+      characterUid,
+      isGameMaster,
+      triggerError,
+    } = props;
     const { gold } = panelState;
 
     if (isGameMaster) {
@@ -239,7 +267,11 @@ const RightPanel = props => {
       firebase
         .database()
         .ref(
-          "stories/" + currentStory + "/characters/" + uid + "/character/gold",
+          "stories/" +
+            currentStory +
+            "/characters/" +
+            characterUid +
+            "/character/gold",
         )
         .set(goldToSet)
         .catch(error => {
@@ -249,18 +281,27 @@ const RightPanel = props => {
     }
   };
 
-  const modifyCurrentCharacter = uid => {
-    const { currentStory, isGameMaster, dispatchListenCharacter } = props;
+  const modifyCurrentCharacter = newUid => {
+    const {
+      currentStory,
+      isGameMaster,
+      dispatchListenCharacter,
+      characterUid,
+    } = props;
 
     if (isGameMaster) {
       firebase
         .database()
         .ref(
-          "stories/" + currentStory + "/characters/" + props.uid + "/character",
+          "stories/" +
+            currentStory +
+            "/characters/" +
+            characterUid +
+            "/character",
         )
         .off();
 
-      dispatchListenCharacter(uid);
+      dispatchListenCharacter(newUid);
     }
   };
 
@@ -307,9 +348,7 @@ const RightPanel = props => {
           triggerError={triggerError}
         />
       ) : (
-        <SongPanel
-          toggleIsOnChar={toggleIsOnChar}
-        />
+        <SongPanel toggleIsOnChar={toggleIsOnChar} />
       )}
       {currentExchangeCharacter !== null && (
         <ExchangePanel
@@ -340,7 +379,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = store => ({
   currentStory: store.appState.currentStory,
   isGameMaster: store.appState.isGameMaster,
-  uid: store.userInfos.uid,
+  characterUid: store.character.userUid,
   character: store.character,
   song: store.sounds.song,
 });
