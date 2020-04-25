@@ -7,10 +7,12 @@ import useChat from "../../hooks/useChat";
 
 const styledChatBar = {
   width: widthLeft / 2,
-  height: "20px",
-  float: "left",
-  display: "inline-block",
-  marginTop: "5px",
+  height: "30px",
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  paddingTop: "5px",
 };
 
 const ChatBar = () => {

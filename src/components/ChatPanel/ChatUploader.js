@@ -1,25 +1,22 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { cursorPointer } from '../Utils/StyleConstants';
-import FileUploader from '../CharacterCreation/FileUploader';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { cursorPointer } from "../Utils/StyleConstants";
+import FileUploader from "../CharacterCreation/FileUploader";
 
 const styledChatImageContainer = {
   width: 20,
-  height: 25,
-  position: 'absolute',
-  bottom: 3,
-  left: 0,
+  height: 20,
 };
 
 const styledFileUploaderButton = {
   width: 20,
   padding: 0,
   margin: 0,
-  border: '1px solid #3f4257',
+  border: "2px solid #3f4257",
   cursor: cursorPointer,
 };
 
-const styledFileUploader = { padding: 0, margin: 0, display: 'block' };
+const styledFileUploader = { padding: 0, margin: 0, display: "block" };
 
 class ChatUploader extends PureComponent {
   render() {
@@ -34,6 +31,7 @@ class ChatUploader extends PureComponent {
           buttonStyles={styledFileUploaderButton}
           withIcon={false}
           label=""
+          noLabel
         />
       </div>
     );

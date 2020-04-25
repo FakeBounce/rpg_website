@@ -3,6 +3,7 @@ import { cursorPointer } from "../Utils/StyleConstants";
 import { colors } from "../Utils/Constants";
 import { Menu, Button, Icon } from "semantic-ui-react";
 import useChat from "../../hooks/useChat";
+import { useActiveChatTabContext } from "../../contexts/activeChatTabContext";
 
 const styledChatMenuItem = {
   maxWidth: 80,
@@ -45,12 +46,9 @@ const styledChatMenuItemClose = {
 };
 
 const ChatWhisperTab = ({ whisperKey }) => {
-  const {
-    activeChatTab,
-    whispersTab,
-    changeActiveWhisperTab,
-    closeWhisperTab,
-  } = useChat();
+  const { whispersTab, changeActiveWhisperTab, closeWhisperTab } = useChat();
+
+  const { activeChatTab } = useActiveChatTabContext();
 
   if (!whisperKey || !whispersTab[whisperKey]) {
     return null;

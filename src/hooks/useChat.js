@@ -3,14 +3,15 @@ import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { CALL_PRINT_ERROR } from "../redux/actionsTypes/actionsTypesAppState";
 import { useChatInputContext } from "../contexts/chatInputContext";
+import { useActiveChatTabContext } from "../contexts/activeChatTabContext";
 
 const useChat = () => {
   const [gmCommands, setGmCommands] = useState(false);
-  const [activeChatTab, setActiveChatTab] = useState("All");
   const [lastKey, setLastKey] = useState("");
   const [whispersTab, setWhispersTab] = useState({});
   const [bonus, setBonus] = useState(0);
   const { chatInput, setChatInput } = useChatInputContext();
+  const { activeChatTab, setActiveChatTab } = useActiveChatTabContext();
   const dispatch = useDispatch();
   const {
     currentStory,

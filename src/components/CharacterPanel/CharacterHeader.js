@@ -149,7 +149,7 @@ class CharacterHeader extends Component {
               width: 20,
               padding: 0,
               margin: 0,
-              border: "1px solid #3f4257",
+              border: "2px solid #3f4257",
               cursor: cursorPointer,
             }}
             withIcon={false}
