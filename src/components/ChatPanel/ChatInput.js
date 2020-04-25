@@ -6,9 +6,7 @@ import { useChatInputContext } from "../../contexts/chatInputContext";
 const styledChatInput = {
   width: widthLeft / 2 - 51,
   height: "20px",
-  float: "left",
-  display: "inline-block",
-  marginLeft: 20,
+  display: "flex",
 };
 
 const ChatInput = ({ handleKeyPress }) => {

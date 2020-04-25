@@ -78,6 +78,7 @@ import { CALL_LISTEN_CHARACTER } from "./redux/actionsTypes/actionsTypesCharacte
 import { CALL_GET_ITEM_LIST } from "./redux/actionsTypes/actionsTypesItems";
 import { Icon } from "semantic-ui-react";
 import { cursorPointer } from "./components/Utils/StyleConstants";
+import { ActiveChatTabProvider } from "./contexts/activeChatTabContext";
 
 class App extends Component {
   constructor(props) {
@@ -504,41 +505,43 @@ class App extends Component {
       >
         <ToastProvider>
           <ChatInputProvider>
-            <>
-              {this.correctRoute()}
-              <SoundPlayer />
-              <ErrorPrinter />
-              {isAuth && (
-                <Icon
-                  style={{
-                    position: "absolute",
-                    top: 10,
-                    right: 20,
-                    cursor: cursorPointer,
-                  }}
-                  onClick={this.signOut}
-                  circular
-                  inverted
-                  name="shutdown"
-                  color={colors.red300}
-                />
-              )}
-              {isAuth && (
-                <Icon
-                  style={{
-                    position: "absolute",
-                    top: 45,
-                    right: 20,
-                    cursor: cursorPointer,
-                  }}
-                  onClick={this.toggleMusic}
-                  circular
-                  name={!musicMute ? "volume up" : "volume off"}
-                  inverted
-                  color={"black"}
-                />
-              )}
-            </>
+            <ActiveChatTabProvider>
+              <>
+                {this.correctRoute()}
+                <SoundPlayer />
+                <ErrorPrinter />
+                {isAuth && (
+                  <Icon
+                    style={{
+                      position: "absolute",
+                      top: 10,
+                      right: 20,
+                      cursor: cursorPointer,
+                    }}
+                    onClick={this.signOut}
+                    circular
+                    inverted
+                    name="shutdown"
+                    color={colors.red300}
+                  />
+                )}
+                {isAuth && (
+                  <Icon
+                    style={{
+                      position: "absolute",
+                      top: 45,
+                      right: 20,
+                      cursor: cursorPointer,
+                    }}
+                    onClick={this.toggleMusic}
+                    circular
+                    name={!musicMute ? "volume up" : "volume off"}
+                    inverted
+                    color={"black"}
+                  />
+                )}
+              </>
+            </ActiveChatTabProvider>
           </ChatInputProvider>
         </ToastProvider>
       </div>

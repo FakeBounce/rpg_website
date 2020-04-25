@@ -1,6 +1,6 @@
-import React from 'react';
-import ImageUploader from 'react-images-upload';
-import PropTypes from 'prop-types';
+import React from "react";
+import ImageUploader from "react-images-upload";
+import PropTypes from "prop-types";
 
 class FileUploader extends React.Component {
   render() {
@@ -11,18 +11,20 @@ class FileUploader extends React.Component {
       buttonText,
       label,
       withIcon,
+      noLabel,
     } = this.props;
     return (
       <ImageUploader
         withIcon={withIcon}
         buttonText={buttonText}
         onChange={onDrop}
-        imgExtension={['.jpg', '.gif', '.png']}
+        imgExtension={[".jpg", ".gif", ".png"]}
         maxFileSize={5242880}
         fileContainerStyle={fileContainerStyle}
         buttonStyles={buttonStyles}
         label={label}
-        errorStyle={{ display: 'none' }}
+        errorStyle={{ display: "none" }}
+        labelStyles={noLabel ? { display: "none" } : {}}
       />
     );
   }
@@ -31,9 +33,10 @@ class FileUploader extends React.Component {
 FileUploader.defaultProps = {
   fileContainerStyle: {},
   buttonStyles: {},
-  buttonText: 'Choose an image',
+  buttonText: "Choose an image",
   withIcon: true,
-  label: 'Max file size: 5mb, accepted: jpg, gif, png',
+  noLabel: false,
+  label: "Max file size: 5mb, accepted: jpg, gif, png",
 };
 
 FileUploader.propTypes = {
@@ -43,6 +46,7 @@ FileUploader.propTypes = {
   buttonText: PropTypes.string,
   label: PropTypes.string,
   withIcon: PropTypes.bool,
+  noLabel: PropTypes.bool,
 };
 
 export default FileUploader;
