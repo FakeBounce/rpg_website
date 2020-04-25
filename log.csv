@@ -149,7 +149,7 @@
 <div className="commit"> FakeBounce, le 2018-10-23 : Added somes images </div>
 <div className="commit"> fakebounce, le 2018-10-20 : Refactoring... Done. Fixed warnings and logs </div>
 <div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (Prettier) </div>
-<div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (PlayerMapPanel) </div>
+<div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (PlayerMiddlePanel) </div>
 <div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (MerchantPanel) </div>
 <div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (TownPanel and PanelToggle) </div>
 <div className="commit"> fakebounce, le 2018-10-20 : WIP Refactoring... (Event and MapEdition) </div>
