@@ -1,32 +1,25 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-class SelectMapper extends Component {
-  render() {
-    const { mapArray, value, onChange, style } = this.props;
-
-    return (
-      <select
-        value={value}
-        onChange={e => {
-          onChange(e.target.value);
-        }}
-        style={style}
-      >
-        {mapArray.map(options => {
-          return (
-            <option key={options} value={options}>
-              {options}
-            </option>
-          );
-        })}
-      </select>
-    );
-  }
-}
-
-SelectMapper.defaultProps = {
-  style: {},
+const SelectMapper = ({ mapArray, value, onChange, style = {} }) => {
+  console.log("mapArray", mapArray);
+  return (
+    <select
+      value={value}
+      onChange={e => {
+        onChange(e.target.value);
+      }}
+      style={style}
+    >
+      {mapArray.map(options => {
+        return (
+          <option key={options} value={options}>
+            {options}
+          </option>
+        );
+      })}
+    </select>
+  );
 };
 
 SelectMapper.propTypes = {

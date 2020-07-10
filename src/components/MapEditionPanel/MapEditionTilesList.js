@@ -1,9 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { gridDimension } from "../Utils/StyleConstants";
-
-import PropTypes from "prop-types";
 import MapEditionTile from "./MapEditionTile";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setTextureToApply } from "../../redux/actions/actionsMapInfos";
 
 const styledMapButtons = {
@@ -15,9 +13,19 @@ const styledMapButtons = {
   position: "relative",
 };
 
-class MapEditionTilesList extends Component {
-  loadTexture = gridType => {
-    const { dispatchSetTextureToApply } = this.props;
+const MapEditionTilesList = () => {
+  const dispatch = useDispatch();
+
+  const { tilesTypes, textureToApply } = useSelector(store => ({
+    tilesTypes: store.mapInfos.tilesTypes,
+    textureToApply: store.mapInfos.textureToApply,
+  }));
+
+  const dispatchSetTextureToApply = payload => {
+    dispatch(setTextureToApply(payload));
+  };
+
+  const loadTexture = gridType => {
     if (gridType === "Fog") {
       dispatchSetTextureToApply({
         hasFog: true,
@@ -33,8 +41,7 @@ class MapEditionTilesList extends Component {
     }
   };
 
-  getGridSelected = grid => {
-    const { tilesTypes } = this.props;
+  const getGridSelected = grid => {
     let bg = "";
 
     if (grid.hasFog) {
@@ -47,52 +54,28 @@ class MapEditionTilesList extends Component {
         return null;
       });
     }
-    return <MapEditionTile action={this.unloadTexture} tile={bg} isSelected />;
+    return <MapEditionTile action={unloadTexture} tile={bg} isSelected />;
   };
 
-  unloadTexture = () => {
-    const { dispatchSetTextureToApply } = this.props;
+  const unloadTexture = () => {
     dispatchSetTextureToApply(null);
   };
 
-  render() {
-    const { textureToApply, tilesTypes } = this.props;
-    return (
-      <div style={styledMapButtons}>
-        {Object.keys(tilesTypes).map(ttKey => {
-          return (
-            <MapEditionTile
-              key={`gridType-${ttKey}`}
-              action={() => this.loadTexture(ttKey)}
-              tile={tilesTypes[ttKey]}
-              tileKey={ttKey}
-            />
-          );
-        })}
-        {textureToApply && this.getGridSelected(textureToApply)}
-      </div>
-    );
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchSetTextureToApply: payload => {
-      dispatch(setTextureToApply(payload));
-    },
-  };
+  return (
+    <div style={styledMapButtons}>
+      {Object.keys(tilesTypes).map(ttKey => {
+        return (
+          <MapEditionTile
+            key={`gridType-${ttKey}`}
+            action={() => loadTexture(ttKey)}
+            tile={tilesTypes[ttKey]}
+            tileKey={ttKey}
+          />
+        );
+      })}
+      {textureToApply && getGridSelected(textureToApply)}
+    </div>
+  );
 };
 
-const mapStateToProps = store => ({
-  tilesTypes: store.mapInfos.tilesTypes,
-  textureToApply: store.mapInfos.textureToApply,
-});
-
-MapEditionTilesList.propTypes = {
-  dispatchSetTextureToApply: PropTypes.func.isRequired,
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(MapEditionTilesList);
+export default MapEditionTilesList;

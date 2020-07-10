@@ -18,6 +18,7 @@ const config = {
   storageBucket: "gs://rpgwebsite-8a535.appspot.com",
 };
 firebase.initializeApp(config);
+window.soundManager.setup({debugMode: false});
 
 ReactDOM.render(
   <Provider store={store}>

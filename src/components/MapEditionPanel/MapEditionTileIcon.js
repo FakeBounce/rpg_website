@@ -1,7 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import { gridDimension, widthLeft } from "../Utils/StyleConstants";
-
-import PropTypes from "prop-types";
 
 const styledGrid = {
   border: "1px solid pink",
@@ -12,23 +10,16 @@ const styledGrid = {
   position: "relative",
 };
 
-class MapEditionTileIcon extends Component {
-  render() {
-    const { icon } = this.props;
-    return (
-      <div
-        style={{
-          ...styledGrid,
-          backgroundImage: `url(${icon})`,
-          backgroundSize: "cover",
-        }}
-      />
-    );
-  }
-}
-
-MapEditionTileIcon.propTypes = {
-  icon: PropTypes.string.isRequired,
+const MapEditionTileIcon = ({ icon }) => {
+  return (
+    <div
+      style={{
+        ...styledGrid,
+        backgroundImage: `url(${icon})`,
+        backgroundSize: "cover",
+      }}
+    />
+  );
 };
 
 export default MapEditionTileIcon;

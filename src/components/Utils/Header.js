@@ -164,7 +164,7 @@ const Header = props => {
           <Icon
             style={{
               position: "absolute",
-              top: 80,
+              top: 115,
               right: 60,
               cursor: cursorPointer,
             }}
@@ -216,20 +216,6 @@ const Header = props => {
       </div>
     </div>
   );
-};
-
-Header.propTypes = {
-  accessChatHelp: PropTypes.func.isRequired,
-  dispatchCallGetItemList: PropTypes.func.isRequired,
-  dispatchTogglePlayerView: PropTypes.func.isRequired,
-  isEventHidden: PropTypes.string.isRequired,
-  isOnBestiary: PropTypes.string.isRequired,
-  isOnMerchantList: PropTypes.string.isRequired,
-  onChatHelp: PropTypes.string.isRequired,
-  selectAnotherCharacter: PropTypes.func.isRequired,
-  toggleBestiary: PropTypes.func.isRequired,
-  toggleEvent: PropTypes.func.isRequired,
-  toggleMerchantList: PropTypes.func.isRequired,
 };
 
 export default Header;

@@ -8,18 +8,9 @@ import {
   imageSize,
   widthRightPanelLeft,
 } from "../Utils/StyleConstants";
+import { GiSwitchWeapon } from "react-icons/gi";
 
 const styles = {
-  characterTeamHeader: {
-    width: `${widthRightPanel - 20}px`,
-    height: `${imageSize / 2}px`,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-    borderTop: "1px solid black",
-    borderBottom: "1px solid black",
-    cursor: cursorPointer,
-  },
   characterTeamHeaderImage: {
     position: "relative",
     width: `${imageSize / 2}px`,
@@ -27,20 +18,32 @@ const styles = {
     float: "left",
     display: "inline-block",
   },
-  characterTeamExchangeImage: {
-    position: "absolute",
-    width: 25,
-    height: 25,
-    left: `${imageSize / 2}px`,
-    top: 0,
-    zIndex: 1,
-  },
+};
+
+const styledCharacterTeamHeader = {
+  width: `${widthRightPanel - 20}px`,
+  height: `${imageSize / 2}px`,
+  position: "relative",
+  display: "flex",
+  flexDirection: "row",
+  borderTop: "1px solid black",
+  borderBottom: "1px solid black",
+  cursor: cursorPointer,
+};
+
+const styledCharacterTeamExchangeImage = {
+  position: "absolute",
+  width: 25,
+  height: 25,
+  left: `${imageSize / 2}px`,
+  top: 0,
+  zIndex: 1,
 };
 
 const styledCharacterTeamHeaderImageContainer = {
   position: "relative",
-  width: `${imageSize/2}px`,
-  height: `${imageSize/2}px`,
+  width: `${imageSize / 2}px`,
+  height: `${imageSize / 2}px`,
   float: "left",
   display: "inline-block",
 };
@@ -69,25 +72,21 @@ class TeamCharacter extends Component {
     } = this.props;
 
     return (
-      <div style={styles.characterTeamHeader}>
-        {!isGM && (
-          <img
-            onClick={exchangeWithTeamMember}
-            src="./common/exchange.png"
-            alt="Exchange icon"
-            style={styles.characterTeamExchangeImage}
-          />
-        )}
+      <div style={styledCharacterTeamHeader}>
+        <div>
+          <img src={icon} alt={name} style={styles.characterTeamHeaderImage} />
+        </div>
         <div onClick={chatWithTeamMember}>
+          {!isGM && (
+            <GiSwitchWeapon
+              onClick={exchangeWithTeamMember}
+              style={styledCharacterTeamExchangeImage}
+            />
+          )}
           <div style={styledCharacterTeamHeaderImageContainer}>
             {status === "Inactive" && (
               <div style={styledCharacterTeamHeaderInactiveImage} />
             )}
-            <img
-              src={icon}
-              alt={name}
-              style={styles.characterTeamHeaderImage}
-            />
           </div>
           <TeamCharacterInfo doubleSized title={name} />
           <TeamCharacterInfo title="" text={status ? status : "OK"} />

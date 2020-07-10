@@ -17,7 +17,7 @@ class MapEditionTileInfos extends Component {
   render() {
     const {
       currentTile,
-      onChange,
+      setTownToAssign,
       toggleIsCurrent,
       toggleHasTown,
       townToAssign,
@@ -36,7 +36,7 @@ class MapEditionTileInfos extends Component {
               type="number"
               name="townToAssign"
               value={townToAssign}
-              onChange={e => onChange(parseInt(e.target.value, 10))}
+              onChange={e => setTownToAssign(parseInt(e.target.value, 10))}
             />
             {currentTile.hasTown > -1 && (
               <div>
