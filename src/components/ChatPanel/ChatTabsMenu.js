@@ -29,10 +29,11 @@ const ChatTabsMenu = () => {
       tabular
       style={{ overflowX: "auto", overflowY: "hidden" }}
     >
-      {chatTabs.map(ct => {
+      {chatTabs.map((ct, index) => {
         if (isGameMaster && ct === "Team") return null;
         return (
           <Menu.Item
+            key={`${ct}-${index}`}
             name={ct}
             active={activeChatTab === ct}
             onClick={changeActiveChatTab(ct)}

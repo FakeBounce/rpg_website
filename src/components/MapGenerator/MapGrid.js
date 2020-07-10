@@ -14,26 +14,21 @@ import {
 class MapGrid extends Component {
   generateTable = mapToRender => {
     const table = [];
-    const { currentZoom, currentY } = this.props;
+    const { currentZoom } = this.props;
     mapToRender.map((row, index) => {
-      if (
-        index <= currentY + (gridLength * 10) / currentZoom / 2 &&
-        index >= currentY - (gridLength * 10) / currentZoom / 2
-      ) {
-        table.push(
-          <div
-            key={`table-row-${index}`}
-            className="row"
-            style={{
-              width: `${(totalRows * gridDimension * currentZoom) / 10 +
-                totalRows}px`,
-              height: `${(gridDimension * currentZoom) / 10}px`,
-            }}
-          >
-            {this.createGrid(index, row)}
-          </div>,
-        );
-      }
+      table.push(
+        <div
+          key={`table-row-${index}`}
+          className="row"
+          style={{
+            width: `${(totalRows * gridDimension * currentZoom) / 10 +
+              totalRows}px`,
+            height: `${(gridDimension * currentZoom) / 10}px`,
+          }}
+        >
+          {this.createGrid(index, row)}
+        </div>,
+      );
       return null;
     });
     return table;
@@ -41,42 +36,35 @@ class MapGrid extends Component {
 
   createGrid = (positionX, rowToRender) => {
     const {
-      currentX,
       isGameMaster,
       isOnPlayerView,
-      currentZoom,
       towns,
       setTexture,
     } = this.props;
     const table = [];
     rowToRender.map((row, index) => {
-      if (
-        index <= currentX + (gridLength * 10) / currentZoom / 2 &&
-        index >=
-          currentX - (gridLength * 10) / currentZoom / 2 - (12 - currentZoom)
-      ) {
-        table.push(
-          isGameMaster && !isOnPlayerView ? (
-            <TileGM
-              key={`row-${index}`}
-              positionX={positionX}
-              row={row}
-              setTexture={setTexture}
-              showInfos={this.showInfos}
-              town={row.hasTown > -1 ? towns[row.hasTown] : null}
-              index={index}
-            />
-          ) : (
-            <Tile
-              key={`row-${index}`}
-              cancelTownList={this.cancelTownList}
-              row={row}
-              showTownList={this.showTownList}
-              town={row.hasTown > -1 ? towns[row.hasTown] : null}
-            />
-          ),
-        );
-      }
+      table.push(
+        isGameMaster && !isOnPlayerView ? (
+          <TileGM
+            key={`row-${index}`}
+            positionX={positionX}
+            row={row}
+            setTexture={setTexture}
+            showInfos={this.showInfos}
+            town={row.hasTown > -1 ? towns[row.hasTown] : null}
+            index={index}
+          />
+        ) : (
+          <Tile
+            key={`row-${index}`}
+            cancelTownList={this.cancelTownList}
+            row={row}
+            showTownList={this.showTownList}
+            town={row.hasTown > -1 ? towns[row.hasTown] : null}
+          />
+        ),
+      );
+
       return null;
     });
     return table;
@@ -108,7 +96,7 @@ class MapGrid extends Component {
   render() {
     const { map } = this.props;
     if (map && map.length > 0) {
-      return this.generateTable(map);
+      return <div>{this.generateTable(map)}</div>;
     }
     return null;
   }

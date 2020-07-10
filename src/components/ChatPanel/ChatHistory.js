@@ -1,8 +1,7 @@
-import React, { PureComponent } from "react";
+import React, { useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { heightLeft, widthLeft } from "../Utils/StyleConstants";
 import ChatRow from "./ChatRow";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { colors } from "../Utils/Constants";
 
 const styledChatHistoric = {
@@ -13,23 +12,26 @@ const styledChatHistoric = {
   overflowY: "auto",
 };
 
-class ChatHistory extends PureComponent {
-  messagesEnd = null;
+const ChatHistory = ({ activeChatTab }) => {
+  const messagesEnd = useRef(null);
 
-  componentDidMount() {
-    this.scrollToBottom();
-  }
+  const { history, pseudo, isGameMaster } = useSelector(store => ({
+    isGameMaster: store.appState.isGameMaster,
+    pseudo: store.userInfos.pseudo,
+    history: store.chat.history,
+  }));
 
-  componentDidUpdate(prevProps, prevState) {
-    this.scrollToBottom();
-  }
+  useEffect(() => {
+    scrollToBottom();
+  }, [activeChatTab, history]);
 
-  scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  const scrollToBottom = () => {
+    if (messagesEnd !== null) {
+      messagesEnd.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
-  isAViewer = viewersTab => {
-    const { pseudo, isGameMaster } = this.props;
+  const isAViewer = viewersTab => {
     let canSeeMessage = false;
     let isFiltered = false;
 
@@ -37,13 +39,13 @@ class ChatHistory extends PureComponent {
       if ((viewer === "gm" && isGameMaster) || viewer === pseudo) {
         canSeeMessage = true;
       }
-      if (!this.isFiltered(viewer)) isFiltered = true;
+      isFiltered = !checkIsFiltered(viewer);
       return null;
     });
     return canSeeMessage && isFiltered;
   };
 
-  getChatColor = row => {
+  const getChatColor = row => {
     let color = colors.chatAll;
     if (row.channel) {
       switch (row.channel) {
@@ -69,8 +71,7 @@ class ChatHistory extends PureComponent {
     return color;
   };
 
-  isFiltered = row => {
-    const { activeChatTab, isGameMaster, pseudo } = this.props;
+  const checkIsFiltered = row => {
     let isFiltered = true;
     switch (activeChatTab) {
       case "All":
@@ -110,52 +111,32 @@ class ChatHistory extends PureComponent {
     return isFiltered;
   };
 
-  render() {
-    const { history } = this.props;
-
-    return (
-      <div style={styledChatHistoric} className="scrollbar">
-        {Object.keys(history).map(key => {
-          if (!this.isFiltered(history[key])) {
-            if (history[key].viewers && this.isAViewer(history[key].viewers)) {
-              return (
-                <ChatRow
-                  key={`chat-row-${key}`}
-                  {...history[key]}
-                  color={this.getChatColor(history[key])}
-                />
-              );
-            }
+  return (
+    <div style={styledChatHistoric} className="scrollbar">
+      {Object.keys(history).map(key => {
+        if (!checkIsFiltered(history[key])) {
+          if (history[key].viewers && isAViewer(history[key].viewers)) {
             return (
               <ChatRow
                 key={`chat-row-${key}`}
                 {...history[key]}
-                color={this.getChatColor(history[key])}
+                color={getChatColor(history[key])}
               />
             );
           }
-          return null;
-        })}
-        <div
-          style={{ float: "left", clear: "both" }}
-          ref={el => {
-            this.messagesEnd = el;
-          }}
-        />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  isGameMaster: store.appState.isGameMaster,
-  pseudo: store.userInfos.pseudo,
-  history: store.chat.history,
-});
-
-ChatHistory.propTypes = {
-  activeChatTab: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+          return (
+            <ChatRow
+              key={`chat-row-${key}`}
+              {...history[key]}
+              color={getChatColor(history[key])}
+            />
+          );
+        }
+        return null;
+      })}
+      <div style={{ float: "left", clear: "both" }} ref={messagesEnd} />
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(ChatHistory);
+export default ChatHistory;

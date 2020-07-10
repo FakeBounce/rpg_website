@@ -38,7 +38,7 @@ const useChat = () => {
   const getWhispers = () => {
     let privateTabs = { ...whispersTab };
     const row = history[lastKey];
-    if (row.viewers && isAViewer(row.viewers)) {
+    if (row && row.viewers && isAViewer(row.viewers)) {
       if (row.channel && row.channel === "Private") {
         row.viewers.map(v => {
           if (

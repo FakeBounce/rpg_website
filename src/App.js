@@ -522,7 +522,7 @@ class App extends Component {
                     circular
                     inverted
                     name="shutdown"
-                    color={colors.red300}
+                    color="red"
                   />
                 )}
                 {isAuth && (
