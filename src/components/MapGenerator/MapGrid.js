@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./Grid.css";
 
-import { gridDimension, gridLength, totalRows } from "../Utils/StyleConstants";
+import { gridDimension, totalRows } from "../Utils/StyleConstants";
 import Tile from "./Tile";
 import TileGM from "./TileGM";
 import { connect } from "react-redux";

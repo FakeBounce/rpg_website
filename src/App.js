@@ -10,7 +10,7 @@ import HasNoNickname from "./components/NicknameSelection/HasNoNickname";
 import CharacterSelection from "./components/CharacterSelection/CharacterSelection";
 import StoriesPanel from "./components/StoryPanel";
 
-import { colors, defaultState } from "./components/Utils/Constants";
+import { defaultState } from "./components/Utils/Constants";
 import GameScreen from "./containers/GameScreen";
 import SoundPlayer from "./components/SoundPlayer/SoundPlayer";
 import {

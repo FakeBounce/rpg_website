@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const SelectMapper = ({ mapArray, value, onChange, style = {} }) => {
-  console.log("mapArray", mapArray);
   return (
     <select
       value={value}
