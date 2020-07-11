@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 import { Icon } from "semantic-ui-react";
 import { cursorPointer, heightHeader } from "./StyleConstants";
@@ -8,7 +7,6 @@ import { hydrateAllMerchants, resetStoryMerchants } from "./MerchantsFunctions";
 import Camera from "./Camera";
 import { togglePlayerView } from "../../redux/actions/actionsAppState";
 import { CALL_GET_ITEM_LIST } from "../../redux/actionsTypes/actionsTypesItems";
-import { colors } from "./Constants";
 
 const styledHeaderLeft = {
   height: heightHeader,

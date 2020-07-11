@@ -35,6 +35,10 @@ const useChat = () => {
     users: store.appState.users,
   }));
 
+  const onChangeDice = value => {
+    setBonus(value);
+  };
+
   const getWhispers = () => {
     let privateTabs = { ...whispersTab };
     const row = history[lastKey];
@@ -682,6 +686,7 @@ const useChat = () => {
     gmCommands,
     handleKeyPress,
     launchCommand,
+    onChangeDice,
     onDrop,
     setBonus,
     setGmCommands,
