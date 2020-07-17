@@ -2,11 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import firebase from "firebase";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import App from "./App";
 import { unregister } from "./registerServiceWorker";
 import sagasRoot from "./redux/sagas/sagasRoot";
 import { sagaMiddleware, configureStore } from "./store";
+import StoryPreview from "./StoryPreview";
 
 const store = configureStore();
 sagaMiddleware.run(sagasRoot);
@@ -18,11 +20,20 @@ const config = {
   storageBucket: "gs://rpgwebsite-8a535.appspot.com",
 };
 firebase.initializeApp(config);
-window.soundManager.setup({debugMode: false});
+window.soundManager.setup({ debugMode: false });
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Router>
+      <Switch>
+        <Route exact path="/preview/:story">
+          <StoryPreview />
+        </Route>
+        <Route path="/">
+          <App />
+        </Route>
+      </Switch>
+    </Router>
   </Provider>,
   document.getElementById("root"),
 );

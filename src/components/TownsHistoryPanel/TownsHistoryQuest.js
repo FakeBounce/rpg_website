@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { heightLeft } from '../Utils/StyleConstants';
 import QuestFullscreen from '../QuestPanel/QuestFullscreen';
@@ -12,16 +12,13 @@ const styledQuestContainer = {
   color: 'black',
 };
 
-class TownsHistoryQuest extends Component {
-  render() {
-    const { showedQuest } = this.props;
-    return (
-      <div style={styledQuestContainer}>
-        <QuestFullscreen hideQuest={() => {}} {...showedQuest} />
-      </div>
-    );
-  }
-}
+const TownsHistoryQuest = ({ showedQuest }) => {
+  return (
+    <div style={styledQuestContainer}>
+      <QuestFullscreen hideQuest={() => {}} {...showedQuest} />
+    </div>
+  );
+};
 
 TownsHistoryQuest.propTypes = {
   showedQuest: PropTypes.object.isRequired,

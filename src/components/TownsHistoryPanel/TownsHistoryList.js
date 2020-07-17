@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { heightLeft, widthListPanelBestiary } from '../Utils/StyleConstants';
 import TownsHistoryListTown from './TownsHistoryListTown';
@@ -13,29 +13,31 @@ const styledListContainer = {
   overflowX: 'hidden',
 };
 
-class TownsHistoryList extends Component {
-  render() {
-    const { townsOrdered, showCity, showMerchant, showQuest } = this.props;
-    return (
-      <div style={styledListContainer} className="scrollbar">
-        {townsOrdered &&
-          Object.keys(townsOrdered).map((townKey, i) => {
-            return (
-              <TownsHistoryListTown
-                key={'town-list-' + townKey}
-                townKey={townKey}
-                showCity={showCity}
-                index={i}
-                showMerchant={showMerchant}
-                showQuest={showQuest}
-                townsOrdered={townsOrdered}
-              />
-            );
-          })}
-      </div>
-    );
-  }
-}
+const TownsHistoryList = ({
+  townsOrdered,
+  showCity,
+  showMerchant,
+  showQuest,
+}) => {
+  return (
+    <div style={styledListContainer} className='scrollbar'>
+      {townsOrdered &&
+        Object.keys(townsOrdered).map((townKey, i) => {
+          return (
+            <TownsHistoryListTown
+              key={'town-list-' + townKey}
+              townKey={townKey}
+              showCity={showCity}
+              index={i}
+              showMerchant={showMerchant}
+              showQuest={showQuest}
+              townsOrdered={townsOrdered}
+            />
+          );
+        })}
+    </div>
+  );
+};
 
 TownsHistoryList.propTypes = {
   townsOrdered: PropTypes.object.isRequired,

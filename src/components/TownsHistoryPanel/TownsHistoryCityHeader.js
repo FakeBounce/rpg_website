@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const styledCityHeader = {
@@ -8,12 +8,9 @@ const styledCityHeader = {
   position: 'absolute',
 };
 
-class TownsHistoryCityHeader extends Component {
-  render() {
-    const { name } = this.props;
-    return <div style={styledCityHeader}>{name}</div>;
-  }
-}
+const TownsHistoryCityHeader = ({ name }) => {
+  return <div style={styledCityHeader}>{name}</div>;
+};
 
 TownsHistoryCityHeader.propTypes = {
   name: PropTypes.string.isRequired,

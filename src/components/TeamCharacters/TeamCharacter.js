@@ -1,38 +1,38 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import HealthBar from "../Utils/HealthBar";
-import TeamCharacterInfo from "./TeamCharacterInfo";
+import React from 'react';
+import PropTypes from 'prop-types';
+import HealthBar from '../Utils/HealthBar';
+import TeamCharacterInfo from './TeamCharacterInfo';
 import {
   cursorPointer,
   widthRightPanel,
   imageSize,
   widthRightPanelLeft,
-} from "../Utils/StyleConstants";
-import { GiSwitchWeapon } from "react-icons/gi";
+} from '../Utils/StyleConstants';
+import { GiSwitchWeapon } from 'react-icons/gi';
 
 const styles = {
   characterTeamHeaderImage: {
-    position: "relative",
+    position: 'relative',
     width: `${imageSize / 2}px`,
     height: `${imageSize / 2}px`,
-    float: "left",
-    display: "inline-block",
+    float: 'left',
+    display: 'inline-block',
   },
 };
 
 const styledCharacterTeamHeader = {
   width: `${widthRightPanel - 20}px`,
   height: `${imageSize / 2}px`,
-  position: "relative",
-  display: "flex",
-  flexDirection: "row",
-  borderTop: "1px solid black",
-  borderBottom: "1px solid black",
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'row',
+  borderTop: '1px solid black',
+  borderBottom: '1px solid black',
   cursor: cursorPointer,
 };
 
 const styledCharacterTeamExchangeImage = {
-  position: "absolute",
+  position: 'absolute',
   width: 25,
   height: 25,
   left: `${imageSize / 2}px`,
@@ -41,75 +41,65 @@ const styledCharacterTeamExchangeImage = {
 };
 
 const styledCharacterTeamHeaderImageContainer = {
-  position: "relative",
+  position: 'relative',
   width: `${imageSize / 2}px`,
   height: `${imageSize / 2}px`,
-  float: "left",
-  display: "inline-block",
+  float: 'left',
+  display: 'inline-block',
 };
 
 const styledCharacterTeamHeaderInactiveImage = {
-  position: "absolute",
+  position: 'absolute',
   width: `${imageSize}px`,
   height: `${imageSize}px`,
-  backgroundColor: "grey",
+  backgroundColor: 'grey',
   opacity: 0.3,
 };
 
-class TeamCharacter extends Component {
-  render() {
-    const {
-      icon,
-      name,
-      status,
-      gold,
-      health,
-      maxHealth,
-      exchangeWithTeamMember,
-      chatWithTeamMember,
-      goldWithTeamMember,
-      isGM,
-    } = this.props;
-
-    return (
-      <div style={styledCharacterTeamHeader}>
-        <div>
-          <img src={icon} alt={name} style={styles.characterTeamHeaderImage} />
-        </div>
-        <div onClick={chatWithTeamMember}>
-          {!isGM && (
-            <GiSwitchWeapon
-              onClick={exchangeWithTeamMember}
-              style={styledCharacterTeamExchangeImage}
-            />
-          )}
-          <div style={styledCharacterTeamHeaderImageContainer}>
-            {status === "Inactive" && (
-              <div style={styledCharacterTeamHeaderInactiveImage} />
-            )}
-          </div>
-          <TeamCharacterInfo doubleSized title={name} />
-          <TeamCharacterInfo title="" text={status ? status : "OK"} />
-        </div>
-        <div onClick={goldWithTeamMember}>
-          <TeamCharacterInfo title="" text={`${gold ? gold : 0}g`} />
-        </div>
-        <div onClick={chatWithTeamMember}>
-          <HealthBar
-            isGM={isGM}
-            width={`${Math.floor((health / maxHealth) * 100)}%`}
-            maxWidth={`${widthRightPanelLeft - 20 + imageSize / 2}px`}
-          />
-        </div>
+const TeamCharacter = ({
+  icon,
+  name,
+  status,
+  gold,
+  health = 50,
+  maxHealth = 50,
+  exchangeWithTeamMember,
+  chatWithTeamMember,
+  goldWithTeamMember,
+  isGM = false,
+}) => {
+  return (
+    <div style={styledCharacterTeamHeader}>
+      <div>
+        <img src={icon} alt={name} style={styles.characterTeamHeaderImage} />
       </div>
-    );
-  }
-}
-
-TeamCharacter.defaultProps = {
-  health: 50,
-  maxHealth: 50,
-  isGM: false,
+      <div onClick={chatWithTeamMember}>
+        {!isGM && (
+          <GiSwitchWeapon
+            onClick={exchangeWithTeamMember}
+            style={styledCharacterTeamExchangeImage}
+          />
+        )}
+        <div style={styledCharacterTeamHeaderImageContainer}>
+          {status === 'Inactive' && (
+            <div style={styledCharacterTeamHeaderInactiveImage} />
+          )}
+        </div>
+        <TeamCharacterInfo doubleSized title={name} />
+        <TeamCharacterInfo title='' text={status ? status : 'OK'} />
+      </div>
+      <div onClick={goldWithTeamMember}>
+        <TeamCharacterInfo title='' text={`${gold ? gold : 0}g`} />
+      </div>
+      <div onClick={chatWithTeamMember}>
+        <HealthBar
+          isGM={isGM}
+          width={`${Math.floor((health / maxHealth) * 100)}%`}
+          maxWidth={`${widthRightPanelLeft - 20 + imageSize / 2}px`}
+        />
+      </div>
+    </div>
+  );
 };
 
 TeamCharacter.propTypes = {

@@ -1,30 +1,33 @@
-import React, { Component } from "react";
-import { heightLeft } from "../Utils/StyleConstants";
-import TownsHistoryList from "./TownsHistoryList";
-import TownsHistorySoloMerchant from "./TownsHistorySoloMerchant";
-import TownsHistoryCity from "./TownsHistoryCity";
-import TownsHistoryQuest from "./TownsHistoryQuest";
-import { colors } from "../Utils/Constants";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { heightLeft } from '../Utils/StyleConstants';
+import TownsHistoryList from './TownsHistoryList';
+import TownsHistorySoloMerchant from './TownsHistorySoloMerchant';
+import TownsHistoryCity from './TownsHistoryCity';
+import TownsHistoryQuest from './TownsHistoryQuest';
+import { colors } from '../Utils/Constants';
+import { useSelector } from 'react-redux';
 
 const styledTownsHistoryContainer = {
   height: heightLeft,
-  width: "100%",
-  position: "relative",
+  width: '100%',
+  position: 'relative',
   backgroundColor: colors.background,
   color: colors.text,
 };
 
-class TownsHistoryPanel extends Component {
-  state = {
-    townsOrdered: {},
-    showedMerchant: {},
-    showedQuest: {},
-    showedTown: {},
-  };
+const TownsHistoryPanel = () => {
+  const [townsOrdered, setTownsOrdered] = useState({});
+  const [showedMerchant, setShowedMerchant] = useState({});
+  const [showedQuest, setShowedQuest] = useState({});
+  const [showedTown, setShowedTown] = useState({});
 
-  componentDidMount() {
-    const { merchants, quests, towns } = this.props;
+  const { towns, quests, merchants } = useSelector(store => ({
+    towns: store.mapInfos.towns,
+    quests: store.mapInfos.quests,
+    merchants: store.merchants.merchantList,
+  }));
+
+  useEffect(() => {
     const tempMandQ = {};
     towns.map(t => {
       tempMandQ[t.name] = { merchants: [], quests: [] };
@@ -56,32 +59,22 @@ class TownsHistoryPanel extends Component {
       }
       return null;
     });
-    this.setState(state => ({
-      ...state,
-      townsOrdered: { ...tempMandQ },
-    }));
-  }
+    setTownsOrdered({ ...tempMandQ });
+  }, []);
 
-  showMerchant = m => {
-    this.setState(state => ({
-      ...state,
-      showedMerchant: { ...m },
-      showedTown: {},
-      showedQuest: {},
-    }));
+  const showMerchant = m => {
+    setShowedQuest({});
+    setShowedTown({});
+    setShowedMerchant({ ...m });
   };
 
-  showQuest = q => {
-    this.setState(state => ({
-      ...state,
-      showedQuest: { ...q },
-      showedTown: {},
-      showedMerchant: {},
-    }));
+  const showQuest = q => {
+    setShowedQuest({ ...q });
+    setShowedTown({});
+    setShowedMerchant({});
   };
 
-  showCity = city => {
-    const { towns } = this.props;
+  const showCity = city => {
     let showedTown = {};
     towns.map(t => {
       if (t.name === city) {
@@ -89,43 +82,25 @@ class TownsHistoryPanel extends Component {
       }
       return null;
     });
-    this.setState(state => ({
-      ...state,
-      showedQuest: {},
-      showedMerchant: {},
-      showedTown: { ...showedTown },
-    }));
+    setShowedQuest({});
+    setShowedTown({ ...showedTown });
+    setShowedMerchant({});
   };
+  return (
+    <div style={styledTownsHistoryContainer}>
+      <TownsHistoryList
+        townsOrdered={townsOrdered}
+        showMerchant={showMerchant}
+        showQuest={showQuest}
+        showCity={showCity}
+      />
+      {showedMerchant.items && (
+        <TownsHistorySoloMerchant showedMerchant={showedMerchant} />
+      )}
+      {showedQuest.name && <TownsHistoryQuest showedQuest={showedQuest} />}
+      {showedTown.name && <TownsHistoryCity showedTown={showedTown} />}
+    </div>
+  );
+};
 
-  render() {
-    const {
-      townsOrdered,
-      showedMerchant,
-      showedTown,
-      showedQuest,
-    } = this.state;
-    return (
-      <div style={styledTownsHistoryContainer}>
-        <TownsHistoryList
-          townsOrdered={townsOrdered}
-          showMerchant={this.showMerchant}
-          showQuest={this.showQuest}
-          showCity={this.showCity}
-        />
-        {showedMerchant.items && (
-          <TownsHistorySoloMerchant showedMerchant={showedMerchant} />
-        )}
-        {showedQuest.name && <TownsHistoryQuest showedQuest={showedQuest} />}
-        {showedTown.name && <TownsHistoryCity showedTown={showedTown} />}
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  towns: store.mapInfos.towns,
-  quests: store.mapInfos.quests,
-  merchants: store.merchants.merchantList,
-});
-
-export default connect(mapStateToProps)(TownsHistoryPanel);
+export default TownsHistoryPanel;

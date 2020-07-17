@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const styledQuestHeader = {
   width: '50%',
@@ -7,10 +7,8 @@ const styledQuestHeader = {
   marginBottom: 5,
 };
 
-class TownsHistoryListQuestsHeader extends Component {
-  render() {
-    return <div style={styledQuestHeader}>Quests</div>;
-  }
-}
+const TownsHistoryListQuestsHeader = () => {
+  return <div style={styledQuestHeader}>Quests</div>;
+};
 
 export default TownsHistoryListQuestsHeader;
