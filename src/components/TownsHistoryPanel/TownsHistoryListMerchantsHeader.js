@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const styledMerchantHeader = {
   width: '50%',
@@ -7,10 +7,8 @@ const styledMerchantHeader = {
   marginTop: 5,
 };
 
-class TownsHistoryListMerchantsHeader extends Component {
-  render() {
-    return <div style={styledMerchantHeader}>Merchants</div>;
-  }
-}
+const TownsHistoryListMerchantsHeader = () => {
+  return <div style={styledMerchantHeader}>Merchants</div>;
+};
 
 export default TownsHistoryListMerchantsHeader;

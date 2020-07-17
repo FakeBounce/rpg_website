@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { cursorPointer, widthListPanelBestiary } from '../Utils/StyleConstants';
 
@@ -22,25 +22,22 @@ const styledText = {
   float: 'left',
 };
 
-class TownsHistoryListMerchant extends Component {
-  render() {
-    const { showMerchant, merchant } = this.props;
-    return (
-      <div style={styledMerchant} onClick={() => showMerchant(merchant)}>
-        <img
-          style={styledImage}
-          src={`./merchants/${merchant.icon}`}
-          alt={merchant.icon}
-        />
-        <div style={styledText}>
-          {merchant.name}, {merchant.job}
-          <br />
-          (Quality : {merchant.level})
-        </div>
+const TownsHistoryListMerchant = ({ showMerchant, merchant }) => {
+  return (
+    <div style={styledMerchant} onClick={() => showMerchant(merchant)}>
+      <img
+        style={styledImage}
+        src={`./merchants/${merchant.icon}`}
+        alt={merchant.icon}
+      />
+      <div style={styledText}>
+        {merchant.name}, {merchant.job}
+        <br />
+        (Quality : {merchant.level})
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 TownsHistoryListMerchant.propTypes = {
   showMerchant: PropTypes.func.isRequired,

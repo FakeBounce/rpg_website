@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { imageSize, widthRightPanelLeft } from '../Utils/StyleConstants';
@@ -12,29 +12,20 @@ const styles = {
   },
 };
 
-class TeamCharacterInfo extends Component {
-  render() {
-    const { title, text, doubleSized } = this.props;
-
-    return (
-      <div
-        style={{
-          ...styles.characterTeamHeaderInfo,
-          width: doubleSized
-            ? `${((widthRightPanelLeft - 20 + imageSize / 2) / 2)}px`
-            : `${(widthRightPanelLeft - 20 + imageSize / 2) / 4}px`,
-        }}
-      >
-        {title}
-        {text}
-      </div>
-    );
-  }
-}
-
-TeamCharacterInfo.defaultProps = {
-  text: '',
-  doubleSized: false,
+const TeamCharacterInfo = ({ title, text = '', doubleSized = false }) => {
+  return (
+    <div
+      style={{
+        ...styles.characterTeamHeaderInfo,
+        width: doubleSized
+          ? `${(widthRightPanelLeft - 20 + imageSize / 2) / 2}px`
+          : `${(widthRightPanelLeft - 20 + imageSize / 2) / 4}px`,
+      }}
+    >
+      {title}
+      {text}
+    </div>
+  );
 };
 
 TeamCharacterInfo.propTypes = {

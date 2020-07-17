@@ -23,21 +23,18 @@ const styledTownListDiscover = {
   cursor: cursorPointer,
 };
 
-class TownQuest extends Component {
-  render() {
-    const { removeQuestFromTown, q, i, validateQuest } = this.props;
-    return (
-      <div key={`quest-${q.name}`}>
-        <div onClick={() => removeQuestFromTown(i)} style={styledTownListItem}>
-          {q.name}
-        </div>
-        <button style={styledTownListDiscover} onClick={() => validateQuest(i)}>
-          {q.validated ? 'V' : 'NV'}
-        </button>
+const TownQuest = ({ removeQuestFromTown, q, i, validateQuest }) => {
+  return (
+    <div key={`quest-${q.name}`}>
+      <div onClick={() => removeQuestFromTown(i)} style={styledTownListItem}>
+        {q.name}
       </div>
-    );
-  }
-}
+      <button style={styledTownListDiscover} onClick={() => validateQuest(i)}>
+        {q.validated ? 'V' : 'NV'}
+      </button>
+    </div>
+  );
+};
 
 TownQuest.propTypes = {
   q: PropTypes.object.isRequired,

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { widthRightPanel } from '../Utils/StyleConstants';
 
 const styles = {
@@ -28,17 +28,15 @@ const styles = {
   },
 };
 
-class TeamHeader extends Component {
-  render() {
-    return (
-      <div style={styles.HeaderTextContainer}>
-        <div style={styles.HeaderTextLeft}>Equipe :</div>
-        <div style={styles.HeaderText}>Name</div>
-        <div style={styles.HeaderText}>Status</div>
-        <div style={styles.HeaderText}>Gold</div>
-      </div>
-    );
-  }
-}
+const TeamHeader = () => {
+  return (
+    <div style={styles.HeaderTextContainer}>
+      <div style={styles.HeaderTextLeft}>Equipe :</div>
+      <div style={styles.HeaderText}>Name</div>
+      <div style={styles.HeaderText}>Status</div>
+      <div style={styles.HeaderText}>Gold</div>
+    </div>
+  );
+};
 
 export default TeamHeader;

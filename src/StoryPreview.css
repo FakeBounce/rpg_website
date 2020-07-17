@@ -1,0 +1,35 @@
+.animatedPreview {
+    -webkit-animation:spin 4s ease-in;
+    -moz-animation:spin 4s ease-in;
+    animation:spin 4s ease-in;
+    max-height: 100px;
+ }
+
+@-moz-keyframes spin { 
+  0% { -moz-transform: rotate(0deg); }
+  100% { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); }
+}
+
+.animatedPreviewStart {
+    max-height: 0px;
+    -moz-transition: height 2s ease-in;
+    -webkit-transition: height 2s ease-in;
+    -o-transition: height 2s ease-in;
+    transition: height 2s ease-in;
+ }
+
+ .animatedPreviewFinished {
+    max-height: 500px;
+    -moz-transition: height 2s ease-in;
+    -webkit-transition: height 2s ease-in;
+    -o-transition: height 2s ease-in;
+    transition: height 2s ease-in;
+ }
