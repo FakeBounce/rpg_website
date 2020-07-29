@@ -30,10 +30,6 @@ const styledItemColumn = {
 };
 
 const TownsHistorySoloMerchant = ({
-  currentStory,
-  showedMerchant,
-  characterEducation,
-  characterGold,
   showedMerchant,
 }) => {
   const { currentStory, characterGold, characterEducation } = useSelector(

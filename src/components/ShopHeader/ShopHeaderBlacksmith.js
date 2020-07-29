@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { cursorPointer, widthLeft } from '../Utils/StyleConstants';
 import { colors } from '../Utils/Constants';
@@ -30,43 +30,40 @@ const styledTripleTabSelected = {
   color: colors.red300,
 };
 
-class ShopHeaderBlacksmith extends Component {
-  render() {
-    const { changeTab, currentTab } = this.props;
-    return (
-      <div style={styledTabs}>
-        <div
-          style={
-            currentTab === 'items' ? styledTripleTabSelected : styledTripleTab
-          }
-          onClick={() => changeTab('items')}
-        >
-          Items
-        </div>
-        <div
-          style={
-            currentTab === 'enhancements'
-              ? styledTripleTabSelected
-              : styledTripleTab
-          }
-          onClick={() => changeTab('enhancements')}
-        >
-          Enhancements
-        </div>
-        <div
-          style={
-            currentTab === 'blacksmith'
-              ? styledTripleTabSelected
-              : styledTripleTab
-          }
-          onClick={() => changeTab('blacksmith')}
-        >
-          Blacksmith
-        </div>
+const ShopHeaderBlacksmith = ({ changeTab, currentTab }) => {
+  return (
+    <div style={styledTabs}>
+      <div
+        style={
+          currentTab === 'items' ? styledTripleTabSelected : styledTripleTab
+        }
+        onClick={() => changeTab('items')}
+      >
+        Items
       </div>
-    );
-  }
-}
+      <div
+        style={
+          currentTab === 'enhancements'
+            ? styledTripleTabSelected
+            : styledTripleTab
+        }
+        onClick={() => changeTab('enhancements')}
+      >
+        Enhancements
+      </div>
+      <div
+        style={
+          currentTab === 'blacksmith'
+            ? styledTripleTabSelected
+            : styledTripleTab
+        }
+        onClick={() => changeTab('blacksmith')}
+      >
+        Blacksmith
+      </div>
+    </div>
+  );
+};
 
 ShopHeaderBlacksmith.propTypes = {
   changeTab: PropTypes.func.isRequired,

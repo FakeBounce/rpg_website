@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { heightLeft, widthLeft } from '../Utils/StyleConstants';
 
 import PropTypes from 'prop-types';
@@ -7,6 +7,7 @@ import TownMerchants from './TownMerchants';
 import TownQuests from './TownQuests';
 import { colors } from '../Utils/Constants';
 import { useSelector, useDispatch } from 'react-redux';
+import { CALL_PRINT_ERROR } from '../../redux/actionsTypes/actionsTypesAppState';
 
 const styledBoxHeader = {
   width: '100%',
@@ -31,13 +32,15 @@ const styledMapSide = {
 // @TODO check for currentTown
 const TownPanel = ({ toggleRightPanel }) => {
   const dispatch = useDispatch();
-  const { currentStory, towns, quests, merchants } = useSelector(store => ({
-    currentTown: store.mapInfos.currentTown,
-    currentStory: store.appState.currentStory,
-    towns: store.mapInfos.towns,
-    quests: store.mapInfos.quests,
-    merchants: store.mapInfos.merchants,
-  }));
+  const { currentStory, currentTown, towns, quests, merchants } = useSelector(
+    store => ({
+      currentTown: store.mapInfos.currentTown,
+      currentStory: store.appState.currentStory,
+      towns: store.mapInfos.towns,
+      quests: store.mapInfos.quests,
+      merchants: store.mapInfos.merchants,
+    }),
+  );
 
   const dispatchCallPrintError = payload => {
     dispatch({ type: CALL_PRINT_ERROR, payload });

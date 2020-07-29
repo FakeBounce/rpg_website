@@ -1,34 +1,31 @@
-import React, { Component } from "react";
-import "./Quest.css";
-import PropTypes from "prop-types";
-import { questsPosition, questsRandom } from "../Utils/StyleConstants";
+import React from 'react';
+import './Quest.css';
+import PropTypes from 'prop-types';
+import { questsPosition, questsRandom } from '../Utils/StyleConstants';
 
-class Quest extends Component {
-  getRandomStyle = () => {
-    let rdm = "";
+const Quest = ({ position, index, icon, showQuest }) => {
+  const getRandomStyle = () => {
+    let rdm = '';
     this.props.randomStyle.map(value => {
-      rdm += questsRandom[value] + " ";
+      rdm += questsRandom[value] + ' ';
       return null;
     });
     return { transform: rdm };
   };
 
-  render() {
-    const { position, index, icon, showQuest } = this.props;
-    return (
-      <div
-        className="quest"
-        style={{
-          ...questsPosition[position],
-          ...this.getRandomStyle(),
-        }}
-        onClick={() => showQuest(index)}
-      >
-        <img src={"./quests/" + icon} alt="A quest" className="quest-icon" />
-      </div>
-    );
-  }
-}
+  return (
+    <div
+      className='quest'
+      style={{
+        ...questsPosition[position],
+        ...getRandomStyle(),
+      }}
+      onClick={() => showQuest(index)}
+    >
+      <img src={'./quests/' + icon} alt='A quest' className='quest-icon' />
+    </div>
+  );
+};
 
 Quest.propTypes = {
   icon: PropTypes.string.isRequired,

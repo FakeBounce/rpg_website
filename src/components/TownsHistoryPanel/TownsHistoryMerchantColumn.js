@@ -29,30 +29,24 @@ const styledItemColumn = {
 };
 
 const TownsHistoryMerchantColumn = ({
-  currentStory,
   merchantIndex,
-  characterGold,
-  characterEducation,
-  merchants,
 }) => {
   const {
     currentStory,
     characterEducation,
     characterGold,
     merchants,
-    // currentMerchant,
   } = useSelector(store => ({
     currentStory: store.appState.currentStory,
     characterGold: store.character.gold,
     characterEducation: store.character.education,
     merchants: store.merchants.merchantList,
-    // currentMerchant: store.merchants.currentMerchant,
   }));
 
   const [currentItem, setCurrentItem] = useState({});
 
   // @Todo listener
-  showItemDescription = i => {
+  const showItemDescription = i => {
     firebase
       .database()
       .ref(
@@ -73,7 +67,7 @@ const TownsHistoryMerchantColumn = ({
       <div style={styledTownColumn}>
         <TownsHistoryMerchantHeader merchant={merchants[merchantIndex]} />
         <TownsHistoryMerchantColumnList
-          showItemDescription={this.showItemDescription}
+          showItemDescription={showItemDescription}
         />
       </div>
 

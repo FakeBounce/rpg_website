@@ -1,38 +1,35 @@
-import React, { PureComponent } from "react";
-import "./Item.css";
-import PropTypes from "prop-types";
+import React from 'react';
+import './Item.css';
+import PropTypes from 'prop-types';
 
-class Item extends PureComponent {
-  render() {
-    const {
-      index,
-      icon,
-      iconPath,
-      itemType,
-      name,
-      price,
-      showItemDescription,
-      isHidden,
-      noPrice,
-    } = this.props;
-    return (
-      <div className="item" onClick={() => showItemDescription(index)}>
-        <img
-          src={iconPath || "./" + itemType + "/" + icon}
-          alt={" "}
-          className="item-icon"
-        />
-        <div className="item-text">{isHidden ? "???" : name}</div>
-        {!noPrice && <div className="item-price">{price}g</div>}
-      </div>
-    );
-  }
-}
+const Item = ({
+  index,
+  icon,
+  iconPath,
+  itemType,
+  name,
+  price,
+  showItemDescription,
+  isHidden,
+  noPrice,
+}) => {
+  return (
+    <div className='item' onClick={() => showItemDescription(index)}>
+      <img
+        src={iconPath || './' + itemType + '/' + icon}
+        alt={' '}
+        className='item-icon'
+      />
+      <div className='item-text'>{isHidden ? '???' : name}</div>
+      {!noPrice && <div className='item-price'>{price}g</div>}
+    </div>
+  );
+};
 
 Item.defaultProps = {
-  type: "",
-  iconPath: "",
-  description: "",
+  type: '',
+  iconPath: '',
+  description: '',
   noPrice: false,
   price: 0,
 };

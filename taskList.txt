@@ -135,5 +135,6 @@ v3.0.0
 67) Drag n drop carte /  molette zoom
 68) Salons de chat
 69) Possibiliter de générer un sort après un jet de magie
+70) Faire un panier d'achat, qui prédit les golds restant avec une liste des objets souhaités
 
 BDD : https://rpgwebsite-8a535.firebaseio.com/

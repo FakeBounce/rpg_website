@@ -1,24 +1,27 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { widthLeft, heightLeft } from "../Utils/StyleConstants";
-import ItemList from "./ItemList";
-import Cadre from "../Utils/Cadre";
-import firebase from "firebase";
-import { connect } from "react-redux";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { widthLeft, heightLeft } from '../Utils/StyleConstants';
+import ItemList from './ItemList';
+import Cadre from '../Utils/Cadre';
+import firebase from 'firebase';
+import { useSelector } from 'react-redux';
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
-  position: "relative",
+  display: 'inline-block',
+  float: 'left',
+  textAlign: 'left',
+  position: 'relative',
   paddingHorizontal: 10,
 };
 
-class ItemPanel extends PureComponent {
-  showItemDescription = i => {
-    const { merchants, currentMerchant, doSetState, currentStory } = this.props;
+const ItemPanel = ({ merchants, currentMerchant, doSetState, itemsList }) => {
+  const { currentStory } = useSelector(store => ({
+    currentStory: store.appState.currentStory,
+  }));
+
+  const showItemDescription = i => {
     doSetState(
       {
         isItemDescriptionShowed: true,
@@ -30,14 +33,14 @@ class ItemPanel extends PureComponent {
         firebase
           .database()
           .ref(
-            "stories/" +
+            'stories/' +
               currentStory +
-              "/merchants/" +
+              '/merchants/' +
               currentMerchant +
-              "/items/" +
+              '/items/' +
               i,
           )
-          .on("value", snapshot => {
+          .on('value', snapshot => {
             this.props.doSetState({
               itemToDescribe: snapshot.val(),
             });
@@ -46,24 +49,16 @@ class ItemPanel extends PureComponent {
     );
   };
 
-  render() {
-    const { itemsList } = this.props;
-
-    return (
-      <div style={styledMapSide}>
-        <Cadre />
-        <ItemList
-          itemsList={itemsList}
-          showItemDescription={this.showItemDescription}
-        />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-});
+  return (
+    <div style={styledMapSide}>
+      <Cadre />
+      <ItemList
+        itemsList={itemsList}
+        showItemDescription={showItemDescription}
+      />
+    </div>
+  );
+};
 
 ItemPanel.propTypes = {
   currentMerchant: PropTypes.number.isRequired,
@@ -72,4 +67,4 @@ ItemPanel.propTypes = {
   doSetState: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(ItemPanel);
+export default ItemPanel;

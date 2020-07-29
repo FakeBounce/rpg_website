@@ -1,41 +1,31 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { setCurrentScale } from "../../redux/actions/actionsMapInfos";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_CURRENT_SCALE } from '../../redux/actionsTypes/actionsTypesMapInfos';
 
-class MapEditionScale extends Component {
-  render() {
-    const { dispatchSetCurrentScale, currentScale } = this.props;
-    return (
-      <div>
-        <span style={{ marginRight: 10 }}>Taille du pinceau :</span>
-        <input
-          type="number"
-          onChange={e => {
-            dispatchSetCurrentScale(parseInt(e.target.value, 10));
-          }}
-          value={currentScale}
-          style={{ maxWidth: 150 }}
-        />
-      </div>
-    );
-  }
-}
+const MapEditionScale = () => {
+  const dispatch = useDispatch();
 
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchSetCurrentScale: payload => {
-      dispatch(setCurrentScale(payload));
-    },
+  const { currentScale } = useSelector(store => ({
+    currentScale: store.mapInfos.currentScale,
+  }));
+
+  const setCurrentScale = payload => {
+    dispatch({ type: SET_CURRENT_SCALE, payload });
   };
+
+  return (
+    <div>
+      <span style={{ marginRight: 10 }}>Taille du pinceau :</span>
+      <input
+        type='number'
+        onChange={e => {
+          setCurrentScale(parseInt(e.target.value, 10));
+        }}
+        value={currentScale}
+        style={{ maxWidth: 150 }}
+      />
+    </div>
+  );
 };
 
-const mapStateToProps = store => ({
-  currentScale: store.mapInfos.currentScale,
-});
-
-MapEditionScale.propTypes = {
-  dispatchSetCurrentScale: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MapEditionScale);
+export default MapEditionScale;
