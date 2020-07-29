@@ -16,7 +16,6 @@ const styledListContainer = {
 };
 
 const TownsHistorySoloMerchantList = ({
-  characterEducation,
   showedMerchant,
   showItemDescription,
 }) => {

@@ -60,7 +60,7 @@ const TownsHistoryPanel = () => {
       return null;
     });
     setTownsOrdered({ ...tempMandQ });
-  }, []);
+  }, [merchants, quests, towns]);
 
   const showMerchant = m => {
     setShowedQuest({});

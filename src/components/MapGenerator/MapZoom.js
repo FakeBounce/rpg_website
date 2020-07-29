@@ -1,44 +1,33 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { setCurrentZoom } from "../../redux/actions/actionsMapInfos";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_CURRENT_ZOOM } from '../../redux/actionsTypes/actionsTypesMapInfos';
 
-class MapZoom extends Component {
-  render() {
-    const { dispatchSetCurrentZoom, currentZoom } = this.props;
+const MapZoom = () => {
+  const dispatch = useDispatch();
 
-    return (
-      <div className="map-zoom">
-        <input
-          type="range"
-          name="currentZoom"
-          onChange={e => {
-            dispatchSetCurrentZoom(parseInt(e.target.value, 10));
-          }}
-          value={currentZoom}
-          min="5"
-          max="12"
-          step="1"
-        />
-      </div>
-    );
-  }
-}
+  const { currentZoom } = useSelector(store => ({
+    currentZoom: store.mapInfos.currentZoom,
+  }));
 
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchSetCurrentZoom: payload => {
-      dispatch(setCurrentZoom(payload));
-    },
+  const setCurrentZoom = payload => {
+    dispatch({ type: SET_CURRENT_ZOOM, payload });
   };
+
+  return (
+    <div className='map-zoom'>
+      <input
+        type='range'
+        name='currentZoom'
+        onChange={e => {
+          setCurrentZoom(parseInt(e.target.value, 10));
+        }}
+        value={currentZoom}
+        min='5'
+        max='12'
+        step='1'
+      />
+    </div>
+  );
 };
 
-const mapStateToProps = store => ({
-  currentZoom: store.mapInfos.currentZoom,
-});
-
-MapZoom.propTypes = {
-  dispatchSetCurrentZoom: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MapZoom);
+export default MapZoom;

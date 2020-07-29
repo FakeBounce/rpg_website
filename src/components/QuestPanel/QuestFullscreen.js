@@ -1,34 +1,31 @@
-import React, { Component } from "react";
-import "./QuestFullscreen.css";
-import PropTypes from "prop-types";
+import React from 'react';
+import './QuestFullscreen.css';
+import PropTypes from 'prop-types';
 
-class QuestFullscreen extends Component {
-  render() {
-    const {
-      name,
-      description,
-      reward,
-      dangerosity,
-      hideQuest,
-    } = this.props;
-    return (
-      <div className="quest-fullscreen" onClick={hideQuest}>
-        <img
-          src={"./quests/empty_notice.png"}
-          alt="A quest"
-          className="quest-fullscreen-icon"
-        />
-        <div className="quest-fullscreen-name">{name}</div>
-        <div className="quest-fullscreen-description">{description}</div>
-        <div className="quest-fullscreen-dangerosity">
-          Danger : {dangerosity}
-          /10
-        </div>
-        <div className="quest-fullscreen-reward">Reward : {reward}g</div>
+const QuestFullscreen = ({
+  name,
+  description,
+  reward,
+  dangerosity,
+  hideQuest,
+}) => {
+  return (
+    <div className='quest-fullscreen' onClick={hideQuest}>
+      <img
+        src={'./quests/empty_notice.png'}
+        alt='A quest'
+        className='quest-fullscreen-icon'
+      />
+      <div className='quest-fullscreen-name'>{name}</div>
+      <div className='quest-fullscreen-description'>{description}</div>
+      <div className='quest-fullscreen-dangerosity'>
+        Danger : {dangerosity}
+        /10
       </div>
-    );
-  }
-}
+      <div className='quest-fullscreen-reward'>Reward : {reward}g</div>
+    </div>
+  );
+};
 
 QuestFullscreen.propTypes = {
   name: PropTypes.string.isRequired,

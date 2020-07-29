@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { widthLeft } from '../Utils/StyleConstants';
-import { colors } from "../Utils/Constants";
+import { colors } from '../Utils/Constants';
 
 const styledTabs = {
   width: `${widthLeft / 2}px`,
@@ -12,10 +12,8 @@ const styledTabs = {
   zIndex: 1,
 };
 
-class ShopHeaderDefault extends Component {
-  render() {
-    return <div style={styledTabs} />;
-  }
-}
+const ShopHeaderDefault = () => {
+  return <div style={styledTabs} />;
+};
 
 export default ShopHeaderDefault;

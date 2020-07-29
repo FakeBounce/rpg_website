@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { cursorPointer, widthLeft } from '../Utils/StyleConstants';
-import { colors } from "../Utils/Constants";
+import { colors } from '../Utils/Constants';
 
 const styledTabs = {
   width: `${widthLeft / 2}px`,
@@ -31,35 +31,30 @@ const styledDoubleTabSelected = {
   color: colors.red300,
 };
 
-class ShopHeaderEnhancements extends Component {
-  render() {
-    const { changeTab, currentTab } = this.props;
-    return (
-      <div style={styledTabs}>
-        <div
-          style={
-            currentTab === 'items'
-              ? styledDoubleTabSelected
-              : styledDoubleTab
-          }
-          onClick={() => changeTab('items')}
-        >
-          Items
-        </div>
-        <div
-          style={
-            currentTab === 'enhancements'
-              ? styledDoubleTabSelected
-              : styledDoubleTab
-          }
-          onClick={() => changeTab('enhancements')}
-        >
-          Enhancements
-        </div>
+const ShopHeaderEnhancements = ({ changeTab, currentTab }) => {
+  return (
+    <div style={styledTabs}>
+      <div
+        style={
+          currentTab === 'items' ? styledDoubleTabSelected : styledDoubleTab
+        }
+        onClick={() => changeTab('items')}
+      >
+        Items
       </div>
-    );
-  }
-}
+      <div
+        style={
+          currentTab === 'enhancements'
+            ? styledDoubleTabSelected
+            : styledDoubleTab
+        }
+        onClick={() => changeTab('enhancements')}
+      >
+        Enhancements
+      </div>
+    </div>
+  );
+};
 
 ShopHeaderEnhancements.propTypes = {
   changeTab: PropTypes.func.isRequired,

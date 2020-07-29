@@ -1,32 +1,51 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import "./Grid.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import './Grid.css';
 
-import { gridDimension, totalRows } from "../Utils/StyleConstants";
-import Tile from "./Tile";
-import TileGM from "./TileGM";
-import { connect } from "react-redux";
+import { gridDimension, totalRows } from '../Utils/StyleConstants';
+import Tile from './Tile';
+import TileGM from './TileGM';
 import {
-  setCurrentTile,
-  setTownInfos,
-} from "../../redux/actions/actionsMapInfos";
+  SET_CURRENT_TILE,
+  SET_TOWN_INFOS,
+} from '../../redux/actionsTypes/actionsTypesMapInfos';
+import { useSelector, useDispatch } from 'react-redux';
 
-class MapGrid extends Component {
-  generateTable = mapToRender => {
+const MapGrid = ({ setTexture }) => {
+  const dispatch = useDispatch();
+
+  const { isOnPlayerView, isGameMaster, map, currentZoom, towns } = useSelector(
+    store => ({
+      isOnPlayerView: store.appState.isOnPlayerView,
+      isGameMaster: store.appState.isGameMaster,
+      map: store.mapInfos.map,
+      currentZoom: store.mapInfos.currentZoom,
+      towns: store.mapInfos.towns,
+    }),
+  );
+
+  const setCurrentTile = payload => {
+    dispatch({ type: SET_CURRENT_TILE, payload });
+  };
+
+  const setTownInfos = payload => {
+    dispatch({ type: SET_TOWN_INFOS, payload });
+  };
+
+  const generateTable = mapToRender => {
     const table = [];
-    const { currentZoom } = this.props;
     mapToRender.map((row, index) => {
       table.push(
         <div
           key={`table-row-${index}`}
-          className="row"
+          className='row'
           style={{
             width: `${(totalRows * gridDimension * currentZoom) / 10 +
               totalRows}px`,
             height: `${(gridDimension * currentZoom) / 10}px`,
           }}
         >
-          {this.createGrid(index, row)}
+          {createGrid(index, row)}
         </div>,
       );
       return null;
@@ -34,13 +53,7 @@ class MapGrid extends Component {
     return table;
   };
 
-  createGrid = (positionX, rowToRender) => {
-    const {
-      isGameMaster,
-      isOnPlayerView,
-      towns,
-      setTexture,
-    } = this.props;
+  const createGrid = (positionX, rowToRender) => {
     const table = [];
     rowToRender.map((row, index) => {
       table.push(
@@ -50,16 +63,16 @@ class MapGrid extends Component {
             positionX={positionX}
             row={row}
             setTexture={setTexture}
-            showInfos={this.showInfos}
+            showInfos={showInfos}
             town={row.hasTown > -1 ? towns[row.hasTown] : null}
             index={index}
           />
         ) : (
           <Tile
             key={`row-${index}`}
-            cancelTownList={this.cancelTownList}
+            cancelTownList={cancelTownList}
             row={row}
-            showTownList={this.showTownList}
+            showTownList={showTownList}
             town={row.hasTown > -1 ? towns[row.hasTown] : null}
           />
         ),
@@ -70,63 +83,34 @@ class MapGrid extends Component {
     return table;
   };
 
-  showInfos = tileInfo => {
-    const { dispatchSetCurrentTile } = this.props;
-    dispatchSetCurrentTile(tileInfo);
+  const showInfos = tileInfo => {
+    setCurrentTile(tileInfo);
   };
 
-  showTownList = town => {
-    const { dispatchSetTownInfos } = this.props;
-    dispatchSetTownInfos({
+  const showTownList = town => {
+    setTownInfos({
       isTownShowed: true,
       merchantsList: town.merchantsList || [],
       questsList: town.questsList || [],
     });
   };
 
-  cancelTownList = () => {
-    const { dispatchSetTownInfos } = this.props;
-    dispatchSetTownInfos({
+  const cancelTownList = () => {
+    setTownInfos({
       isTownShowed: false,
       merchantsList: [],
       questsList: [],
     });
   };
 
-  render() {
-    const { map } = this.props;
-    if (map && map.length > 0) {
-      return <div>{this.generateTable(map)}</div>;
-    }
-    return null;
+  if (map && map.length > 0) {
+    return <div>{generateTable(map)}</div>;
   }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchSetCurrentTile: payload => {
-      dispatch(setCurrentTile(payload));
-    },
-    dispatchSetTownInfos: payload => {
-      dispatch(setTownInfos(payload));
-    },
-  };
+  return null;
 };
-
-const mapStateToProps = store => ({
-  isOnPlayerView: store.appState.isOnPlayerView,
-  isGameMaster: store.appState.isGameMaster,
-  map: store.mapInfos.map,
-  currentX: store.mapInfos.currentX,
-  currentY: store.mapInfos.currentY,
-  currentZoom: store.mapInfos.currentZoom,
-  towns: store.mapInfos.towns,
-});
 
 MapGrid.propTypes = {
   setTexture: PropTypes.func.isRequired,
-  dispatchSetCurrentTile: PropTypes.func.isRequired,
-  dispatchSetTownInfos: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MapGrid);
+export default MapGrid;

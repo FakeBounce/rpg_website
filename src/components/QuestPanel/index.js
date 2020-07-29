@@ -1,116 +1,108 @@
-import React, { PureComponent } from "react";
-
-import Quest from "./Quest";
-import PropTypes from "prop-types";
-import { widthLeft, heightLeft } from "../Utils/StyleConstants";
-import QuestFullscreen from "./QuestFullscreen";
-import { connect } from "react-redux";
-import { hideQuest, showQuest } from "../../redux/actions/actionsMapInfos";
+import React, { useState } from 'react';
+import Quest from './Quest';
+import { widthLeft, heightLeft } from '../Utils/StyleConstants';
+import QuestFullscreen from './QuestFullscreen';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  SHOW_QUEST,
+  HIDE_QUEST,
+} from '../../redux/actionsTypes/actionsTypesMapInfos';
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
-  position: "relative",
+  display: 'inline-block',
+  float: 'left',
+  textAlign: 'left',
+  position: 'relative',
 };
 
-class QuestPanel extends PureComponent {
-  positionList = [];
+const QuestPanel = () => {
+  // const [positionList, setPositionList] = useState([]);
+  const dispatch = useDispatch();
 
-  // For GM quest positionning
-  getPosition = () => {
-    let hasPosition = false;
-    const i = Math.floor(Math.random() * 8);
-    if (this.positionList.indexOf(i) === -1) {
-      const newPositionList = this.positionList;
-      hasPosition = true;
-      newPositionList.push(i);
-      this.positionList = newPositionList;
-    }
-    if (hasPosition || this.positionList.length === 8)
-      return this.positionList[this.positionList.length - 1];
+  const { currentQuest, isQuestShowed, quests, questsList } = useSelector(
+    store => ({
+      currentQuest: store.mapInfos.currentQuest,
+      isQuestShowed: store.mapInfos.isQuestShowed,
+      quests: store.mapInfos.quests,
+      questsList: store.mapInfos.townInfos.questsList,
+    }),
+  );
 
-    return this.getPosition();
+  const dispatchShowQuest = payload => {
+    dispatch({
+      type: SHOW_QUEST,
+      payload,
+    });
   };
 
-  showQuest = index => {
-    const { dispatchShowQuest } = this.props;
+  const dispatchHideQuest = () => {
+    dispatch({
+      type: HIDE_QUEST,
+    });
+  };
+
+  // For GM quest positionning
+  // const getPosition = () => {
+  //   let hasPosition = false;
+  //   const i = Math.floor(Math.random() * 8);
+  //   if (positionList.indexOf(i) === -1) {
+  //     const newPositionList = positionList;
+  //     hasPosition = true;
+  //     newPositionList.push(i);
+  //     setPositionList(newPositionList);
+  //   }
+  //   if (hasPosition || positionList.length === 8)
+  //     return positionList[positionList.length - 1];
+
+  //   return getPosition();
+  // };
+
+  const showQuest = index => {
     dispatchShowQuest(index);
   };
 
-  hideQuest = () => {
-    const { dispatchHideQuest } = this.props;
+  const hideQuest = () => {
     dispatchHideQuest();
   };
 
-  render() {
-    const { quests, questsList, currentQuest, isQuestShowed } = this.props;
-
-    if (isQuestShowed) {
-      return (
-        <div
-          style={{
-            ...styledMapSide,
-            backgroundImage: `url(./quests/quest_panel.jpg)`,
-            backgroundSize: "cover",
-          }}
-        >
-          <QuestFullscreen
-            {...quests[currentQuest]}
-            hideQuest={this.hideQuest}
-          />
-        </div>
-      );
-    }
+  if (isQuestShowed) {
     return (
       <div
         style={{
           ...styledMapSide,
           backgroundImage: `url(./quests/quest_panel.jpg)`,
-          backgroundSize: "cover",
+          backgroundSize: 'cover',
         }}
       >
-        {questsList.map((q, i) => {
-          if (!quests[q].validated) {
-            return (
-              <Quest
-                key={`merchant-${quests[q].name} -${i}`}
-                {...quests[q]}
-                index={q}
-                showQuest={this.showQuest}
-              />
-            );
-          }
-          return null;
-        })}
+        <QuestFullscreen {...quests[currentQuest]} hideQuest={hideQuest} />
       </div>
     );
   }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchShowQuest: payload => {
-      dispatch(showQuest(payload));
-    },
-    dispatchHideQuest: () => {
-      dispatch(hideQuest());
-    },
-  };
+  return (
+    <div
+      style={{
+        ...styledMapSide,
+        backgroundImage: `url(./quests/quest_panel.jpg)`,
+        backgroundSize: 'cover',
+      }}
+    >
+      {questsList.map((q, i) => {
+        if (!quests[q].validated) {
+          return (
+            <Quest
+              key={`merchant-${quests[q].name} -${i}`}
+              {...quests[q]}
+              index={q}
+              showQuest={showQuest}
+            />
+          );
+        }
+        return null;
+      })}
+    </div>
+  );
 };
 
-const mapStateToProps = store => ({
-  currentQuest: store.mapInfos.currentQuest,
-  isQuestShowed: store.mapInfos.isQuestShowed,
-  quests: store.mapInfos.quests,
-  questsList: store.mapInfos.townInfos.questsList,
-});
-
-QuestPanel.propTypes = {
-  dispatchShowQuest: PropTypes.func.isRequired,
-  dispatchHideQuest: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuestPanel);
+export default QuestPanel;

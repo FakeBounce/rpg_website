@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import firebase from "firebase";
-import Draggable from "react-draggable";
-import "./Grid.css";
+import React, { useState, useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import firebase from 'firebase';
+import Draggable from 'react-draggable';
+import './Grid.css';
 
 import {
   gridDimension,
@@ -10,18 +10,21 @@ import {
   mapWidth,
   totalRows,
   totalColumn,
-} from "../Utils/StyleConstants";
+} from '../Utils/StyleConstants';
 
-import MapZoom from "./MapZoom";
-import MapArrows from "./MapArrows";
-import MapGrid from "./MapGrid";
-import useApp from "../../hooks/useApp";
-import { setCurrentY, setCurrentX } from "../../redux/actions/actionsMapInfos";
+import MapZoom from './MapZoom';
+import MapArrows from './MapArrows';
+import MapGrid from './MapGrid';
+import useApp from '../../hooks/useApp';
+import {
+  SET_CURRENT_Y,
+  SET_CURRENT_X,
+} from '../../redux/actionsTypes/actionsTypesMapInfos';
 
 const styledMap = {
   width: `${mapWidth}px`,
   height: `${gridDimension * gridLength}px`,
-  background: "black",
+  background: 'black',
 };
 
 const MapGenerator = () => {
@@ -48,11 +51,11 @@ const MapGenerator = () => {
   let draggableRef = useRef(null);
 
   const dispatchSetCurrentY = payload => {
-    dispatch(setCurrentY(payload));
+    dispatch({ type: SET_CURRENT_Y, payload });
   };
 
   const dispatchSetCurrentX = payload => {
-    dispatch(setCurrentX(payload));
+    dispatch({ type: SET_CURRENT_X, payload });
   };
 
   useEffect(() => {
@@ -62,22 +65,22 @@ const MapGenerator = () => {
 
   const setTexture = (x, y) => {
     let updates = {};
-    let path = "";
+    let path = '';
     Object.keys(textureToApply).map(key => {
       path = key;
       return null;
     });
-    updates["/" + parseInt(x, 10) + "/" + parseInt(y, 10) + "/" + path] =
+    updates['/' + parseInt(x, 10) + '/' + parseInt(y, 10) + '/' + path] =
       textureToApply[path];
     for (let i = 0; i <= currentScale - 1; i++) {
       if (i === 0) {
         for (let j = 0; j <= currentScale - 1; j++) {
           if (y - j >= 0) {
-            updates["/" + x + "/" + parseInt(y - j, 10) + "/" + path] =
+            updates['/' + x + '/' + parseInt(y - j, 10) + '/' + path] =
               textureToApply[path];
           }
           if (y + j <= 39) {
-            updates["/" + x + "/" + parseInt(y + j, 10) + "/" + path] =
+            updates['/' + x + '/' + parseInt(y + j, 10) + '/' + path] =
               textureToApply[path];
           }
         }
@@ -85,24 +88,24 @@ const MapGenerator = () => {
         for (let j = 0; j <= currentScale - 1; j++) {
           if (x - i >= 0 && y - j >= 0) {
             updates[
-              "/" + parseInt(x - i, 10) + "/" + parseInt(y - j, 10) + "/" + path
+              '/' + parseInt(x - i, 10) + '/' + parseInt(y - j, 10) + '/' + path
             ] = textureToApply[path];
           }
           if (x - i >= 0 && y + j <= 39) {
             updates[
-              "/" + parseInt(x - i, 10) + "/" + parseInt(y + j, 10) + "/" + path
+              '/' + parseInt(x - i, 10) + '/' + parseInt(y + j, 10) + '/' + path
             ] = textureToApply[path];
           }
         }
         for (let j = 0; j <= currentScale - 1; j++) {
           if (x + i <= 39 && y - j >= 0) {
             updates[
-              "/" + parseInt(x + i, 10) + "/" + parseInt(y - j, 10) + "/" + path
+              '/' + parseInt(x + i, 10) + '/' + parseInt(y - j, 10) + '/' + path
             ] = textureToApply[path];
           }
           if (x + i <= 39 && y + j <= 39) {
             updates[
-              "/" + parseInt(x + i, 10) + "/" + parseInt(y + j, 10) + "/" + path
+              '/' + parseInt(x + i, 10) + '/' + parseInt(y + j, 10) + '/' + path
             ] = textureToApply[path];
           }
         }
@@ -111,7 +114,7 @@ const MapGenerator = () => {
 
     firebase
       .database()
-      .ref("maps/" + stories[currentStory].map)
+      .ref('maps/' + stories[currentStory].map)
       .update(updates)
       .catch(error => {
         // Handle Errors here.
@@ -136,7 +139,6 @@ const MapGenerator = () => {
         tileValue = (-value - gridDimension + rest) / gridDimension;
       }
     }
-    console.log("there", tileValue);
 
     if (isY) {
       dispatchSetCurrentY(tileValue + 5);
@@ -147,11 +149,11 @@ const MapGenerator = () => {
   };
 
   return (
-    <div className="map" style={styledMap}>
+    <div className='map' style={styledMap}>
       <MapZoom />
       <MapArrows />
       <div
-        className="map-mover"
+        className='map-mover'
         style={{
           width: totalRows * gridDimension,
           height: totalColumn * gridDimension,
@@ -162,7 +164,7 @@ const MapGenerator = () => {
         <Draggable
           onStart={e => {}}
           ref={draggableRef}
-          axis={"both"}
+          axis={'both'}
           onDrag={e => {
             setMapX(mapX + e.movementX);
             setMapY(mapY + e.movementY);

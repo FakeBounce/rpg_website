@@ -13,13 +13,9 @@ const styledMerchantList = {
 };
 
 const TownsHistoryMerchantColumnList = ({
-  characterEducation,
   showItemDescription,
-  merchants,
-  currentMerchant,
 }) => {
   const {
-    characterEducation,
     characterEducation,
     merchants,
     currentMerchant,

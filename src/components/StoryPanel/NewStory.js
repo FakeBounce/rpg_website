@@ -31,6 +31,7 @@ const styledNewStoryTitle = {
   margin: 0,
 };
 
+// @TODO check this component, setState isnt used
 class NewStory extends Component {
   createStory = (name, map, iconPath) => {
     const { stories, triggerError, chooseStory, doSetState } = this.props;
