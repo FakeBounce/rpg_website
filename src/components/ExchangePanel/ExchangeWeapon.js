@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 import { widthExchangeBox } from '../Utils/StyleConstants';
@@ -24,23 +24,19 @@ const styledExchangeButton = {
   textAlign: 'center',
 };
 
-class ExchangeWeapon extends Component {
-  render() {
-    const { onWeaponExchange, index, item } = this.props;
-
-    return (
-      <div key={`${item}-${index}`} style={styledItem}>
-        {item}
-        <ButtonLarge
-          style={styledExchangeButton}
-          onClick={() => onWeaponExchange(index, item)}
-        >
-          Give
-        </ButtonLarge>
-      </div>
-    );
-  }
-}
+const ExchangeWeapon = ({ onWeaponExchange, index, item }) => {
+  return (
+    <div key={`${item}-${index}`} style={styledItem}>
+      {item}
+      <ButtonLarge
+        style={styledExchangeButton}
+        onClick={() => onWeaponExchange(index, item)}
+      >
+        Give
+      </ButtonLarge>
+    </div>
+  );
+};
 
 ExchangeWeapon.propTypes = {
   onWeaponExchange: PropTypes.func.isRequired,

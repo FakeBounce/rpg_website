@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 import { widthExchangeBox } from '../Utils/StyleConstants';
 import ButtonLarge from '../Utils/ButtonLarge';
-import { connect } from "react-redux";
+import { useSelector } from 'react-redux';
 
 const styledItem = {
   width: `${widthExchangeBox - 40}px`,
@@ -32,29 +32,25 @@ const styledExchangeButton = {
   textAlign: 'center',
 };
 
-class ExchangeItem extends Component {
-  render() {
-    const { characterEducation, onItemExchange, index, item } = this.props;
+const ExchangeItem = ({ onItemExchange, index, item }) => {
+  const { characterEducation } = useSelector(store => ({
+    characterEducation: store.character.education,
+  }));
 
-    return (
-      <div key={`${item.name}-${index}`} style={styledItem}>
-        <div style={styledItemName}>
-          {characterEducation < item.rarity * 9 ? "???" : item.name}
-        </div>
-        <ButtonLarge
-          style={styledExchangeButton}
-          onClick={() => onItemExchange(index, item.quantity - 1, item)}
-        >
-          Give 1 ({item.quantity} left)
-        </ButtonLarge>
+  return (
+    <div key={`${item.name}-${index}`} style={styledItem}>
+      <div style={styledItemName}>
+        {characterEducation < item.rarity * 9 ? '???' : item.name}
       </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  characterEducation: store.character.education,
-});
+      <ButtonLarge
+        style={styledExchangeButton}
+        onClick={() => onItemExchange(index, item.quantity - 1, item)}
+      >
+        Give 1 ({item.quantity} left)
+      </ButtonLarge>
+    </div>
+  );
+};
 
 ExchangeItem.propTypes = {
   onItemExchange: PropTypes.func.isRequired,
@@ -62,4 +58,4 @@ ExchangeItem.propTypes = {
   item: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps)(ExchangeItem);
+export default ExchangeItem;

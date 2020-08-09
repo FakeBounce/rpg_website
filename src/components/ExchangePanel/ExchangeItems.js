@@ -1,30 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ExchangeItem from './ExchangeItem';
-import { connect } from "react-redux";
+import { useSelector } from 'react-redux';
 
-class ExchangeItems extends Component {
-  render() {
-    const { characterItems, onItemExchange } = this.props;
+const ExchangeItems = ({ onItemExchange }) => {
+  const { characterItems } = useSelector(store => ({
+    characterItems: store.character.items,
+  }));
 
-    return characterItems.map((item, index) => {
-      return (
-        <ExchangeItem
-          onItemExchange={onItemExchange}
-          index={index}
-          item={item}
-        />
-      );
-    });
-  }
-}
-
-const mapStateToProps = store => ({
-  characterItems: store.character.items,
-});
+  return characterItems.map((item, index) => {
+    return (
+      <ExchangeItem onItemExchange={onItemExchange} index={index} item={item} />
+    );
+  });
+};
 
 ExchangeItems.propTypes = {
   onItemExchange: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(ExchangeItems);
+export default ExchangeItems;

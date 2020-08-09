@@ -5,6 +5,11 @@
     max-height: 100px;
  }
 
+ @font-face {
+  font-family: 'BeyondWonderland';
+  src: local('BeyondWonderland'), url(/fonts/BeyondWonderland.ttf) format('truetype');
+}
+
 @-moz-keyframes spin { 
   0% { -moz-transform: rotate(0deg); }
   100% { -moz-transform: rotate(360deg); }
@@ -18,18 +23,25 @@
   100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); }
 }
 
-.animatedPreviewStart {
-    max-height: 0px;
-    -moz-transition: height 2s ease-in;
-    -webkit-transition: height 2s ease-in;
-    -o-transition: height 2s ease-in;
-    transition: height 2s ease-in;
+.medievalFont {
+  font-family: 'BeyondWonderland';
+}
+
+.animatedPreviewStarted {
+    /* transform:scaleY(0);
+    transform-origin:top;
+    -moz-transition: transform 0.3s ease-out;
+    -webkit-transition: transform 0.3s ease-out;
+    -o-transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out; */
+    transition:flex 0.3s ease-out; 
+    flex: 0 0 0;
  }
 
- .animatedPreviewFinished {
-    max-height: 500px;
-    -moz-transition: height 2s ease-in;
-    -webkit-transition: height 2s ease-in;
-    -o-transition: height 2s ease-in;
-    transition: height 2s ease-in;
+ 
+
+ .animatedPreviewStarted.animatedPreviewFinished {
+    /* transform:scaleY(1); */
+
+    flex:1;
  }
