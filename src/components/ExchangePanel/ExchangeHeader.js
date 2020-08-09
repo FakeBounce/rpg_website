@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const styledHeader = {
@@ -9,13 +9,9 @@ const styledHeader = {
   width: '100%',
 };
 
-class ExchangeHeader extends Component {
-  render() {
-    const { name } = this.props;
-
-    return <div style={styledHeader}>Exchange tab with {name}</div>;
-  }
-}
+const ExchangeHeader = ({ name }) => {
+  return <div style={styledHeader}>Exchange tab with {name}</div>;
+};
 
 ExchangeHeader.propTypes = {
   name: PropTypes.string.isRequired,

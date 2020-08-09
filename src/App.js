@@ -1,18 +1,20 @@
-import React, { Component } from "react";
-import firebase from "firebase";
-import { connect } from "react-redux";
-import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
-import { ToastProvider } from "./contexts/toastContext";
-import { ChatInputProvider } from "./contexts/chatInputContext";
-import IsNotAuth from "./components/Authentication/IsNotAuth";
-import HasNoNickname from "./components/NicknameSelection/HasNoNickname";
-import CharacterSelection from "./components/CharacterSelection/CharacterSelection";
-import StoriesPanel from "./components/StoryPanel";
+import React, { Component } from 'react';
+import firebase from 'firebase';
+import { connect } from 'react-redux';
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
+import { ToastProvider } from './contexts/toastContext';
+import { ChatInputProvider } from './contexts/chatInputContext';
+import { ActiveChatTabProvider } from './contexts/activeChatTabContext';
 
-import { defaultState } from "./components/Utils/Constants";
-import GameScreen from "./containers/GameScreen";
-import SoundPlayer from "./components/SoundPlayer/SoundPlayer";
+import IsNotAuth from './components/Authentication/IsNotAuth';
+import HasNoNickname from './components/NicknameSelection/HasNoNickname';
+import CharacterSelection from './components/CharacterSelection/CharacterSelection';
+import StoriesPanel from './components/StoryPanel';
+
+import { defaultState } from './components/Utils/Constants';
+import GameScreen from './containers/GameScreen';
+import SoundPlayer from './components/SoundPlayer/SoundPlayer';
 import {
   // listenArtefacts,
   // loadUnusedArtefacts,
@@ -34,35 +36,35 @@ import {
   // setQuests,
   // populateBestiary,
   // loadChat,
-} from "./components/Utils/DatabaseFunctions";
+} from './components/Utils/DatabaseFunctions';
 import {
   hydrateStoryArtefacts,
   // resetStoryMerchants,
   // hydrateAllMerchants,
   // hydrateMerchant,
-} from "./components/Utils/MerchantsFunctions";
-import { toggleMusic } from "./redux/actions/actionsSounds";
-import PropTypes from "prop-types";
+} from './components/Utils/MerchantsFunctions';
+import { toggleMusic } from './redux/actions/actionsSounds';
+import PropTypes from 'prop-types';
 import {
   setGameMaster,
   togglePlayerMastering,
   updateCurrentStory,
-} from "./redux/actions/actionsAppState";
+} from './redux/actions/actionsAppState';
 import {
   CALL_LISTEN_MUSIC,
   CALL_LISTEN_NOISE,
   CALL_LISTEN_SONG,
-} from "./redux/actionsTypes/actionsTypesSounds";
+} from './redux/actionsTypes/actionsTypesSounds';
 import {
   CALL_LISTEN_CURRENT_EVENT,
   CALL_LISTEN_EVENTS_HISTORY,
-} from "./redux/actionsTypes/actionsTypesEvents";
+} from './redux/actionsTypes/actionsTypesEvents';
 import {
   CALL_PRINT_ERROR,
   CALL_SIGN_OUT,
-} from "./redux/actionsTypes/actionsTypesAppState";
-import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat";
-import ErrorPrinter from "./components/Utils/ErrorPrinter";
+} from './redux/actionsTypes/actionsTypesAppState';
+import { CALL_LISTEN_CHAT_HISTORY } from './redux/actionsTypes/actionsTypesChat';
+import ErrorPrinter from './components/Utils/ErrorPrinter';
 import {
   CALL_GET_TILES_TYPES,
   CALL_LISTEN_ALL_QUESTS,
@@ -70,15 +72,14 @@ import {
   CALL_LISTEN_CURRENT_X,
   CALL_LISTEN_CURRENT_Y,
   CALL_LISTEN_MAP_TILES,
-} from "./redux/actionsTypes/actionsTypesMapInfos";
-import { CALL_LISTEN_MERCHANT_LIST } from "./redux/actionsTypes/actionsTypesMerchants";
-import { CALL_LISTEN_BESTIARY } from "./redux/actionsTypes/actionsTypesBestiary";
-import { CALL_LISTEN_TEAM_CHARACTERS } from "./redux/actionsTypes/actionsTypesTeam";
-import { CALL_LISTEN_CHARACTER } from "./redux/actionsTypes/actionsTypesCharacter";
-import { CALL_GET_ITEM_LIST } from "./redux/actionsTypes/actionsTypesItems";
-import { Icon } from "semantic-ui-react";
-import { cursorPointer } from "./components/Utils/StyleConstants";
-import { ActiveChatTabProvider } from "./contexts/activeChatTabContext";
+} from './redux/actionsTypes/actionsTypesMapInfos';
+import { CALL_LISTEN_MERCHANT_LIST } from './redux/actionsTypes/actionsTypesMerchants';
+import { CALL_LISTEN_BESTIARY } from './redux/actionsTypes/actionsTypesBestiary';
+import { CALL_LISTEN_TEAM_CHARACTERS } from './redux/actionsTypes/actionsTypesTeam';
+import { CALL_LISTEN_CHARACTER } from './redux/actionsTypes/actionsTypesCharacter';
+import { CALL_GET_ITEM_LIST } from './redux/actionsTypes/actionsTypesItems';
+import { Icon } from 'semantic-ui-react';
+import { cursorPointer } from './components/Utils/StyleConstants';
 
 class App extends Component {
   constructor(props) {
@@ -255,7 +256,7 @@ class App extends Component {
     } = this.props;
     const newWeaponsTab = character.weapons ? [...character.weapons] : [];
     const newItemsTab = character.items ? [...character.items] : [];
-    if (item.itemType === "weapons") {
+    if (item.itemType === 'weapons') {
       newWeaponsTab.push(item.name);
     } else {
       let hasAlready = false;
@@ -296,7 +297,7 @@ class App extends Component {
       () => {
         firebase
           .database()
-          .ref("stories/" + currentStory + "/characters/" + uid + "/character")
+          .ref('stories/' + currentStory + '/characters/' + uid + '/character')
           .set({
             ...character,
             gold: character.gold - price,
@@ -304,7 +305,7 @@ class App extends Component {
             weapons: newWeaponsTab,
           })
           .then(() => {
-            if (item.itemType === "artefacts") {
+            if (item.itemType === 'artefacts') {
               item.isAcquired = true;
 
               // Hydrate artefacts list
@@ -314,7 +315,7 @@ class App extends Component {
 
             firebase
               .database()
-              .ref("stories/" + currentStory + "/merchants/" + currentMerchant)
+              .ref('stories/' + currentStory + '/merchants/' + currentMerchant)
               .set(merchants[currentMerchant]);
           })
           .catch(error => {
@@ -380,8 +381,8 @@ class App extends Component {
     dispatchTogglePlayerMastering(stories[i].gameMaster === uid);
 
     if (
-      typeof stories[i].characters !== "undefined" &&
-      typeof stories[i].characters[uid] !== "undefined"
+      typeof stories[i].characters !== 'undefined' &&
+      typeof stories[i].characters[uid] !== 'undefined'
     ) {
       dispatchListenCharacter();
       dispatchSetGameMaster(stories[i].gameMaster);
@@ -455,7 +456,7 @@ class App extends Component {
     const { characterCreation, characterId, ...rest } = this.state;
     const { isAuth, pseudo, isGameMaster, currentStory } = this.props;
     if (isAuth) {
-      if (pseudo.trim() === "") {
+      if (pseudo.trim() === '') {
         return <HasNoNickname />;
       } else {
         if (currentStory === -1) {
@@ -498,52 +499,52 @@ class App extends Component {
     const { isAuth, musicMute } = this.props;
     return (
       <div
-        className="App"
+        className='App'
         style={{
           cursor: `url('/common/cursor.png'), auto`,
         }}
       >
-        <ToastProvider>
-          <ChatInputProvider>
-            <ActiveChatTabProvider>
-              <>
-                {this.correctRoute()}
-                <SoundPlayer />
-                <ErrorPrinter />
-                {isAuth && (
-                  <Icon
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      right: 20,
-                      cursor: cursorPointer,
-                    }}
-                    onClick={this.signOut}
-                    circular
-                    inverted
-                    name="shutdown"
-                    color="red"
-                  />
-                )}
-                {isAuth && (
-                  <Icon
-                    style={{
-                      position: "absolute",
-                      top: 45,
-                      right: 20,
-                      cursor: cursorPointer,
-                    }}
-                    onClick={this.toggleMusic}
-                    circular
-                    name={!musicMute ? "volume up" : "volume off"}
-                    inverted
-                    color={"black"}
-                  />
-                )}
-              </>
-            </ActiveChatTabProvider>
-          </ChatInputProvider>
-        </ToastProvider>
+          <ToastProvider>
+            <ChatInputProvider>
+              <ActiveChatTabProvider>
+                <>
+                  {this.correctRoute()}
+                  <SoundPlayer />
+                  <ErrorPrinter />
+                  {isAuth && (
+                    <Icon
+                      style={{
+                        position: 'absolute',
+                        top: 10,
+                        right: 20,
+                        cursor: cursorPointer,
+                      }}
+                      onClick={this.signOut}
+                      circular
+                      inverted
+                      name='shutdown'
+                      color='red'
+                    />
+                  )}
+                  {isAuth && (
+                    <Icon
+                      style={{
+                        position: 'absolute',
+                        top: 45,
+                        right: 20,
+                        cursor: cursorPointer,
+                      }}
+                      onClick={this.toggleMusic}
+                      circular
+                      name={!musicMute ? 'volume up' : 'volume off'}
+                      inverted
+                      color={'black'}
+                    />
+                  )}
+                </>
+              </ActiveChatTabProvider>
+            </ChatInputProvider>
+          </ToastProvider>
       </div>
     );
   }

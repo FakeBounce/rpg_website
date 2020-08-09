@@ -14,7 +14,7 @@ export const heightExchangeBox = 300;
 // export const gridWidth = 20;
 export const gridLength = 10;
 export const gridDimension = Math.floor(
-  (window.innerHeight - (heightHeader + heightCameras)) / (gridLength * 2)
+  (window.innerHeight - (heightHeader + heightCameras)) / (gridLength * 2),
 );
 export const maxGridWidth = (window.innerWidth / 100) * 35;
 export const totalRows = 40;

@@ -13,17 +13,13 @@ const styledExitExchange = {
   cursor: cursorPointer,
 };
 
-class ExchangeExit extends Component {
-  render() {
-    const { closeExchange } = this.props;
-
-    return (
-      <div style={styledExitExchange} onClick={closeExchange}>
-        X
-      </div>
-    );
-  }
-}
+const ExchangeExit = ({ closeExchange }) => {
+  return (
+    <div style={styledExitExchange} onClick={closeExchange}>
+      X
+    </div>
+  );
+};
 
 ExchangeExit.propTypes = {
   closeExchange: PropTypes.func.isRequired,

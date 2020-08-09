@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 import {
@@ -31,28 +31,24 @@ const styledCadre = {
   height: heightExchangeBox,
 };
 
-class ExchangePanel extends Component {
-  render() {
-    const {
-      currentExchangeCharacter,
-      closeExchange,
-      onItemExchange,
-      onWeaponExchange,
-    } = this.props;
-
-    return (
-      <div style={styledExchangeContainer}>
-        <Cadre style={styledCadre} />
-        <ExchangeHeader name={currentExchangeCharacter.name} />
-        <ExchangeContent
-          onItemExchange={onItemExchange}
-          onWeaponExchange={onWeaponExchange}
-        />
-        <ExchangeExit closeExchange={closeExchange} />
-      </div>
-    );
-  }
-}
+const ExchangePanel = ({
+  currentExchangeCharacter,
+  closeExchange,
+  onItemExchange,
+  onWeaponExchange,
+}) => {
+  return (
+    <div style={styledExchangeContainer}>
+      <Cadre style={styledCadre} />
+      <ExchangeHeader name={currentExchangeCharacter.name} />
+      <ExchangeContent
+        onItemExchange={onItemExchange}
+        onWeaponExchange={onWeaponExchange}
+      />
+      <ExchangeExit closeExchange={closeExchange} />
+    </div>
+  );
+};
 
 ExchangePanel.propTypes = {
   closeExchange: PropTypes.func.isRequired,
