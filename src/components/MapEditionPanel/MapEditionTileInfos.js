@@ -58,10 +58,10 @@ const MapEditionTileInfos = ({
 };
 
 MapEditionTileInfos.propTypes = {
-  onChange: PropTypes.func.isRequired,
   toggleIsCurrent: PropTypes.func.isRequired,
   toggleHasTown: PropTypes.func.isRequired,
   townToAssign: PropTypes.number.isRequired,
+  setTownToAssign: PropTypes.func.isRequired,
 };
 
 export default MapEditionTileInfos;

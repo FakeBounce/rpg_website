@@ -13,7 +13,7 @@ const styledHealthBar = {
   position: 'relative',
   float: 'left',
   display: 'inline-block',
-  marginBottom: 5,
+  marginBottom: 2,
 };
 
 const styledBar = {

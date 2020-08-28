@@ -5,21 +5,18 @@ import { imageSize, widthRightPanelLeft } from '../Utils/StyleConstants';
 
 const styles = {
   characterTeamHeaderInfo: {
-    position: 'relative',
-    height: 25,
-    float: 'left',
-    display: 'inline-block',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 };
 
-const TeamCharacterInfo = ({ title, text = '', doubleSized = false }) => {
+const TeamCharacterInfo = ({ title, text = '' }) => {
   return (
     <div
       style={{
         ...styles.characterTeamHeaderInfo,
-        width: doubleSized
-          ? `${(widthRightPanelLeft - 20 + imageSize / 2) / 2}px`
-          : `${(widthRightPanelLeft - 20 + imageSize / 2) / 4}px`,
+        width: '100%',
       }}
     >
       {title}

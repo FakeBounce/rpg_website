@@ -103,10 +103,3 @@ export const setAllQuests = payload => {
     payload,
   };
 };
-
-export const setTownInfos = payload => {
-  return {
-    type: actionTypesMapInfos.SET_TOWN_INFOS,
-    payload,
-  };
-};

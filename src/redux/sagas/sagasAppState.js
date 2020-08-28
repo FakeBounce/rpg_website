@@ -6,21 +6,21 @@ import {
   takeEvery,
   call,
   all,
-} from "redux-saga/effects";
+} from 'redux-saga/effects';
 
-import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
-import * as actionsAppState from "../actions/actionsAppState";
-import * as actionsMapInfos from "../actions/actionsMapInfos";
-import { getTranslations } from "../../i18n";
-import { firebaseDbOnce, onValueChannel } from "./api";
+import * as actionsTypesAppState from '../actionsTypes/actionsTypesAppState';
+import * as actionsAppState from '../actions/actionsAppState';
+import * as actionsMapInfos from '../actions/actionsMapInfos';
+import { getTranslations } from '../../i18n';
+import { firebaseDbOnce, onValueChannel } from './api';
 
 function* appStateError(
-  { payload } = getTranslations("error.transfer.failed"),
+  { payload } = getTranslations('error.transfer.failed'),
 ) {
   yield put(actionsAppState.printError(payload));
 
   yield delay(5000);
-  yield put(actionsAppState.printError(""));
+  yield put(actionsAppState.printError(''));
 }
 
 export function* watchCallPrintError() {
@@ -29,14 +29,14 @@ export function* watchCallPrintError() {
 
 function* signOut() {
   try {
-    const tilesTypes = yield call(firebaseDbOnce, "/tilesTypes");
+    const tilesTypes = yield call(firebaseDbOnce, '/tilesTypes');
     yield put(actionsAppState.resetApp());
     yield delay(3000);
     yield call(actionsMapInfos.setTilesTypes, tilesTypes);
   } catch (error) {
-    console.log("signOut try saga err:", { error });
+    console.log('signOut try saga err:', { error });
 
-    yield call(appStateError, { payload: "Could not sign out" });
+    yield call(appStateError, { payload: 'Could not sign out' });
   }
 
   return null;
@@ -48,12 +48,12 @@ export function* watchCallSignOut() {
 
 function* getStories() {
   try {
-    const stories = yield call(firebaseDbOnce, "/stories");
+    const stories = yield call(firebaseDbOnce, '/stories');
     yield put(actionsAppState.setAllStories(stories));
   } catch (error) {
-    console.log("getStories try saga err:", { error });
+    console.log('getStories try saga err:', { error });
 
-    yield call(appStateError, { payload: "Could not get stories" });
+    yield call(appStateError, { payload: 'Could not get stories' });
   }
 
   return null;
@@ -66,9 +66,12 @@ export function* watchCallGetStories() {
 export function* listenStoryUser(userId) {
   const channel = yield call(onValueChannel, `/users/${userId}`);
 
+  let tempUserData = {};
   yield takeEvery(channel, function*(data) {
-    yield put(actionsAppState.setStoryUsers({ [userId]: data }));
+    tempUserData = { ...tempUserData, [userId]: data };
   });
+
+  yield put(actionsAppState.setStoryUsers(tempUserData));
 
   yield take([
     actionsTypesAppState.CANCEL_ALL_WATCH,

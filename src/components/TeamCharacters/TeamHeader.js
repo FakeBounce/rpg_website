@@ -20,7 +20,7 @@ const styles = {
   },
   HeaderTextLeft: {
     position: 'relative',
-    width: `${widthRightPanel / 4}px`,
+    width: `${widthRightPanel / 8}px`,
     height: 25,
     float: 'left',
     display: 'inline-block',
@@ -32,9 +32,9 @@ const TeamHeader = () => {
   return (
     <div style={styles.HeaderTextContainer}>
       <div style={styles.HeaderTextLeft}>Equipe :</div>
-      <div style={styles.HeaderText}>Name</div>
-      <div style={styles.HeaderText}>Status</div>
-      <div style={styles.HeaderText}>Gold</div>
+      <div style={{ ...styles.HeaderText, width: 130 }}>Name</div>
+      <div style={{ ...styles.HeaderText, width: 70 }}>Gold</div>
+      <div style={{ ...styles.HeaderText, width: 140 }}>Health & Mental</div>
     </div>
   );
 };

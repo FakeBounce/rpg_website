@@ -1,13 +1,13 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 
-import GMMapPanel from "./GMMapPanel";
-import RightPanel from "./RightPanel";
-import PlayerMapPanel from "../components/PlayerMiddlePanel";
-import MapGenerator from "../components/MapGenerator/MapGenerator";
-import ChatPanel from "../components/ChatPanel";
-import SoundPanel from "../components/SoundPanel";
-import { connect } from "react-redux";
+import GMMapPanel from './GMMapPanel';
+import RightPanel from './RightPanel';
+import PlayerMapPanel from '../components/PlayerMiddlePanel';
+import ChatPanel from '../components/ChatPanel';
+import SoundPanel from '../components/SoundPanel';
+import { connect } from 'react-redux';
+import MapGenerator from '../components/MapGenerator/MapGenerator';
 
 class MiddlePanel extends Component {
   render() {

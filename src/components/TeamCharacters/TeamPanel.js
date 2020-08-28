@@ -20,6 +20,7 @@ const TeamPanelCharacters = {
   position: 'relative',
   float: 'left',
   display: 'inline-block',
+  overflow: 'hidden',
   overflowY: 'auto',
 };
 const TeamPanelGMContainer = {
@@ -36,6 +37,7 @@ const TeamPanelGMCharacters = {
   position: 'relative',
   float: 'left',
   display: 'inline-block',
+  overflow: 'hidden',
   overflowY: 'auto',
 };
 
@@ -62,9 +64,11 @@ const TeamPanel = ({
           icon='./common/gameMaster.jpg'
           name='Game Master'
           status='IMPRO'
-          gold={999999}
+          gold={9999}
           health={9999}
           maxHealth={9999}
+          mentalState={9}
+          maxMentalState={9}
           isGM
           exchangeWithTeamMember={() => {}}
           chatWithTeamMember={() => {
@@ -75,7 +79,10 @@ const TeamPanel = ({
         />
 
         {storyCharacters.map(storyCharacter => {
-          if (storyCharacter.userUid !== gameMaster) {
+          if (
+            storyCharacter.userUid !== gameMaster &&
+            (storyCharacter.status !== 'Inactive' || isGameMaster)
+          ) {
             return (
               <TeamCharacter
                 key={storyCharacter.name}
