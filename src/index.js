@@ -11,6 +11,7 @@ import { unregister } from './registerServiceWorker';
 import sagasRoot from './redux/sagas/sagasRoot';
 import { sagaMiddleware, configureStore } from './store';
 import StoryPreview from './StoryPreview';
+import { MapGeneratorProvider } from './contexts/mapGeneratorContext';
 
 const store = configureStore();
 sagaMiddleware.run(sagasRoot);
@@ -28,16 +29,18 @@ ReactDOM.render(
   <Provider store={store}>
     <WindowProvider>
       <StyleProvider>
-        <Router>
-          <Switch>
-            <Route exact path='/preview/:story'>
-              <StoryPreview />
-            </Route>
-            <Route path='/'>
-              <App />
-            </Route>
-          </Switch>
-        </Router>
+        <MapGeneratorProvider store={store}>
+          <Router>
+            <Switch>
+              <Route exact path='/preview/:story'>
+                <StoryPreview />
+              </Route>
+              <Route path='/'>
+                <App />
+              </Route>
+            </Switch>
+          </Router>
+        </MapGeneratorProvider>
       </StyleProvider>
     </WindowProvider>
   </Provider>,

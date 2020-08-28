@@ -4,9 +4,9 @@ import ReactTooltip from 'react-tooltip';
 import { cursorPointer } from '../Utils/StyleConstants';
 
 const styledItem = {
-  display: 'inline-block',
+  display: 'flex',
   cursor: cursorPointer,
-  width: '100%',
+  flex: 1,
   height: '100%',
 };
 const styledIcon = {
@@ -15,16 +15,16 @@ const styledIcon = {
 };
 
 const Town = ({ town, showTownList, cancelTownList, isCurrent }) => {
-  useEffect(() => {
-    if (!isCurrent) {
-      cancelTownList();
-    }
-  }, [isCurrent, cancelTownList]);
-
   return (
     <div
       style={styledItem}
-      onClick={() => (isCurrent ? showTownList(town) : cancelTownList())}
+      onClick={() => {
+        if (isCurrent) {
+          showTownList(town);
+        } else {
+          cancelTownList();
+        }
+      }}
       data-tip={town.name}
     >
       <img

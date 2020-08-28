@@ -19,10 +19,8 @@ const Tile = ({ row, town, showTownList, cancelTownList }) => {
         backgroundColor: tilesTypes[row.environment]
           ? tilesTypes[row.environment].backgroundColor
           : 'white',
-        width: `${(gridDimension * currentZoom) / 10 -
-          (row.isCurrent ? 4 : 0)}px`,
-        height: `${(gridDimension * currentZoom) / 10 -
-          (row.isCurrent ? 4 : 0)}px`,
+        width: `${(gridDimension * currentZoom) / 10}px`,
+        height: `${(gridDimension * currentZoom) / 10}px`,
       }}
     >
       {row.hasFog && (

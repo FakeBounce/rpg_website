@@ -1,12 +1,14 @@
-import { SET_CHARACTER } from "../actionsTypes/actionsTypesCharacter";
-import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
+import { SET_CHARACTER } from '../actionsTypes/actionsTypesCharacter';
+import { RESET_APP } from '../actionsTypes/actionsTypesAppState';
 
 const initialState = {
   health: 0,
   maxHealth: 0,
-  icon: "",
-  name: "",
-  status: "",
+  mentalState: 0,
+  maxMentalState: 0,
+  icon: '',
+  name: '',
+  status: '',
   weapons: [],
   abilites: [],
   skills: [],

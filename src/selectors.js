@@ -13,3 +13,7 @@ export const currentMusicNameSelector = state =>
   state.sounds.music.isMusicFirst
     ? state.sounds.music.musicNameFirst
     : state.sounds.music.musicNameSecond;
+export const currentScaleSelector = state => state.mapInfos.currentScale;
+export const textureToApplySelector = state => state.mapInfos.textureToApply;
+export const currentXSelector = state => state.mapInfos.currentX;
+export const currentYSelector = state => state.mapInfos.currentY;

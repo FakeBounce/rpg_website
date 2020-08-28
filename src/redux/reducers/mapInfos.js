@@ -15,8 +15,8 @@ import {
   SET_ALL_TOWNS,
   SET_ALL_QUESTS,
   SET_TOWN_INFOS,
-} from "../actionsTypes/actionsTypesMapInfos";
-import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
+} from '../actionsTypes/actionsTypesMapInfos';
+import { RESET_APP } from '../actionsTypes/actionsTypesAppState';
 
 const initialState = {
   tilesTypes: {},
@@ -40,6 +40,7 @@ const initialState = {
 };
 
 const mapInfos = (state = initialState, action) => {
+  console.log('action', action.type);
   switch (action.type) {
     case SET_TILES_TYPES: {
       return {

@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, memo } from 'react';
 import './Grid.css';
 
 import { gridDimension, totalRows } from '../Utils/StyleConstants';
+import { useSelector, useDispatch } from 'react-redux';
 import Tile from './Tile';
-import TileGM from './TileGM';
 import {
   SET_CURRENT_TILE,
   SET_TOWN_INFOS,
 } from '../../redux/actionsTypes/actionsTypesMapInfos';
-import { useSelector, useDispatch } from 'react-redux';
+import TileGMParent from './TileGMParent';
 
-const MapGrid = ({ setTexture }) => {
+const MapGrid = () => {
+  const [tableToDisplay, setTableToDisplay] = useState([]);
   const dispatch = useDispatch();
 
   const { isOnPlayerView, isGameMaster, map, currentZoom, towns } = useSelector(
@@ -23,6 +23,10 @@ const MapGrid = ({ setTexture }) => {
       towns: store.mapInfos.towns,
     }),
   );
+
+  useEffect(() => {
+    generateTable(map);
+  }, [map, currentZoom, isOnPlayerView]);
 
   const setCurrentTile = payload => {
     dispatch({ type: SET_CURRENT_TILE, payload });
@@ -50,6 +54,7 @@ const MapGrid = ({ setTexture }) => {
       );
       return null;
     });
+    setTableToDisplay(table);
     return table;
   };
 
@@ -58,11 +63,10 @@ const MapGrid = ({ setTexture }) => {
     rowToRender.map((row, index) => {
       table.push(
         isGameMaster && !isOnPlayerView ? (
-          <TileGM
+          <TileGMParent
             key={`row-${index}`}
             positionX={positionX}
             row={row}
-            setTexture={setTexture}
             showInfos={showInfos}
             town={row.hasTown > -1 ? towns[row.hasTown] : null}
             index={index}
@@ -77,7 +81,6 @@ const MapGrid = ({ setTexture }) => {
           />
         ),
       );
-
       return null;
     });
     return table;
@@ -103,14 +106,7 @@ const MapGrid = ({ setTexture }) => {
     });
   };
 
-  if (map && map.length > 0) {
-    return <div>{generateTable(map)}</div>;
-  }
-  return null;
-};
-
-MapGrid.propTypes = {
-  setTexture: PropTypes.func.isRequired,
+  return tableToDisplay;
 };
 
 export default MapGrid;
