@@ -156,8 +156,6 @@ const TeamCharacter = ({
     }
   };
 
-  console.log("mentalState",mentalState)
-
   return (
     <div style={styledCharacterTeamHeader}>
       <div>

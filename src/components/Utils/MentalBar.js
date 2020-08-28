@@ -39,7 +39,6 @@ const MentalBar = ({
   mentalState,
   maxMentalState,
 }) => {
-    console.log("mentalState",mentalState)
   const getMentalPointsSeparation = () => {
     const toDisplay = [];
 
