@@ -1,1 +1,1 @@
-git log --date=short --pretty=format:'<div className="commit"> %an, le %ad : %s </div>' > ./log.csv
+git log --date=short --pretty=format:'<div className="commit"><a href="https://github.com/FakeBounce/rpg_website/commit/%H" target="_blank"> %an, le %ad : %s </a></div>' > ./log.csv

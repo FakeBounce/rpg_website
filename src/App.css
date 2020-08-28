@@ -22,6 +22,11 @@ button, input, select {
   display: block;
 }
 
+.commit a {
+  color: white;
+  cursor: url('/common/cursor_pointer.png'), pointer;
+}
+
 .selected {
   border: 1px solid red;
 }
