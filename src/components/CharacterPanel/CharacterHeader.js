@@ -1,78 +1,102 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import HealthBar from "../Utils/HealthBar";
-import CharacterHeaderInfos from "./CharacterHeaderInfos";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import HealthBar from '../Utils/HealthBar';
+import CharacterHeaderInfos from './CharacterHeaderInfos';
 import {
   widthRightPanel,
   imageSize,
   widthRightPanelLeft,
   cursorPointer,
-} from "../Utils/StyleConstants";
-import firebase from "firebase";
-import FileUploader from "../CharacterCreation/FileUploader";
-import { connect } from "react-redux";
+} from '../Utils/StyleConstants';
+import firebase from 'firebase';
+import FileUploader from '../CharacterCreation/FileUploader';
+import { connect } from 'react-redux';
+import MentalBar from '../Utils/MentalBar';
+import useApp from '../../hooks/useApp';
 
-const styles = {
-  characterHeader: {
-    width: `${widthRightPanel}px`,
-    height: `${imageSize}px`,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-  },
-  characterHeaderName: {
-    position: "relative",
-    width: `${widthRightPanelLeft}px`,
-    height: 25,
-    float: "left",
-    display: "inline-block",
-  },
-  characterHeaderIcon: {
-    position: "relative",
-    width: `${imageSize}px`,
-    height: `${imageSize}px`,
-    float: "left",
-    display: "inline-block",
-  },
+const styledCharacterHeader = {
+  width: `${widthRightPanel}px`,
+  height: `${imageSize}px`,
+  position: 'relative',
+  float: 'left',
+  display: 'inline-block',
+};
+const styledCharacterHeaderName = {
+  position: 'relative',
+  width: `${widthRightPanelLeft}px`,
+  height: 25,
+  float: 'left',
+  display: 'inline-block',
+};
+const styledCharacterHeaderIcon = {
+  position: 'relative',
+  width: `${imageSize}px`,
+  height: `${imageSize}px`,
+  float: 'left',
+  display: 'inline-block',
 };
 
 const styledCharacterHeaderIconContainer = {
-  position: "relative",
+  position: 'relative',
   width: `${imageSize}px`,
   height: `${imageSize}px`,
-  float: "left",
-  display: "inline-block",
+  float: 'left',
+  display: 'inline-block',
 };
 
 const styledCharacterHeaderInactiveIcon = {
-  position: "absolute",
+  position: 'absolute',
   width: `${imageSize}px`,
   height: `${imageSize}px`,
-  backgroundColor: "grey",
+  backgroundColor: 'grey',
   opacity: 0.3,
 };
 
-class CharacterHeader extends Component {
-  onDrop = picture => {
-    const { uid, currentStory, triggerError } = this.props;
+const CharacterHeader = () => {
+  const {
+    icon,
+    name,
+    health,
+    maxHealth,
+    mentalState,
+    maxMentalState,
+    status,
+    isGameMaster,
+    uid,
+    currentStory,
+  } = useSelector(store => ({
+    icon: store.character.icon,
+    name: store.character.name,
+    health: store.character.health,
+    maxHealth: store.character.maxHealth,
+    mentalState: store.character.mentalState,
+    maxMentalState: store.character.maxMentalState,
+    status: store.character.status,
+    uid: store.userInfos.uid,
+    currentStory: store.appState.currentStory,
+    isGameMaster: store.appState.isGameMaster,
+  }));
+  const { triggerError } = useApp();
+
+  const onDrop = picture => {
     const path =
-      "images/" +
+      'images/' +
       uid +
-      "/stories/" +
+      '/stories/' +
       currentStory +
-      "/" +
+      '/' +
       picture[picture.length - 1].name;
 
     firebase
       .database()
       .ref(
-        "stories/" +
+        'stories/' +
           currentStory +
-          "/characters/" +
+          '/characters/' +
           uid +
-          "/character/iconPath",
+          '/character/iconPath',
       )
-      .once("value")
+      .once('value')
       .then(snapshot => {
         firebase
           .storage()
@@ -94,12 +118,12 @@ class CharacterHeader extends Component {
                   .getDownloadURL()
                   .then(url => {
                     let updates = {};
-                    updates[uid + "/character/iconPath"] = path;
-                    updates[uid + "/character/icon"] = url;
+                    updates[uid + '/character/iconPath'] = path;
+                    updates[uid + '/character/icon'] = url;
 
                     firebase
                       .database()
-                      .ref("stories/" + currentStory + "/characters/")
+                      .ref('stories/' + currentStory + '/characters/')
                       .update(updates)
                       .catch(error => {
                         // Handle Errors here.
@@ -123,65 +147,63 @@ class CharacterHeader extends Component {
       });
   };
 
-  render() {
-    const { icon, name, health, maxHealth, gold, status } = this.props;
-
-    return (
-      <div style={styles.characterHeader}>
-        <div style={styledCharacterHeaderIconContainer}>
-          {status === "Inactive" && (
-            <div style={styledCharacterHeaderInactiveIcon} />
-          )}
-          <img src={icon} alt={name} style={styles.characterHeaderIcon} />
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: (imageSize - 20) / 2,
+  return (
+    <div style={styledCharacterHeader}>
+      <div style={styledCharacterHeaderIconContainer}>
+        {status === 'Inactive' && (
+          <div style={styledCharacterHeaderInactiveIcon} />
+        )}
+        <img src={icon} alt={name} style={styledCharacterHeaderIcon} />
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: (imageSize - 20) / 2,
+        }}
+      >
+        <FileUploader
+          onDrop={onDrop}
+          buttonText='+'
+          fileContainerStyle={{ padding: 0, margin: 0, display: 'block' }}
+          buttonStyles={{
+            width: 20,
+            padding: 0,
+            margin: 0,
+            border: '2px solid #3f4257',
+            cursor: cursorPointer,
           }}
-        >
-          <FileUploader
-            onDrop={this.onDrop}
-            buttonText="+"
-            fileContainerStyle={{ padding: 0, margin: 0, display: "block" }}
-            buttonStyles={{
-              width: 20,
-              padding: 0,
-              margin: 0,
-              border: "2px solid #3f4257",
-              cursor: cursorPointer,
-            }}
-            withIcon={false}
-            label=""
-          />
-        </div>
-        <div style={styles.characterHeaderName}>{name}</div>
+          withIcon={false}
+          label=''
+        />
+      </div>
+      <div style={styledCharacterHeaderName}>{name}</div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: `${widthRightPanelLeft}px`,
+          flexDirection: 'column',
+        }}
+      >
         <HealthBar
           width={`${Math.floor((health / maxHealth) * 100)}%`}
           maxWidth={`${widthRightPanelLeft}px`}
           health={health}
           maxHealth={maxHealth}
         />
-        <CharacterHeaderInfos status={status} gold={gold} />
+        <MentalBar
+          isGM={isGameMaster}
+          width={`${Math.floor((mentalState / maxMentalState) * 100)}%`}
+          maxWidth={`${maxMentalState * 14}px`}
+          mentalState={mentalState}
+          maxMentalState={maxMentalState}
+        />
       </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-  uid: store.userInfos.uid,
-  gold: store.character.gold,
-  health: store.character.health,
-  maxHealth: store.character.maxHealth,
-  icon: store.character.icon,
-  name: store.character.name,
-  status: store.character.status,
-});
-
-CharacterHeader.propTypes = {
-  triggerError: PropTypes.func.isRequired,
+      <CharacterHeaderInfos />
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(CharacterHeader);
+export default CharacterHeader;

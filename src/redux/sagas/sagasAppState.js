@@ -66,12 +66,9 @@ export function* watchCallGetStories() {
 export function* listenStoryUser(userId) {
   const channel = yield call(onValueChannel, `/users/${userId}`);
 
-  let tempUserData = {};
   yield takeEvery(channel, function*(data) {
-    tempUserData = { ...tempUserData, [userId]: data };
+    yield put(actionsAppState.setStoryUsers({ [userId]: data }));
   });
-
-  yield put(actionsAppState.setStoryUsers(tempUserData));
 
   yield take([
     actionsTypesAppState.CANCEL_ALL_WATCH,

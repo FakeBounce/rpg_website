@@ -1,20 +1,20 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 
-import PropTypes from "prop-types";
-import CharacterAttributes from "./CharacterAttributes";
-import CharacterOtherInfos from "./CharacterOtherInfos";
-import CharacterHeader from "./CharacterHeader";
-import { colors } from "../Utils/Constants";
-import { connect } from "react-redux";
+import PropTypes from 'prop-types';
+import CharacterAttributes from './CharacterAttributes';
+import CharacterOtherInfos from './CharacterOtherInfos';
+import CharacterHeader from './CharacterHeader';
+import { colors } from '../Utils/Constants';
+import { connect } from 'react-redux';
 
 const CharacterPanelContainer = {
-  borderBottom: "1px solid black",
-  width: "100%",
-  height: "50%",
+  borderBottom: '1px solid black',
+  width: '100%',
+  height: '50%',
   backgroundColor: colors.background,
   color: colors.text,
 };
-const CharacterPanelBox = { position: "relative", height: "100%" };
+const CharacterPanelBox = { position: 'relative', height: '100%' };
 
 class CharacterPanel extends PureComponent {
   render() {
@@ -39,18 +39,19 @@ class CharacterPanel extends PureComponent {
         <div style={CharacterPanelBox}>
           {isGameMaster ? (
             <CharacterHeader
+              isGameMaster={isGameMaster}
               gold={0}
-              status={"Gamemaster"}
-              icon={"./common/gameMaster.jpg"}
-              name={"Gamemaster"}
-              health={"999"}
-              maxHealth={"999"}
+              status={'Gamemaster'}
+              icon={'./common/gameMaster.jpg'}
+              name={'Gamemaster'}
+              health={'999'}
+              maxHealth={'999'}
+              mentalState={'9'}
+              maxMentalState={'9'}
               triggerError={triggerError}
             />
           ) : (
-            <CharacterHeader
-              triggerError={triggerError}
-            />
+            <CharacterHeader triggerError={triggerError} />
           )}
           <CharacterAttributes />
           <CharacterOtherInfos

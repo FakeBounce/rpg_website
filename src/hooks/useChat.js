@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import firebase from "firebase";
-import { useDispatch, useSelector } from "react-redux";
-import { CALL_PRINT_ERROR } from "../redux/actionsTypes/actionsTypesAppState";
-import { useChatInputContext } from "../contexts/chatInputContext";
-import { useActiveChatTabContext } from "../contexts/activeChatTabContext";
+import { useState, useEffect } from 'react';
+import firebase from 'firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import { CALL_PRINT_ERROR } from '../redux/actionsTypes/actionsTypesAppState';
+import { useChatInputContext } from '../contexts/chatInputContext';
+import { useActiveChatTabContext } from '../contexts/activeChatTabContext';
 
 const useChat = () => {
   const [gmCommands, setGmCommands] = useState(false);
-  const [lastKey, setLastKey] = useState("");
+  const [lastKey, setLastKey] = useState('');
   const [whispersTab, setWhispersTab] = useState({});
   const [bonus, setBonus] = useState(0);
   const { chatInput, setChatInput } = useChatInputContext();
@@ -43,11 +43,11 @@ const useChat = () => {
     let privateTabs = { ...whispersTab };
     const row = history[lastKey];
     if (row && row.viewers && isAViewer(row.viewers)) {
-      if (row.channel && row.channel === "Private") {
+      if (row.channel && row.channel === 'Private') {
         row.viewers.map(v => {
           if (
             (v !== pseudo && !isGameMaster) ||
-            (isGameMaster && v.toLowerCase() !== "gm")
+            (isGameMaster && v.toLowerCase() !== 'gm')
           ) {
             if (privateTabs[v] && privateTabs[v].message) {
               privateTabs[v].message = privateTabs[v].message + 1;
@@ -63,7 +63,7 @@ const useChat = () => {
   };
 
   useEffect(() => {
-    if (lastKey !== "") {
+    if (lastKey !== '') {
       getWhispers();
     }
     // eslint-disable-next-line
@@ -79,7 +79,7 @@ const useChat = () => {
     let canSeeMessage = false;
 
     viewersTab.map(viewer => {
-      if ((viewer === "gm" && isGameMaster) || viewer === pseudo) {
+      if ((viewer === 'gm' && isGameMaster) || viewer === pseudo) {
         canSeeMessage = true;
       }
       return null;
@@ -100,25 +100,25 @@ const useChat = () => {
   };
 
   const handleKeyPress = event => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       talkInChat();
     }
   };
 
   const talkInChat = () => {
     let noMagicWord = true;
-    if (chatInput !== "") {
+    if (chatInput !== '') {
       if (chatInput.length >= 3) {
-        if (diceAction("/d")) {
+        if (diceAction('/d')) {
           noMagicWord = false;
         }
-        if (diceAction("/dice")) {
+        if (diceAction('/dice')) {
           noMagicWord = false;
         }
-        if (diceAction("/gmd", ["gm", pseudo])) {
+        if (diceAction('/gmd', ['gm', pseudo])) {
           noMagicWord = false;
         }
-        if (diceAction("/gmdice", ["gm", pseudo])) {
+        if (diceAction('/gmdice', ['gm', pseudo])) {
           noMagicWord = false;
         }
         if (whisperPlayerAction()) {
@@ -141,101 +141,101 @@ const useChat = () => {
         }
       }
       switch (chatInput) {
-        case "/strength":
-        case "/stre":
-        case "/force":
-        case "/forc":
+        case '/strength':
+        case '/stre':
+        case '/force':
+        case '/forc':
           noMagicWord = false;
-          attributeAction("strength");
+          attributeAction('strength');
           break;
-        case "/dexterity":
-        case "/dext":
-        case "/dextérité":
-        case "/dexterite":
+        case '/dexterity':
+        case '/dext':
+        case '/dextérité':
+        case '/dexterite':
           noMagicWord = false;
-          attributeAction("dexterity");
+          attributeAction('dexterity');
           break;
-        case "/luck":
-        case "/chance":
-        case "/chan":
+        case '/luck':
+        case '/chance':
+        case '/chan':
           noMagicWord = false;
-          attributeAction("luck");
+          attributeAction('luck');
           break;
-        case "/charisma":
-        case "/char":
-        case "/charisme":
+        case '/charisma':
+        case '/char':
+        case '/charisme':
           noMagicWord = false;
-          attributeAction("charisma");
+          attributeAction('charisma');
           break;
-        case "/education":
-        case "/educ":
-        case "/éducation":
+        case '/education':
+        case '/educ':
+        case '/éducation':
           noMagicWord = false;
-          attributeAction("education");
+          attributeAction('education');
           break;
-        case "/perception":
-        case "/perc":
+        case '/perception':
+        case '/perc':
           noMagicWord = false;
-          attributeAction("perception");
+          attributeAction('perception');
           break;
-        case "/constitution":
-        case "/cons":
+        case '/constitution':
+        case '/cons':
           noMagicWord = false;
-          attributeAction("constitution");
+          attributeAction('constitution');
           break;
-        case "/magic":
-        case "/magi":
-        case "/magie":
+        case '/magic':
+        case '/magi':
+        case '/magie':
           noMagicWord = false;
-          attributeAction("magic");
+          attributeAction('magic');
           break;
-        case "/gmstrength":
-        case "/gmstre":
-        case "/gmforce":
-        case "/gmforc":
+        case '/gmstrength':
+        case '/gmstre':
+        case '/gmforce':
+        case '/gmforc':
           noMagicWord = false;
-          attributeAction("strength", true);
+          attributeAction('strength', true);
           break;
-        case "/gmdexterity":
-        case "/gmdext":
-        case "/gmdextérité":
-        case "/gmdexterite":
+        case '/gmdexterity':
+        case '/gmdext':
+        case '/gmdextérité':
+        case '/gmdexterite':
           noMagicWord = false;
-          attributeAction("dexterity", true);
+          attributeAction('dexterity', true);
           break;
-        case "/gmluck":
-        case "/gmchance":
-        case "/gmchan":
+        case '/gmluck':
+        case '/gmchance':
+        case '/gmchan':
           noMagicWord = false;
-          attributeAction("luck", true);
+          attributeAction('luck', true);
           break;
-        case "/gmcharisma":
-        case "/gmchar":
-        case "/gmcharisme":
+        case '/gmcharisma':
+        case '/gmchar':
+        case '/gmcharisme':
           noMagicWord = false;
-          attributeAction("charisma", true);
+          attributeAction('charisma', true);
           break;
-        case "/gmeducation":
-        case "/gmeduc":
-        case "/gméducation":
+        case '/gmeducation':
+        case '/gmeduc':
+        case '/gméducation':
           noMagicWord = false;
-          attributeAction("education", true);
+          attributeAction('education', true);
           break;
-        case "/gmperception":
-        case "/gmperc":
+        case '/gmperception':
+        case '/gmperc':
           noMagicWord = false;
-          attributeAction("perception", true);
+          attributeAction('perception', true);
           break;
-        case "/gmconstitution":
-        case "/gmcons":
+        case '/gmconstitution':
+        case '/gmcons':
           noMagicWord = false;
-          attributeAction("constitution", true);
+          attributeAction('constitution', true);
           break;
-        case "/gmmagic":
-        case "/gmmagi":
-        case "/gmmagie":
+        case '/gmmagic':
+        case '/gmmagi':
+        case '/gmmagie':
           noMagicWord = false;
-          attributeAction("magic", true);
+          attributeAction('magic', true);
           break;
         default:
           break;
@@ -245,16 +245,16 @@ const useChat = () => {
         sendChatInput({
           message: chatInput,
           pseudo,
-          characterName: isGameMaster ? "GM" : character.name,
-          channel: "All",
+          characterName: isGameMaster ? 'GM' : character.name,
+          channel: 'All',
         });
       }
     }
   };
 
   const whisperPlayerAction = () => {
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    const splittedString = chatInput.trim().split("/w ");
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    const splittedString = chatInput.trim().split('/w ');
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
       hasWhisperAction = true;
@@ -270,12 +270,12 @@ const useChat = () => {
           sendChatInput(
             {
               message: `${textToSend}`,
-              channel: "Private",
-              sender: isGameMaster ? "gm" : realPseudo,
+              channel: 'Private',
+              sender: isGameMaster ? 'gm' : realPseudo,
               receiver: users[key].pseudo,
-              viewers: [isGameMaster ? "gm" : pseudo, users[key].pseudo],
+              viewers: [isGameMaster ? 'gm' : pseudo, users[key].pseudo],
             },
-            "/w " + users[key].pseudo + " ",
+            '/w ' + users[key].pseudo + ' ',
           );
         }
         return null;
@@ -285,8 +285,8 @@ const useChat = () => {
   };
 
   const whisperGMAction = () => {
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    const splittedString = chatInput.trim().split("/gmw ");
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    const splittedString = chatInput.trim().split('/gmw ');
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
       hasWhisperAction = true;
@@ -296,11 +296,11 @@ const useChat = () => {
             {
               message: `${splittedString[1]}`,
               sender: realPseudo,
-              receiver: "gm",
-              channel: "Private",
-              viewers: [pseudo, "gm"],
+              receiver: 'gm',
+              channel: 'Private',
+              viewers: [pseudo, 'gm'],
             },
-            "/gmw ",
+            '/gmw ',
           );
         }
         return null;
@@ -310,8 +310,8 @@ const useChat = () => {
   };
 
   const whisperTeamAction = () => {
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    const splittedString = chatInput.trim().split("/tmw ");
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    const splittedString = chatInput.trim().split('/tmw ');
     let hasWhisperAction = false;
     if (splittedString.length > 1) {
       hasWhisperAction = true;
@@ -328,10 +328,10 @@ const useChat = () => {
       sendChatInput(
         {
           message: `@${realPseudo} tells to team :${splittedString[1]}`,
-          channel: "Team",
+          channel: 'Team',
           viewers: team,
         },
-        "/tmw ",
+        '/tmw ',
       );
     }
 
@@ -339,7 +339,7 @@ const useChat = () => {
   };
 
   const diceAction = (limiter, viewers = null) => {
-    const realPseudo = isGameMaster ? "GM" : character.name;
+    const realPseudo = isGameMaster ? 'GM' : character.name;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
@@ -352,7 +352,7 @@ const useChat = () => {
             Math.random() * parseInt(splittedString, 10) + 1,
           )}`,
           sender: realPseudo,
-          channel: "Private",
+          channel: 'Private',
           viewers,
         });
       } else {
@@ -360,7 +360,7 @@ const useChat = () => {
           message: `@${realPseudo} launched a D${splittedString}. Result : ${Math.floor(
             Math.random() * parseInt(splittedString, 10) + 1,
           )}`,
-          channel: "Dices",
+          channel: 'Dices',
         });
       }
     }
@@ -368,12 +368,12 @@ const useChat = () => {
   };
 
   const sendGoldGMAction = () => {
-    const realPseudo = isGameMaster ? "GM" : character.name;
+    const realPseudo = isGameMaster ? 'GM' : character.name;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
-      .split(" ");
-    if (splittedString.length === 2 && splittedString[0] === "/goldgm") {
+      .split(' ');
+    if (splittedString.length === 2 && splittedString[0] === '/goldgm') {
       const isnum = /^\d+$/.test(splittedString[1]);
       if (isnum) {
         if (
@@ -382,16 +382,16 @@ const useChat = () => {
         ) {
           sendChatInput({
             message: `@${realPseudo} gave ${splittedString[1]} gold to the GameMaster. He is very thankfull !`,
-            channel: "All",
+            channel: 'All',
           });
           firebase
             .database()
             .ref(
-              "stories/" +
+              'stories/' +
                 currentStory +
-                "/characters/" +
+                '/characters/' +
                 uid +
-                "/character/gold",
+                '/character/gold',
             )
             .set(parseInt(character.gold, 10) - parseInt(splittedString[1], 10))
             .catch(error => {
@@ -407,12 +407,12 @@ const useChat = () => {
   };
 
   const sendGoldAction = () => {
-    const realPseudo = isGameMaster ? "GM" : character.name;
+    const realPseudo = isGameMaster ? 'GM' : character.name;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
-      .split(" ");
-    if (splittedString.length === 3 && splittedString[0] === "/gold") {
+      .split(' ');
+    if (splittedString.length === 3 && splittedString[0] === '/gold') {
       let playerIsInTeam = false;
       storyCharacters.map(sc => {
         if (sc.userPseudo.toLowerCase() === splittedString[1].toLowerCase()) {
@@ -429,23 +429,23 @@ const useChat = () => {
           ) {
             sendChatInput({
               message: `You gave ${splittedString[2]} gold to ${splittedString[1]}.`,
-              channel: "All",
+              channel: 'All',
               viewers: [pseudo],
             });
             sendChatInput({
               message: `@${realPseudo} gave ${splittedString[2]} gold to you.`,
-              channel: "All",
+              channel: 'All',
               viewers: [splittedString[1]],
             });
 
             firebase
               .database()
               .ref(
-                "stories/" +
+                'stories/' +
                   currentStory +
-                  "/characters/" +
+                  '/characters/' +
                   uid +
-                  "/character/gold",
+                  '/character/gold',
               )
               .set(
                 parseInt(character.gold, 10) - parseInt(splittedString[2], 10),
@@ -458,11 +458,11 @@ const useChat = () => {
             firebase
               .database()
               .ref(
-                "stories/" +
+                'stories/' +
                   currentStory +
-                  "/characters/" +
+                  '/characters/' +
                   playerIsInTeam.userUid +
-                  "/character/gold",
+                  '/character/gold',
               )
               .set(
                 parseInt(playerIsInTeam.gold, 10) +
@@ -481,14 +481,14 @@ const useChat = () => {
   };
 
   const sendTeamGoldAction = () => {
-    const realPseudo = isGameMaster ? "GM" : character.name;
+    const realPseudo = isGameMaster ? 'GM' : character.name;
     const splittedString = chatInput
       .toLowerCase()
       .trim()
-      .split(" ");
+      .split(' ');
     if (
       splittedString.length === 2 &&
-      (splittedString[0] === "/goldtm" || splittedString[0] === "/goldteam")
+      (splittedString[0] === '/goldtm' || splittedString[0] === '/goldteam')
     ) {
       if (storyCharacters.length > 2) {
         const isnum = /^\d+$/.test(splittedString[1]);
@@ -505,17 +505,17 @@ const useChat = () => {
 
             sendChatInput({
               message: `@${realPseudo} gave ${splittedString[1]} gold to the team (${goldForEach} each).`,
-              channel: "Team",
+              channel: 'Team',
             });
 
             let updates = {};
             storyCharacters.map(sc => {
               if (sc.userUid !== gameMaster && sc.userPseudo !== pseudo) {
-                updates["/" + sc.userUid + "/character/gold"] =
+                updates['/' + sc.userUid + '/character/gold'] =
                   parseInt(sc.gold, 10) + goldForEach;
               }
               if (sc.userPseudo === pseudo) {
-                updates["/" + sc.userUid + "/character/gold"] =
+                updates['/' + sc.userUid + '/character/gold'] =
                   parseInt(sc.gold, 10) -
                   parseInt(splittedString[1], 10) +
                   goldLeft;
@@ -525,7 +525,7 @@ const useChat = () => {
 
             firebase
               .database()
-              .ref("stories/" + currentStory + "/characters")
+              .ref('stories/' + currentStory + '/characters')
               .update(updates)
               .catch(error => {
                 // Handle Errors here.
@@ -540,16 +540,16 @@ const useChat = () => {
   };
 
   const attributeAction = (attribute, isGm = false) => {
-    const realPseudo = isGameMaster ? "GM" : character.name;
+    const realPseudo = isGameMaster ? 'GM' : character.name;
     const dice = Math.floor(Math.random() * parseInt(100, 10) + 1);
     let message;
-    let bonusMessage = "";
+    let bonusMessage = '';
 
     if (bonus > 0) {
-      bonusMessage = " (+" + bonus + ")";
+      bonusMessage = ' (+' + bonus + ')';
     }
     if (bonus < 0) {
-      bonusMessage = " (" + bonus + ")";
+      bonusMessage = ' (' + bonus + ')';
     }
 
     if (dice < 6) {
@@ -568,22 +568,22 @@ const useChat = () => {
       sendChatInput({
         message,
         sender: realPseudo,
-        receiver: "gm",
-        channel: "Private",
-        viewers: ["gm", pseudo],
+        receiver: 'gm',
+        channel: 'Private',
+        viewers: ['gm', pseudo],
       });
     } else {
       sendChatInput({
         message,
-        channel: "Dices",
+        channel: 'Dices',
       });
     }
   };
 
-  const sendChatInput = (input, talking = "") => {
+  const sendChatInput = (input, talking = '') => {
     firebase
       .database()
-      .ref("/stories/" + currentStory + "/chat/")
+      .ref('/stories/' + currentStory + '/chat/')
       .push(input)
       .then(() => {
         setChatInput(talking);
@@ -601,13 +601,13 @@ const useChat = () => {
   const onDrop = picture => {
     const newPostKey = firebase
       .database()
-      .ref("/stories/" + currentStory + "/chat/")
+      .ref('/stories/' + currentStory + '/chat/')
       .push().key;
     const path =
-      "images/chat/" +
+      'images/chat/' +
       newPostKey +
-      "_image." +
-      picture[picture.length - 1].name.split(".")[1];
+      '_image.' +
+      picture[picture.length - 1].name.split('.')[1];
 
     firebase
       .storage()
@@ -623,14 +623,14 @@ const useChat = () => {
           .then(url => {
             firebase
               .database()
-              .ref("/stories/" + currentStory + "/chat/" + newPostKey)
+              .ref('/stories/' + currentStory + '/chat/' + newPostKey)
               .set({
                 message: chatInput,
                 imagePath: path,
                 image: url,
               })
               .then(() => {
-                setChatInput("");
+                setChatInput('');
               })
               .catch(error => {
                 // Handle Errors here.
@@ -648,29 +648,29 @@ const useChat = () => {
     const oldTab = { ...whispersTab };
     delete oldTab[key];
     if (activeChatTab === key) {
-      setActiveChatTab("All");
-      setChatInput("");
+      setActiveChatTab('All');
+      setChatInput('');
     }
     setWhispersTab(oldTab);
   };
 
   const changeActiveChatTab = ct => () => {
     setActiveChatTab(ct);
-    if (ct === "Team") {
+    if (ct === 'Team') {
       setChatInput(`/tmw `);
     }
-    if (ct === "Dices") {
+    if (ct === 'Dices') {
       setChatInput(`/dice`);
     }
-    if (ct === "All") {
-      setChatInput("");
+    if (ct === 'All') {
+      setChatInput('');
     }
   };
 
   const changeActiveWhisperTab = ctKey => () => {
     setActiveChatTab(ctKey);
     removeMessagesToRead(ctKey);
-    if (ctKey.toLowerCase() !== "gm") {
+    if (ctKey.toLowerCase() !== 'gm') {
       setChatInput(`/w ${ctKey} `);
     } else {
       setChatInput(`/gmw `);
