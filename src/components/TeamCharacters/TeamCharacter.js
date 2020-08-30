@@ -66,6 +66,7 @@ const TeamCharacter = ({
   chatWithTeamMember,
   goldWithTeamMember,
   isGM = false,
+  canExchange = false,
 }) => {
   const [currentFilter, setCurrentFilter] = useState({});
 
@@ -74,7 +75,6 @@ const TeamCharacter = ({
   }, [status]);
 
   const getFilter = () => {
-    console.log('status', status);
     switch (status) {
       case 'Inactive':
       case 'Left':
@@ -189,7 +189,7 @@ const TeamCharacter = ({
             width: 25,
           }}
         >
-          {!isGM && (
+          {!isGM && canExchange && (
             <GiSwitchWeapon
               onClick={exchangeWithTeamMember}
               style={styledCharacterTeamExchangeImage}
@@ -255,6 +255,7 @@ TeamCharacter.propTypes = {
   exchangeWithTeamMember: PropTypes.func.isRequired,
   chatWithTeamMember: PropTypes.func.isRequired,
   goldWithTeamMember: PropTypes.func.isRequired,
+  canExchange: PropTypes.bool,
 };
 
 export default TeamCharacter;

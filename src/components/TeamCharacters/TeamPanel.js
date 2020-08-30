@@ -47,11 +47,16 @@ const TeamPanel = ({
   goldWithTeamMember,
   modifyCurrentCharacter,
 }) => {
-  const { isGameMaster, gameMaster, storyCharacters } = useSelector(store => ({
-    isGameMaster: store.appState.isGameMaster,
-    gameMaster: store.appState.gameMaster,
-    storyCharacters: store.team.characters,
-  }));
+  const { isGameMaster, gameMaster, storyCharacters, userUid } = useSelector(
+    store => ({
+      isGameMaster: store.appState.isGameMaster,
+      gameMaster: store.appState.gameMaster,
+      storyCharacters: store.team.characters,
+      userUid: store.userInfos.uid,
+    }),
+  );
+
+  console.log('storyCharacters', storyCharacters);
 
   return (
     <div style={isGameMaster ? TeamPanelGMContainer : TeamPanelContainer}>
@@ -63,7 +68,7 @@ const TeamPanel = ({
         <TeamCharacter
           icon='./common/gameMaster.jpg'
           name='Game Master'
-          status='IMPRO'
+          status=''
           gold={9999}
           health={9999}
           maxHealth={9999}
@@ -87,6 +92,10 @@ const TeamPanel = ({
               <TeamCharacter
                 key={storyCharacter.name}
                 {...storyCharacter}
+                canExchange={
+                  storyCharacter.userUid !== gameMaster &&
+                  storyCharacter.userUid !== userUid
+                }
                 chatWithTeamMember={() => {
                   chatWithTeamMember(storyCharacter.userPseudo);
                   if (isGameMaster) {

@@ -28,7 +28,7 @@ const styledHealthText = {
   position: 'absolute',
   textAlign: 'center',
   fontSize: 12,
-  marginTop: -12,
+  top: 0,
   color: colors.healthBarText,
 };
 
