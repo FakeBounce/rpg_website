@@ -10,7 +10,6 @@ import {
 } from '../Utils/StyleConstants';
 import firebase from 'firebase';
 import FileUploader from '../CharacterCreation/FileUploader';
-import { connect } from 'react-redux';
 import MentalBar from '../Utils/MentalBar';
 import useApp from '../../hooks/useApp';
 
@@ -77,6 +76,9 @@ const CharacterHeader = () => {
     isGameMaster: store.appState.isGameMaster,
   }));
   const { triggerError } = useApp();
+
+  console.log('mentalState', mentalState);
+  console.log('maxMentalState', maxMentalState);
 
   const onDrop = picture => {
     const path =

@@ -5,77 +5,74 @@ import CharacterAttributes from './CharacterAttributes';
 import CharacterOtherInfos from './CharacterOtherInfos';
 import CharacterHeader from './CharacterHeader';
 import { colors } from '../Utils/Constants';
-import { connect } from 'react-redux';
+import useApp from '../../hooks/useApp';
+import { useSelector } from 'react-redux';
 
-const CharacterPanelContainer = {
+const styledCharacterPanelContainer = {
   borderBottom: '1px solid black',
   width: '100%',
   height: '50%',
   backgroundColor: colors.background,
   color: colors.text,
 };
-const CharacterPanelBox = { position: 'relative', height: '100%' };
+const styledCharacterPanelBox = { position: 'relative', height: '100%' };
 
-class CharacterPanel extends PureComponent {
-  render() {
-    const {
-      isGameMaster,
-      infoTab,
-      status,
-      damageTaken,
-      gold,
-      onChange,
-      onChangeTab,
-      onLifeChange,
-      onStatusChange,
-      onItemUse,
-      onGoldChange,
-      toggleIsOnChar,
-      triggerError,
-    } = this.props;
+const CharacterPanel = ({
+  infoTab,
+  status,
+  damageTaken,
+  gold,
+  onChange,
+  onChangeTab,
+  onLifeChange,
+  onStatusChange,
+  onItemUse,
+  onGoldChange,
+  toggleIsOnChar,
+}) => {
 
-    return (
-      <div style={CharacterPanelContainer}>
-        <div style={CharacterPanelBox}>
-          {isGameMaster ? (
-            <CharacterHeader
-              isGameMaster={isGameMaster}
-              gold={0}
-              status={'Gamemaster'}
-              icon={'./common/gameMaster.jpg'}
-              name={'Gamemaster'}
-              health={'999'}
-              maxHealth={'999'}
-              mentalState={'9'}
-              maxMentalState={'9'}
-              triggerError={triggerError}
-            />
-          ) : (
-            <CharacterHeader triggerError={triggerError} />
-          )}
-          <CharacterAttributes />
-          <CharacterOtherInfos
-            status={status}
-            infoTab={infoTab}
-            damageTaken={damageTaken}
-            gold={gold}
-            onChange={onChange}
-            onChangeTab={onChangeTab}
-            onLifeChange={onLifeChange}
-            onStatusChange={onStatusChange}
-            onItemUse={onItemUse}
-            onGoldChange={onGoldChange}
-            toggleIsOnChar={toggleIsOnChar}
+  const { triggerError } = useApp();
+  const { isGameMaster } = useSelector(store => ({
+    isGameMaster: store.appState.isGameMaster,
+  }));
+
+  return (
+    <div style={styledCharacterPanelContainer}>
+      <div style={styledCharacterPanelBox}>
+        {isGameMaster ? (
+          <CharacterHeader
+            isGameMaster={isGameMaster}
+            gold={0}
+            status={'Gamemaster'}
+            icon={'./common/gameMaster.jpg'}
+            name={'Gamemaster'}
+            health={'999'}
+            maxHealth={'999'}
+            mentalState={'9'}
+            maxMentalState={'9'}
+            triggerError={triggerError}
           />
-        </div>
+        ) : (
+          <CharacterHeader triggerError={triggerError} />
+        )}
+        <CharacterAttributes />
+        <CharacterOtherInfos
+          status={status}
+          infoTab={infoTab}
+          damageTaken={damageTaken}
+          gold={gold}
+          onChange={onChange}
+          onChangeTab={onChangeTab}
+          onLifeChange={onLifeChange}
+          onStatusChange={onStatusChange}
+          onItemUse={onItemUse}
+          onGoldChange={onGoldChange}
+          toggleIsOnChar={toggleIsOnChar}
+        />
       </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  isGameMaster: store.appState.isGameMaster,
-});
+    </div>
+  );
+};
 
 CharacterPanel.propTypes = {
   onChange: PropTypes.func.isRequired,
@@ -92,4 +89,4 @@ CharacterPanel.propTypes = {
   triggerError: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(CharacterPanel);
+export default CharacterPanel;
