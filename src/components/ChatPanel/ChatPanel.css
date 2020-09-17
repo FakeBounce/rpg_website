@@ -1,14 +1,14 @@
 .ui.tabular.menu .item.backgroundNotif {
-    animation: clignote 2s infinite;
-    -moz-animation: clignote 2s infinite; 
-    -webkit-animation: clignote 2s infinite; 
+    animation: blinking 2s infinite;
+    -moz-animation: blinking 2s infinite; 
+    -webkit-animation: blinking 2s infinite; 
 }
 
 .ui.tabular.menu .active.item.background {
     background-color: #34495e;
 }
 
-@-moz-keyframes clignote {
+@-moz-keyframes blinking {
     0% {
         background-color: #34495e;
         border-radius: .28571429rem .28571429rem 0 0;
@@ -23,7 +23,7 @@
     }
 }
 
-@-webkit-keyframes clignote {
+@-webkit-keyframes blinking {
     0% {
         background-color: #34495e;
         border-radius: .28571429rem .28571429rem 0 0;
@@ -38,7 +38,7 @@
     }
 }
 
-@keyframes clignote {
+@keyframes blinking {
     0% {
         background-color: #34495e;
         border-radius: .28571429rem .28571429rem 0 0;
