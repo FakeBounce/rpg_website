@@ -1006,6 +1006,7 @@ export const chatCommands = [
 
 export const colors = {
   background: '#34495e',
+  backgroundNotif: '#F08F21',
   backgroundSelected: '#547494',
   text: '#f3f3f3',
   textSeen: '#F6E05E',

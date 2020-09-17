@@ -27,6 +27,7 @@ const ChatTabsMenu = () => {
     <Menu
       attached='top'
       tabular
+      className='menuTabChatScrollbar'
       style={{ overflowX: 'auto', overflowY: 'hidden' }}
     >
       {chatTabs.map((ct, index) => {

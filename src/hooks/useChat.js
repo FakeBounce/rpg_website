@@ -644,7 +644,8 @@ const useChat = () => {
       });
   };
 
-  const closeWhisperTab = key => () => {
+  const closeWhisperTab = key => e => {
+    e.stopPropagation();
     const oldTab = { ...whispersTab };
     delete oldTab[key];
     if (activeChatTab === key) {

@@ -40,7 +40,6 @@ const initialState = {
 };
 
 const mapInfos = (state = initialState, action) => {
-  console.log('action', action.type);
   switch (action.type) {
     case SET_TILES_TYPES: {
       return {

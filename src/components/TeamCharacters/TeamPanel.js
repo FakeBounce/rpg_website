@@ -56,8 +56,6 @@ const TeamPanel = ({
     }),
   );
 
-  console.log('storyCharacters', storyCharacters);
-
   return (
     <div style={isGameMaster ? TeamPanelGMContainer : TeamPanelContainer}>
       <TeamHeader />
