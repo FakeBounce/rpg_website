@@ -1,0 +1,58 @@
+.ui.tabular.menu .item.backgroundNotif {
+    animation: clignote 2s infinite;
+    -moz-animation: clignote 2s infinite; 
+    -webkit-animation: clignote 2s infinite; 
+}
+
+.ui.tabular.menu .active.item.background {
+    background-color: #34495e;
+}
+
+@-moz-keyframes clignote {
+    0% {
+        background-color: #34495e;
+        border-radius: .28571429rem .28571429rem 0 0;
+    }
+    50% {
+        background-color: #F08F21;
+        border-radius: .28571429rem .28571429rem 0 0;
+    }
+    100% {
+        background-color: #34495e;
+        border-radius: .28571429rem .28571429rem 0 0;
+    }
+}
+
+@-webkit-keyframes clignote {
+    0% {
+        background-color: #34495e;
+        border-radius: .28571429rem .28571429rem 0 0;
+    }
+    50% {
+        background-color: #F08F21;
+        border-radius: .28571429rem .28571429rem 0 0;
+    }
+    100% {
+        background-color: #34495e;
+        border-radius: .28571429rem .28571429rem 0 0;
+    }
+}
+
+@keyframes clignote {
+    0% {
+        background-color: #34495e;
+        border-radius: .28571429rem .28571429rem 0 0;
+    }
+    50% {
+        background-color: #F08F21;
+        border-radius: .28571429rem .28571429rem 0 0;
+    }
+    100% {
+        background-color: #34495e;
+        border-radius: .28571429rem .28571429rem 0 0;
+    }
+}
+
+.menuTabChatScrollbar::-webkit-scrollbar {
+    height: 5px;
+}

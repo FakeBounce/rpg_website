@@ -77,9 +77,6 @@ const CharacterHeader = () => {
   }));
   const { triggerError } = useApp();
 
-  console.log('mentalState', mentalState);
-  console.log('maxMentalState', maxMentalState);
-
   const onDrop = picture => {
     const path =
       'images/' +

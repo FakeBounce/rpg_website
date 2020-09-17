@@ -7,6 +7,7 @@ import ChatDicesRow from "./ChatDicesRow";
 import ChatHistory from "./ChatHistory";
 import useChat from "../../hooks/useChat";
 import ChatTabsMenu from "./ChatTabsMenu";
+import "./ChatPanel.css";
 
 const styledChatPanel = {
   width: widthLeft / 2,
