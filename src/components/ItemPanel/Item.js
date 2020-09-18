@@ -1,6 +1,7 @@
 import React from 'react';
 import './Item.css';
 import PropTypes from 'prop-types';
+import useMerchants from '../../hooks/useMerchants';
 
 const Item = ({
   index,
@@ -13,8 +14,9 @@ const Item = ({
   isHidden,
   noPrice,
 }) => {
+  const { setCurrentMerchantItem } = useMerchants();
   return (
-    <div className='item' onClick={() => showItemDescription(index)}>
+    <div className='item' onClick={() => setCurrentMerchantItem(index)}>
       <img
         src={iconPath || './' + itemType + '/' + icon}
         alt={' '}

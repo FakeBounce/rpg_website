@@ -1,65 +1,56 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import CharacterTabButtons from "./CharacterTabButtons";
-import CharacterTabPanel from "./CharacterTabPanel";
-import CharacterInputs from "./CharacterInputs";
+import React from 'react';
+import PropTypes from 'prop-types';
+import CharacterTabButtons from './CharacterTabButtons';
+import CharacterTabPanel from './CharacterTabPanel';
+import CharacterInputs from './CharacterInputs';
 import {
   widthRightPanelLeft,
   imageSize,
   heightLeft,
-} from "../Utils/StyleConstants";
-import { connect } from "react-redux";
+} from '../Utils/StyleConstants';
 
 const styles = {
   characterOtherInfos: {
     width: `${widthRightPanelLeft}px`,
     height: `${heightLeft / 2 - imageSize}px`,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
   },
 };
 
-class CharacterOtherInfos extends Component {
-  render() {
-    const {
-      infoTab,
-      status,
-      gold,
-      onChangeTab,
-      onChange,
-      onLifeChange,
-      onStatusChange,
-      onGoldChange,
-      onItemUse,
-      damageTaken,
-      toggleIsOnChar,
-    } = this.props;
-
-    return (
-      <div style={styles.characterOtherInfos}>
-        <CharacterTabButtons onChangeTab={onChangeTab} infoTab={infoTab} />
-        <CharacterTabPanel infoTab={infoTab} onItemUse={onItemUse} />
-        <CharacterInputs
-          status={status}
-          gold={gold}
-          infoTab={infoTab}
-          damageTaken={damageTaken}
-          onChange={onChange}
-          onChangeTab={onChangeTab}
-          onLifeChange={onLifeChange}
-          onStatusChange={onStatusChange}
-          onGoldChange={onGoldChange}
-          toggleIsOnChar={toggleIsOnChar}
-        />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  isGameMaster: store.appState.isGameMaster,
-});
+const CharacterOtherInfos = ({
+  infoTab,
+  status,
+  gold,
+  onChangeTab,
+  onChange,
+  onLifeChange,
+  onStatusChange,
+  onGoldChange,
+  onItemUse,
+  damageTaken,
+  toggleIsOnChar,
+}) => {
+  return (
+    <div style={styles.characterOtherInfos}>
+      <CharacterTabButtons onChangeTab={onChangeTab} infoTab={infoTab} />
+      <CharacterTabPanel infoTab={infoTab} onItemUse={onItemUse} />
+      <CharacterInputs
+        status={status}
+        gold={gold}
+        infoTab={infoTab}
+        damageTaken={damageTaken}
+        onChange={onChange}
+        onChangeTab={onChangeTab}
+        onLifeChange={onLifeChange}
+        onStatusChange={onStatusChange}
+        onGoldChange={onGoldChange}
+        toggleIsOnChar={toggleIsOnChar}
+      />
+    </div>
+  );
+};
 
 CharacterOtherInfos.propTypes = {
   status: PropTypes.string.isRequired,
@@ -75,4 +66,4 @@ CharacterOtherInfos.propTypes = {
   toggleIsOnChar: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(CharacterOtherInfos);
+export default CharacterOtherInfos;

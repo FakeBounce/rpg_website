@@ -1,15 +1,17 @@
-import React, { Component } from "react";
+import React, { useState } from 'react';
 
-import CharacterCreationPanel from "../CharacterCreation/CharacterCreationPanel";
-import PropTypes from "prop-types";
-import CharacterPreview from "./CharacterPreview";
-import firebase from "firebase";
-import ButtonLarge from "../Utils/ButtonLarge";
-import { connect } from "react-redux";
-import { CharacterProvider } from "../../contexts/characterContext";
+import CharacterCreationPanel from '../CharacterCreation/CharacterCreationPanel';
+import PropTypes from 'prop-types';
+import CharacterPreview from './CharacterPreview';
+import firebase from 'firebase';
+import ButtonLarge from '../Utils/ButtonLarge';
+import { useSelector } from 'react-redux';
+import { CharacterProvider } from '../../contexts/characterContext';
+import useApp from '../../hooks/useApp';
+
 
 const styledBoxHeader = {
-  width: "100%",
+  width: '100%',
   height: 60,
   marginBottom: 5,
   paddingTop: 10,
@@ -20,78 +22,73 @@ const styledBoxBack = {
   width: 250,
   height: 20,
   marginBottom: 25,
-  textAlign: "center",
+  textAlign: 'center',
 };
 
 const styledSideHeaders = {
-  width: "25%",
-  height: "100%",
-  display: "inline-block",
-  float: "left",
+  width: '25%',
+  height: '100%',
+  display: 'inline-block',
+  float: 'left',
 };
 
 const styledCenterHeader = {
-  width: "50%",
-  height: "100%",
-  display: "inline-block",
-  float: "left",
-  position: "relative",
+  width: '50%',
+  height: '100%',
+  display: 'inline-block',
+  float: 'left',
+  position: 'relative',
 };
 
-class CharacterSelection extends Component {
-  state = {
-    isAnUpdate: false,
-    updateCharacterId: 0,
-  };
+const CharacterSelection = ({
+  chooseStory,
+  doSetState,
+  characterCreation,
+  keepCharacter,
+}) => {
+  const [isAnUpdate, setIsAnUpdate] = useState(false);
+  const [updateCharacterId, setUpdateCharacterId] = useState(0);
 
-  getCharacters = () => {
-    const { characters } = this.props;
+  const { triggerError } = useApp();
+
+  const { currentStory, pseudo, uid, characters } = useSelector(store => ({
+    currentStory: store.appState.currentStory,
+    pseudo: store.userInfos.pseudo,
+    uid: store.userInfos.uid,
+    characters: store.userInfos.characters,
+  }));
+
+  const getCharacters = () => {
     return Object.keys(characters).map(char => {
       return (
         <CharacterPreview
           key={`char-${char.name}`}
           {...characters[char]}
-          chooseCharacter={this.chooseCharacter}
-          modifyCharacter={this.modifyCharacter}
+          chooseCharacter={chooseCharacter}
+          modifyCharacter={modifyCharacter}
         />
       );
     });
   };
 
-  modifyCharacter = id => {
-    this.setState(
-      state => ({
-        ...state,
-        isAnUpdate: true,
-        updateCharacterId: id,
-      }),
-      () => {
-        this.props.doSetState({
-          characterCreation: true,
-        });
-      },
-    );
+  const modifyCharacter = id => {
+    setIsAnUpdate(true);
+    setUpdateCharacterId(id);
+    doSetState({
+      characterCreation: true,
+    });
   };
 
-  chooseCharacter = id => {
-    const {
-      characters,
-      chooseStory,
-      currentStory,
-      uid,
-      triggerError,
-      doSetState,
-    } = this.props;
-
+  const chooseCharacter = id => {
     const charToRegister = characters[id];
     charToRegister.gold = Math.floor(
       Math.random() * characters[id].attributes.luck * 5 + 5,
     );
-    charToRegister.status = "OK";
-
+    charToRegister.status = 'OK';
+    // @TODO : sagas
     firebase
       .database()
-      .ref("stories/" + currentStory + "/characters/" + uid)
+      .ref('stories/' + currentStory + '/characters/' + uid)
       .set({ character: charToRegister, characterId: id })
       .then(() => {
         doSetState(
@@ -110,83 +107,60 @@ class CharacterSelection extends Component {
       });
   };
 
-  goToCharacterForm = () => {
-    this.props.doSetState({
+  const goToCharacterForm = () => {
+    doSetState({
       characterCreation: true,
     });
   };
 
-  updateCharacter = character => {
-    const {
-      doSetState,
-      uid,
-      characters,
-      currentStory,
-      chooseStory,
-      triggerError,
-    } = this.props;
-    this.setState(
-      state => ({
-        ...state,
-        isAnUpdate: true,
-        updateCharacterId: 0,
-      }),
+  const updateCharacter = character => {
+    setIsAnUpdate(true);
+    setUpdateCharacterId(0);
+    const charTab = characters;
+    charTab[character.id] = character;
+    doSetState(
+      {
+        characters: charTab,
+        characterId: character.id,
+        character,
+      },
       () => {
-        const charTab = characters;
-        charTab[character.id] = character;
-        doSetState(
-          {
-            characters: charTab,
-            characterId: character.id,
-            character,
-          },
-          () => {
+        firebase
+          .database()
+          .ref('users/' + uid + '/characters')
+          .set({ ...charTab })
+          .then(() => {
+            // @TODO : sagas
             firebase
               .database()
-              .ref("users/" + uid + "/characters")
-              .set({ ...charTab })
+              .ref('stories/' + currentStory + '/characters/' + uid)
+              .set({
+                character,
+                characterId: character.id,
+              })
               .then(() => {
-                firebase
-                  .database()
-                  .ref("stories/" + currentStory + "/characters/" + uid)
-                  .set({
-                    character,
-                    characterId: character.id,
-                  })
-                  .then(() => {
-                    chooseStory(currentStory);
-                  })
-                  .catch(error => {
-                    // Handle Errors here.
-                    triggerError(error);
-                  });
+                chooseStory(currentStory);
               })
               .catch(error => {
                 // Handle Errors here.
                 triggerError(error);
               });
-          },
-        );
+          })
+          .catch(error => {
+            // Handle Errors here.
+            triggerError(error);
+          });
       },
     );
   };
 
-  createCharacter = character => {
-    const {
-      doSetState,
-      characters,
-      uid,
-      pseudo,
-      triggerError,
-      currentStory,
-      chooseStory,
-    } = this.props;
+  const createCharacter = character => {
     const charTab = characters;
 
     const charToRegister = character;
     charToRegister.gold =
       Math.floor(Math.random() * character.attributes.luck + 1) * 5;
-    charToRegister.status = "OK";
+    charToRegister.status = 'OK';
     charToRegister.userPseudo = pseudo;
     charToRegister.userUid = uid;
 
@@ -200,12 +174,12 @@ class CharacterSelection extends Component {
       () => {
         firebase
           .database()
-          .ref("users/" + uid + "/characters")
+          .ref('users/' + uid + '/characters')
           .set({ ...charTab })
           .then(() => {
             firebase
               .database()
-              .ref("stories/" + currentStory + "/characters/" + uid)
+              .ref('stories/' + currentStory + '/characters/' + uid)
               .set({
                 character: charToRegister,
                 characterId: character.id,
@@ -226,15 +200,11 @@ class CharacterSelection extends Component {
     );
   };
 
-  resetStory = () => {
-    const { chooseStory } = this.props;
-
+  const resetStory = () => {
     chooseStory(-1);
   };
 
-  calculatePointsLeft = () => {
-    const { characters, updateCharacterId } = this.props;
-
+  const calculatePointsLeft = () => {
     const {
       attributes: {
         strength,
@@ -263,80 +233,56 @@ class CharacterSelection extends Component {
     );
   };
 
-  render() {
-    const { isAnUpdate, updateCharacterId } = this.state;
-    const {
-      characterCreation,
-      characters,
-      keepCharacter,
-      uid,
-      triggerError,
-    } = this.props;
-
-    if (typeof characters[1] !== "undefined" && !characterCreation) {
-      return (
-        <div>
-          <button style={styledBoxBack} onClick={keepCharacter}>
-            Retourner sur l'histoire
-          </button>
-          <div style={styledBoxHeader}>Choisir un personnage</div>
-          <button onClick={this.goToCharacterForm}>Créer un personnage</button>
-          <div style={styledBoxHeader}>Vos personnages :</div>
-          {this.getCharacters()}
-        </div>
-      );
-    }
-
+  if (typeof characters[1] !== 'undefined' && !characterCreation) {
     return (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <div style={styledBoxHeader}>
-          <div style={styledSideHeaders}>
-            <ButtonLarge onClick={this.resetStory}>
-              Select another story
-            </ButtonLarge>
-          </div>
-          <div style={styledCenterHeader}>
-            {isAnUpdate ? "Update a character" : "Create a character"}
-          </div>
-        </div>
-        <CharacterProvider
-          uid={uid}
-          id={
-            isAnUpdate ? updateCharacterId : Object.keys(characters).length + 1
-          }
-          isAnUpdate={isAnUpdate}
-          character={isAnUpdate ? { ...characters[updateCharacterId] } : {}}
-          totalPointsleft={this.calculatePointsLeft()}
-        >
-          <CharacterCreationPanel
-            id={
-              isAnUpdate
-                ? updateCharacterId
-                : Object.keys(characters).length + 1
-            }
-            createCharacter={this.createCharacter}
-            updateCharacter={this.updateCharacter}
-            triggerError={triggerError}
-            isAnUpdate={isAnUpdate}
-            character={isAnUpdate ? { ...characters[updateCharacterId] } : {}}
-          />
-        </CharacterProvider>
+      <div>
+        <button style={styledBoxBack} onClick={keepCharacter}>
+          Retourner sur l'histoire
+        </button>
+        <div style={styledBoxHeader}>Choisir un personnage</div>
+        <button onClick={goToCharacterForm}>Créer un personnage</button>
+        <div style={styledBoxHeader}>Vos personnages :</div>
+        {getCharacters()}
       </div>
     );
   }
-}
 
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-  pseudo: store.userInfos.pseudo,
-  uid: store.userInfos.uid,
-  characters: store.userInfos.characters,
-});
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+      }}
+    >
+      <div style={styledBoxHeader}>
+        <div style={styledSideHeaders}>
+          <ButtonLarge onClick={resetStory}>Select another story</ButtonLarge>
+        </div>
+        <div style={styledCenterHeader}>
+          {isAnUpdate ? 'Update a character' : 'Create a character'}
+        </div>
+      </div>
+      <CharacterProvider
+        uid={uid}
+        id={isAnUpdate ? updateCharacterId : Object.keys(characters).length + 1}
+        isAnUpdate={isAnUpdate}
+        character={isAnUpdate ? { ...characters[updateCharacterId] } : {}}
+        totalPointsleft={calculatePointsLeft()}
+      >
+        <CharacterCreationPanel
+          id={
+            isAnUpdate ? updateCharacterId : Object.keys(characters).length + 1
+          }
+          createCharacter={createCharacter}
+          updateCharacter={updateCharacter}
+          triggerError={triggerError}
+          isAnUpdate={isAnUpdate}
+          character={isAnUpdate ? { ...characters[updateCharacterId] } : {}}
+        />
+      </CharacterProvider>
+    </div>
+  );
+};
 
 CharacterSelection.propTypes = {
   characterCreation: PropTypes.bool.isRequired,
@@ -346,4 +292,4 @@ CharacterSelection.propTypes = {
   triggerError: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(CharacterSelection);
+export default CharacterSelection;

@@ -1,144 +1,131 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { widthRightPanelLeft } from "../Utils/StyleConstants";
-import firebase from "firebase";
-import ButtonLarge from "../Utils/ButtonLarge";
-import { connect } from "react-redux";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { widthRightPanelLeft } from '../Utils/StyleConstants';
+import firebase from 'firebase';
+import ButtonLarge from '../Utils/ButtonLarge';
+import { useSelector } from 'react-redux';
 
-const styles = {
-  tabPanelItem: {
-    width: `${widthRightPanelLeft - 6}px`,
-    paddingHorizontal: 5,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-  },
-  itemButton: {
-    width: 50,
-    height: 30,
-    position: "relative",
-    float: "right",
-    display: "inline-block",
-    padding: 0,
-    margin: 0,
-    textAlign: "center",
-  },
-  itemDescription: {
-    width: `${widthRightPanelLeft - 70}px`,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-    padding: 0,
-    margin: 0,
-    textAlign: "center",
-  },
+const styledTabPanelItem = {
+  width: `${widthRightPanelLeft - 6}px`,
+  paddingHorizontal: 5,
+  position: 'relative',
+  float: 'left',
+  display: 'inline-block',
 };
 
-class CharacterTabPanelContent extends Component {
-  state = {
-    newValue: "",
+const styledItemButton = {
+  width: 50,
+  height: 30,
+  position: 'relative',
+  float: 'right',
+  display: 'inline-block',
+  padding: 0,
+  margin: 0,
+  textAlign: 'center',
+};
+
+const styledItemDescription = {
+  width: `${widthRightPanelLeft - 70}px`,
+  position: 'relative',
+  float: 'left',
+  display: 'inline-block',
+  padding: 0,
+  margin: 0,
+  textAlign: 'center',
+};
+
+const CharacterTabPanelContent = ({ tab, tabName }) => {
+  const [newValue, setNewValue] = useState('');
+
+  const { currentStory, character } = useSelector(store => ({
+    currentStory: store.appState.currentStory,
+    character: store.character,
+  }));
+
+  const onChange = value => {
+    setNewValue(value);
   };
 
-  onChange = value => {
-    this.setState(state => ({
-      ...state,
-      newValue: value,
-    }));
-  };
-
-  onValidate = () => {
-    const { newValue } = this.state;
-    const { character, tab, tabName, currentStory } = this.props;
-
-    if (newValue !== "") {
+  const onValidate = () => {
+    if (newValue !== '') {
       let obj = [];
       if (tab) obj = [...tab];
       obj.push(newValue);
 
+      // @Todo : sagas
       firebase
         .database()
         .ref(
-          "stories/" +
+          'stories/' +
             currentStory +
-            "/characters/" +
+            '/characters/' +
             character.userUid +
-            "/character/" +
+            '/character/' +
             tabName.toLowerCase(),
         )
         .set(obj)
         .catch(error => {
           // Handle Errors here.
-          console.log("Error", error);
+          console.log('Error', error);
         });
     }
   };
 
-  onRemove = i => {
-    const { character, tab, tabName, currentStory } = this.props;
+  const onRemove = i => {
     const obj = [...tab];
     obj.splice(i, 1);
 
     firebase
       .database()
       .ref(
-        "stories/" +
+        'stories/' +
           currentStory +
-          "/characters/" +
+          '/characters/' +
           character.userUid +
-          "/character/" +
+          '/character/' +
           tabName.toLowerCase(),
       )
       .set(obj)
       .catch(error => {
         // Handle Errors here.
-        console.log("Error", error);
+        console.log('Error', error);
       });
   };
 
-  render() {
-    const { tab, tabName } = this.props;
-    const { newValue } = this.state;
-
-    return (
-      <div>
-        {tab.map((description, index) => {
-          return (
-            <div key={`${description}-${index}`} style={styles.tabPanelItem}>
-              <div style={styles.itemDescription}>{description}</div>
-              <ButtonLarge
-                style={styles.itemButton}
-                onClick={() => this.onRemove(index)}
-              >
-                Remove
-              </ButtonLarge>
-            </div>
-          );
-        })}
-        <div style={styles.tabPanelItem}>
-          <input
-            type="text"
-            placeholder={`${tabName} + description if needed`}
-            value={newValue}
-            onChange={e => {
-              this.onChange(e.target.value);
-            }}
-          />
-          <ButtonLarge style={styles.itemButton} onClick={this.onValidate}>
-            Add {tabName.toLowerCase()}
-          </ButtonLarge>
-        </div>
+  return (
+    <div>
+      {tab.map((description, index) => {
+        return (
+          <div key={`${description}-${index}`} style={styledTabPanelItem}>
+            <div style={styledItemDescription}>{description}</div>
+            <ButtonLarge
+              style={styledItemButton}
+              onClick={() => onRemove(index)}
+            >
+              Remove
+            </ButtonLarge>
+          </div>
+        );
+      })}
+      <div style={styledTabPanelItem}>
+        <input
+          type='text'
+          placeholder={`${tabName} + description if needed`}
+          value={newValue}
+          onChange={e => {
+            onChange(e.target.value);
+          }}
+        />
+        <ButtonLarge style={styledItemButton} onClick={onValidate}>
+          Add {tabName.toLowerCase()}
+        </ButtonLarge>
       </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-  character: store.character,
-});
+    </div>
+  );
+};
 
 CharacterTabPanelContent.defaultProps = {
-  tabName: "",
+  tabName: '',
 };
 
 CharacterTabPanelContent.propTypes = {
@@ -146,4 +133,4 @@ CharacterTabPanelContent.propTypes = {
   tabName: PropTypes.string,
 };
 
-export default connect(mapStateToProps)(CharacterTabPanelContent);
+export default CharacterTabPanelContent;

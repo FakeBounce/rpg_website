@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   bestiaryFilters,
@@ -18,47 +18,43 @@ const styledFilterContainer = {
   display: 'inline-block',
 };
 
-class BestiaryHeader extends Component {
-  render() {
-    const {
-      selectedFilter,
-      selectedOrderBy,
-      selectedOrderByType,
-      onChangeFilter,
-      onChangeOrderByType,
-      onChangeOrderBy,
-    } = this.props;
-
-    return (
-      <div style={styledBestiaryHeader}>
-        <div style={styledFilterContainer}>
-          Filter by :
-          <SelectMapper
-            mapArray={bestiaryFilters}
-            value={selectedFilter}
-            onChange={onChangeFilter}
-          />
-        </div>
-        <div style={styledFilterContainer}>
-          Order by type :
-          <SelectMapper
-            mapArray={bestiaryOrderByType}
-            value={selectedOrderByType}
-            onChange={onChangeOrderByType}
-          />
-        </div>
-        <div style={styledFilterContainer}>
-          Order by :
-          <SelectMapper
-            mapArray={bestiaryOrderBy}
-            value={selectedOrderBy}
-            onChange={onChangeOrderBy}
-          />
-        </div>
+const BestiaryHeader = ({
+  selectedFilter,
+  selectedOrderBy,
+  selectedOrderByType,
+  onChangeFilter,
+  onChangeOrderByType,
+  onChangeOrderBy,
+}) => {
+  return (
+    <div style={styledBestiaryHeader}>
+      <div style={styledFilterContainer}>
+        Filter by :
+        <SelectMapper
+          mapArray={bestiaryFilters}
+          value={selectedFilter}
+          onChange={onChangeFilter}
+        />
       </div>
-    );
-  }
-}
+      <div style={styledFilterContainer}>
+        Order by type :
+        <SelectMapper
+          mapArray={bestiaryOrderByType}
+          value={selectedOrderByType}
+          onChange={onChangeOrderByType}
+        />
+      </div>
+      <div style={styledFilterContainer}>
+        Order by :
+        <SelectMapper
+          mapArray={bestiaryOrderBy}
+          value={selectedOrderBy}
+          onChange={onChangeOrderBy}
+        />
+      </div>
+    </div>
+  );
+};
 
 BestiaryHeader.propTypes = {
   selectedFilter: PropTypes.string.isRequired,

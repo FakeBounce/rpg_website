@@ -1,16 +1,16 @@
-import { spawn } from "redux-saga/effects";
+import { spawn } from 'redux-saga/effects';
 
-import * as sagasAppState from "./sagasAppState";
-import * as sagasBestiary from "./sagasBestiary";
-import * as sagasCharacter from "./sagasCharacter";
-import * as sagasChat from "./sagasChat";
-import * as sagasEvents from "./sagasEvents";
-import * as sagasItems from "./sagasItems";
-import * as sagasMapInfos from "./sagasMapInfos";
-import * as sagasMerchants from "./sagasMerchants";
-import * as sagasTeam from "./sagasTeam";
-import * as sagasUserInfos from "./sagasUserInfos";
-import * as sagasSounds from "./sagasSounds";
+import * as sagasAppState from './sagasAppState';
+import * as sagasBestiary from './sagasBestiary';
+import * as sagasCharacter from './sagasCharacter';
+import * as sagasChat from './sagasChat';
+import * as sagasEvents from './sagasEvents';
+import * as sagasItems from './sagasItems';
+import * as sagasMapInfos from './sagasMapInfos';
+import * as sagasMerchants from './sagasMerchants';
+import * as sagasTeam from './sagasTeam';
+import * as sagasUserInfos from './sagasUserInfos';
+import * as sagasSounds from './sagasSounds';
 
 function* rootSaga() {
   // App state
@@ -43,6 +43,7 @@ function* rootSaga() {
   // Merchants
   yield spawn(sagasMerchants.watchCallGetMerchantList);
   yield spawn(sagasMerchants.watchCallListenMerchantList);
+
   // User infos
   yield spawn(sagasUserInfos.watchCallSetUserPseudo);
   // Team

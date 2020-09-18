@@ -25,6 +25,8 @@ const NewStoryForm = props => {
 
   const onDrop = picture => {
     const { dispatchCallPrintError } = props;
+
+    // @TODO : rework with current sagas/reducer
     let storageRef = firebase.storage().ref();
     const path =
       "images/stories/" +

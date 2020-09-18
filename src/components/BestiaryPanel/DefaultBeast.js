@@ -1,11 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  widthImageBestiary,
-  widthLeftBestiary,
-  widthTextBestiary,
-} from '../Utils/StyleConstants';
-import { colors } from "../Utils/Constants";
+import { widthImageBestiary, widthLeftBestiary } from '../Utils/StyleConstants';
+import { colors } from '../Utils/Constants';
 
 const styledImage = {
   position: 'relative',
@@ -28,18 +24,14 @@ const styledTitle = {
   color: colors.red300,
 };
 
-class DefaultBeast extends Component {
-  render() {
-    const { name, image } = this.props;
-
-    return (
-      <div style={styledContainer}>
-        <div style={styledTitle}> {name}</div>
-        <img src={'./bestiary/' + image} style={styledImage} alt={image} />
-      </div>
-    );
-  }
-}
+const DefaultBeast = ({ name, image }) => {
+  return (
+    <div style={styledContainer}>
+      <div style={styledTitle}> {name}</div>
+      <img src={'./bestiary/' + image} style={styledImage} alt={image} />
+    </div>
+  );
+};
 
 DefaultBeast.propTypes = {
   name: PropTypes.string.isRequired,

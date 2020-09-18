@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { cursorPointer } from '../Utils/StyleConstants';
 
@@ -12,21 +12,17 @@ const styledChatDice = {
   cursor: cursorPointer,
 };
 
-class ChatDice extends PureComponent {
-  render() {
-    const { tip, image, alt, attribute, launchCommand } = this.props;
-
-    return (
-      <img
-        src={image}
-        alt={alt}
-        style={styledChatDice}
-        onClick={() => launchCommand(attribute)}
-        data-tip={tip}
-      />
-    );
-  }
-}
+const ChatDice = ({ tip, image, alt, attribute, launchCommand }) => {
+  return (
+    <img
+      src={image}
+      alt={alt}
+      style={styledChatDice}
+      onClick={() => launchCommand(attribute)}
+      data-tip={tip}
+    />
+  );
+};
 
 ChatDice.propTypes = {
   launchCommand: PropTypes.func.isRequired,

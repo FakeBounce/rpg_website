@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const styledChatHelpBox = {
@@ -27,18 +27,14 @@ const styledCommandAction = {
   display: 'inline-block',
 };
 
-class ChatCommand extends Component {
-  render() {
-    const { name, action } = this.props;
-
-    return (
-      <div style={styledChatHelpBox}>
-        <div style={styledCommandName}>Name : {name}</div>
-        <div style={styledCommandAction}>Action : {action}</div>
-      </div>
-    );
-  }
-}
+const ChatCommand = ({ name, action }) => {
+  return (
+    <div style={styledChatHelpBox}>
+      <div style={styledCommandName}>Name : {name}</div>
+      <div style={styledCommandAction}>Action : {action}</div>
+    </div>
+  );
+};
 
 ChatCommand.propTypes = {
   name: PropTypes.string.isRequired,

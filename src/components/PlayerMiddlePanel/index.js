@@ -1,160 +1,146 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-
-import ItemDescriptionPanel from "../ItemDescriptionPanel";
-import MerchantPanel from "../MerchantPanel";
-import ItemPanel from "../ItemPanel";
-import QuestPanel from "../QuestPanel";
-import { heightLeft, widthLeft } from "../Utils/StyleConstants";
-import TempImage from "./TempImage";
-import EnhancementWeaponsPanel from "../EnhancementWeaponsPanel";
-import ShopHeaderBlacksmith from "../ShopHeader/ShopHeaderBlacksmith";
-import ShopHeaderEnhancements from "../ShopHeader/ShopHeaderEnhancements";
-import ShopHeaderDefault from "../ShopHeader/ShopHeaderDefault";
-import EnhancersPanel from "../EnhancersPanel/EnhancersPanel";
-import firebase from "firebase";
-import Cadre from "../Utils/Cadre";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import ItemDescriptionPanel from '../ItemDescriptionPanel';
+import MerchantPanel from '../MerchantPanel';
+import ItemPanel from '../ItemPanel';
+import QuestPanel from '../QuestPanel';
+import { heightLeft, widthLeft } from '../Utils/StyleConstants';
+import TempImage from './TempImage';
+import EnhancementWeaponsPanel from '../EnhancementWeaponsPanel';
+import ShopHeaderBlacksmith from '../ShopHeader/ShopHeaderBlacksmith';
+import ShopHeaderEnhancements from '../ShopHeader/ShopHeaderEnhancements';
+import ShopHeaderDefault from '../ShopHeader/ShopHeaderDefault';
+import EnhancersPanel from '../EnhancersPanel/EnhancersPanel';
+import { useSelector } from 'react-redux';
+import Cadre from '../Utils/Cadre';
+import {
+  currentItemsListSelector,
+  currentMerchantEnhancementLevelSelector,
+  currentMerchantJobSelector,
+  currentMerchantRawLevelSelector,
+} from '../../selectors';
+import useMerchants from '../../hooks/useMerchants';
 
 const styledPlayerMapContainer = {
-  float: "left",
+  float: 'left',
   width: `${widthLeft}px`,
   height: `${heightLeft}px`,
-  display: "inline-block",
-  position: "relative",
+  display: 'inline-block',
+  position: 'relative',
 };
 
 const styledPanelContainer = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
-  display: "inline-block",
-  float: "left",
-  position: "relative",
+  display: 'inline-block',
+  float: 'left',
+  position: 'relative',
 };
 
 const styledCadreContainer = {
   width: `${widthLeft / 2}px`,
   height: `${heightLeft / 2}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
-  position: "relative",
+  display: 'inline-block',
+  float: 'left',
+  textAlign: 'left',
+  position: 'relative',
   paddingHorizontal: 10,
 };
 
 const styledCadreSecondContainer = {
   width: `${widthLeft / 2 - 20}px`,
   height: `${heightLeft / 2}px`,
-  display: "inline-block",
-  float: "left",
-  textAlign: "left",
-  position: "relative",
+  display: 'inline-block',
+  float: 'left',
+  textAlign: 'left',
+  position: 'relative',
   paddingHorizontal: 10,
 };
 
-class PlayerMiddlePanel extends Component {
-  state = {
-    currentTab: "items",
-    showEnhancers: false,
-    choosedItem: null,
-    choosedEnhancer1: null,
-    choosedEnhancer2: null,
-    enhancePrice: 0,
-  };
+const PlayerMiddlePanel = ({
+  buyItem,
+  isItemDescriptionShowed,
+  itemToDescribe,
+  isItemShowed,
+  doSetState,
+}) => {
+  const [currentTab, setCurrentTab] = useState('items');
+  const [showEnhancers, setShowEnhancers] = useState(false);
+  const [choosedItem, setChoosedItem] = useState(null);
+  const [choosedEnhancer1, setChoosedEnhancer1] = useState(null);
+  const [choosedEnhancer2, setChoosedEnhancer2] = useState(null);
+  const [enhancePrice, setEnhancePrice] = useState(0);
 
-  componentWillReceiveProps(nextProps) {
-    const { choosedItem, choosedEnhancer2, choosedEnhancer1 } = this.state;
-    if (nextProps.currentMerchant !== this.props.currentMerchant) {
-      this.setState(state => ({
-        ...state,
-        currentTab: "items",
-        showEnhancers: false,
-        choosedItem: null,
-        choosedEnhancer1: null,
-        choosedEnhancer2: null,
-        enhancePrice: 0,
-      }));
+  const {
+    character,
+    currentMerchant,
+    merchants,
+    isTownShowed,
+    itemsList,
+    merchantEnhancementLevel,
+    merchantEnhancementJob,
+    merchantRawLevel
+  } = useSelector(store => ({
+    character: store.character,
+    currentMerchant: store.merchants.currentMerchant,
+    merchants: store.merchants.merchantList,
+    isTownShowed: store.mapInfos.isTownShowed,
+    itemsList: currentItemsListSelector(store),
+    merchantEnhancementLevel: currentMerchantEnhancementLevelSelector(store),
+    merchantEnhancementJob: currentMerchantJobSelector(store),
+    merchantRawLevel:currentMerchantRawLevelSelector(store),
+  }));
+
+  const { enhanceWeapons } = useMerchants();
+
+  useEffect(() => {
+    resetTabs();
+  }, [currentMerchant]);
+
+  useEffect(() => {
+    calculateEnhancePrice();
+  }, [choosedItem, choosedEnhancer1, choosedEnhancer2]);
+
+  useEffect(() => {
+    if (
+      choosedItem !== null &&
+      typeof itemsList[choosedItem.index] === 'undefined'
+    ) {
+      setChoosedItem(null);
+      setShowEnhancers(false);
     }
     if (
-      Object.keys(nextProps.itemsList).length <
-      Object.keys(this.props.itemsList).length
+      choosedEnhancer1 !== null &&
+      typeof itemsList[choosedEnhancer1.index] === 'undefined'
     ) {
-      if (
-        choosedItem !== null &&
-        typeof nextProps.itemsList[choosedItem.index] === "undefined"
-      ) {
-        this.setState(
-          state => ({
-            ...state,
-            choosedItem: null,
-            showEnhancers: false,
-          }),
-          () => {
-            this.calculateEnhancePrice();
-          },
-        );
-      }
-      if (
-        choosedEnhancer1 !== null &&
-        typeof nextProps.itemsList[choosedEnhancer1.index] === "undefined"
-      ) {
-        this.setState(
-          state => ({
-            ...state,
-            choosedEnhancer1: null,
-          }),
-          () => {
-            this.calculateEnhancePrice();
-          },
-        );
-      }
-      if (
-        choosedEnhancer2 !== null &&
-        typeof nextProps.itemsList[choosedEnhancer2.index] === "undefined"
-      ) {
-        this.setState(
-          state => ({
-            ...state,
-            choosedEnhancer2: null,
-          }),
-          () => {
-            this.calculateEnhancePrice();
-          },
-        );
-      }
+      setChoosedEnhancer1(null);
     }
-  }
+    if (
+      choosedEnhancer2 !== null &&
+      typeof itemsList[choosedEnhancer2.index] === 'undefined'
+    ) {
+      setChoosedEnhancer2(null);
+    }
+  }, [itemsList]);
 
-  changeTab = newTab => {
-    this.setState(
-      state => ({
-        ...state,
-        currentTab: newTab,
-        showEnhancers: false,
-        choosedItem: null,
-        choosedEnhancer1: null,
-        choosedEnhancer2: null,
-        enhancePrice: 0,
-      }),
-      () => {
-        this.props.doSetState({
-          isItemDescriptionShowed: false,
-          itemDescribed: 0,
-        });
-      },
-    );
+  const resetTabs = () => {
+    setShowEnhancers(false);
+    setChoosedItem(null);
+    setChoosedEnhancer1(null);
+    setChoosedEnhancer2(null);
+    setEnhancePrice(0);
+    doSetState({
+      isItemDescriptionShowed: false,
+      itemDescribed: 0,
+    });
   };
 
-  calculateEnhancePrice = () => {
-    const { merchants, currentMerchant } = this.props;
-    const {
-      currentTab,
-      showEnhancers,
-      choosedItem,
-      choosedEnhancer1,
-      choosedEnhancer2,
-    } = this.state;
+  const changeTab = newTab => {
+    setCurrentTab(newTab);
+    resetTabs();
+  };
 
+  const calculateEnhancePrice = () => {
     let enhancePrice = 0;
     if (showEnhancers) {
       if (choosedItem !== null && choosedItem.isFromMerchant) {
@@ -170,127 +156,59 @@ class PlayerMiddlePanel extends Component {
       }
     }
 
-    if (currentTab === "enhancements") {
+    if (currentTab === 'enhancements') {
       enhancePrice =
         Math.ceil(
           enhancePrice *
-            (0.75 + parseInt(merchants[currentMerchant].level * 0.1, 10)),
+            (0.75 + parseInt(merchantRawLevel * 0.1, 10)),
         ) +
         15 +
-        Math.ceil(3 * parseInt(merchants[currentMerchant].level, 10));
+        Math.ceil(3 * parseInt(merchantRawLevel, 10));
     } else {
       enhancePrice =
         Math.ceil(
           enhancePrice *
-            (1.25 + parseInt(merchants[currentMerchant].level * 0.1, 10)),
+            (1.25 + parseInt(merchantRawLevel * 0.1, 10)),
         ) +
         30 +
-        Math.ceil(7 * parseInt(merchants[currentMerchant].level, 10));
+        Math.ceil(7 * parseInt(merchantRawLevel, 10));
     }
-    this.setState(state => ({
-      ...state,
-      enhancePrice,
-    }));
+    setEnhancePrice(enhancePrice);
   };
 
-  showEnhancers = (isFromMerchant, item, index) => {
-    this.setState(
-      state => ({
-        ...state,
-        showEnhancers: true,
-        choosedItem: { item, index, isFromMerchant },
-      }),
-      () => {
-        this.calculateEnhancePrice();
-      },
-    );
+  const displayEnhancers = (isFromMerchant, item, index) => {
+    setShowEnhancers(true);
+    setChoosedItem({ item, index, isFromMerchant });
   };
 
-  chooseEnhancer1 = (isFromMerchant, item, index) => {
-    const { choosedEnhancer1 } = this.state;
-
+  const chooseEnhancer1 = (isFromMerchant, item, index) => {
     if (choosedEnhancer1 !== null && item.name === choosedEnhancer1.item.name) {
-      this.setState(
-        state => ({
-          ...state,
-          choosedEnhancer1: null,
-        }),
-        () => {
-          this.calculateEnhancePrice();
-        },
-      );
+      setChoosedEnhancer1(null);
     } else {
-      this.setState(
-        state => ({
-          ...state,
-          choosedEnhancer1: { item, index, isFromMerchant },
-          enhancer1Index: index,
-        }),
-        () => {
-          this.calculateEnhancePrice();
-        },
-      );
+      setChoosedEnhancer1({ item, index, isFromMerchant });
     }
   };
 
-  chooseEnhancer2 = (isFromMerchant, item, index) => {
-    const { choosedEnhancer2 } = this.state;
-
+  const chooseEnhancer2 = (isFromMerchant, item, index) => {
     if (choosedEnhancer2 !== null && item.name === choosedEnhancer2.item.name) {
-      this.setState(
-        state => ({
-          ...state,
-          choosedEnhancer2: null,
-        }),
-        () => {
-          this.calculateEnhancePrice();
-        },
-      );
+      setChoosedEnhancer2(null);
     } else {
-      this.setState(
-        state => ({
-          ...state,
-          choosedEnhancer2: { item, index, isFromMerchant },
-          enhancer2Index: index,
-        }),
-        () => {
-          this.calculateEnhancePrice();
-        },
-      );
+      setChoosedEnhancer2({ item, index, isFromMerchant });
     }
   };
 
-  enhanceWeapon = () => {
-    const {
-      currentTab,
-      choosedItem,
-      choosedEnhancer1,
-      choosedEnhancer2,
-      enhancePrice,
-    } = this.state;
-
-    const {
-      currentStory,
-      currentMerchant,
-      merchants,
-      uid,
-      character,
-      itemsList,
-      doSetState,
-      triggerError,
-    } = this.props;
-
+  const enhanceWeapon = () => {
     let newWeapon = choosedItem.item.name ? choosedItem.item.name : choosedItem;
     if (choosedEnhancer1 !== null) {
-      newWeapon += " (" + choosedEnhancer1.item.name + ")";
+      newWeapon += ' (' + choosedEnhancer1.item.name + ')';
     }
     if (choosedEnhancer2 !== null) {
-      newWeapon += " (" + choosedEnhancer2.item.name + ")";
+      newWeapon += ' (' + choosedEnhancer2.item.name + ')';
     }
-    if (currentTab === "enhancements") {
-      newWeapon += " (T)";
+    if (currentTab === 'enhancements') {
+      newWeapon += ' (T)';
     } else {
-      newWeapon += " (P)";
+      newWeapon += ' (P)';
     }
 
     const newItemsTab = character.weapons ? [...character.weapons] : [];
@@ -352,165 +270,85 @@ class PlayerMiddlePanel extends Component {
       toSplice.map(i => character.items.splice(i, 1));
     }
 
-    merchants[currentMerchant].items = { ...newMerchantList };
-
-    doSetState(
-      {
-        itemsList: newMerchantList,
-        merchants,
-      },
-      () => {
-        firebase
-          .database()
-          .ref("stories/" + currentStory + "/characters/" + uid + "/character")
-          .set({
-            ...character,
-            gold: character.gold - enhancePrice,
-            weapons: newItemsTab,
-            items: character.items,
-          })
-          .then(() => {
-            firebase
-              .database()
-              .ref("stories/" + currentStory + "/merchants/" + currentMerchant)
-              .set(merchants[currentMerchant]);
-            this.setState(state => ({
-              ...state,
-              showEnhancers: false,
-              choosedItem: null,
-              choosedEnhancer1: null,
-              choosedEnhancer2: null,
-              enhancePrice: 0,
-            }));
-          })
-          .catch(error => {
-            // Handle Errors here.
-            triggerError(error);
-          });
-      },
-    );
+    enhanceWeapons(enhancePrice, newItemsTab, character.items, newMerchantList);
+    resetTabs();
   };
 
-  render() {
-    const {
-      buyItem,
-      character,
-      currentMerchant,
-      doSetState,
-      isItemDescriptionShowed,
-      isItemShowed,
-      isTownShowed,
-      itemsList,
-      itemToDescribe,
-      merchants,
-    } = this.props;
-
-    const {
-      currentTab,
-      showEnhancers,
-      choosedItem,
-      choosedEnhancer1,
-      choosedEnhancer2,
-      enhancePrice,
-    } = this.state;
-
-    return (
-      <div style={styledPlayerMapContainer}>
-        {isTownShowed ? (
-          <Fragment>
-            <QuestPanel />
-            <MerchantPanel
-              doSetState={doSetState}
+  return (
+    <div style={styledPlayerMapContainer}>
+      {isTownShowed ? (
+        <>
+          <QuestPanel />
+          <MerchantPanel />
+          {isItemShowed ? (
+            <div style={styledPanelContainer}>
+              {merchantEnhancementJob === 'Forgeron' ? (
+                <ShopHeaderBlacksmith
+                  changeTab={changeTab}
+                  currentTab={currentTab}
+                />
+              ) : parseInt(merchantEnhancementLevel, 10) > 0 ? (
+                <ShopHeaderEnhancements
+                  changeTab={changeTab}
+                  currentTab={currentTab}
+                />
+              ) : (
+                <ShopHeaderDefault />
+              )}
+              {currentTab === 'items' && <ItemPanel />}
+              {currentTab === 'enhancements' && (
+                <EnhancementWeaponsPanel
+                  choosedItem={choosedItem}
+                  showEnhancers={displayEnhancers}
+                />
+              )}
+              {currentTab === 'blacksmith' && (
+                <EnhancementWeaponsPanel
+                  choosedItem={choosedItem}
+                  showEnhancers={displayEnhancers}
+                />
+              )}
+            </div>
+          ) : (
+            <div style={styledCadreContainer}>
+              <Cadre />
+            </div>
+          )}
+          {showEnhancers ? (
+            <EnhancersPanel
+              enhanceWeapon={enhanceWeapon}
+              chooseEnhancer1={chooseEnhancer1}
+              chooseEnhancer2={chooseEnhancer2}
+              choosedEnhancer1={choosedEnhancer1}
+              choosedEnhancer2={choosedEnhancer2}
+              enhancePrice={enhancePrice}
+              slots={choosedItem.item.slots ? choosedItem.item.slots : 1}
+              currentTab={currentTab}
             />
-            {isItemShowed ? (
-              <div style={styledPanelContainer}>
-                {merchants[currentMerchant].job === "Forgeron" ? (
-                  <ShopHeaderBlacksmith
-                    changeTab={this.changeTab}
-                    currentTab={currentTab}
-                  />
-                ) : parseInt(merchants[currentMerchant].enhancements, 10) >
-                  0 ? (
-                  <ShopHeaderEnhancements
-                    changeTab={this.changeTab}
-                    currentTab={currentTab}
-                  />
-                ) : (
-                  <ShopHeaderDefault />
-                )}
-                {currentTab === "items" && (
-                  <ItemPanel itemsList={itemsList} doSetState={doSetState} />
-                )}
-                {currentTab === "enhancements" && (
-                  <EnhancementWeaponsPanel
-                    choosedItem={choosedItem}
-                    showEnhancers={this.showEnhancers}
-                    itemsList={itemsList}
-                  />
-                )}
-                {currentTab === "blacksmith" && (
-                  <EnhancementWeaponsPanel
-                    choosedItem={choosedItem}
-                    showEnhancers={this.showEnhancers}
-                    itemsList={itemsList}
-                  />
-                )}
-              </div>
-            ) : (
-              <div style={styledCadreContainer}>
-                <Cadre />
-              </div>
-            )}
-            {showEnhancers ? (
-              <EnhancersPanel
-                itemsList={itemsList}
-                enhanceWeapon={this.enhanceWeapon}
-                chooseEnhancer1={this.chooseEnhancer1}
-                chooseEnhancer2={this.chooseEnhancer2}
-                choosedEnhancer1={choosedEnhancer1}
-                choosedEnhancer2={choosedEnhancer2}
-                enhancePrice={enhancePrice}
-                slots={choosedItem.item.slots ? choosedItem.item.slots : 1}
-                currentTab={currentTab}
-              />
-            ) : isItemDescriptionShowed ? (
-              <ItemDescriptionPanel
-                {...itemToDescribe}
-                buyItem={() => buyItem(itemToDescribe, itemToDescribe.price)}
-                gold={character.gold}
-                isHidden={character.education < itemToDescribe.rarity * 9}
-              />
-            ) : (
-              <div style={styledCadreSecondContainer}>
-                <Cadre />
-              </div>
-            )}
-          </Fragment>
-        ) : (
-          <TempImage />
-        )}
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-  uid: store.userInfos.uid,
-  character: store.character,
-  currentMerchant: store.merchants.currentMerchant,
-  merchants: store.merchants.merchantList,
-  isTownShowed: store.mapInfos.isTownShowed,
-});
+          ) : isItemDescriptionShowed ? (
+            <ItemDescriptionPanel
+              {...itemToDescribe}
+              buyItem={() => buyItem(itemToDescribe, itemToDescribe.price)}
+            />
+          ) : (
+            <div style={styledCadreSecondContainer}>
+              <Cadre />
+            </div>
+          )}
+        </>
+      ) : (
+        <TempImage />
+      )}
+    </div>
+  );
+};
 
 PlayerMiddlePanel.propTypes = {
   isItemShowed: PropTypes.bool.isRequired,
-  itemsList: PropTypes.array.isRequired,
   isItemDescriptionShowed: PropTypes.bool.isRequired,
   itemToDescribe: PropTypes.object.isRequired,
   buyItem: PropTypes.func.isRequired,
   doSetState: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(PlayerMiddlePanel);
+export default PlayerMiddlePanel;

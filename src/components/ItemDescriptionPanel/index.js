@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { widthLeft, heightLeft } from '../Utils/StyleConstants';
 import ButtonLarge from '../Utils/ButtonLarge';
 import Cadre from '../Utils/Cadre';
+import { useSelector } from 'react-redux';
 
 const styledMapSide = {
   width: `${widthLeft / 2 - 20}px`,
@@ -23,11 +24,17 @@ const ItemDescriptionPanel = ({
   quantity,
   description,
   effect,
-  gold,
   buyItem,
-  isHidden,
+  rarity,
   noBuy,
 }) => {
+  const { characterGold, characterEducation } = useSelector(store => ({
+    characterGold: store.character.gold,
+    characterEducation: store.character.education,
+  }));
+
+  const isHidden = characterEducation < rarity * 9;
+
   return (
     <div style={styledMapSide}>
       <Cadre />
@@ -51,9 +58,9 @@ const ItemDescriptionPanel = ({
         </div>
         {!noBuy && (
           <ButtonLarge
-            className={`item-description-price ${gold < price &&
+            className={`item-description-price ${characterGold < price &&
               'item-description-cant-buy'}`}
-            onClick={gold >= price && buyItem}
+            onClick={characterGold >= price && buyItem}
           >
             Buy ({price}
             g)
@@ -79,9 +86,8 @@ ItemDescriptionPanel.propTypes = {
   effect: PropTypes.string,
   quantity: PropTypes.number.isRequired,
   price: PropTypes.number.isRequired,
-  gold: PropTypes.number.isRequired,
   buyItem: PropTypes.func,
-  isHidden: PropTypes.bool.isRequired,
+  rarity: PropTypes.number.isRequired,
   noBuy: PropTypes.bool,
 };
 

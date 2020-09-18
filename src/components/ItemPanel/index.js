@@ -16,46 +16,11 @@ const styledMapSide = {
   paddingHorizontal: 10,
 };
 
-const ItemPanel = ({ merchants, currentMerchant, doSetState, itemsList }) => {
-  const { currentStory } = useSelector(store => ({
-    currentStory: store.appState.currentStory,
-  }));
-
-  const showItemDescription = i => {
-    doSetState(
-      {
-        isItemDescriptionShowed: true,
-        itemToDescribe: merchants[currentMerchant].items[i],
-        itemDescribed: i,
-      },
-      () => {
-        // Mandatory ?
-        firebase
-          .database()
-          .ref(
-            'stories/' +
-              currentStory +
-              '/merchants/' +
-              currentMerchant +
-              '/items/' +
-              i,
-          )
-          .on('value', snapshot => {
-            this.props.doSetState({
-              itemToDescribe: snapshot.val(),
-            });
-          });
-      },
-    );
-  };
-
+const ItemPanel = () => {
   return (
     <div style={styledMapSide}>
       <Cadre />
-      <ItemList
-        itemsList={itemsList}
-        showItemDescription={showItemDescription}
-      />
+      <ItemList />
     </div>
   );
 };

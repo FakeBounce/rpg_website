@@ -33,13 +33,9 @@ const TownsHistoryMerchantColumn = ({
 }) => {
   const {
     currentStory,
-    characterEducation,
-    characterGold,
     merchants,
   } = useSelector(store => ({
     currentStory: store.appState.currentStory,
-    characterGold: store.character.gold,
-    characterEducation: store.character.education,
     merchants: store.merchants.merchantList,
   }));
 
@@ -76,8 +72,6 @@ const TownsHistoryMerchantColumn = ({
           <ItemDescriptionPanel
             {...currentItem}
             noBuy
-            gold={characterGold}
-            isHidden={characterEducation < currentItem.rarity * 9}
           />
         </div>
       )}
