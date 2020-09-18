@@ -1,72 +1,72 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-import { widthRightPanelLeft } from "../Utils/StyleConstants";
-import ButtonLarge from "../Utils/ButtonLarge";
-import firebase from "firebase";
-import { connect } from "react-redux";
+import { widthRightPanelLeft } from '../Utils/StyleConstants';
+import ButtonLarge from '../Utils/ButtonLarge';
+import firebase from 'firebase';
 
-const styles = {
-  tabPanelItem: {
-    width: `${widthRightPanelLeft - 6}px`,
-    paddingHorizontal: 5,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-    borderBottom: "1px solid black",
-  },
-  itemName: {
-    width: `${widthRightPanelLeft - 120}px`,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-  },
-  itemQuantity: {
-    width: 30,
-    height: 26,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-    padding: 0,
-    margin: 0,
-    textAlign: "center",
-  },
-  itemButton: {
-    width: 50,
-    height: 30,
-    position: "relative",
-    float: "right",
-    display: "inline-block",
-    padding: 0,
-    margin: 0,
-    textAlign: "center",
-  },
-  discoverButton: {
-    width: 90,
-    height: 16,
-    padding: 0,
-    position: "absolute",
-    bottom: 0,
-    textAlign: "center",
-    left: 80,
-  },
+const styledTabPanelItem = {
+  width: `${widthRightPanelLeft - 6}px`,
+  paddingHorizontal: 5,
+  position: 'relative',
+  float: 'left',
+  display: 'inline-block',
+  borderBottom: '1px solid black',
 };
 
-class CharacterTabPanelItem extends Component {
-  state = {
-    itemValue: "",
+const styledItemName = {
+  width: `${widthRightPanelLeft - 120}px`,
+  position: 'relative',
+  float: 'left',
+  display: 'inline-block',
+};
+
+const styledItemQuantity = {
+  width: 30,
+  height: 26,
+  position: 'relative',
+  float: 'left',
+  display: 'inline-block',
+  padding: 0,
+  margin: 0,
+  textAlign: 'center',
+};
+const styledItemButton = {
+  width: 50,
+  height: 30,
+  position: 'relative',
+  float: 'right',
+  display: 'inline-block',
+  padding: 0,
+  margin: 0,
+  textAlign: 'center',
+};
+
+const styledDiscoverButton = {
+  width: 90,
+  height: 16,
+  padding: 0,
+  position: 'absolute',
+  bottom: 0,
+  textAlign: 'center',
+  left: 80,
+};
+
+const CharacterTabPanelItem = ({ onItemUse }) => {
+  const [itemValue, setItemValue] = useState('');
+
+  const { currentStory, isGameMaster, character } = useSelector(store => ({
+    currentStory: store.appState.currentStory,
+    isGameMaster: store.appState.isGameMaster,
+    character: store.character,
+  }));
+
+  const onChangeItem = value => {
+    setItemValue(value);
   };
 
-  onChangeItem = value => {
-    this.setState(state => ({
-      ...state,
-      itemValue: value,
-    }));
-  };
-
-  onValidateItem = () => {
-    const { itemValue } = this.state;
-    const { character, currentStory } = this.props;
+  const onValidateItem = () => {
     let obj = [];
     if (character.items) obj = [...character.items];
     const newObject = {
@@ -76,110 +76,99 @@ class CharacterTabPanelItem extends Component {
     };
     obj.push(newObject);
 
+    //@TODO saga
     firebase
       .database()
       .ref(
-        "stories/" +
+        'stories/' +
           currentStory +
-          "/characters/" +
+          '/characters/' +
           character.userUid +
-          "/character/items",
+          '/character/items',
       )
       .set(obj)
       .catch(error => {
         // Handle Errors here.
-        console.log("Error", error);
+        console.log('Error', error);
       });
   };
 
-  discoverItem = (index, isDiscovered = false) => () => {
-    const { character } = this.props;
+  const discoverItem = (index, isDiscovered = false) => () => {
     const obj = [...character.items];
     obj[index].isDiscovered = isDiscovered;
 
     firebase
       .database()
       .ref(
-        "stories/" +
+        'stories/' +
           0 +
-          "/characters/" +
+          '/characters/' +
           character.userUid +
-          "/character/items",
+          '/character/items',
       )
       .set(obj)
       .catch(error => {
         // Handle Errors here.
-        console.log("Error", error);
+        console.log('Error', error);
       });
   };
 
-  render() {
-    const { character, onItemUse, isGameMaster } = this.props;
-    const { itemValue } = this.state;
-
-    return (
-      <div>
-        {character.items &&
-          character.items.map((item, index) => {
-            return (
-              <div key={`${item.name}-${index}`} style={styles.tabPanelItem}>
-                <input
-                  type="number"
-                  value={item.quantity}
-                  style={styles.itemQuantity}
-                  onChange={e => {
-                    onItemUse(index, e.target.value);
-                  }}
-                />
-                <div style={styles.itemName}>
-                  {character.education < item.rarity * 9 && !item.isDiscovered
-                    ? "???"
-                    : item.name}
-                </div>
-                <ButtonLarge
-                  style={styles.itemButton}
-                  onClick={() => onItemUse(index, item.quantity - 1)}
-                >
-                  Use ({item.quantity} left)
-                </ButtonLarge>
-                {isGameMaster && (
-                  <ButtonLarge
-                    style={styles.discoverButton}
-                    onClick={this.discoverItem(index, !item.isDiscovered)}
-                  >
-                    {item.isDiscovered ? "Uncover" : "Discover"}
-                  </ButtonLarge>
-                )}
+  return (
+    <div>
+      {character.items &&
+        character.items.map((item, index) => {
+          return (
+            <div key={`${item.name}-${index}`} style={styledTabPanelItem}>
+              <input
+                type='number'
+                value={item.quantity}
+                style={styledItemQuantity}
+                onChange={e => {
+                  onItemUse(index, e.target.value);
+                }}
+              />
+              <div style={styledItemName}>
+                {character.education < item.rarity * 9 && !item.isDiscovered
+                  ? '???'
+                  : item.name}
               </div>
-            );
-          })}
+              <ButtonLarge
+                style={styledItemButton}
+                onClick={() => onItemUse(index, item.quantity - 1)}
+              >
+                Use ({item.quantity} left)
+              </ButtonLarge>
+              {isGameMaster && (
+                <ButtonLarge
+                  style={styledDiscoverButton}
+                  onClick={discoverItem(index, !item.isDiscovered)}
+                >
+                  {item.isDiscovered ? 'Uncover' : 'Discover'}
+                </ButtonLarge>
+              )}
+            </div>
+          );
+        })}
 
-        <div style={styles.tabPanelItem}>
-          <input
-            type="text"
-            placeholder={`Item + description if needed`}
-            value={itemValue}
-            onChange={e => {
-              this.onChangeItem(e.target.value);
-            }}
-          />
-          <ButtonLarge style={styles.itemButton} onClick={this.onValidateItem}>
-            Add Item
-          </ButtonLarge>
-        </div>
+      <div style={styledTabPanelItem}>
+        <input
+          type='text'
+          placeholder={`Item + description if needed`}
+          value={itemValue}
+          onChange={e => {
+            onChangeItem(e.target.value);
+          }}
+        />
+        <ButtonLarge style={styledItemButton} onClick={onValidateItem}>
+          Add Item
+        </ButtonLarge>
       </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-  isGameMaster: store.appState.isGameMaster,
-  character: store.character,
-});
+    </div>
+  );
+};
 
 CharacterTabPanelItem.propTypes = {
   onItemUse: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(CharacterTabPanelItem);
+export default CharacterTabPanelItem;

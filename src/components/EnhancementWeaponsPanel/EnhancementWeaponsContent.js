@@ -1,61 +1,49 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { heightLeft, widthLeft } from "../Utils/StyleConstants";
-import EnhancementWeaponsMerchantList from "./EnhancementWeaponsMerchantList";
-import EnhancementWeaponsCharacterWeaponList from "./EnhancementWeaponsCharacterWeaponList";
-import { connect } from "react-redux";
+import { heightLeft, widthLeft } from '../Utils/StyleConstants';
+import EnhancementWeaponsMerchantList from './EnhancementWeaponsMerchantList';
+import EnhancementWeaponsCharacterWeaponList from './EnhancementWeaponsCharacterWeaponList';
+import { currentMerchantWeaponLevelSelector } from '../../selectors';
+import { useSelector } from 'react-redux';
 // Not supported now
 // import EnhancementWeaponsCharacterItemsList from './EnhancementWeaponsCharacterItemsList';
 
 const styledEnhancementWeaponsList = {
-  display: "inline-block",
-  float: "left",
-  position: "absolute",
+  display: 'inline-block',
+  float: 'left',
+  position: 'absolute',
   top: 40,
   left: 26,
-  overflowY: "auto",
+  overflowY: 'auto',
   height: `${heightLeft / 2 - 60}px`,
   width: `${widthLeft / 2 - 52}px`,
 };
 
-class EnhancementWeaponsContent extends Component {
-  render() {
-    const {
-      merchants,
-      currentMerchant,
-      choosedItem,
-      showEnhancers,
-      itemsList,
-    } = this.props;
+const EnhancementWeaponsContent = ({ choosedItem, showEnhancers }) => {
+  const { merchantWeaponLevel } = useSelector(store => ({
+    merchantWeaponLevel: currentMerchantWeaponLevelSelector(store),
+  }));
 
-    return (
-      <div style={styledEnhancementWeaponsList} className="scrollbar">
-        {parseInt(merchants[currentMerchant].weapons, 10) > 0 && (
-          <EnhancementWeaponsMerchantList
-            choosedItem={choosedItem}
-            showEnhancers={showEnhancers}
-            itemsList={itemsList}
-          />
-        )}
-        <EnhancementWeaponsCharacterWeaponList
+  return (
+    <div style={styledEnhancementWeaponsList} className='scrollbar'>
+      {parseInt(merchantWeaponLevel, 10) > 0 && (
+        <EnhancementWeaponsMerchantList
           choosedItem={choosedItem}
           showEnhancers={showEnhancers}
         />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = store => ({
-  merchants: store.merchants.merchantList,
-  currentMerchant: store.merchants.currentMerchant,
-});
+      )}
+      <EnhancementWeaponsCharacterWeaponList
+        choosedItem={choosedItem}
+        showEnhancers={showEnhancers}
+      />
+    </div>
+  );
+};
 
 EnhancementWeaponsContent.propTypes = {
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
-  itemsList: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps)(EnhancementWeaponsContent);
+export default EnhancementWeaponsContent;

@@ -1,4 +1,4 @@
-import * as actionsTypesMerchants from "../actionsTypes/actionsTypesMerchants";
+import * as actionsTypesMerchants from '../actionsTypes/actionsTypesMerchants';
 
 export const setMerchantList = payload => {
   return {

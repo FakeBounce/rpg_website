@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Quest from './Quest';
 import { widthLeft, heightLeft } from '../Utils/StyleConstants';
 import QuestFullscreen from './QuestFullscreen';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  SHOW_QUEST,
-  HIDE_QUEST,
-} from '../../redux/actionsTypes/actionsTypesMapInfos';
 
 const styledMapSide = {
   width: `${widthLeft / 2}px`,
@@ -18,9 +14,6 @@ const styledMapSide = {
 };
 
 const QuestPanel = () => {
-  // const [positionList, setPositionList] = useState([]);
-  const dispatch = useDispatch();
-
   const { currentQuest, isQuestShowed, quests, questsList } = useSelector(
     store => ({
       currentQuest: store.mapInfos.currentQuest,
@@ -29,19 +22,6 @@ const QuestPanel = () => {
       questsList: store.mapInfos.townInfos.questsList,
     }),
   );
-
-  const dispatchShowQuest = payload => {
-    dispatch({
-      type: SHOW_QUEST,
-      payload,
-    });
-  };
-
-  const dispatchHideQuest = () => {
-    dispatch({
-      type: HIDE_QUEST,
-    });
-  };
 
   // For GM quest positionning
   // const getPosition = () => {
@@ -59,14 +39,6 @@ const QuestPanel = () => {
   //   return getPosition();
   // };
 
-  const showQuest = index => {
-    dispatchShowQuest(index);
-  };
-
-  const hideQuest = () => {
-    dispatchHideQuest();
-  };
-
   if (isQuestShowed) {
     return (
       <div
@@ -76,7 +48,7 @@ const QuestPanel = () => {
           backgroundSize: 'cover',
         }}
       >
-        <QuestFullscreen {...quests[currentQuest]} hideQuest={hideQuest} />
+        <QuestFullscreen {...quests[currentQuest]} />
       </div>
     );
   }
@@ -95,7 +67,6 @@ const QuestPanel = () => {
               key={`merchant-${quests[q].name} -${i}`}
               {...quests[q]}
               index={q}
-              showQuest={showQuest}
             />
           );
         }

@@ -157,6 +157,8 @@ const BestiaryForm = ({ beast }) => {
       });
       return null;
     });
+
+    // @Todo : sagas
     firebase
       .database()
       .ref("stories/" + currentStory + "/bestiary")

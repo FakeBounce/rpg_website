@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { heightLeft, widthLeft } from '../Utils/StyleConstants';
 import Cadre from '../Utils/Cadre';
 import EnhancementWeaponsContent from './EnhancementWeaponsContent';
-import { colors } from "../Utils/Constants";
+import { colors } from '../Utils/Constants';
 
 const styledEnhancementWeaponsContainer = {
   width: `${widthLeft / 2}px`,
@@ -17,31 +17,21 @@ const styledEnhancementWeaponsContainer = {
   color: colors.text,
 };
 
-class EnhancementWeaponsPanel extends Component {
-  render() {
-    const {
-      itemsList,
-      choosedItem,
-      showEnhancers,
-    } = this.props;
-
-    return (
-      <div style={styledEnhancementWeaponsContainer}>
-        <Cadre />
-        <EnhancementWeaponsContent
-          showEnhancers={showEnhancers}
-          choosedItem={choosedItem}
-          itemsList={itemsList}
-        />
-      </div>
-    );
-  }
-}
+const EnhancementWeaponsPanel = ({ choosedItem, showEnhancers }) => {
+  return (
+    <div style={styledEnhancementWeaponsContainer}>
+      <Cadre />
+      <EnhancementWeaponsContent
+        showEnhancers={showEnhancers}
+        choosedItem={choosedItem}
+      />
+    </div>
+  );
+};
 
 EnhancementWeaponsPanel.propTypes = {
   choosedItem: PropTypes.object.isRequired,
   showEnhancers: PropTypes.func.isRequired,
-  itemsList: PropTypes.object.isRequired,
 };
 
 export default EnhancementWeaponsPanel;

@@ -1,9 +1,16 @@
-import { SET_MERCHANT_LIST, SET_CURRENT_MERCHANT } from "../actionsTypes/actionsTypesMerchants";
-import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
+import {
+  SET_MERCHANT_LIST,
+  SET_CURRENT_MERCHANT,
+  SET_IS_ITEM_SHOWED,
+  SET_CURRENT_MERCHANT_ITEM
+} from '../actionsTypes/actionsTypesMerchants';
+import { RESET_APP } from '../actionsTypes/actionsTypesAppState';
 
 const initialState = {
   merchantList: [],
-  currentMerchant: -1
+  currentMerchant: -1,
+  isItemShowed: false,
+  currentItem: -1,
 };
 
 const merchants = (state = initialState, action) => {
@@ -15,6 +22,18 @@ const merchants = (state = initialState, action) => {
       };
     }
     case SET_CURRENT_MERCHANT: {
+      return {
+        ...state,
+        currentMerchant: action.payload,
+      };
+    }
+    case SET_CURRENT_MERCHANT_ITEM: {
+      return {
+        ...state,
+        currentItem: action.payload,
+      };
+    }
+    case SET_IS_ITEM_SHOWED: {
       return {
         ...state,
         currentMerchant: action.payload,

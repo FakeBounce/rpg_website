@@ -1,9 +1,8 @@
 import React from 'react';
-
 import Item from './Item';
-import PropTypes from 'prop-types';
 import { heightLeft, widthLeft } from '../Utils/StyleConstants';
 import { useSelector } from 'react-redux';
+import { currentItemsListSelector } from "../../selectors";
 
 const styledItemContainer = {
   display: 'inline-block',
@@ -16,9 +15,10 @@ const styledItemContainer = {
   width: `${widthLeft / 2 - 52}px`,
 };
 
-const ItemList = ({ itemsList, showItemDescription }) => {
-  const { characterEducation } = useSelector(store => ({
+const ItemList = () => {
+  const { characterEducation, itemsList } = useSelector(store => ({
     characterEducation: store.character.education,
+    itemsList: currentItemsListSelector(store),
   }));
 
   return (
@@ -31,17 +31,11 @@ const ItemList = ({ itemsList, showItemDescription }) => {
             {...itemsList[key]}
             index={key}
             isHidden={isHidden}
-            showItemDescription={showItemDescription}
           />
         );
       })}
     </div>
   );
-};
-
-ItemList.propTypes = {
-  itemsList: PropTypes.object.isRequired,
-  showItemDescription: PropTypes.func.isRequired,
 };
 
 export default ItemList;

@@ -1,14 +1,10 @@
 import React from 'react';
 import './QuestFullscreen.css';
 import PropTypes from 'prop-types';
+import useMapInfos from '../../hooks/useMapInfos';
 
-const QuestFullscreen = ({
-  name,
-  description,
-  reward,
-  dangerosity,
-  hideQuest,
-}) => {
+const QuestFullscreen = ({ name, description, reward, dangerosity }) => {
+  const { hideQuest } = useMapInfos();
   return (
     <div className='quest-fullscreen' onClick={hideQuest}>
       <img
@@ -33,7 +29,6 @@ QuestFullscreen.propTypes = {
   icon: PropTypes.string.isRequired,
   dangerosity: PropTypes.number.isRequired,
   reward: PropTypes.number.isRequired,
-  hideQuest: PropTypes.func.isRequired,
 };
 
 export default QuestFullscreen;

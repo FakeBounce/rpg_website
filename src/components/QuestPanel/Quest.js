@@ -2,8 +2,11 @@ import React from 'react';
 import './Quest.css';
 import PropTypes from 'prop-types';
 import { questsPosition, questsRandom } from '../Utils/StyleConstants';
+import useMapInfos from '../../hooks/useMapInfos';
 
-const Quest = ({ position, index, icon, showQuest }) => {
+const Quest = ({ position, index, icon }) => {
+  const { showQuest } = useMapInfos();
+
   const getRandomStyle = () => {
     let rdm = '';
     this.props.randomStyle.map(value => {
