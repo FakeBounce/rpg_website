@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { cursorPointer } from '../Utils/StyleConstants';
 
@@ -19,14 +19,14 @@ const styledItemIcon = {
   position: 'relative',
 };
 
-const EventItem = ({ itemEvent, onChange, i, ikey }) => {
+const EventItem = ({ itemEvent, setItemEvent, i, ikey }) => {
   return (
     <div
       key={`event-item-${i.name}`}
       className={`${itemEvent.name === i.name ? 'selected' : ''}`}
       style={styledItem}
       onClick={() =>
-        onChange('itemEvent', {
+        setItemEvent({
           ...i,
           itemType: ikey,
         })
@@ -44,7 +44,7 @@ const EventItem = ({ itemEvent, onChange, i, ikey }) => {
 
 EventItem.propTypes = {
   itemEvent: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired,
+  setItemEvent: PropTypes.func.isRequired,
   i: PropTypes.object.isRequired,
   ikey: PropTypes.string.isRequired,
 };

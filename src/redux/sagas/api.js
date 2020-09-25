@@ -1,18 +1,25 @@
-import firebase from "firebase";
-import { eventChannel } from "redux-saga";
+import firebase from 'firebase';
+import { eventChannel } from 'redux-saga';
 
 export const firebaseDbRef = path => {
   return firebase.database().ref(path);
 };
 
-export const firebaseDbSet = (path = "", toSet = {}) => {
+export const firebaseDbSet = (path = '', toSet = {}) => {
   return firebase
     .database()
     .ref(path)
     .set(toSet);
 };
 
-export const firebaseDbOnce = (path = "", once = "value") => {
+export const firebaseDbNewKey = (path = '') => {
+  return firebase
+    .database()
+    .ref(path)
+    .push().key;
+};
+
+export const firebaseDbOnce = (path = '', once = 'value') => {
   return firebase
     .database()
     .ref(path)
@@ -21,25 +28,27 @@ export const firebaseDbOnce = (path = "", once = "value") => {
       return snapshot.val();
     })
     .catch(error => {
-      console.log("error", error);
+      console.log('error', error);
       return error;
       // this.triggerError(error);
     });
 };
 
-export function onValueChannel(path = "") {
+export function onValueChannel(path = '') {
   try {
     const ref = firebase.database().ref(path);
 
     return eventChannel(emit => {
-      const callback = ref.on("value", snapshot => {
-        emit(snapshot.val());
+      const callback = ref.on('value', snapshot => {
+        if (snapshot.val()) {
+          emit(snapshot.val());
+        }
       });
 
       // unsubscribe function
-      return () => ref.off("value", callback);
+      return () => ref.off('value', callback);
     });
   } catch (error) {
-    console.log("An error occured:", error);
+    console.log('An error occured:', error);
   }
 }

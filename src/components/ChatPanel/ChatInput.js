@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { widthLeft } from "../Utils/StyleConstants";
-import { useChatInputContext } from "../../contexts/chatInputContext";
+import { useChatContext } from "../../contexts/chatContext";
 
 const styledChatInput = {
   width: widthLeft / 2 - 51,
@@ -11,7 +11,7 @@ const styledChatInput = {
 
 const ChatInput = ({ handleKeyPress }) => {
   let chatInputRef = useRef(null);
-  const { chatInput, setChatInput } = useChatInputContext();
+  const { chatInput, setChatInput } = useChatContext();
 
   useEffect(() => {
     if (chatInput.trim() !== "" && chatInputRef !== null) {

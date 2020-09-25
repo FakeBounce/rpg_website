@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import { ToastProvider } from './contexts/toastContext';
-import { ChatInputProvider } from './contexts/chatInputContext';
-import { ActiveChatTabProvider } from './contexts/activeChatTabContext';
+import { ChatProvider } from './contexts/chatContext';
+import { EventProvider } from './contexts/eventContext';
 
 import IsNotAuth from './components/Authentication/IsNotAuth';
 import HasNoNickname from './components/NicknameSelection/HasNoNickname';
@@ -504,47 +504,47 @@ class App extends Component {
           cursor: `url('/common/cursor.png'), auto`,
         }}
       >
-          <ToastProvider>
-            <ChatInputProvider>
-              <ActiveChatTabProvider>
-                <>
-                  {this.correctRoute()}
-                  <SoundPlayer />
-                  <ErrorPrinter />
-                  {isAuth && (
-                    <Icon
-                      style={{
-                        position: 'absolute',
-                        top: 10,
-                        right: 20,
-                        cursor: cursorPointer,
-                      }}
-                      onClick={this.signOut}
-                      circular
-                      inverted
-                      name='shutdown'
-                      color='red'
-                    />
-                  )}
-                  {isAuth && (
-                    <Icon
-                      style={{
-                        position: 'absolute',
-                        top: 45,
-                        right: 20,
-                        cursor: cursorPointer,
-                      }}
-                      onClick={this.toggleMusic}
-                      circular
-                      name={!musicMute ? 'volume up' : 'volume off'}
-                      inverted
-                      color={'black'}
-                    />
-                  )}
-                </>
-              </ActiveChatTabProvider>
-            </ChatInputProvider>
-          </ToastProvider>
+        <ToastProvider>
+          <ChatProvider>
+            <EventProvider>
+              <>
+                {this.correctRoute()}
+                <SoundPlayer />
+                <ErrorPrinter />
+                {isAuth && (
+                  <Icon
+                    style={{
+                      position: 'absolute',
+                      top: 10,
+                      right: 20,
+                      cursor: cursorPointer,
+                    }}
+                    onClick={this.signOut}
+                    circular
+                    inverted
+                    name='shutdown'
+                    color='red'
+                  />
+                )}
+                {isAuth && (
+                  <Icon
+                    style={{
+                      position: 'absolute',
+                      top: 45,
+                      right: 20,
+                      cursor: cursorPointer,
+                    }}
+                    onClick={this.toggleMusic}
+                    circular
+                    name={!musicMute ? 'volume up' : 'volume off'}
+                    inverted
+                    color={'black'}
+                  />
+                )}
+              </>
+            </EventProvider>
+          </ChatProvider>
+        </ToastProvider>
       </div>
     );
   }

@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { Menu } from 'semantic-ui-react';
 import useChat from '../../hooks/useChat';
 import ChatWhisperTab from './ChatWhisperTab';
+import { useChatContext } from '../../contexts/chatContext';
 
 const styledChatMenuItem = {
   maxWidth: 80,
@@ -19,7 +20,8 @@ const styledChatMenuItem = {
 };
 
 const ChatTabsMenu = () => {
-  const { activeChatTab, changeActiveChatTab, whispersTab } = useChat();
+  const { changeActiveChatTab } = useChat();
+  const { activeChatTab, whispersTab } = useChatContext();
   const { isGameMaster } = useSelector(store => ({
     isGameMaster: store.appState.isGameMaster,
   }));

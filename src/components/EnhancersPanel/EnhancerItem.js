@@ -1,39 +1,36 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../ItemPanel/Item.css';
 import PropTypes from 'prop-types';
 
-class EnhancerItem extends Component {
-  render() {
-    const {
-      index,
-      icon,
-      iconPath,
-      itemType,
-      name,
-      itemAction,
-      isHidden,
-      isSelected,
-      slot,
-      quantity,
-    } = this.props;
-    return (
-      <div
-        className={`item ${isSelected ? 'selected' : ''}`}
-        onClick={() => itemAction(index)}
-      >
-        <img
-          src={iconPath || './' + itemType + '/' + icon}
-          alt={' '}
-          className="item-icon"
-        />
-        <div className="item-text">
-          {isHidden ? '??? ' : name} (Slot {slot})
-          {quantity > 0 ? `(${quantity} left)` : ''}
-        </div>
+const EnhancerItem = ({
+  index,
+  icon,
+  iconPath,
+  itemType,
+  name,
+  itemAction,
+  isHidden,
+  isSelected,
+  slot,
+  quantity,
+}) => {
+  return (
+    <div
+      className={`item ${isSelected ? 'selected' : ''}`}
+      onClick={() => itemAction(index)}
+    >
+      <img
+        src={iconPath || './' + itemType + '/' + icon}
+        alt={' '}
+        className='item-icon'
+      />
+      <div className='item-text'>
+        {isHidden ? '??? ' : name} (Slot {slot})
+        {quantity > 0 ? `(${quantity} left)` : ''}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 EnhancerItem.defaultProps = {
   type: '',

@@ -11,7 +11,7 @@ import CharacterPanel from "../components/CharacterPanel";
 import ExchangePanel from "../components/ExchangePanel";
 import SongPanel from "../components/SongPanel";
 import { connect } from "react-redux";
-import { useChatInputContext } from "../contexts/chatInputContext";
+import { useChatContext } from "../contexts/chatContext";
 import { callListenOtherCharacter } from "../redux/actions/actionsCharacter";
 
 const styles = {
@@ -34,7 +34,7 @@ const RightPanel = props => {
     currentExchangeCharacter: null,
     isOnChar: true,
   });
-  const { setChatInput } = useChatInputContext();
+  const { setChatInput } = useChatContext();
 
   const chatWithTeamMember = receiverPseudo => {
     if (receiverPseudo === "GM") {

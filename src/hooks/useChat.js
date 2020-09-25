@@ -1,17 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import firebase from 'firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { CALL_PRINT_ERROR } from '../redux/actionsTypes/actionsTypesAppState';
-import { useChatInputContext } from '../contexts/chatInputContext';
-import { useActiveChatTabContext } from '../contexts/activeChatTabContext';
+import { useChatContext } from '../contexts/chatContext';
 
 const useChat = () => {
-  const [gmCommands, setGmCommands] = useState(false);
-  const [lastKey, setLastKey] = useState('');
-  const [whispersTab, setWhispersTab] = useState({});
-  const [bonus, setBonus] = useState(0);
-  const { chatInput, setChatInput } = useChatInputContext();
-  const { activeChatTab, setActiveChatTab } = useActiveChatTabContext();
+  const {
+    chatInput,
+    setChatInput,
+    activeChatTab,
+    setActiveChatTab,
+    gmCommands,
+    setGmCommands,
+    lastKey,
+    setLastKey,
+    whispersTab,
+    setWhispersTab,
+    bonus,
+    setBonus,
+  } = useChatContext();
+
   const dispatch = useDispatch();
   const {
     currentStory,
@@ -679,21 +687,15 @@ const useChat = () => {
   };
 
   return {
-    activeChatTab,
-    bonus,
     changeActiveChatTab,
     changeActiveWhisperTab,
     closeWhisperTab,
-    gmCommands,
     handleKeyPress,
     launchCommand,
     onChangeDice,
     onDrop,
-    setBonus,
-    setGmCommands,
     talkInChat,
     toggleGMCommands,
-    whispersTab,
   };
 };
 

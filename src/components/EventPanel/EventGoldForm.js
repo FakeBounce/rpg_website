@@ -1,7 +1,6 @@
 import React from 'react';
-
-import PropTypes from 'prop-types';
 import { Input } from 'semantic-ui-react';
+import { useEventContext } from '../../contexts/eventContext';
 
 const styledEventGoldFormContainer = {
   marginTop: 10,
@@ -13,7 +12,8 @@ const styledEventGoldFormContainer = {
   justifyContent: 'space-between',
 };
 
-const EventGoldForm = ({ goldEvent, descriptionEvent, onChange }) => {
+const EventGoldForm = () => {
+  const { goldEvent, setGoldEvent, descriptionEvent, setDescriptionEvent } = useEventContext();
   return (
     <div style={styledEventGoldFormContainer}>
       <Input
@@ -22,7 +22,7 @@ const EventGoldForm = ({ goldEvent, descriptionEvent, onChange }) => {
         name='goldEvent'
         value={goldEvent}
         onChange={e => {
-          onChange(e.target.name, parseInt(e.target.value, 10));
+          setGoldEvent(parseInt(e.target.value, 10));
         }}
         style={{ maxWidth: '40%' }}
       />
@@ -32,18 +32,12 @@ const EventGoldForm = ({ goldEvent, descriptionEvent, onChange }) => {
         name='descriptionEvent'
         value={descriptionEvent}
         onChange={e => {
-          onChange(e.target.name, e.target.value, 10);
+          setDescriptionEvent(e.target.value);
         }}
         style={{ maxWidth: '50%' }}
       />
     </div>
   );
-};
-
-EventGoldForm.propTypes = {
-  goldEvent: PropTypes.number.isRequired,
-  descriptionEvent: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
 };
 
 export default EventGoldForm;
