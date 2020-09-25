@@ -5,8 +5,8 @@ import { colors } from "../Utils/Constants";
 import ChatBar from "./ChatBar";
 import ChatGMButton from "./ChatGMButton";
 import ChatHistory from "./ChatHistory";
-import useChat from "../../hooks/useChat";
 import ChatTabsMenu from "./ChatTabsMenu";
+import { useChatContext } from "../../contexts/chatContext";
 import "./ChatPanel.css";
 
 const styledChatPanel = {
@@ -20,7 +20,7 @@ const styledChatPanel = {
 };
 
 const ChatPanel = () => {
-  const { activeChatTab } = useChat();
+  const { activeChatTab } = useChatContext();
   return (
     <div style={styledChatPanel}>
       <ChatTabsMenu />

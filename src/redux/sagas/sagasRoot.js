@@ -29,6 +29,7 @@ function* rootSaga() {
   // Events
   yield spawn(sagasEvents.watchCallListenCurrentEvent);
   yield spawn(sagasEvents.watchCallListenHistoryEvents);
+  yield spawn(sagasEvents.watchAddNewEvent);
   // Items
   yield spawn(sagasItems.watchCallGetItemList);
   yield spawn(sagasItems.watchCallListenArtefactList);

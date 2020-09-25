@@ -1,15 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const styledEnhancementWeaponsText = { width: '100%', display: 'block' };
 
-class EnhancementWeaponsSeparator extends Component {
-  render() {
-    const { text } = this.props;
-
-    return <div style={styledEnhancementWeaponsText}>{text}</div>;
-  }
-}
+const EnhancementWeaponsSeparator = ({ text }) => {
+  return <div style={styledEnhancementWeaponsText}>{text}</div>;
+};
 
 EnhancementWeaponsSeparator.propTypes = {
   text: PropTypes.string.isRequired,

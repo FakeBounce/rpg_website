@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import BottomPanel from "../components/BottomPanel";
-import ChatCommandsPanel from "../components/ChatCommandsPanel";
-import Header from "../components/Utils/Header";
-import MiddlePanel from "./MiddlePanel";
-import EventModal from "../components/EventModal/EventModal";
-import BestiaryPanel from "../components/BestiaryPanel";
-import TownsHistoryPanel from "../components/TownsHistoryPanel";
+import BottomPanel from '../components/BottomPanel';
+import ChatCommandsPanel from '../components/ChatCommandsPanel';
+import Header from '../components/Utils/Header';
+import MiddlePanel from './MiddlePanel';
+import EventModal from '../components/EventModal';
+import BestiaryPanel from '../components/BestiaryPanel';
+import TownsHistoryPanel from '../components/TownsHistoryPanel';
 
 const GameScreen = props => {
   const [isEventHidden, setIsEventHidden] = useState(false);

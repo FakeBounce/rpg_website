@@ -22,7 +22,8 @@ const styledChatButtonGM = {
 };
 
 const ChatGMButton = () => {
-  const { gmCommands, toggleGMCommands } = useChat();
+  const { toggleGMCommands } = useChat();
+  const { gmCommands } = useChatContext();
 
   return (
     <ButtonLarge
