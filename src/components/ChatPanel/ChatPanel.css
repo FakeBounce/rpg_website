@@ -5,54 +5,58 @@
 }
 
 .ui.tabular.menu .active.item.background {
-    background-color: #34495e;
+    background-image: url("/backgrounds/ChatTab_BG.jpg");
 }
 
 @-moz-keyframes blinking {
     0% {
-        background-color: #34495e;
+        background-image: url("/backgrounds/ChatTab_BG.jpg");
         border-radius: .28571429rem .28571429rem 0 0;
     }
     50% {
-        background-color: #F08F21;
+        background-image: url("/backgrounds/ChatWhisp_BG.jpg");
         border-radius: .28571429rem .28571429rem 0 0;
     }
     100% {
-        background-color: #34495e;
+        background-image: url("/backgrounds/ChatTab_BG.jpg");
         border-radius: .28571429rem .28571429rem 0 0;
     }
 }
 
 @-webkit-keyframes blinking {
     0% {
-        background-color: #34495e;
+        background-image: url("/backgrounds/ChatTab_BG.jpg");
         border-radius: .28571429rem .28571429rem 0 0;
     }
     50% {
-        background-color: #F08F21;
+        background-image: url("/backgrounds/ChatWhisp_BG.jpg");
         border-radius: .28571429rem .28571429rem 0 0;
     }
     100% {
-        background-color: #34495e;
+        background-image: url("/backgrounds/ChatTab_BG.jpg");
         border-radius: .28571429rem .28571429rem 0 0;
     }
 }
 
 @keyframes blinking {
     0% {
-        background-color: #34495e;
+        background-image: url("/backgrounds/ChatTab_BG.jpg");
         border-radius: .28571429rem .28571429rem 0 0;
     }
     50% {
-        background-color: #F08F21;
+        background-image: url("/backgrounds/ChatWhisp_BG.jpg");
         border-radius: .28571429rem .28571429rem 0 0;
     }
     100% {
-        background-color: #34495e;
+        background-image: url("/backgrounds/ChatTab_BG.jpg");
         border-radius: .28571429rem .28571429rem 0 0;
     }
 }
 
 .menuTabChatScrollbar::-webkit-scrollbar {
     height: 5px;
+}
+
+.ui.tabular.menu .active.item {
+    border-width: 3px;
 }

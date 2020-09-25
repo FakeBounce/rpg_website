@@ -1,37 +1,37 @@
-import React from "react";
-import { colors } from "../Utils/Constants";
-import useChat from "../../hooks/useChat";
+import React from 'react';
+import useChat from '../../hooks/useChat';
+import { widthLeft } from "../Utils/StyleConstants";
+import ButtonLarge from '../Utils/ButtonLarge';
 
 const styledChatButtonGMActive = {
-  width: 40,
+  width: widthLeft / 6,
   height: 26,
-  float: "right",
-  display: "inline-block",
-  textAlign: "center",
-  padding: "0px",
-  backgroundColor: colors.purple400,
-  color: colors.text,
+  float: 'left',
+  display: 'inline-block',
+  textAlign: 'center',
+  padding: '0px',
 };
 
 const styledChatButtonGM = {
-  width: 40,
+  width: widthLeft / 6,
   height: 26,
-  float: "right",
-  display: "inline-block",
-  textAlign: "center",
-  padding: "0px",
+  float: 'left',
+  display: 'inline-block',
+  textAlign: 'center',
+  padding: '0px',
 };
 
 const ChatGMButton = () => {
   const { gmCommands, toggleGMCommands } = useChat();
 
   return (
-    <button
+    <ButtonLarge
+      className={gmCommands ? 'buttonLargeActive' : 'buttonLarge'}
       style={gmCommands ? styledChatButtonGMActive : styledChatButtonGM}
       onClick={toggleGMCommands}
     >
-      GM
-    </button>
+      Dice to GM
+    </ButtonLarge>
   );
 };
 

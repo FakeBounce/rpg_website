@@ -15,6 +15,7 @@ const styledChatMenuItem = {
   backgroundColor: colors.background,
   color: colors.text,
   cursor: cursorPointer,
+  backgroundImage: 'url("./backgrounds/ChatTab_BG.jpg")',
 };
 
 const ChatTabsMenu = () => {
@@ -28,7 +29,11 @@ const ChatTabsMenu = () => {
       attached='top'
       tabular
       className='menuTabChatScrollbar'
-      style={{ overflowX: 'auto', overflowY: 'hidden' }}
+      style={{
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        backgroundImage: 'url("./backgrounds/ChatBox_BG.jpg")',
+      }}
     >
       {chatTabs.map((ct, index) => {
         if (isGameMaster && ct === 'Team') return null;

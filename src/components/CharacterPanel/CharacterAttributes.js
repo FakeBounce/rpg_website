@@ -1,38 +1,42 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { cursorPointer, heightLeft, imageSize } from "../Utils/StyleConstants";
-import { attributes } from "../Utils/Constants";
-import firebase from "firebase";
-import ButtonLarge from "../Utils/ButtonLarge";
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { cursorPointer, heightLeft, imageSize } from '../Utils/StyleConstants';
+import { attributes } from '../Utils/Constants';
+import firebase from 'firebase';
+import ButtonLarge from '../Utils/ButtonLarge';
+import { attributesDices } from '../Utils/Constants';
+import AttributeDice from './AttributeDice';
+import useChat from '../../hooks/useChat';
 
 const styles = {
   BoxHeader: {
-    width: "100%",
-    height: "20px",
-    marginBottom: "5px",
-    textAlign: "center",
+    width: '100%',
+    height: '20px',
+    marginBottom: '5px',
+    textAlign: 'center',
   },
   characterAttributeInfos: {
     width: `${imageSize - 1}px`,
     height: `${heightLeft / 2 - imageSize}px`,
-    position: "relative",
-    float: "left",
-    display: "inline-block",
-    borderRight: "1px solid black",
-    overflowY: "auto",
+    position: 'relative',
+    float: 'left',
+    display: 'inline-block',
+    borderRight: '1px solid black',
+    overflowY: 'auto',
+    paddingTop: '5px',
   },
 };
 const styledAttribute = {
   marginLeft: 5,
-  float: "left",
-  display: "inline-block",
-  textTransform: "capitalize",
+  float: 'left',
+  display: 'inline-block',
+  textTransform: 'capitalize',
 };
 const styledAttributeGM = {
   marginLeft: 5,
-  float: "left",
-  display: "inline-block",
-  textTransform: "capitalize",
+  float: 'left',
+  display: 'inline-block',
+  textTransform: 'capitalize',
   cursor: cursorPointer,
 };
 const styledButton = {
@@ -41,7 +45,7 @@ const styledButton = {
 const styledInput = { width: 30 };
 
 const CharacterAttributes = () => {
-  const [currentAttribute, setCurrentAttribute] = useState("");
+  const [currentAttribute, setCurrentAttribute] = useState('');
   const [currentValue, setCurrentValue] = useState(0);
 
   const { currentStory, isGameMaster, character } = useSelector(store => ({
@@ -51,7 +55,7 @@ const CharacterAttributes = () => {
   }));
 
   const onChange = value => {
-    setCurrentValue(value === "" ? 0 : parseInt(value, 10));
+    setCurrentValue(value === '' ? 0 : parseInt(value, 10));
   };
 
   const onClick = (name, value) => {
@@ -63,42 +67,47 @@ const CharacterAttributes = () => {
     firebase
       .database()
       .ref(
-        "stories/" +
+        'stories/' +
           currentStory +
-          "/characters/" +
+          '/characters/' +
           character.userUid +
-          "/character/" +
+          '/character/' +
           currentAttribute,
       )
       .set(currentValue)
       .then(() => {
-        onClick("", 0);
+        onClick('', 0);
       })
       .catch(error => {
         // Handle Errors here.
-        console.log("error", error);
+        console.log('error', error);
       });
   };
+
+  const { launchCommand } = useChat();
 
   if (!character || !character.attributes) return null;
 
   return (
     <div style={styles.characterAttributeInfos}>
-      <div style={styles.BoxHeader}>Attributes :</div>
       {attributes.map(a => {
-        const label = a.substring(0, 4);
+        const label = a.substring(0, 3);
         return (
           <div
             style={isGameMaster ? styledAttributeGM : styledAttribute}
-            onClick={() => onClick(a, character.attributes[a])}
-            key={"character-attribute-" + a}
+            onClick={() => {
+              if (isGameMaster) {
+                onClick(a, character.attributes[a]);
+              }
+            }}
+            key={'character-attribute-' + a}
           >
-            {label} :{" "}
+            {label} :{' '}
             {isGameMaster && currentAttribute === a ? (
               <input
                 name={a}
                 value={currentValue}
-                type="number"
+                type='number'
                 style={styledInput}
                 onChange={e => {
                   onChange(e.target.value);
@@ -107,10 +116,14 @@ const CharacterAttributes = () => {
             ) : (
               character.attributes[a]
             )}
+            <AttributeDice
+              launchCommand={launchCommand}
+              {...attributesDices[a]}
+            />
           </div>
         );
       })}
-      {currentAttribute !== "" && (
+      {currentAttribute !== '' && (
         <ButtonLarge onClick={validate} style={styledButton}>
           OK
         </ButtonLarge>
