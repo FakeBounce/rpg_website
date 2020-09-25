@@ -13,6 +13,7 @@ const styledChatMenuItem = {
   padding: 0,
   color: colors.text,
   cursor: cursorPointer,
+  backgroundImage: 'url("/backgrounds/ChatTab_BG.jpg")',
 };
 
 const styledChatMenuItemContainer = {
@@ -35,11 +36,7 @@ const styledChatMenuItemClose = {
 };
 
 const ChatWhisperTab = ({ whisperKey }) => {
-  const {
-    whispersTab,
-    changeActiveWhisperTab,
-    closeWhisperTab,
-  } = useChat();
+  const { whispersTab, changeActiveWhisperTab, closeWhisperTab } = useChat();
 
   const { activeChatTab } = useActiveChatTabContext();
 

@@ -1,15 +1,16 @@
-import React, { useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { heightLeft, widthLeft } from "../Utils/StyleConstants";
-import ChatRow from "./ChatRow";
-import { colors } from "../Utils/Constants";
+import React, { useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { heightLeft, widthLeft } from '../Utils/StyleConstants';
+import ChatRow from './ChatRow';
+import { colors } from '../Utils/Constants';
 
 const styledChatHistoric = {
   width: widthLeft / 2,
   height: `${heightLeft / 2 - (25 + 5) - 25 - 40}px`,
-  float: "left",
-  display: "inline-block",
-  overflowY: "auto",
+  float: 'left',
+  display: 'inline-block',
+  overflowY: 'auto',
+  backgroundImage: 'url("./backgrounds/ChatHistory_BG.jpg")',
 };
 
 const ChatHistory = ({ activeChatTab }) => {
@@ -27,7 +28,7 @@ const ChatHistory = ({ activeChatTab }) => {
 
   const scrollToBottom = () => {
     if (messagesEnd !== null) {
-      messagesEnd.current.scrollIntoView({ behavior: "smooth" });
+      messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -36,7 +37,7 @@ const ChatHistory = ({ activeChatTab }) => {
     let isFiltered = false;
 
     viewersTab.map(viewer => {
-      if ((viewer === "gm" && isGameMaster) || viewer === pseudo) {
+      if ((viewer === 'gm' && isGameMaster) || viewer === pseudo) {
         canSeeMessage = true;
       }
       isFiltered = !checkIsFiltered(viewer);
@@ -49,16 +50,16 @@ const ChatHistory = ({ activeChatTab }) => {
     let color = colors.chatAll;
     if (row.channel) {
       switch (row.channel) {
-        case "Team":
+        case 'Team':
           color = colors.chatTeam;
           break;
-        case "Dices":
+        case 'Dices':
           color = colors.yellow300;
           break;
-        case "Private":
+        case 'Private':
           let hasGM = false;
           row.viewers.map(v => {
-            if (v === "gm") hasGM = true;
+            if (v === 'gm') hasGM = true;
             return null;
           });
           color = hasGM ? colors.chatGM : colors.pink300;
@@ -74,34 +75,34 @@ const ChatHistory = ({ activeChatTab }) => {
   const checkIsFiltered = row => {
     let isFiltered = true;
     switch (activeChatTab) {
-      case "All":
+      case 'All':
         isFiltered = false;
         break;
-      case "Team":
-        if (row.channel === "Team" && !isGameMaster) {
+      case 'Team':
+        if (row.channel === 'Team' && !isGameMaster) {
           isFiltered = false;
         }
         break;
-      case "GM":
+      case 'GM':
         if (
-          row.channel === "GM" &&
+          row.channel === 'GM' &&
           (isGameMaster || (row.viewers && row.viewers.indexOf(pseudo) > -1))
         ) {
           isFiltered = false;
         }
         break;
-      case "Dices":
-        if (row.channel === "Dices") {
+      case 'Dices':
+        if (row.channel === 'Dices') {
           isFiltered = false;
         }
         break;
       default:
-        if (row.channel === "Private") {
+        if (row.channel === 'Private') {
           if (
             row.viewers &&
             row.viewers.indexOf(activeChatTab) > -1 &&
             (row.viewers.indexOf(pseudo) > -1 ||
-              (isGameMaster && row.viewers.indexOf("gm") > -1))
+              (isGameMaster && row.viewers.indexOf('gm') > -1))
           ) {
             isFiltered = false;
           }
@@ -112,7 +113,7 @@ const ChatHistory = ({ activeChatTab }) => {
   };
 
   return (
-    <div style={styledChatHistoric} className="scrollbar">
+    <div style={styledChatHistoric} className='scrollbar'>
       {Object.keys(history).map(key => {
         if (!checkIsFiltered(history[key])) {
           if (history[key].viewers && isAViewer(history[key].viewers)) {
@@ -134,7 +135,7 @@ const ChatHistory = ({ activeChatTab }) => {
         }
         return null;
       })}
-      <div style={{ float: "left", clear: "both" }} ref={messagesEnd} />
+      <div style={{ float: 'left', clear: 'both' }} ref={messagesEnd} />
     </div>
   );
 };

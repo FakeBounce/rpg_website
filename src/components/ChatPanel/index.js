@@ -3,7 +3,7 @@ import ReactTooltip from "react-tooltip";
 import { heightHeader, heightLeft, widthLeft } from "../Utils/StyleConstants";
 import { colors } from "../Utils/Constants";
 import ChatBar from "./ChatBar";
-import ChatDicesRow from "./ChatDicesRow";
+import ChatGMButton from "./ChatGMButton";
 import ChatHistory from "./ChatHistory";
 import useChat from "../../hooks/useChat";
 import ChatTabsMenu from "./ChatTabsMenu";
@@ -25,8 +25,10 @@ const ChatPanel = () => {
     <div style={styledChatPanel}>
       <ChatTabsMenu />
       <ChatHistory activeChatTab={activeChatTab} />
-      <ChatDicesRow />
       <ChatBar />
+      <ChatGMButton />
+      <ChatGMButton />
+      <ChatGMButton />
       <ReactTooltip />
     </div>
   );

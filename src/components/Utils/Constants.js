@@ -879,62 +879,62 @@ export const tempoImagesList = [
 
 export const bonusList = [-30, -20, -10, 0, 10, 20, 30];
 
-export const chatDices = [
-  {
+export const attributesDices = {
+  strength: {
     attribute: 'strength',
     image: './common/dice_red.png',
     alt: 'Strength dice',
     tip: 'Strength',
   },
-  {
+  dexterity: {
     attribute: 'dexterity',
     image: './common/dice_green.png',
     alt: 'Dexterity dice',
     tip: 'Dexterity',
   },
-  {
+  perception: {
     attribute: 'perception',
     image: './common/dice_orange.png',
     alt: 'Perception dice',
     tip: 'Perception',
   },
-  {
+  magic: {
     attribute: 'magic',
     image: './common/dice_purple.png',
     alt: 'Magic dice',
     tip: 'Magic',
   },
-  {
+  constitution: {
     attribute: 'constitution',
     image: './common/dice_blue.png',
     alt: 'Constitution dice',
     tip: 'Constitution',
   },
-  {
+  willpower: {
     attribute: 'willpower',
-    image: './common/dice_red.png',
+    image: './common/dice_willpower.png',
     alt: 'Willpower dice',
     tip: 'Willpower',
   },
-  {
+  charisma: {
     attribute: 'charisma',
     image: './common/dice_black.png',
     alt: 'Charisma dice',
     tip: 'Charisma',
   },
-  {
+  education: {
     attribute: 'education',
     image: './common/dice_white.png',
     alt: 'Education dice',
     tip: 'Education',
   },
-  {
+  luck: {
     attribute: 'luck',
     image: './common/dice_yellow.png',
     alt: 'Luck dice',
     tip: 'Luck',
   },
-];
+};
 
 export const bestiaryFilters = ['All', 'Monster', 'PNJ'];
 export const bestiaryOrderByType = ['None', 'Monster', 'PNJ'];
