@@ -1,32 +1,33 @@
 // import { createStore, compose, applyMiddleware, combineReducers } from "redux";
-import { createStore, compose, applyMiddleware } from "redux";
-import storage from "redux-persist/es/storage";
-import rootReducer from "./redux/reducers/root";
-import createSagaMiddleware from "redux-saga";
-import { persistStore, persistCombineReducers } from "redux-persist";
-import { CALL_LISTEN_BESTIARY } from "./redux/actionsTypes/actionsTypesBestiary";
-import { CALL_LISTEN_CHARACTER } from "./redux/actionsTypes/actionsTypesCharacter";
+import { createStore, compose, applyMiddleware } from 'redux';
+import storage from 'redux-persist/es/storage';
+import rootReducer from './redux/reducers/root';
+import createSagaMiddleware from 'redux-saga';
+import { persistStore, persistCombineReducers } from 'redux-persist';
+import { CALL_LISTEN_BESTIARY } from './redux/actionsTypes/actionsTypesBestiary';
+import { CALL_LISTEN_CHARACTER } from './redux/actionsTypes/actionsTypesCharacter';
 import {
   CALL_LISTEN_ALL_QUESTS,
   CALL_LISTEN_ALL_TOWNS,
   CALL_LISTEN_CURRENT_X,
   CALL_LISTEN_CURRENT_Y,
   CALL_LISTEN_MAP_TILES,
-} from "./redux/actionsTypes/actionsTypesMapInfos";
-import { CALL_LISTEN_CHAT_HISTORY } from "./redux/actionsTypes/actionsTypesChat";
+} from './redux/actionsTypes/actionsTypesMapInfos';
+import { CALL_LISTEN_CHAT_HISTORY } from './redux/actionsTypes/actionsTypesChat';
 import {
   CALL_LISTEN_MUSIC,
   CALL_LISTEN_NOISE,
   CALL_LISTEN_SONG,
-} from "./redux/actionsTypes/actionsTypesSounds";
-import { CALL_LISTEN_MERCHANT_LIST } from "./redux/actionsTypes/actionsTypesMerchants";
-import { CALL_GET_ITEM_LIST } from "./redux/actionsTypes/actionsTypesItems";
+} from './redux/actionsTypes/actionsTypesSounds';
+import { CALL_LISTEN_MERCHANT_LIST } from './redux/actionsTypes/actionsTypesMerchants';
+import { CALL_GET_ITEM_LIST } from './redux/actionsTypes/actionsTypesItems';
 import {
   CALL_LISTEN_CURRENT_EVENT,
   CALL_LISTEN_EVENTS_HISTORY,
-} from "./redux/actionsTypes/actionsTypesEvents";
-import { SET_GAME_MASTER } from "./redux/actionsTypes/actionsTypesAppState";
-import { CALL_LISTEN_TEAM_CHARACTERS } from "./redux/actionsTypes/actionsTypesTeam";
+} from './redux/actionsTypes/actionsTypesEvents';
+import { SET_GAME_MASTER } from './redux/actionsTypes/actionsTypesAppState';
+import { CALL_LISTEN_TEAM_CHARACTERS } from './redux/actionsTypes/actionsTypesTeam';
+import { CALL_GET_ALL_USER_CHARACTERS } from './redux/actionsTypes/actionsTypesUserInfos';
 
 // Env
 // const { PERSIST_ENABLED, PERSIST_PURGE } = Config;
@@ -40,7 +41,7 @@ const devToolsExtension = window && window.__REDUX_DEVTOOLS_EXTENSION__;
 const middlewares = [sagaMiddleware];
 // const middlewares = [sagaMiddleware, navMiddleware];
 
-if (typeof devToolsExtension === "function") {
+if (typeof devToolsExtension === 'function') {
   enhancerList.push(devToolsExtension());
 }
 
@@ -53,7 +54,7 @@ composedEnhancer = compose(
 );
 
 const reducersConfig = {
-  key: "primary",
+  key: 'primary',
   storage,
 };
 
@@ -73,10 +74,10 @@ function configureStore() {
       const uid = store.getState().userInfos.uid;
       if (
         typeof store.getState().appState.stories[currentStory].characters !==
-          "undefined" &&
+          'undefined' &&
         typeof store.getState().appState.stories[currentStory].characters[
           uid
-        ] !== "undefined"
+        ] !== 'undefined'
       ) {
         store.dispatch({ type: CALL_GET_ITEM_LIST });
       }
@@ -99,6 +100,7 @@ function configureStore() {
       store.dispatch({ type: CALL_LISTEN_CURRENT_EVENT });
       store.dispatch({ type: CALL_LISTEN_EVENTS_HISTORY });
       store.dispatch({ type: CALL_LISTEN_TEAM_CHARACTERS });
+      store.dispatch({ type: CALL_GET_ALL_USER_CHARACTERS });
     }
   });
   // }

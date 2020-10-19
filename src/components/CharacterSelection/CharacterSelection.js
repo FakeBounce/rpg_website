@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { CharacterProvider } from '../../contexts/characterContext';
 import useApp from '../../hooks/useApp';
 
-
 const styledBoxHeader = {
   width: '100%',
   height: 60,
@@ -47,16 +46,18 @@ const CharacterSelection = ({
   keepCharacter,
 }) => {
   const [isAnUpdate, setIsAnUpdate] = useState(false);
-  const [updateCharacterId, setUpdateCharacterId] = useState(0);
+  const [updateCharacterId, setUpdateCharacterId] = useState(1);
 
   const { triggerError } = useApp();
 
-  const { currentStory, pseudo, uid, characters } = useSelector(store => ({
-    currentStory: store.appState.currentStory,
-    pseudo: store.userInfos.pseudo,
-    uid: store.userInfos.uid,
-    characters: store.userInfos.characters,
-  }));
+  const { currentStory, pseudo, uid, characters } = useSelector(
+    store => ({
+      currentStory: store.appState.currentStory,
+      pseudo: store.userInfos.pseudo,
+      uid: store.userInfos.uid,
+      characters: store.userInfos.characters,
+    }),
+  );
 
   const getCharacters = () => {
     return Object.keys(characters).map(char => {

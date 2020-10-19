@@ -2,6 +2,7 @@ import React from 'react';
 import useChat from '../../hooks/useChat';
 import { widthLeft } from "../Utils/StyleConstants";
 import ButtonLarge from '../Utils/ButtonLarge';
+import { useChatContext } from '../../contexts/chatContext';
 
 const styledChatButtonGMActive = {
   width: widthLeft / 6,

@@ -1,12 +1,12 @@
-import React from "react";
-import { attributes as namedAttributes } from "../Utils/Constants";
-import { useCharacterContext } from "../../contexts/characterContext";
+import React from 'react';
+import { attributes as namedAttributes } from '../Utils/Constants';
+import { useCharacterContext } from '../../contexts/characterContext';
 
 const styledBoxHeader = {
-  width: "100%",
+  width: '100%',
   height: 20,
   marginBottom: 5,
-  textAlign: "center",
+  textAlign: 'center',
 };
 
 const CharacterCreationAttributes = () => {
@@ -14,7 +14,7 @@ const CharacterCreationAttributes = () => {
     attributes,
     onChangeAttribute,
     totalPointsleft,
-  } = useCharacterContext;
+  } = useCharacterContext();
 
   return (
     <div>
@@ -24,15 +24,15 @@ const CharacterCreationAttributes = () => {
           <div key={`attribute-${a}`}>
             {a} :
             <input
-              type="number"
+              type='number'
               name={a}
               placeholder={a}
               value={attributes[a]}
               onChange={e => {
                 onChangeAttribute(e.target.name, e.target.value);
               }}
-              min="5"
-              max="75"
+              min='5'
+              max='75'
             />
           </div>
         );
