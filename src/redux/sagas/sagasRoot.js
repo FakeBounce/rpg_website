@@ -47,6 +47,7 @@ function* rootSaga() {
 
   // User infos
   yield spawn(sagasUserInfos.watchCallSetUserPseudo);
+  yield spawn(sagasUserInfos.watchCallGetAllUserCharacters);
   // Team
   yield spawn(sagasTeam.watchCallListenTeam);
   // Sounds
