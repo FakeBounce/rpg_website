@@ -8,7 +8,6 @@ import {
   SET_GAME_MASTER,
 } from '../redux/actionsTypes/actionsTypesAppState';
 import {
-  SET_CHARACTER_ID,
   SETUP_CHARACTER_CREATION,
 } from '../redux/actionsTypes/actionsTypesUserInfos';
 import {

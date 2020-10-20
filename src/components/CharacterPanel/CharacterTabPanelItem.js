@@ -128,9 +128,10 @@ const CharacterTabPanelItem = ({ onItemUse }) => {
                 }}
               />
               <div style={styledItemName}>
-                {character.education < item.rarity * 9 && !item.isDiscovered
+                {/* {character.education < item.rarity * 9 && !item.isDiscovered
                   ? '???'
-                  : item.name}
+                  : item.name} */}
+                  {item.name}
               </div>
               <ButtonLarge
                 style={styledItemButton}
