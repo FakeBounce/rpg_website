@@ -5,9 +5,15 @@ import PropTypes from 'prop-types';
 import CharacterPreview from './CharacterPreview';
 import firebase from 'firebase';
 import ButtonLarge from '../Utils/ButtonLarge';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CharacterProvider } from '../../contexts/characterContext';
 import useApp from '../../hooks/useApp';
+import {
+  SET_CHARACTER,
+  SET_CHARACTER_CREATION,
+  SET_CHARACTER_ID,
+} from '../../redux/actionsTypes/actionsTypesCharacter';
+import { SET_ALL_CHARACTERS } from '../../redux/actionsTypes/actionsTypesUserInfos';
 
 const styledBoxHeader = {
   width: '100%',
@@ -41,8 +47,6 @@ const styledCenterHeader = {
 
 const CharacterSelection = ({
   chooseStory,
-  doSetState,
-  characterCreation,
   keepCharacter,
 }) => {
   const [isAnUpdate, setIsAnUpdate] = useState(false);
@@ -50,21 +54,22 @@ const CharacterSelection = ({
 
   const { triggerError } = useApp();
 
-  const { currentStory, pseudo, uid, characters } = useSelector(
-    store => ({
-      currentStory: store.appState.currentStory,
-      pseudo: store.userInfos.pseudo,
-      uid: store.userInfos.uid,
-      characters: store.userInfos.characters,
-    }),
-  );
+  const dispatch = useDispatch();
+
+  const { currentStory, pseudo, uid, characters, characterCreation } = useSelector(store => ({
+    characterCreation: store.character.characterCreation,
+    currentStory: store.appState.currentStory,
+    pseudo: store.userInfos.pseudo,
+    uid: store.userInfos.uid,
+    characters: store.userInfos.characters,
+  }));
 
   const getCharacters = () => {
-    return Object.keys(characters).map(char => {
+    return Object.keys(characters).map(charKey => {
       return (
         <CharacterPreview
-          key={`char-${char.name}`}
-          {...characters[char]}
+          key={`char-${charKey}`}
+          {...characters[charKey]}
           chooseCharacter={chooseCharacter}
           modifyCharacter={modifyCharacter}
         />
@@ -75,9 +80,7 @@ const CharacterSelection = ({
   const modifyCharacter = id => {
     setIsAnUpdate(true);
     setUpdateCharacterId(id);
-    doSetState({
-      characterCreation: true,
-    });
+    dispatch({ type: SET_CHARACTER_CREATION, payload: true });
   };
 
   const chooseCharacter = id => {
@@ -92,15 +95,9 @@ const CharacterSelection = ({
       .ref('stories/' + currentStory + '/characters/' + uid)
       .set({ character: charToRegister, characterId: id })
       .then(() => {
-        doSetState(
-          {
-            character: charToRegister,
-            characterId: id,
-          },
-          () => {
-            chooseStory(currentStory);
-          },
-        );
+        dispatch({ type: SET_CHARACTER, payload: charToRegister });
+        dispatch({ type: SET_CHARACTER_ID, payload: id });
+        chooseStory(currentStory);
       })
       .catch(error => {
         // Handle Errors here.
@@ -109,9 +106,7 @@ const CharacterSelection = ({
   };
 
   const goToCharacterForm = () => {
-    doSetState({
-      characterCreation: true,
-    });
+    dispatch({ type: SET_CHARACTER_CREATION, payload: true });
   };
 
   const updateCharacter = character => {
@@ -119,40 +114,35 @@ const CharacterSelection = ({
     setUpdateCharacterId(0);
     const charTab = characters;
     charTab[character.id] = character;
-    doSetState(
-      {
-        characters: charTab,
-        characterId: character.id,
-        character,
-      },
-      () => {
+    dispatch({ type: SET_ALL_CHARACTERS, payload: charTab });
+    dispatch({ type: SET_CHARACTER_ID, payload: character.id });
+    dispatch({ type: SET_CHARACTER, payload: character });
+
+    firebase
+      .database()
+      .ref('users/' + uid + '/characters')
+      .set({ ...charTab })
+      .then(() => {
+        // @TODO : sagas
         firebase
           .database()
-          .ref('users/' + uid + '/characters')
-          .set({ ...charTab })
+          .ref('stories/' + currentStory + '/characters/' + uid)
+          .set({
+            character,
+            characterId: character.id,
+          })
           .then(() => {
-            // @TODO : sagas
-            firebase
-              .database()
-              .ref('stories/' + currentStory + '/characters/' + uid)
-              .set({
-                character,
-                characterId: character.id,
-              })
-              .then(() => {
-                chooseStory(currentStory);
-              })
-              .catch(error => {
-                // Handle Errors here.
-                triggerError(error);
-              });
+            chooseStory(currentStory);
           })
           .catch(error => {
             // Handle Errors here.
             triggerError(error);
           });
-      },
-    );
+      })
+      .catch(error => {
+        // Handle Errors here.
+        triggerError(error);
+      });
   };
 
   const createCharacter = character => {
@@ -166,39 +156,34 @@ const CharacterSelection = ({
     charToRegister.userUid = uid;
 
     charTab[character.id] = charToRegister;
-    doSetState(
-      {
-        characters: charTab,
-        characterId: character.id,
-        character: charToRegister,
-      },
-      () => {
+    dispatch({ type: SET_ALL_CHARACTERS, payload: charTab });
+    dispatch({ type: SET_CHARACTER_ID, payload: character.id });
+    dispatch({ type: SET_CHARACTER, payload: charToRegister });
+
+    firebase
+      .database()
+      .ref('users/' + uid + '/characters')
+      .set({ ...charTab })
+      .then(() => {
         firebase
           .database()
-          .ref('users/' + uid + '/characters')
-          .set({ ...charTab })
+          .ref('stories/' + currentStory + '/characters/' + uid)
+          .set({
+            character: charToRegister,
+            characterId: character.id,
+          })
           .then(() => {
-            firebase
-              .database()
-              .ref('stories/' + currentStory + '/characters/' + uid)
-              .set({
-                character: charToRegister,
-                characterId: character.id,
-              })
-              .then(() => {
-                chooseStory(currentStory);
-              })
-              .catch(error => {
-                // Handle Errors here.
-                triggerError(error);
-              });
+            chooseStory(currentStory);
           })
           .catch(error => {
             // Handle Errors here.
             triggerError(error);
           });
-      },
-    );
+      })
+      .catch(error => {
+        // Handle Errors here.
+        triggerError(error);
+      });
   };
 
   const resetStory = () => {

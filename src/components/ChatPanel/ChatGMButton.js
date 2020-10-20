@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import useChat from '../../hooks/useChat';
 import { widthLeft } from "../Utils/StyleConstants";
 import ButtonLarge from '../Utils/ButtonLarge';
@@ -22,19 +23,39 @@ const styledChatButtonGM = {
   padding: '0px',
 };
 
-const ChatGMButton = () => {
+const ChatGMButton = ({ onChangeTab, nameToChange, isActive }) => {
+  
+  const getButtonName = () => {
+    switch (nameToChange) {
+      case 'Whisper':
+        return "Whisper to GM";
+      case 'Gold':
+        return "Gold to GM";
+      case 'Dice':
+        return "Dice to GM";
+      default:
+        return "Button alone wtf ?";
+    }
+  };
+
   const { toggleGMCommands } = useChat();
   const { gmCommands } = useChatContext();
 
   return (
     <ButtonLarge
-      className={gmCommands ? 'buttonLargeActive' : 'buttonLarge'}
+      className={isActive ? 'buttonLargeActive' : 'buttonLarge'}
+      onClick={() => onChangeTab(nameToChange)}
       style={gmCommands ? styledChatButtonGMActive : styledChatButtonGM}
-      onClick={toggleGMCommands}
     >
-      Dice to GM
+      {getButtonName()}
     </ButtonLarge>
   );
+};
+
+ChatGMButton.propTypes = {
+  onChangeTab: PropTypes.func.isRequired,
+  tabToChange: PropTypes.string.isRequired,
+  isActive: PropTypes.bool.isRequired,
 };
 
 export default ChatGMButton;

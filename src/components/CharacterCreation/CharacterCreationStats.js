@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CharacterCreationItems from "./CharacterCreationItems";
-import CharacterCreationAbilites from "./CharacterCreationAbilites";
+import CharacterCreationAbilities from "./CharacterCreationAbilities";
 import CharacterCreationWeapons from "./CharacterCreationWeapons";
 import CharacterCreationSkills from "./CharacterCreationSkills";
 import CharacterCreationAttributes from "./CharacterCreationAttributes";
@@ -33,7 +33,7 @@ const CharacterCreationStats = () => {
       {currentPanel === "skills" && (
         <>
           <CharacterCreationSkills />
-          <CharacterCreationAbilites />
+          <CharacterCreationAbilities />
         </>
       )}
       {currentPanel === "items" && (

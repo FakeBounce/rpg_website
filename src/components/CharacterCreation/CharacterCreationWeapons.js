@@ -7,7 +7,7 @@ const CharacterCreationWeapons = () => {
     onChangeWeapons,
     removeWeapon,
     addWeapon,
-  } = useCharacterContext;
+  } = useCharacterContext();
 
   return (
     <div>

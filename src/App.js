@@ -471,9 +471,7 @@ class App extends Component {
           if (!isGameMaster && characterId === 0) {
             return (
               <CharacterSelection
-                characterCreation={characterCreation}
                 chooseStory={this.chooseStory}
-                doSetState={this.doSetState}
                 keepCharacter={this.keepCharacter}
                 triggerError={this.triggerError}
               />
@@ -482,7 +480,6 @@ class App extends Component {
             return (
               <GameScreen
                 buyItem={this.buyItem}
-                doSetState={this.doSetState}
                 selectAnotherCharacter={this.selectAnotherCharacter}
                 triggerError={this.triggerError}
                 {...rest}

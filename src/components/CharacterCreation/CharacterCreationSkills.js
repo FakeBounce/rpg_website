@@ -2,7 +2,7 @@ import React  from "react";
 import { useCharacterContext } from "../../contexts/characterContext";
 
 const CharacterCreationSkills = () => {
-  const { skills, onChangeSkills, addSkill, removeSkill } = useCharacterContext;
+  const { skills, onChangeSkills, addSkill, removeSkill } = useCharacterContext();
 
   return (
     <div>
