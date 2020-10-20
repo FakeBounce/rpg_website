@@ -18,6 +18,7 @@ function* rootSaga() {
   yield spawn(sagasAppState.watchCallGetStories);
   yield spawn(sagasAppState.watchCallListenStoryUsers);
   yield spawn(sagasAppState.watchCallSignOut);
+  yield spawn(sagasAppState.watchCallCreateStory);
   // Bestiary
   yield spawn(sagasBestiary.watchCallListenBestiary);
   // Chat

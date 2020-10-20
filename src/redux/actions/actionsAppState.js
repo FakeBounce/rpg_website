@@ -1,4 +1,4 @@
-import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
+import * as actionsTypesAppState from '../actionsTypes/actionsTypesAppState';
 
 export const printError = payload => {
   return {
@@ -10,6 +10,13 @@ export const printError = payload => {
 export const togglePlayerView = () => {
   return {
     type: actionsTypesAppState.TOGGLE_PLAYER_VIEW,
+  };
+};
+
+export const dispatchTogglePlayerMastering = payload => {
+  return {
+    type: actionsTypesAppState.TOGGLE_PLAYER_MASTERING,
+    payload,
   };
 };
 
@@ -30,6 +37,13 @@ export const setIsAdmin = payload => {
 export const setAllStories = payload => {
   return {
     type: actionsTypesAppState.SET_ALL_STORIES,
+    payload,
+  };
+};
+
+export const setCurrentStory = payload => {
+  return {
+    type: actionsTypesAppState.UPDATE_CURRENT_STORY,
     payload,
   };
 };

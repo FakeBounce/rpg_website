@@ -7,12 +7,13 @@ import {
   call,
   all,
 } from 'redux-saga/effects';
+import firebase from 'firebase';
 
 import * as actionsTypesAppState from '../actionsTypes/actionsTypesAppState';
 import * as actionsAppState from '../actions/actionsAppState';
 import * as actionsMapInfos from '../actions/actionsMapInfos';
 import { getTranslations } from '../../i18n';
-import { firebaseDbOnce, onValueChannel } from './api';
+import { firebaseDbOnce, onValueChannel, firebaseDbSet } from './api';
 
 function* appStateError(
   { payload } = getTranslations('error.transfer.failed'),
@@ -88,4 +89,30 @@ export function* watchCallListenStoryUsers() {
     actionsTypesAppState.CALL_LISTEN_STORY_USERS,
     listenStoryUsers,
   );
+}
+
+function* createStory({ payload }) {
+  try {
+    firebaseDbSet(`stories/${payload.lastStoryIndex}`, payload.story).catch(
+      error => {
+        console.log('createStory set saga err:', { error });
+      },
+    );
+    const stories = yield call(firebaseDbOnce, '/stories');
+    yield put(actionsAppState.setAllStories(stories));
+    yield put(
+      actionsAppState.setCurrentStory(payload.lastStoryIndexlastStoryIndex),
+    );
+    yield put(actionsAppState.dispatchTogglePlayerMastering(true));
+  } catch (error) {
+    console.log('createStory try saga err:', { error });
+
+    yield call(appStateError, { payload: 'Could not get stories' });
+  }
+
+  return null;
+}
+
+export function* watchCallCreateStory() {
+  yield takeLatest(actionsTypesAppState.CALL_CREATE_STORY, createStory);
 }
