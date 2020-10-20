@@ -33,8 +33,8 @@ const styledNewStoryTitle = {
 };
 
 // @TODO check this component, setState isnt used
-const NewStory = ({ chooseStory, doSetState, toggleStoryCreation }) => {
-  const { triggerError } = useApp();
+const NewStory = ({ toggleStoryCreation }) => {
+  const { triggerError, chooseStory } = useApp();
 
   const { stories } = useSelector(store => ({
     stories: store.appState.stories,
@@ -55,15 +55,16 @@ const NewStory = ({ chooseStory, doSetState, toggleStoryCreation }) => {
       .ref('stories/' + lastStoryIndex)
       .set(story)
       .then(() => {
-        loadStories(doSetState, () => {
+        loadStories(() => {
           chooseStory(lastStoryIndex);
         });
-        this.setState(state => ({
-          ...state,
-          isCreatingStory: false,
-          name: '',
-          map: '',
-        }));
+        // @TODO
+        // this.setState(state => ({
+        //   ...state,
+        //   isCreatingStory: false,
+        //   name: '',
+        //   map: '',
+        // }));
       })
       .catch(error => {
         // Handle Errors here.
@@ -96,8 +97,6 @@ const NewStory = ({ chooseStory, doSetState, toggleStoryCreation }) => {
 };
 
 NewStory.propTypes = {
-  triggerError: PropTypes.func.isRequired,
-  chooseStory: PropTypes.func.isRequired,
   toggleStoryCreation: PropTypes.func.isRequired,
 };
 

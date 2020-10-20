@@ -9,7 +9,7 @@ import EventModal from '../components/EventModal';
 import BestiaryPanel from '../components/BestiaryPanel';
 import TownsHistoryPanel from '../components/TownsHistoryPanel';
 
-const GameScreen = props => {
+const GameScreen = () => {
   const [isEventHidden, setIsEventHidden] = useState(false);
   const [isOnBestiary, setIsOnBestiary] = useState(false);
   const [onChatHelp, setOnChatHelp] = useState(false);
@@ -106,7 +106,7 @@ const GameScreen = props => {
       ) : onChatHelp ? (
         <ChatCommandsPanel />
       ) : (
-        <MiddlePanel {...props} />
+        <MiddlePanel />
       )}
       <BottomPanel />
     </>

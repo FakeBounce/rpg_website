@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import Story from './Story';
 import NewStory from './NewStory';
 import { useSelector } from 'react-redux';
 import { cursorPointer } from '../Utils/StyleConstants';
+import useApp from '../../hooks/useApp';
 
 const styledStoryPanel = {
   width: '100%',
@@ -55,8 +55,9 @@ const styledAddStoryImage = {
   alignItems: 'center',
 };
 
-const StoriesPanel = ({ chooseStory, doSetState, triggerError }) => {
+const StoriesPanel = () => {
   const [isCreatingStory, setIsCreatingStory] = useState(false);
+  const { chooseStory, triggerError } = useApp();
 
   const { stories } = useSelector(store => ({
     stories: store.appState.stories,
@@ -67,13 +68,7 @@ const StoriesPanel = ({ chooseStory, doSetState, triggerError }) => {
   };
 
   if (isCreatingStory) {
-    return (
-      <NewStory
-        doSetState={doSetState}
-        triggerError={triggerError}
-        toggleStoryCreation={toggleStoryCreation}
-      />
-    );
+    return <NewStory toggleStoryCreation={toggleStoryCreation} />;
   }
   return (
     <div style={styledStoryPanel}>
@@ -106,12 +101,6 @@ const StoriesPanel = ({ chooseStory, doSetState, triggerError }) => {
       </div>
     </div>
   );
-};
-
-StoriesPanel.propTypes = {
-  chooseStory: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
 };
 
 export default StoriesPanel;

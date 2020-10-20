@@ -11,9 +11,9 @@ export const loadTilesTypes = doSetState => {
     .ref("/tilesTypes")
     .once("value")
     .then(snapshot => {
-      doSetState({
-        tilesTypes: snapshot.val(),
-      });
+      // doSetState({
+      //   tilesTypes: snapshot.val(),
+      // });
     })
     .catch(error => {
       triggerError(error);

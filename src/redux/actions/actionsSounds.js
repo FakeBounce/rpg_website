@@ -1,11 +1,5 @@
 import * as actionTypesSounds from "../actionsTypes/actionsTypesSounds";
 
-export const toggleMusic = () => {
-  return {
-    type: actionTypesSounds.TOGGLE_MUSIC,
-  };
-};
-
 export const updateAllMusic = payload => {
   return {
     type: actionTypesSounds.UPDATE_ALL_MUSIC,

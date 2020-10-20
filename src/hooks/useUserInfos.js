@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { CALL_SET_USER_PSEUDO } from '../redux/actionsTypes/actionsTypesUserInfos';
+import useApp from './useApp';
 
 const useUserInfos = () => {
   const dispatch = useDispatch();
