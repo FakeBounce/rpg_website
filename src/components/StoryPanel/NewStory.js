@@ -4,10 +4,11 @@ import { colors, defaultStory } from '../Utils/Constants';
 import firebase from 'firebase';
 import { loadStories } from '../Utils/DatabaseFunctions';
 import NewStoryForm from './NewStoryForm';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { cursorPointer } from '../Utils/StyleConstants';
 import useApp from '../../hooks/useApp';
+import { CALL_CREATE_STORY } from '../../redux/actionsTypes/actionsTypesAppState';
 
 const styledStoryPanel = {
   width: '100%',
@@ -35,10 +36,16 @@ const styledNewStoryTitle = {
 // @TODO check this component, setState isnt used
 const NewStory = ({ toggleStoryCreation }) => {
   const { triggerError, chooseStory } = useApp();
+  const dispatch = useDispatch();
 
   const { stories } = useSelector(store => ({
     stories: store.appState.stories,
   }));
+
+  const callCreateStory = payload => {
+    dispatch({ type: CALL_CREATE_STORY, payload });
+  };
+
   const createStory = (name, map, iconPath) => {
     const story = {
       ...defaultStory,
@@ -49,27 +56,7 @@ const NewStory = ({ toggleStoryCreation }) => {
     };
 
     const lastStoryIndex = stories.length;
-    //@Todo : sagas
-    firebase
-      .database()
-      .ref('stories/' + lastStoryIndex)
-      .set(story)
-      .then(() => {
-        loadStories(() => {
-          chooseStory(lastStoryIndex);
-        });
-        // @TODO
-        // this.setState(state => ({
-        //   ...state,
-        //   isCreatingStory: false,
-        //   name: '',
-        //   map: '',
-        // }));
-      })
-      .catch(error => {
-        // Handle Errors here.
-        triggerError(error);
-      });
+    callCreateStory({lastStoryIndex, story})
   };
 
   return (

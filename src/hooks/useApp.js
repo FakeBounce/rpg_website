@@ -50,7 +50,7 @@ const useApp = () => {
     oldCharacterId: store.userInfos.oldCharacterId,
     oldCharacterCreation: store.userInfos.oldCharacterCreation,
     stories: store.appState.stories,
-    uid: store.appState.uid,
+    uid: store.userInfos.uid,
   }));
 
   const triggerError = error => {
