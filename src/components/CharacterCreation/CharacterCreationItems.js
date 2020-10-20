@@ -8,7 +8,7 @@ const CharacterCreationItems = () => {
     onChangeItemsQuantity,
     removeItem,
     addItem,
-  } = useCharacterContext;
+  } = useCharacterContext();
 
   return (
     <div>
@@ -19,7 +19,7 @@ const CharacterCreationItems = () => {
             <input
               type="text"
               placeholder={`Item ${index + 1} + description if needed`}
-              value={item.name}
+              defaultValue={item.name}
               onChange={e => {
                 onChangeItems(index, e.target.value);
               }}

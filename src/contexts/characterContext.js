@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useContext } from "react";
-import firebase from "firebase";
-import { addEmptyString, removeIndex, updateIndex } from "../arrayManipulator";
+import React, { useState, useEffect, useContext } from 'react';
+import firebase from 'firebase';
+import { addEmptyString, removeIndex, updateIndex } from '../arrayManipulator';
+import useApp from '../hooks/useApp';
 
 const CharacterContext = React.createContext(undefined);
 
 export const useCharacterContext = () => useContext(CharacterContext);
 
 function CharacterProvider(props) {
-  const [name, setName] = useState("");
-  const [icon, setIcon] = useState("");
-  const [iconPath, setIconPath] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [icon, setIcon] = useState('');
+  const [iconPath, setIconPath] = useState('');
+  const [description, setDescription] = useState('');
   const [skills, setSkills] = useState([]);
-  const [abilities, setAbilites] = useState([]);
+  const [abilities, setAbilities] = useState([]);
   const [weapons, setWeapons] = useState([]);
   const [items, setItems] = useState([]);
   const [totalPointsleft, setTotalPointsleft] = useState(0);
@@ -28,6 +29,8 @@ function CharacterProvider(props) {
     willpower: 50,
   });
 
+  const { triggerError } = useApp();
+
   useEffect(() => {
     if (props.isAnUpdate) {
       setName(props.name);
@@ -35,7 +38,7 @@ function CharacterProvider(props) {
       setIconPath(props.iconPath);
       setDescription(props.description);
       setSkills(props.skills);
-      setAbilites(props.abilities);
+      setAbilities(props.abilities);
       setWeapons(props.weapons);
       setItems(props.items);
       setAttributes(props.attributes);
@@ -77,15 +80,15 @@ function CharacterProvider(props) {
   };
 
   const onChangeAbilities = (index, value) => {
-    setAbilites(updateIndex(abilities, index, value));
+    setAbilities(updateIndex(abilities, index, value));
   };
 
   const addAbility = () => {
-    setAbilites(addEmptyString(abilities));
+    setAbilities(addEmptyString(abilities));
   };
 
   const removeAbility = index => {
-    setAbilites(removeIndex(abilities, index));
+    setAbilities(removeIndex(abilities, index));
   };
 
   const onChangeWeapons = (index, value) => {
@@ -114,8 +117,6 @@ function CharacterProvider(props) {
   };
 
   const addItem = () => {
-    const { triggerError } = this.props;
-
     if (items.length === 10) {
       triggerError({
         message: "Can't have more than 10 items",
@@ -123,7 +124,7 @@ function CharacterProvider(props) {
     } else {
       const obj = [...items];
       obj.push({
-        name: "",
+        name: '',
         quantity: 1,
       });
       setItems(obj);
@@ -138,12 +139,12 @@ function CharacterProvider(props) {
     const { uid, id, triggerError } = props;
     let storageRef = firebase.storage().ref();
     const path =
-      "images/" +
+      'images/' +
       uid +
-      "/character_" +
+      '/character_' +
       id +
-      "." +
-      picture[picture.length - 1].name.split(".")[1];
+      '.' +
+      picture[picture.length - 1].name.split('.')[1];
     storageRef
       .child(path)
       .put(picture[picture.length - 1])
@@ -172,8 +173,8 @@ function CharacterProvider(props) {
       .delete()
       .then(() => {
         // File deleted successfully
-        setIcon("");
-        setIconPath("");
+        setIcon('');
+        setIconPath('');
       })
       .catch(error => {
         // Uh-oh, an error occurred!

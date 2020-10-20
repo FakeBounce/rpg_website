@@ -2,7 +2,7 @@ import React from "react";
 import { useCharacterContext } from "../../contexts/characterContext";
 
 const CharacterCreationDescription = () => {
-  const { description, setDescription } = useCharacterContext;
+  const { description, setDescription } = useCharacterContext();
 
   return (
     <div>
@@ -11,7 +11,7 @@ const CharacterCreationDescription = () => {
         placeholder="description"
         value={description}
         onChange={e => {
-          setDescription(e.target.name, e.target.value);
+          setDescription(e.target.value);
         }}
       />
     </div>

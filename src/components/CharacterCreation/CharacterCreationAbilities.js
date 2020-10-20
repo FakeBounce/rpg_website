@@ -1,13 +1,13 @@
 import React from "react";
 import { useCharacterContext } from "../../contexts/characterContext";
 
-const CharacterCreationAbilites = () => {
+const CharacterCreationAbilities = () => {
   const {
     abilities,
     onChangeAbilities,
     removeAbility,
     addAbility,
-  } = useCharacterContext;
+  } = useCharacterContext();
 
   return (
     <div>
@@ -34,4 +34,4 @@ const CharacterCreationAbilites = () => {
   );
 };
 
-export default CharacterCreationAbilites;
+export default CharacterCreationAbilities;
