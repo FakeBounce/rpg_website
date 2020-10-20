@@ -242,9 +242,7 @@ const useApp = () => {
     });
   };
 
-  const buyItem = () => {
-
-  }
+  const buyItem = () => {};
 
   return {
     triggerError,
@@ -254,6 +252,7 @@ const useApp = () => {
     keepCharacter,
     selectAnotherCharacter,
     buyItem,
+    signOut,
   };
 };
 

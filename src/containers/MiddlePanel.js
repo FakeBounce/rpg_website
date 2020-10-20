@@ -19,8 +19,8 @@ const MiddlePanel = () => {
   // } = this.props;
 
   const { isGameMaster, isOnPlayerView } = useSelector(store => ({
-    isGameMaster: store.userInfos.isGameMaster,
-    isOnPlayerView: store.userInfos.isOnPlayerView,
+    isGameMaster: store.appState.isGameMaster,
+    isOnPlayerView: store.appState.isOnPlayerView,
   }));
 
   return (

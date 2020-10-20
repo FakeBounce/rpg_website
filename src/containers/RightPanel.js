@@ -25,18 +25,6 @@ const styles = {
 };
 
 const RightPanel = () => {
-  const [panelState, setPanelState] = useState({
-    status: character.status ? character.status : 'OK',
-    infoTab: 'Weapons',
-    damageTaken: 0,
-    gold: 0,
-    currentExchangeCharacter: null,
-    isOnChar: true,
-  });
-  const dispatch = useDispatch();
-  const { setChatInput } = useChatContext();
-  const { triggerError } = useApp();
-
   const {
     currentStory,
     isGameMaster,
@@ -50,6 +38,18 @@ const RightPanel = () => {
     character: store.character,
     song: store.sounds.song,
   }));
+
+  const [panelState, setPanelState] = useState({
+    status: character.status ? character.status : 'OK',
+    infoTab: 'Weapons',
+    damageTaken: 0,
+    gold: 0,
+    currentExchangeCharacter: null,
+    isOnChar: true,
+  });
+  const dispatch = useDispatch();
+  const { setChatInput } = useChatContext();
+  const { triggerError } = useApp();
 
   const dispatchListenCharacter = payload => {
     dispatch({
