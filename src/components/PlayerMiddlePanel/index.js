@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import ItemDescriptionPanel from '../ItemDescriptionPanel';
 import MerchantPanel from '../MerchantPanel';
 import ItemPanel from '../ItemPanel';
@@ -11,7 +10,7 @@ import ShopHeaderBlacksmith from '../ShopHeader/ShopHeaderBlacksmith';
 import ShopHeaderEnhancements from '../ShopHeader/ShopHeaderEnhancements';
 import ShopHeaderDefault from '../ShopHeader/ShopHeaderDefault';
 import EnhancersPanel from '../EnhancersPanel/EnhancersPanel';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Cadre from '../Utils/Cadre';
 import {
   currentItemsListSelector,
