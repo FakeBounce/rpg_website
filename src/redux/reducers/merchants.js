@@ -2,7 +2,9 @@ import {
   SET_MERCHANT_LIST,
   SET_CURRENT_MERCHANT,
   SET_IS_ITEM_SHOWED,
-  SET_CURRENT_MERCHANT_ITEM
+  SET_CURRENT_MERCHANT_ITEM,
+  SET_ITEM_DESCRIBED,
+  SET_ITEM_DESCRIPTION_SHOWED,
 } from '../actionsTypes/actionsTypesMerchants';
 import { RESET_APP } from '../actionsTypes/actionsTypesAppState';
 
@@ -37,6 +39,18 @@ const merchants = (state = initialState, action) => {
       return {
         ...state,
         currentMerchant: action.payload,
+      };
+    }
+    case SET_ITEM_DESCRIPTION_SHOWED: {
+      return {
+        ...state,
+        isItemDescriptionShowed: action.payload,
+      };
+    }
+    case SET_ITEM_DESCRIBED: {
+      return {
+        ...state,
+        itemDescribed: action.payload,
       };
     }
     case RESET_APP: {

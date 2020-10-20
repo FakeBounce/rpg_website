@@ -21,7 +21,6 @@ const GameScreen = () => {
     eventHistory,
     isGameMaster,
     merchants,
-    selectAnotherCharacter,
     towns,
     uid,
   } = useSelector(store => ({
@@ -89,7 +88,6 @@ const GameScreen = () => {
         onChatHelp={onChatHelp}
         isEventHidden={isEventHidden}
         isOnMerchantList={isOnMerchantList}
-        selectAnotherCharacter={selectAnotherCharacter}
         toggleBestiary={toggleBestiary}
         toggleEvent={toggleEvent}
         toggleMerchantList={toggleMerchantList}

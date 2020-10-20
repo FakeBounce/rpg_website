@@ -7,6 +7,7 @@ import { hydrateAllMerchants, resetStoryMerchants } from "./MerchantsFunctions";
 import Camera from "./Camera";
 import { togglePlayerView } from "../../redux/actions/actionsAppState";
 import { CALL_GET_ITEM_LIST } from "../../redux/actionsTypes/actionsTypesItems";
+import useApp from "../../hooks/useApp";
 
 const styledHeaderLeft = {
   height: heightHeader,
@@ -23,6 +24,8 @@ const styledHeader = {
 };
 
 const Header = props => {
+  
+  const { selectAnotherCharacter } = useApp();
   const dispatch = useDispatch();
   const [hasHydrated, setHasHydrated] = useState(false);
 
@@ -48,7 +51,6 @@ const Header = props => {
     isOnBestiary,
     isOnMerchantList,
     onChatHelp,
-    selectAnotherCharacter,
     toggleBestiary,
     toggleEvent,
     toggleMerchantList,

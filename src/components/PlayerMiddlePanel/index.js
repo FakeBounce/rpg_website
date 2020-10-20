@@ -21,6 +21,7 @@ import {
 } from '../../selectors';
 import useMerchants from '../../hooks/useMerchants';
 import useApp from '../../hooks/useApp';
+import { SET_ITEM_DESCRIBED, SET_ITEM_DESCRIPTION_SHOWED } from '../../redux/actionsTypes/actionsTypesMerchants';
 
 const styledPlayerMapContainer = {
   float: 'left',
@@ -94,6 +95,8 @@ const PlayerMiddlePanel = () => {
 
   const { enhanceWeapons } = useMerchants();
   const { buyItem } = useApp();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     resetTabs();
