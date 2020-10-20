@@ -1,67 +1,39 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 
 import GMMapPanel from './GMMapPanel';
 import RightPanel from './RightPanel';
 import PlayerMapPanel from '../components/PlayerMiddlePanel';
 import ChatPanel from '../components/ChatPanel';
 import SoundPanel from '../components/SoundPanel';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import MapGenerator from '../components/MapGenerator/MapGenerator';
+import useApp from '../hooks/useApp';
 
-class MiddlePanel extends Component {
-  render() {
-    const {
-      buyItem,
-      doSetState,
-      isGameMaster,
-      isItemDescriptionShowed,
-      isItemShowed,
-      isOnPlayerView,
-      itemsList,
-      itemToDescribe,
-      triggerError,
-    } = this.props;
+const MiddlePanel = () => {
+  // @TODO
+  // const {
+  //   isItemDescriptionShowed,
+  //   isItemShowed,
+  //   itemsList,
+  //   itemToDescribe,
+  // } = this.props;
 
-    return (
-      <Fragment>
-        <MapGenerator />
-        {((isGameMaster && isOnPlayerView) || !isGameMaster) && <ChatPanel />}
-        {isGameMaster && !isOnPlayerView && <GMMapPanel />}
-        {(!isGameMaster || isOnPlayerView) && (
-          <PlayerMapPanel
-            buyItem={buyItem}
-            doSetState={doSetState}
-            isItemDescriptionShowed={isItemDescriptionShowed}
-            isItemShowed={isItemShowed}
-            itemsList={itemsList}
-            itemToDescribe={itemToDescribe}
-            triggerError={triggerError}
-          />
-        )}
+  const { isGameMaster, isOnPlayerView } = useSelector(store => ({
+    isGameMaster: store.userInfos.isGameMaster,
+    isOnPlayerView: store.userInfos.isOnPlayerView,
+  }));
 
-        {(!isGameMaster || isOnPlayerView) && (
-          <RightPanel triggerError={triggerError} />
-        )}
-        {isGameMaster && !isOnPlayerView && <SoundPanel />}
-      </Fragment>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <MapGenerator />
+      {((isGameMaster && isOnPlayerView) || !isGameMaster) && <ChatPanel />}
+      {isGameMaster && !isOnPlayerView && <GMMapPanel />}
+      {(!isGameMaster || isOnPlayerView) && <PlayerMapPanel />}
 
-const mapStateToProps = store => ({
-  isOnPlayerView: store.appState.isOnPlayerView,
-  isGameMaster: store.appState.isGameMaster,
-});
-
-MiddlePanel.propTypes = {
-  buyItem: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  isItemDescriptionShowed: PropTypes.bool.isRequired,
-  isItemShowed: PropTypes.bool.isRequired,
-  itemsList: PropTypes.array.isRequired,
-  itemToDescribe: PropTypes.object.isRequired,
-  triggerError: PropTypes.func.isRequired,
+      {(!isGameMaster || isOnPlayerView) && <RightPanel />}
+      {isGameMaster && !isOnPlayerView && <SoundPanel />}
+    </Fragment>
+  );
 };
 
-export default connect(mapStateToProps)(MiddlePanel);
+export default MiddlePanel;

@@ -20,6 +20,7 @@ import {
   currentMerchantRawLevelSelector,
 } from '../../selectors';
 import useMerchants from '../../hooks/useMerchants';
+import useApp from '../../hooks/useApp';
 
 const styledPlayerMapContainer = {
   float: 'left',
@@ -57,13 +58,7 @@ const styledCadreSecondContainer = {
   paddingHorizontal: 10,
 };
 
-const PlayerMiddlePanel = ({
-  buyItem,
-  isItemDescriptionShowed,
-  itemToDescribe,
-  isItemShowed,
-  doSetState,
-}) => {
+const PlayerMiddlePanel = () => {
   const [currentTab, setCurrentTab] = useState('items');
   const [showEnhancers, setShowEnhancers] = useState(false);
   const [choosedItem, setChoosedItem] = useState(null);
@@ -79,7 +74,10 @@ const PlayerMiddlePanel = ({
     itemsList,
     merchantEnhancementLevel,
     merchantEnhancementJob,
-    merchantRawLevel
+    merchantRawLevel,
+    isItemShowed,
+    itemToDescribe,
+    isItemDescriptionShowed,
   } = useSelector(store => ({
     character: store.character,
     currentMerchant: store.merchants.currentMerchant,
@@ -88,10 +86,14 @@ const PlayerMiddlePanel = ({
     itemsList: currentItemsListSelector(store),
     merchantEnhancementLevel: currentMerchantEnhancementLevelSelector(store),
     merchantEnhancementJob: currentMerchantJobSelector(store),
-    merchantRawLevel:currentMerchantRawLevelSelector(store),
+    merchantRawLevel: currentMerchantRawLevelSelector(store),
+    isItemShowed: store.merchants.isItemShowed,
+    itemToDescribe: store.merchants.itemToDescribe,
+    isItemDescriptionShowed: store.merchants.isItemDescriptionShowed,
   }));
 
   const { enhanceWeapons } = useMerchants();
+  const { buyItem } = useApp();
 
   useEffect(() => {
     resetTabs();
@@ -129,10 +131,11 @@ const PlayerMiddlePanel = ({
     setChoosedEnhancer1(null);
     setChoosedEnhancer2(null);
     setEnhancePrice(0);
-    doSetState({
-      isItemDescriptionShowed: false,
-      itemDescribed: 0,
-    });
+    // @TODO
+    // doSetState({
+    //   isItemDescriptionShowed: false,
+    //   itemDescribed: 0,
+    // });
   };
 
   const changeTab = newTab => {
@@ -159,16 +162,14 @@ const PlayerMiddlePanel = ({
     if (currentTab === 'enhancements') {
       enhancePrice =
         Math.ceil(
-          enhancePrice *
-            (0.75 + parseInt(merchantRawLevel * 0.1, 10)),
+          enhancePrice * (0.75 + parseInt(merchantRawLevel * 0.1, 10)),
         ) +
         15 +
         Math.ceil(3 * parseInt(merchantRawLevel, 10));
     } else {
       enhancePrice =
         Math.ceil(
-          enhancePrice *
-            (1.25 + parseInt(merchantRawLevel * 0.1, 10)),
+          enhancePrice * (1.25 + parseInt(merchantRawLevel * 0.1, 10)),
         ) +
         30 +
         Math.ceil(7 * parseInt(merchantRawLevel, 10));
@@ -341,14 +342,6 @@ const PlayerMiddlePanel = ({
       )}
     </div>
   );
-};
-
-PlayerMiddlePanel.propTypes = {
-  isItemShowed: PropTypes.bool.isRequired,
-  isItemDescriptionShowed: PropTypes.bool.isRequired,
-  itemToDescribe: PropTypes.object.isRequired,
-  buyItem: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
 };
 
 export default PlayerMiddlePanel;

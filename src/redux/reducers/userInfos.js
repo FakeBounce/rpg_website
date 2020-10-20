@@ -3,14 +3,15 @@ import {
   SET_UID,
   SET_USER_INFOS,
   SET_ALL_CHARACTERS,
-} from "../actionsTypes/actionsTypesUserInfos";
-import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
+  SETUP_CHARACTER_CREATION,
+} from '../actionsTypes/actionsTypesUserInfos';
+import { RESET_APP } from '../actionsTypes/actionsTypesAppState';
 
 const initialState = {
-  pseudo: "",
-  uid: "",
-  email: "",
-  password: "",
+  pseudo: '',
+  uid: '',
+  email: '',
+  password: '',
   characters: [],
 };
 
@@ -38,6 +39,12 @@ const userInfos = (state = initialState, action) => {
       return {
         ...state,
         characters: action.payload,
+      };
+    }
+    case SETUP_CHARACTER_CREATION: {
+      return {
+        ...state,
+        ...action.payload,
       };
     }
     case RESET_APP: {

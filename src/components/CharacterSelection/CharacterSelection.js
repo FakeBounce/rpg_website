@@ -45,23 +45,25 @@ const styledCenterHeader = {
   position: 'relative',
 };
 
-const CharacterSelection = ({
-  chooseStory,
-  keepCharacter,
-}) => {
+const CharacterSelection = () => {
   const [isAnUpdate, setIsAnUpdate] = useState(false);
   const [updateCharacterId, setUpdateCharacterId] = useState(1);
 
-  const { triggerError } = useApp();
-
+  const { triggerError, keepCharacter, chooseStory } = useApp();
   const dispatch = useDispatch();
 
-  const { currentStory, pseudo, uid, characters, characterCreation } = useSelector(store => ({
-    characterCreation: store.character.characterCreation,
+  const {
+    currentStory,
+    pseudo,
+    uid,
+    characters,
+    characterCreation,
+  } = useSelector(store => ({
     currentStory: store.appState.currentStory,
     pseudo: store.userInfos.pseudo,
     uid: store.userInfos.uid,
     characters: store.userInfos.characters,
+    characterCreation: store.userInfos.characterCreation,
   }));
 
   const getCharacters = () => {
@@ -268,14 +270,6 @@ const CharacterSelection = ({
       </CharacterProvider>
     </div>
   );
-};
-
-CharacterSelection.propTypes = {
-  characterCreation: PropTypes.bool.isRequired,
-  chooseStory: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
-  keepCharacter: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
 };
 
 export default CharacterSelection;

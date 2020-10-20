@@ -137,7 +137,6 @@ const MapEditionPanel = ({ changeCurrentScale }) => {
 
 MapEditionPanel.propTypes = {
   changeCurrentScale: PropTypes.func.isRequired,
-  doSetState: PropTypes.func.isRequired,
   dispatchCallPrintError: PropTypes.func.isRequired,
 };
 

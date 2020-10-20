@@ -1,43 +1,65 @@
-import React, { useState } from "react";
-
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import TeamPanel from "../components/TeamCharacters/TeamPanel";
+import React, { useState } from 'react';
+import firebase from 'firebase';
+import TeamPanel from '../components/TeamCharacters/TeamPanel';
 import {
   widthRightPanel,
   heightHeader,
-} from "../components/Utils/StyleConstants";
-import CharacterPanel from "../components/CharacterPanel";
-import ExchangePanel from "../components/ExchangePanel";
-import SongPanel from "../components/SongPanel";
-import { connect } from "react-redux";
-import { useChatContext } from "../contexts/chatContext";
-import { callListenOtherCharacter } from "../redux/actions/actionsCharacter";
+} from '../components/Utils/StyleConstants';
+import CharacterPanel from '../components/CharacterPanel';
+import ExchangePanel from '../components/ExchangePanel';
+import SongPanel from '../components/SongPanel';
+import { useSelector, useDispatch } from 'react-redux';
+import { useChatContext } from '../contexts/chatContext';
+import useApp from '../hooks/useApp';
+import { CALL_LISTEN_OTHER_CHARACTER } from '../redux/actionsTypes/actionsTypesCharacter';
 
 const styles = {
   RightPanel: {
-    position: "absolute",
+    position: 'absolute',
     top: `${heightHeader}px`,
     right: 0,
-    borderLeft: "1px solid black",
+    borderLeft: '1px solid black',
     width: `${widthRightPanel}px`,
     height: `${window.innerHeight - heightHeader}px`,
   },
 };
 
-const RightPanel = props => {
+const RightPanel = () => {
   const [panelState, setPanelState] = useState({
-    status: props.character.status ? props.character.status : "OK",
-    infoTab: "Weapons",
+    status: character.status ? character.status : 'OK',
+    infoTab: 'Weapons',
     damageTaken: 0,
     gold: 0,
     currentExchangeCharacter: null,
     isOnChar: true,
   });
+  const dispatch = useDispatch();
   const { setChatInput } = useChatContext();
+  const { triggerError } = useApp();
+
+  const {
+    currentStory,
+    isGameMaster,
+    characterUid,
+    character,
+    song,
+  } = useSelector(store => ({
+    currentStory: store.appState.currentStory,
+    isGameMaster: store.appState.isGameMaster,
+    characterUid: store.character.userUid,
+    character: store.character,
+    song: store.sounds.song,
+  }));
+
+  const dispatchListenCharacter = payload => {
+    dispatch({
+      type: CALL_LISTEN_OTHER_CHARACTER,
+      payload,
+    });
+  };
 
   const chatWithTeamMember = receiverPseudo => {
-    if (receiverPseudo === "GM") {
+    if (receiverPseudo === 'GM') {
       setChatInput(`/gmw `);
     } else {
       setChatInput(`/w ${receiverPseudo} `);
@@ -45,7 +67,7 @@ const RightPanel = props => {
   };
 
   const goldWithTeamMember = receiverPseudo => {
-    if (receiverPseudo === "GM") {
+    if (receiverPseudo === 'GM') {
       setChatInput(`/goldgm `);
     } else {
       setChatInput(`/gold ${receiverPseudo} `);
@@ -76,15 +98,10 @@ const RightPanel = props => {
   };
 
   const onLifeChange = () => {
-    const {
-      character: { health, maxHealth },
-      characterUid,
-      currentStory,
-      triggerError,
-    } = props;
+    const { health, maxHealth } = character;
     const { damageTaken } = panelState;
 
-    console.log("damageTaken", damageTaken);
+    console.log('damageTaken', damageTaken);
     const healthLeft =
       parseInt(health, 10) + damageTaken < 0
         ? 0
@@ -95,11 +112,11 @@ const RightPanel = props => {
     firebase
       .database()
       .ref(
-        "stories/" +
+        'stories/' +
           currentStory +
-          "/characters/" +
+          '/characters/' +
           characterUid +
-          "/character/health",
+          '/character/health',
       )
       .set(parseInt(healthLeft, 10))
       .catch(error => {
@@ -109,17 +126,16 @@ const RightPanel = props => {
   };
 
   const onStatusChange = () => {
-    const { characterUid, currentStory, triggerError } = props;
     const { status } = panelState;
 
     firebase
       .database()
       .ref(
-        "stories/" +
+        'stories/' +
           currentStory +
-          "/characters/" +
+          '/characters/' +
           characterUid +
-          "/character/status",
+          '/character/status',
       )
       .set(status)
       .catch(error => {
@@ -129,8 +145,6 @@ const RightPanel = props => {
   };
 
   const onItemUse = (i, value) => {
-    const { characterUid, character, currentStory, triggerError } = props;
-
     if (value > -1) {
       const newCharacterItems = [...character.items];
 
@@ -148,11 +162,11 @@ const RightPanel = props => {
       firebase
         .database()
         .ref(
-          "stories/" +
+          'stories/' +
             currentStory +
-            "/characters/" +
+            '/characters/' +
             characterUid +
-            "/character",
+            '/character',
         )
         .set(newCharacter)
         .catch(error => {
@@ -163,7 +177,6 @@ const RightPanel = props => {
   };
 
   const onItemExchange = (i, value, givableItem) => {
-    const { currentStory, triggerError } = props;
     const { currentExchangeCharacter } = panelState;
 
     const newCharacterItems = currentExchangeCharacter.items
@@ -188,11 +201,11 @@ const RightPanel = props => {
     firebase
       .database()
       .ref(
-        "stories/" +
+        'stories/' +
           currentStory +
-          "/characters/" +
+          '/characters/' +
           currentExchangeCharacter.userUid +
-          "/character/items",
+          '/character/items',
       )
       .set(newCharacterItems)
       .then(() => {
@@ -205,7 +218,6 @@ const RightPanel = props => {
   };
 
   const onWeaponExchange = (i, givableItem) => {
-    const { characterUid, character, currentStory, triggerError } = props;
     const { currentExchangeCharacter } = panelState;
 
     const newCharacterItems = currentExchangeCharacter.weapons
@@ -217,11 +229,11 @@ const RightPanel = props => {
     firebase
       .database()
       .ref(
-        "stories/" +
+        'stories/' +
           currentStory +
-          "/characters/" +
+          '/characters/' +
           currentExchangeCharacter.userUid +
-          "/character/weapons",
+          '/character/weapons',
       )
       .set(newCharacterItems)
       .then(() => {
@@ -232,11 +244,11 @@ const RightPanel = props => {
         firebase
           .database()
           .ref(
-            "stories/" +
+            'stories/' +
               currentStory +
-              "/characters/" +
+              '/characters/' +
               characterUid +
-              "/character",
+              '/character',
           )
           .set(character)
           .catch(error => {
@@ -252,13 +264,6 @@ const RightPanel = props => {
 
   // for GM only
   const onGoldChange = () => {
-    const {
-      character,
-      currentStory,
-      characterUid,
-      isGameMaster,
-      triggerError,
-    } = props;
     const { gold } = panelState;
 
     if (isGameMaster) {
@@ -267,11 +272,11 @@ const RightPanel = props => {
       firebase
         .database()
         .ref(
-          "stories/" +
+          'stories/' +
             currentStory +
-            "/characters/" +
+            '/characters/' +
             characterUid +
-            "/character/gold",
+            '/character/gold',
         )
         .set(goldToSet)
         .catch(error => {
@@ -282,22 +287,15 @@ const RightPanel = props => {
   };
 
   const modifyCurrentCharacter = newUid => {
-    const {
-      currentStory,
-      isGameMaster,
-      dispatchListenCharacter,
-      characterUid,
-    } = props;
-
     if (isGameMaster) {
       firebase
         .database()
         .ref(
-          "stories/" +
+          'stories/' +
             currentStory +
-            "/characters/" +
+            '/characters/' +
             characterUid +
-            "/character",
+            '/character',
         )
         .off();
 
@@ -318,8 +316,6 @@ const RightPanel = props => {
       isOnChar: !panelState.isOnChar,
     });
   };
-
-  const { triggerError } = props;
 
   const {
     status,
@@ -345,7 +341,6 @@ const RightPanel = props => {
           onStatusChange={onStatusChange}
           toggleIsOnChar={toggleIsOnChar}
           status={status}
-          triggerError={triggerError}
         />
       ) : (
         <SongPanel toggleIsOnChar={toggleIsOnChar} />
@@ -368,25 +363,4 @@ const RightPanel = props => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchListenCharacter: payload => {
-      dispatch(callListenOtherCharacter(payload));
-    },
-  };
-};
-
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-  isGameMaster: store.appState.isGameMaster,
-  characterUid: store.character.userUid,
-  character: store.character,
-  song: store.sounds.song,
-});
-
-RightPanel.propTypes = {
-  triggerError: PropTypes.func.isRequired,
-  dispatchListenCharacter: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RightPanel);
+export default RightPanel;
