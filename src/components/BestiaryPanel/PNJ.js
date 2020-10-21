@@ -9,7 +9,6 @@ import { colors } from '../Utils/Constants';
 
 const styledImage = {
   position: 'relative',
-  float: 'left',
   width: widthImageBestiary,
   display: 'inline-block',
 };

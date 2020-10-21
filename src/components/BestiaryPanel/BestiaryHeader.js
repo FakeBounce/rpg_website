@@ -10,6 +10,7 @@ import SelectMapper from '../Utils/SelectMapper';
 const styledBestiaryHeader = {
   height: 25,
   width: '100%',
+  marginTop: "10px",
 };
 
 const styledFilterContainer = {

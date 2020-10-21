@@ -29,9 +29,7 @@ const styledItemColumn = {
   overflowX: 'hidden',
 };
 
-const TownsHistorySoloMerchant = ({
-  showedMerchant,
-}) => {
+const TownsHistorySoloMerchant = ({ showedMerchant }) => {
   const { currentStory, characterGold, characterEducation } = useSelector(
     store => ({
       currentStory: store.appState.currentStory,
