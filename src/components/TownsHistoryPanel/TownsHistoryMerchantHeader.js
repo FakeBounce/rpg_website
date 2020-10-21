@@ -8,16 +8,16 @@ const styledMerchantHeader = {
   position: 'relative',
 };
 
-const TownsHistoryMerchantHeader = ({ merchant }) => {
+const TownsHistoryMerchantHeader = ({ currentMerchant }) => {
   return (
     <div style={styledMerchantHeader}>
-      {merchant.name}, {merchant.job}
+      {currentMerchant.name}, {currentMerchant.job}
     </div>
   );
 };
 
 TownsHistoryMerchantHeader.propTypes = {
-  merchant: PropTypes.object.isRequired,
+  currentMerchant: PropTypes.object.isRequired,
 };
 
 export default TownsHistoryMerchantHeader;
