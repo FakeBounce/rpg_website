@@ -14,6 +14,13 @@ export const callSetCharacter = payload => {
   };
 };
 
+export const setCharacterId = payload => {
+  return {
+    type: actionsTypesCharacter.SET_CHARACTER_ID,
+    payload,
+  };
+};
+
 export const callListenOtherCharacter = payload => {
   return {
     type: actionsTypesCharacter.CALL_LISTEN_OTHER_CHARACTER,

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { cursorPointer } from '../Utils/StyleConstants';
+import useCharacter from '../../hooks/useCharacter';
 
 const styledItem = {
   display: 'inline-block',
@@ -18,13 +19,8 @@ const styledText = {
   float: 'left',
   display: 'inline-block',
 };
-const CharacterPreview = ({
-  icon,
-  name,
-  chooseCharacter,
-  modifyCharacter,
-  id,
-}) => {
+const CharacterPreview = ({ icon, name, id }) => {
+  const { chooseCharacter, modifyCharacter } = useCharacter();
   return (
     <div style={styledItem}>
       <img src={icon} alt={name} style={styledIcon} />
@@ -39,8 +35,6 @@ CharacterPreview.propTypes = {
   id: PropTypes.number.isRequired,
   icon: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  chooseCharacter: PropTypes.func.isRequired,
-  modifyCharacter: PropTypes.func.isRequired,
 };
 
 export default CharacterPreview;

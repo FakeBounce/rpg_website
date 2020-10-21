@@ -14,6 +14,7 @@ import {
   SET_CHARACTER_ID,
 } from '../../redux/actionsTypes/actionsTypesCharacter';
 import { SET_ALL_CHARACTERS } from '../../redux/actionsTypes/actionsTypesUserInfos';
+import useCharacter from '../../hooks/useCharacter';
 
 const styledBoxHeader = {
   width: '100%',
@@ -46,179 +47,29 @@ const styledCenterHeader = {
 };
 
 const CharacterSelection = () => {
-  const [isAnUpdate, setIsAnUpdate] = useState(false);
-  const [updateCharacterId, setUpdateCharacterId] = useState(1);
-
-  const { triggerError, keepCharacter, chooseStory } = useApp();
-  const dispatch = useDispatch();
+  const { keepCharacter, goToCharacterForm, calculatePointsLeft } = useCharacter();
+  const { chooseStory } = useApp();
 
   const {
-    currentStory,
-    pseudo,
     uid,
     characters,
     characterCreation,
+    characterId,
+    isUpdating,
   } = useSelector(store => ({
-    currentStory: store.appState.currentStory,
-    pseudo: store.userInfos.pseudo,
     uid: store.userInfos.uid,
     characters: store.userInfos.characters,
     characterCreation: store.userInfos.characterCreation,
+    characterId: store.userInfos.characterId,
+    isUpdating: store.userInfos.isUpdating,
   }));
 
   const getCharacters = () => {
     return Object.keys(characters).map(charKey => {
       return (
-        <CharacterPreview
-          key={`char-${charKey}`}
-          {...characters[charKey]}
-          chooseCharacter={chooseCharacter}
-          modifyCharacter={modifyCharacter}
-        />
+        <CharacterPreview key={`char-${charKey}`} {...characters[charKey]} />
       );
     });
-  };
-
-  const modifyCharacter = id => {
-    setIsAnUpdate(true);
-    setUpdateCharacterId(id);
-    dispatch({ type: SET_CHARACTER_CREATION, payload: true });
-  };
-
-  const chooseCharacter = id => {
-    const charToRegister = characters[id];
-    charToRegister.gold = Math.floor(
-      Math.random() * characters[id].attributes.luck * 5 + 5,
-    );
-    charToRegister.status = 'OK';
-    // @TODO : sagas
-    firebase
-      .database()
-      .ref('stories/' + currentStory + '/characters/' + uid)
-      .set({ character: charToRegister, characterId: id })
-      .then(() => {
-        dispatch({ type: SET_CHARACTER, payload: charToRegister });
-        dispatch({ type: SET_CHARACTER_ID, payload: id });
-        chooseStory(currentStory);
-      })
-      .catch(error => {
-        // Handle Errors here.
-        triggerError(error);
-      });
-  };
-
-  const goToCharacterForm = () => {
-    dispatch({ type: SET_CHARACTER_CREATION, payload: true });
-  };
-
-  const updateCharacter = character => {
-    setIsAnUpdate(true);
-    setUpdateCharacterId(0);
-    const charTab = characters;
-    charTab[character.id] = character;
-    dispatch({ type: SET_ALL_CHARACTERS, payload: charTab });
-    dispatch({ type: SET_CHARACTER_ID, payload: character.id });
-    dispatch({ type: SET_CHARACTER, payload: character });
-
-    firebase
-      .database()
-      .ref('users/' + uid + '/characters')
-      .set({ ...charTab })
-      .then(() => {
-        // @TODO : sagas
-        firebase
-          .database()
-          .ref('stories/' + currentStory + '/characters/' + uid)
-          .set({
-            character,
-            characterId: character.id,
-          })
-          .then(() => {
-            chooseStory(currentStory);
-          })
-          .catch(error => {
-            // Handle Errors here.
-            triggerError(error);
-          });
-      })
-      .catch(error => {
-        // Handle Errors here.
-        triggerError(error);
-      });
-  };
-
-  const createCharacter = character => {
-    const charTab = characters;
-
-    const charToRegister = character;
-    charToRegister.gold =
-      Math.floor(Math.random() * character.attributes.luck + 1) * 5;
-    charToRegister.status = 'OK';
-    charToRegister.userPseudo = pseudo;
-    charToRegister.userUid = uid;
-
-    charTab[character.id] = charToRegister;
-    dispatch({ type: SET_ALL_CHARACTERS, payload: charTab });
-    dispatch({ type: SET_CHARACTER_ID, payload: character.id });
-    dispatch({ type: SET_CHARACTER, payload: charToRegister });
-
-    firebase
-      .database()
-      .ref('users/' + uid + '/characters')
-      .set({ ...charTab })
-      .then(() => {
-        firebase
-          .database()
-          .ref('stories/' + currentStory + '/characters/' + uid)
-          .set({
-            character: charToRegister,
-            characterId: character.id,
-          })
-          .then(() => {
-            chooseStory(currentStory);
-          })
-          .catch(error => {
-            // Handle Errors here.
-            triggerError(error);
-          });
-      })
-      .catch(error => {
-        // Handle Errors here.
-        triggerError(error);
-      });
-  };
-
-  const resetStory = () => {
-    chooseStory(-1);
-  };
-
-  const calculatePointsLeft = () => {
-    const {
-      attributes: {
-        strength,
-        dexterity,
-        luck,
-        charisma,
-        education,
-        magic,
-        perception,
-        constitution,
-        willpower = 50,
-      },
-    } = characters[updateCharacterId];
-
-    return (
-      450 -
-      strength -
-      dexterity -
-      luck -
-      constitution -
-      charisma -
-      education -
-      magic -
-      perception -
-      willpower
-    );
   };
 
   if (typeof characters[1] !== 'undefined' && !characterCreation) {
@@ -244,28 +95,29 @@ const CharacterSelection = () => {
     >
       <div style={styledBoxHeader}>
         <div style={styledSideHeaders}>
-          <ButtonLarge onClick={resetStory}>Select another story</ButtonLarge>
+          <ButtonLarge
+            onClick={() => {
+              chooseStory(-1);
+            }}
+          >
+            Select another story
+          </ButtonLarge>
         </div>
         <div style={styledCenterHeader}>
-          {isAnUpdate ? 'Update a character' : 'Create a character'}
+          {isUpdating ? 'Update a character' : 'Create a character'}
         </div>
       </div>
       <CharacterProvider
         uid={uid}
-        id={isAnUpdate ? updateCharacterId : Object.keys(characters).length + 1}
-        isAnUpdate={isAnUpdate}
-        character={isAnUpdate ? { ...characters[updateCharacterId] } : {}}
+        id={isUpdating ? characterId : Object.keys(characters).length + 1}
+        isUpdating={isUpdating}
+        character={isUpdating ? { ...characters[characterId] } : {}}
         totalPointsleft={calculatePointsLeft()}
       >
         <CharacterCreationPanel
-          id={
-            isAnUpdate ? updateCharacterId : Object.keys(characters).length + 1
-          }
-          createCharacter={createCharacter}
-          updateCharacter={updateCharacter}
-          triggerError={triggerError}
-          isAnUpdate={isAnUpdate}
-          character={isAnUpdate ? { ...characters[updateCharacterId] } : {}}
+          id={isUpdating ? characterId : Object.keys(characters).length + 1}
+          isUpdating={isUpdating}
+          character={isUpdating ? { ...characters[characterId] } : {}}
         />
       </CharacterProvider>
     </div>
