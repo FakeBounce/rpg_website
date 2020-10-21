@@ -4,6 +4,7 @@ import {
   SET_USER_INFOS,
   SET_ALL_CHARACTERS,
   SETUP_CHARACTER_CREATION,
+  SET_IS_UPDATING,
 } from '../actionsTypes/actionsTypesUserInfos';
 import { RESET_APP } from '../actionsTypes/actionsTypesAppState';
 
@@ -13,6 +14,7 @@ const initialState = {
   email: '',
   password: '',
   characters: [],
+  isUpdating: false,
 };
 
 const userInfos = (state = initialState, action) => {
@@ -29,6 +31,7 @@ const userInfos = (state = initialState, action) => {
         uid: action.payload,
       };
     }
+    case SETUP_CHARACTER_CREATION:
     case SET_USER_INFOS: {
       return {
         ...state,
@@ -41,10 +44,10 @@ const userInfos = (state = initialState, action) => {
         characters: action.payload,
       };
     }
-    case SETUP_CHARACTER_CREATION: {
+    case SET_IS_UPDATING: {
       return {
         ...state,
-        ...action.payload,
+        isUpdating: action.payload,
       };
     }
     case RESET_APP: {

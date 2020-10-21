@@ -7,9 +7,7 @@ import {
   UPDATE_CURRENT_STORY,
   SET_GAME_MASTER,
 } from '../redux/actionsTypes/actionsTypesAppState';
-import {
-  SETUP_CHARACTER_CREATION,
-} from '../redux/actionsTypes/actionsTypesUserInfos';
+import { SETUP_CHARACTER_CREATION } from '../redux/actionsTypes/actionsTypesUserInfos';
 import {
   CALL_LISTEN_MUSIC,
   CALL_LISTEN_NOISE,
@@ -37,18 +35,7 @@ import { CALL_LISTEN_TEAM_CHARACTERS } from '../redux/actionsTypes/actionsTypesT
 
 const useApp = () => {
   const dispatch = useDispatch();
-  const {
-    oldCharacterId,
-    oldCharacterCreation,
-    characterId,
-    characterCreation,
-    stories,
-    uid,
-  } = useSelector(store => ({
-    characterId: store.userInfos.characterId,
-    characterCreation: store.userInfos.characterCreation,
-    oldCharacterId: store.userInfos.oldCharacterId,
-    oldCharacterCreation: store.userInfos.oldCharacterCreation,
+  const { stories, uid } = useSelector(store => ({
     stories: store.appState.stories,
     uid: store.userInfos.uid,
   }));
@@ -127,9 +114,6 @@ const useApp = () => {
   };
   const dispatchCallGetItemList = () => {
     dispatch({ type: CALL_GET_ITEM_LIST });
-  };
-  const dispatchSetupCharacterCreation = payload => {
-    dispatch({ type: SETUP_CHARACTER_CREATION, payload });
   };
 
   const dispatchCallSignOut = () => {
@@ -223,24 +207,6 @@ const useApp = () => {
     dispatchToggleMusic();
   };
 
-  const keepCharacter = () => {
-    dispatchSetupCharacterCreation({
-      characterId: oldCharacterId,
-      characterCreation: oldCharacterCreation,
-      oldCharacterId: 0,
-      oldCharacterCreation: false,
-    });
-  };
-
-  const selectAnotherCharacter = () => {
-    dispatchSetupCharacterCreation({
-      oldCharacterId: characterId,
-      oldCharacterCreation: characterCreation,
-      characterId: 0,
-      characterCreation: false,
-    });
-  };
-
   const buyItem = () => {};
 
   return {
@@ -248,8 +214,6 @@ const useApp = () => {
     chooseStory,
     toggleMusic,
     dispatchCallSetTilesTypes,
-    keepCharacter,
-    selectAnotherCharacter,
     buyItem,
     signOut,
   };
