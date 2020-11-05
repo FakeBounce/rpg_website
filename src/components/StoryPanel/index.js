@@ -74,14 +74,14 @@ const StoriesPanel = () => {
     <div style={styledStoryPanel}>
       <h1 style={styledChooseStoryTitle}>Choose a story</h1>
       <div style={styledStoriesContainer}>
-        {stories.length > 0 &&
-          stories.map((s, index) => {
+        {stories &&
+          Object.keys(stories).map(sKey => {
             return (
               <Story
-                key={`${s.name}-${index}`}
-                chooseStory={() => chooseStory(index)}
-                name={s.name}
-                wallpaper={s.wallpaper}
+                key={sKey}
+                chooseStory={() => chooseStory(sKey)}
+                name={stories[sKey].name}
+                wallpaper={stories[sKey].wallpaper}
                 triggerError={triggerError}
               />
             );

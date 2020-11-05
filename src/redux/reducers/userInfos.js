@@ -5,6 +5,7 @@ import {
   SET_ALL_CHARACTERS,
   SETUP_CHARACTER_CREATION,
   SET_IS_UPDATING,
+  SET_CHARACTER_ID,
 } from '../actionsTypes/actionsTypesUserInfos';
 import { RESET_APP } from '../actionsTypes/actionsTypesAppState';
 
@@ -15,6 +16,8 @@ const initialState = {
   password: '',
   characters: [],
   isUpdating: false,
+  characterCreation: false,
+  characterId: '',
 };
 
 const userInfos = (state = initialState, action) => {
@@ -29,6 +32,12 @@ const userInfos = (state = initialState, action) => {
       return {
         ...state,
         uid: action.payload,
+      };
+    }
+    case SET_CHARACTER_ID: {
+      return {
+        ...state,
+        characterId: action.payload,
       };
     }
     case SETUP_CHARACTER_CREATION:

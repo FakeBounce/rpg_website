@@ -8,9 +8,9 @@ const ErrorPrinter = ({ error }) => {
   useEffect(() => {
     if (error && error !== "") {
       console.log("error", error);
-      notify(error.toString(), "error", {
-        toastId: "error",
-      });
+      // notify(error.toString(), "error", {
+      //   toastId: "error",
+      // });
     }
   }, [error, notify]);
 

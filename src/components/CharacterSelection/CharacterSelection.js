@@ -1,19 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import CharacterCreationPanel from '../CharacterCreation/CharacterCreationPanel';
-import PropTypes from 'prop-types';
 import CharacterPreview from './CharacterPreview';
-import firebase from 'firebase';
 import ButtonLarge from '../Utils/ButtonLarge';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CharacterProvider } from '../../contexts/characterContext';
 import useApp from '../../hooks/useApp';
-import {
-  SET_CHARACTER,
-  SET_CHARACTER_CREATION,
-  SET_CHARACTER_ID,
-} from '../../redux/actionsTypes/actionsTypesCharacter';
-import { SET_ALL_CHARACTERS } from '../../redux/actionsTypes/actionsTypesUserInfos';
 import useCharacter from '../../hooks/useCharacter';
 
 const styledBoxHeader = {
@@ -47,21 +39,19 @@ const styledCenterHeader = {
 };
 
 const CharacterSelection = () => {
-  const { keepCharacter, goToCharacterForm, calculatePointsLeft } = useCharacter();
+  const { keepCharacter, goToCharacterForm } = useCharacter();
   const { chooseStory } = useApp();
 
   const {
-    uid,
     characters,
     characterCreation,
-    characterId,
     isUpdating,
+    oldCharacterId,
   } = useSelector(store => ({
-    uid: store.userInfos.uid,
     characters: store.userInfos.characters,
     characterCreation: store.userInfos.characterCreation,
-    characterId: store.userInfos.characterId,
     isUpdating: store.userInfos.isUpdating,
+    oldCharacterId: store.userInfos.oldCharacterId,
   }));
 
   const getCharacters = () => {
@@ -72,7 +62,7 @@ const CharacterSelection = () => {
     });
   };
 
-  if (typeof characters[1] !== 'undefined' && !characterCreation) {
+  if (oldCharacterId !== '' && !characterCreation) {
     return (
       <div>
         <button style={styledBoxBack} onClick={keepCharacter}>
@@ -107,18 +97,8 @@ const CharacterSelection = () => {
           {isUpdating ? 'Update a character' : 'Create a character'}
         </div>
       </div>
-      <CharacterProvider
-        uid={uid}
-        id={isUpdating ? characterId : Object.keys(characters).length + 1}
-        isUpdating={isUpdating}
-        character={isUpdating ? { ...characters[characterId] } : {}}
-        totalPointsleft={calculatePointsLeft()}
-      >
-        <CharacterCreationPanel
-          id={isUpdating ? characterId : Object.keys(characters).length + 1}
-          isUpdating={isUpdating}
-          character={isUpdating ? { ...characters[characterId] } : {}}
-        />
+      <CharacterProvider>
+        <CharacterCreationPanel />
       </CharacterProvider>
     </div>
   );

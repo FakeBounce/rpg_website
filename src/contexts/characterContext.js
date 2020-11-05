@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useSelector } from 'react-redux';
 import firebase from 'firebase';
 import { addEmptyString, removeIndex, updateIndex } from '../arrayManipulator';
 import useApp from '../hooks/useApp';
+import useCharacter from '../hooks/useCharacter';
 
 const CharacterContext = React.createContext(undefined);
 
@@ -17,6 +19,7 @@ function CharacterProvider(props) {
   const [weapons, setWeapons] = useState([]);
   const [items, setItems] = useState([]);
   const [totalPointsleft, setTotalPointsleft] = useState(0);
+  const [currentPicture, setCurrentPicture] = useState({});
   const [attributes, setAttributes] = useState({
     charisma: 50,
     constitution: 50,
@@ -29,22 +32,30 @@ function CharacterProvider(props) {
     willpower: 50,
   });
 
+  const { uid, isUpdating, characterId, character } = useSelector(store => ({
+    uid: store.userInfos.uid,
+    isUpdating: store.userInfos.isUpdating,
+    characterId: store.userInfos.characterId,
+    character: store.character,
+  }));
+
   const { triggerError } = useApp();
+  const { createCharacter, updateCharacter } = useCharacter();
 
   useEffect(() => {
-    if (props.isAnUpdate) {
-      setName(props.name);
-      setIcon(props.icon);
-      setIconPath(props.iconPath);
-      setDescription(props.description);
-      setSkills(props.skills);
-      setAbilities(props.abilities);
-      setWeapons(props.weapons);
-      setItems(props.items);
-      setAttributes(props.attributes);
-      setTotalPointsleft(props.totalPointsleft);
+    if (isUpdating) {
+      setName(character.name);
+      setIcon(character.icon);
+      setIconPath(character.iconPath);
+      setDescription(character.description);
+      setSkills(character.skills);
+      setAbilities(character.abilities);
+      setWeapons(character.weapons);
+      setItems(character.items);
+      setAttributes(character.attributes);
+      setTotalPointsleft(0);
     }
-  }, [props]);
+  }, []);
 
   const onChangeAttribute = (name, value) => {
     let pointsLeft = 450;
@@ -68,7 +79,7 @@ function CharacterProvider(props) {
   const addSkill = () => {
     setSkills(
       addEmptyString(skills, 6, () =>
-        props.triggerError({
+        triggerError({
           message: "Can't have more than 6 skills",
         }),
       ),
@@ -136,15 +147,18 @@ function CharacterProvider(props) {
   };
 
   const onDrop = picture => {
-    const { uid, id, triggerError } = props;
     let storageRef = firebase.storage().ref();
-    const path =
-      'images/' +
-      uid +
-      '/character_' +
-      id +
-      '.' +
-      picture[picture.length - 1].name.split('.')[1];
+    setCurrentPicture(picture[picture.length - 1]);
+    let path;
+    if (isUpdating) {
+      path = `images/${uid}/character_${characterId}.${
+        picture[picture.length - 1].name.split('.')[1]
+      }`;
+    } else {
+      path = `images/${uid}/temp_character.${
+        picture[picture.length - 1].name.split('.')[1]
+      }`;
+    }
     storageRef
       .child(path)
       .put(picture[picture.length - 1])
@@ -164,8 +178,6 @@ function CharacterProvider(props) {
   };
 
   const removePicture = () => {
-    const { triggerError } = this.props;
-
     // Delete the file
     let storageRef = firebase.storage().ref();
     storageRef
@@ -180,6 +192,72 @@ function CharacterProvider(props) {
         // Uh-oh, an error occurred!
         triggerError(error);
       });
+  };
+
+  const validateBeforeCreate = () => {
+    if (totalPointsleft < 0) {
+      triggerError({
+        message: 'Cannot exceed points limit !',
+      });
+    } else if (name === '') {
+      triggerError({ message: 'Name cannot be empty !!' });
+    } else if (icon === '') {
+      triggerError({ message: 'Icon cannot be empty !' });
+    } else if (isUpdating) {
+      const health =
+        attributes.constitution !== character.constitution
+          ? parseInt(character.health, 10) +
+            (parseInt(attributes.constitution, 10) -
+              parseInt(character.constitution, 10))
+          : character.health;
+
+      const mentalState = character.willpower
+        ? attributes.willpower !== character.willpower
+          ? parseInt(character.mentalState, 10) +
+            (Math.ceil(parseInt(attributes.willpower, 10) / 8.5) -
+              Math.ceil(parseInt(character.willpower, 10) / 8.5))
+          : character.mentalState
+        : attributes.willpower;
+
+      updateCharacter({
+        attributes,
+        items,
+        skills,
+        abilities,
+        weapons,
+        iconPath,
+        description,
+        name,
+        icon,
+        health,
+        mentalState,
+        maxHealth: parseInt(attributes.constitution, 10) + 10,
+        maxMentalState: Math.ceil(parseInt(attributes.willpower, 10) / 8.5) + 1,
+        id: characterId,
+      });
+    } else {
+      createCharacter(
+        {
+          attributes,
+          items,
+          skills,
+          abilities,
+          weapons,
+          iconPath,
+          description,
+          name,
+          icon,
+          mentalState: Math.ceil(
+            (Math.ceil(parseInt(attributes.willpower, 10) / 8.5) + 1) / 2,
+          ),
+          maxMentalState:
+            Math.ceil(parseInt(attributes.willpower, 10) / 8.5) + 1,
+          health: parseInt(attributes.constitution, 10) + 10,
+          maxHealth: parseInt(attributes.constitution, 10) + 10,
+        },
+        currentPicture,
+      );
+    }
   };
 
   return (
@@ -213,6 +291,7 @@ function CharacterProvider(props) {
         totalPointsleft,
         attributes,
         onChangeAttribute,
+        validateBeforeCreate,
       }}
     >
       {props.children}

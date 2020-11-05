@@ -9,16 +9,16 @@ import {
   SET_ALL_STORIES,
   SET_STORY_USERS,
   RESET_APP,
-} from "../actionsTypes/actionsTypesAppState";
+} from '../actionsTypes/actionsTypesAppState';
 
 const initialState = {
-  currentStory: -1,
+  currentStory: '',
   isOnPlayerView: true,
   isGameMaster: false,
   isAuth: false,
   isAdmin: false,
-  gameMaster: "",
-  error: "",
+  gameMaster: '',
+  error: '',
   stories: [],
   users: [],
 };
@@ -26,7 +26,7 @@ const initialState = {
 const appState = (state = initialState, action) => {
   switch (action.type) {
     case PRINT_ERROR: {
-      console.log("printingError", action);
+      console.log('printingError', action);
       return {
         ...state,
         error: action.payload,
