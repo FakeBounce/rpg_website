@@ -26,7 +26,7 @@ function* soundsError(error = getTranslations("error.transfer.failed")) {
 export function* callResetSounds() {
   try {
     const currentStory = yield select(currentStorySelector);
-    if (currentStory > -1) {
+    if (currentStory !== "") {
       firebaseDbSet("/stories/" + currentStory + "/music", {
         musicMute: false,
         musicNameFirst: "",
@@ -72,7 +72,7 @@ export function* callStopNoise() {
   try {
     const currentStory = yield select(currentStorySelector);
     const noise = yield select(noiseSelector);
-    if (currentStory > -1) {
+    if (currentStory !== "") {
       firebaseDbSet("/stories/" + currentStory + "/noise", {
         ...noise,
         noiseStatus: "STOPPED",
@@ -101,7 +101,7 @@ export function* callStopSong() {
   try {
     const currentStory = yield select(currentStorySelector);
     const song = yield select(songSelector);
-    if (currentStory > -1) {
+    if (currentStory !== "") {
       firebaseDbSet("/stories/" + currentStory + "/song", {
         ...song,
         songName: "",
@@ -129,7 +129,7 @@ export function* watchCallStopSong() {
 export function* callLoadSong({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
-    if (currentStory > -1) {
+    if (currentStory !== "") {
       firebaseDbSet("/stories/" + currentStory + "/song", {
         ...payload,
       }).catch(error => {
@@ -155,7 +155,7 @@ export function* watchCallLoadSong() {
 export function* callLoadMusic({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
-    if (currentStory > -1) {
+    if (currentStory !== "") {
       firebaseDbSet("/stories/" + currentStory + "/music", {
         ...payload,
       }).catch(error => {
@@ -181,7 +181,7 @@ export function* watchCallLoadMusic() {
 export function* callLoadNoise({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
-    if (currentStory > -1) {
+    if (currentStory !== "") {
       firebaseDbSet("/stories/" + currentStory + "/noise", {
         ...payload,
       }).catch(error => {

@@ -75,7 +75,7 @@ export function* callAddNewEvent({ payload }) {
   try {
     console.log('payload', payload);
     const currentStory = yield select(currentStorySelector);
-    if (currentStory > -1) {
+    if (currentStory !== "") {
       const newPostKey = firebaseDbNewKey(`stories/${currentStory}/events`);
 
       console.log('newPostKey', newPostKey);

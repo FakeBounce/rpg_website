@@ -119,7 +119,7 @@ export const loadAllItems = (doSetState, currentStory = -1, cb = () => {}) => {
       });
       cb();
       // addIconPathToAllItems(snapshot.val());
-      if (currentStory > -1) {
+      if (currentStory !== "") {
         listenArtefacts(currentStory, snapshot.val(), doSetState);
       }
     })

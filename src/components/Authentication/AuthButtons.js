@@ -1,23 +1,23 @@
-import React from "react";
-import { Button } from "semantic-ui-react";
-import { cursorPointer } from "../Utils/StyleConstants";
+import React from 'react';
+import { Button } from 'semantic-ui-react';
+import { cursorPointer } from '../Utils/StyleConstants';
 
 const styledAuthButtonsContainer = {
-  width: "100%",
-  display: "flex",
-  justifyContent: "space-around",
-  alignItems: "center",
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   marginBottom: 30,
 };
 
-const AuthButtons = ({ signIn, signUp }) => {
+const AuthButtons = ({ signIn, signUp, signInGoogle }) => {
   return (
     <div style={styledAuthButtonsContainer}>
-      <Button.Group>
+      <Button.Group style={{ alignItems: 'center', display: 'flex' }}>
         <Button
           onClick={signIn}
           primary
-          style={{ width: 120, cursor: cursorPointer }}
+          style={{ width: 120, cursor: cursorPointer, height: 50 }}
         >
           Sign In
         </Button>
@@ -25,9 +25,17 @@ const AuthButtons = ({ signIn, signUp }) => {
         <Button
           onClick={signUp}
           positive
-          style={{ width: 120, cursor: cursorPointer }}
+          style={{ width: 120, cursor: cursorPointer, height: 50 }}
         >
           Sign Up
+        </Button>
+        <Button.Or />
+        <Button
+          onClick={signInGoogle}
+          secondary
+          style={{ width: 120, cursor: cursorPointer, height: 50 }}
+        >
+          Sign with Google
         </Button>
       </Button.Group>
     </div>

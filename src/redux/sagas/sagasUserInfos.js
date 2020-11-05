@@ -14,21 +14,21 @@ function* userInfosError(error = getTranslations('error.transfer.failed')) {
   yield put(actionsAppState.printError(''));
 }
 
-export function* callSetUserPseudo(pseudo) {
+export function* callSetUserPseudo({ payload }) {
   try {
     if (firebase.auth().currentUser.uid) {
       firebaseDbSet(
         'users/' + firebase.auth().currentUser.uid + '/pseudo',
-        pseudo,
+        payload.pseudo,
       ).catch(error => {
-        console.log('callLoadNoise set saga err:', { error });
+        console.log('callSetUserPseudo setting pseudo saga err:', { error });
       });
-      yield call(actionsUserInfos.setUserPseudo, pseudo);
+      yield put(actionsUserInfos.setUserPseudo(payload.pseudo));
     } else {
       yield call(userInfosError, 'No user authenticated');
     }
   } catch (error) {
-    console.log('callSetUserPseudo try saga err:', { error });
+    console.log('callSetUserPseudo global try saga err:', { error });
 
     yield call(userInfosError);
   }
@@ -51,7 +51,7 @@ export function* getAllUserCharacters() {
         firebaseDbOnce,
         `/users/${currentUid}/characters`,
       );
-      yield call(actionsUserInfos.setAllCharacters, allCharacters);
+      yield put(actionsUserInfos.setAllCharacters(allCharacters));
     } else {
       yield call(userInfosError, 'No user authenticated');
     }

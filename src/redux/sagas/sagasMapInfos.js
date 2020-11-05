@@ -136,7 +136,7 @@ export function* watchCallListenCurrentY() {
 function* getCurrentPosition() {
   const currentStory = yield select(currentStorySelector);
   try {
-    if (currentStory > -1) {
+    if (currentStory !== "") {
       const currentY = yield call(
         firebaseDbOnce,
         "stories/" + currentStory + "/currentY",

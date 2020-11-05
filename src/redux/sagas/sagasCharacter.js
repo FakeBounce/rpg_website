@@ -9,6 +9,7 @@ import {
 } from 'redux-saga/effects';
 
 import * as actionsTypesCharacter from '../actionsTypes/actionsTypesCharacter';
+import * as actionsTypesUserInfos from '../actionsTypes/actionsTypesUserInfos';
 import * as actionsCharacter from '../actions/actionsCharacter';
 import * as actionsAppState from '../actions/actionsAppState';
 import * as actionsUserInfos from '../actions/actionsUserInfos';
@@ -209,22 +210,19 @@ function* createCharacter({ payload }) {
       character: payload.character,
       characterId: newCharKey,
     }).catch(error => {
-      console.log('createCharacter set saga err:', { error });
+      console.log('createCharacter set to user saga err:', { error });
     });
 
     firebaseDbSet(`stories/${currentStory}/characters/${uid}`, {
       character: payload.charForStory,
       characterId: newCharKey,
     }).catch(error => {
-      console.log('createCharacter set saga err:', { error });
+      console.log('createCharacter set to story saga err:', { error });
     });
 
     storageTempReplacing(uid, newCharKey, payload.picture);
 
-    yield put(actionsTypesCharacter.CANCEL_LISTEN_CHARACTER);
-
-    // usefull ? since we listen after
-    // yield put(setCharacter(payload.charToRegister));
+    yield put(setCharacter(payload.charForStory));
 
     yield put(
       actionsUserInfos.setupCharacterCreation({
@@ -233,22 +231,9 @@ function* createCharacter({ payload }) {
       }),
     );
 
-    const channel = yield call(
-      onValueChannel,
-      '/stories/' + currentStory + '/characters/' + uid + '/character',
-    );
-    yield takeEvery(channel, function*(data) {
-      yield put(actionsCharacter.setCharacter(data));
-    });
-
-    yield take([
-      actionsTypesAppState.CANCEL_ALL_WATCH,
-      actionsTypesAppState.RESET_APP,
-      actionsTypesCharacter.CANCEL_LISTEN_CHARACTER,
-    ]);
-    channel.close();
+    yield put(actionsTypesUserInfos.CALL_GET_ALL_USER_CHARACTERS);
   } catch (error) {
-    console.log('createCharacter try saga err:', { error });
+    console.log('createCharacter try  global saga err:', { error });
 
     yield call(characterError);
   }

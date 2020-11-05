@@ -101,7 +101,6 @@ const RightPanel = () => {
     const { health, maxHealth } = character;
     const { damageTaken } = panelState;
 
-    console.log('damageTaken', damageTaken);
     const healthLeft =
       parseInt(health, 10) + damageTaken < 0
         ? 0

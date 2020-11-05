@@ -29,7 +29,6 @@ function MapGeneratorProvider(props) {
   const dispatchSetCurrentX = payload => {
     dispatch({ type: SET_CURRENT_X, payload });
   };
-  console.log('mapX',mapX)
 
   useEffect(() => {
       console.log('store.mapInfos.currentX',store.mapInfos.currentX)
