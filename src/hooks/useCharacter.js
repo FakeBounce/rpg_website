@@ -3,6 +3,7 @@ import {
   UPDATE_CHARACTER,
   CALL_SELECT_OTHER_CHARACTER,
   CALL_CREATE_CHARACTER,
+  CALL_DELETE_CHARACTER,
 } from '../redux/actionsTypes/actionsTypesCharacter';
 import {
   SET_IS_UPDATING,
@@ -37,6 +38,10 @@ const useCharacter = () => {
 
   const dispatchCreateCharacter = payload => {
     dispatch({ type: CALL_CREATE_CHARACTER, payload });
+  };
+
+  const dispatchDeleteCharacter = payload => {
+    dispatch({ type: CALL_DELETE_CHARACTER, payload });
   };
 
   const chooseCharacter = id => {
@@ -134,6 +139,10 @@ const useCharacter = () => {
     });
   };
 
+  const deleteCharacter = id => {
+    dispatchDeleteCharacter({ id });
+  };
+
   return {
     chooseCharacter,
     modifyCharacter,
@@ -141,6 +150,7 @@ const useCharacter = () => {
     updateCharacter,
     createCharacter,
     keepCharacter,
+    deleteCharacter,
     selectAnotherCharacter,
     calculatePointsLeft,
   };

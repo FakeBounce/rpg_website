@@ -31,7 +31,6 @@ function MapGeneratorProvider(props) {
   };
 
   useEffect(() => {
-      console.log('store.mapInfos.currentX',store.mapInfos.currentX)
     setMapX((store.mapInfos.currentX - 5) * -gridDimension);
     setMapY((store.mapInfos.currentY - 5) * -gridDimension);
   }, [store]);

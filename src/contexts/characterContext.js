@@ -147,34 +147,36 @@ function CharacterProvider(props) {
   };
 
   const onDrop = picture => {
-    let storageRef = firebase.storage().ref();
-    setCurrentPicture(picture[picture.length - 1]);
-    let path;
-    if (isUpdating) {
-      path = `images/${uid}/character_${characterId}.${
-        picture[picture.length - 1].name.split('.')[1]
-      }`;
-    } else {
-      path = `images/${uid}/temp_character.${
-        picture[picture.length - 1].name.split('.')[1]
-      }`;
+    if (picture.length > 0) {
+      let storageRef = firebase.storage().ref();
+      setCurrentPicture(picture[picture.length - 1]);
+      let path;
+      if (isUpdating) {
+        path = `images/${uid}/character_${characterId}.${
+          picture[picture.length - 1].name.split('.')[1]
+        }`;
+      } else {
+        path = `images/${uid}/temp_character.${
+          picture[picture.length - 1].name.split('.')[1]
+        }`;
+      }
+      storageRef
+        .child(path)
+        .put(picture[picture.length - 1])
+        .then(() => {
+          storageRef
+            .child(path)
+            .getDownloadURL()
+            .then(url => {
+              setIcon(url);
+              setIconPath(path);
+            })
+            .catch(error => {
+              // Handle any errors
+              triggerError(error);
+            });
+        });
     }
-    storageRef
-      .child(path)
-      .put(picture[picture.length - 1])
-      .then(() => {
-        storageRef
-          .child(path)
-          .getDownloadURL()
-          .then(url => {
-            setIcon(url);
-            setIconPath(path);
-          })
-          .catch(error => {
-            // Handle any errors
-            triggerError(error);
-          });
-      });
   };
 
   const removePicture = () => {

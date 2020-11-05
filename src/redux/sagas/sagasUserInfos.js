@@ -56,7 +56,7 @@ export function* getAllUserCharacters() {
       yield call(userInfosError, 'No user authenticated');
     }
   } catch (error) {
-    console.log('callSetUserPseudo try saga err:', { error });
+    console.log('getMerchantList global try saga err:', { error });
 
     yield call(userInfosError);
   }

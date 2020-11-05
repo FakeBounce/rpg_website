@@ -168,22 +168,6 @@ const useApp = () => {
       dispatchCallListenEventHistory();
     }
     dispatchCallListenTeamCharacters();
-    // firebase
-    //   .database()
-    //   .ref("/stories/" + i + "/characters")
-    //   .on("value", snapshot => {
-    //     const charactersFromStories = [];
-    //     if (typeof snapshot.val() !== "undefined" && snapshot.val()) {
-    //       Object.keys(snapshot.val()).map(key => {
-    //         charactersFromStories.push(snapshot.val()[key].character);
-    //         return null;
-    //       });
-    //     }
-    //     this.setState(state => ({
-    //       ...state,
-    //       storyCharacters: charactersFromStories,
-    //     }));
-    //   });
   };
 
   const signOut = () => {
