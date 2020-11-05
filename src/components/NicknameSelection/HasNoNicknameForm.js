@@ -37,7 +37,12 @@ const HasNoNicknameForm = () => {
             setPseudoInput(e.target.value.replace(/\s/g, ''));
           }}
         />
-        <ButtonLarge onClick={choosePseudo} style={{ marginTop: 20 }}>
+        <ButtonLarge
+          onClick={() => {
+            choosePseudo({ pseudo: pseudoInput });
+          }}
+          style={{ marginTop: 20 }}
+        >
           Validate
         </ButtonLarge>
       </div>

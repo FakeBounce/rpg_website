@@ -31,11 +31,8 @@ const styledSideHeaders = {
 };
 
 const styledCenterHeader = {
-  width: '50%',
-  height: '100%',
-  display: 'inline-block',
-  float: 'left',
-  position: 'relative',
+  display: 'flex',
+  justifyContent: 'center',
 };
 
 const CharacterSelection = () => {
@@ -76,6 +73,28 @@ const CharacterSelection = () => {
     );
   }
 
+  if (oldCharacterId !== '' && characterCreation) {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        <div style={styledBoxHeader}>
+          <div style={styledCenterHeader}>
+            {isUpdating ? 'Update a character' : 'Create a character'}
+          </div>
+          <button style={styledBoxBack} onClick={keepCharacter}>
+            Retourner sur l'histoire
+          </button>
+        </div>
+        <CharacterProvider>
+          <CharacterCreationPanel />
+        </CharacterProvider>
+      </div>
+    );
+  }
   return (
     <div
       style={{
@@ -87,7 +106,7 @@ const CharacterSelection = () => {
         <div style={styledSideHeaders}>
           <ButtonLarge
             onClick={() => {
-              chooseStory(-1);
+              chooseStory('');
             }}
           >
             Select another story

@@ -30,7 +30,7 @@ function* merchantsError(error = getTranslations('error.transfer.failed')) {
 export function* getMerchantList() {
   try {
     const currentStory = yield select(currentStorySelector);
-    if (currentStory > -1) {
+    if (currentStory !== "") {
       const merchantList = yield call(
         firebaseDbOnce,
         'stories/' + currentStory + '/merchants',

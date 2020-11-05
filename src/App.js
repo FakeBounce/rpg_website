@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -6,15 +6,8 @@ import { ToastProvider } from './contexts/toastContext';
 import { ChatProvider } from './contexts/chatContext';
 import { EventProvider } from './contexts/eventContext';
 
-import IsNotAuth from './components/Authentication/IsNotAuth';
-import HasNoNickname from './components/NicknameSelection/HasNoNickname';
-import CharacterSelection from './components/CharacterSelection/CharacterSelection';
-import StoriesPanel from './components/StoryPanel';
-
-import { defaultState } from './components/Utils/Constants';
-import GameScreen from './containers/GameScreen';
 import SoundPlayer from './components/SoundPlayer/SoundPlayer';
-import firebase from 'firebase';
+// import firebase from 'firebase';
 import {
   // listenArtefacts,
   // loadUnusedArtefacts,
@@ -44,31 +37,12 @@ import {
   // hydrateMerchant,
 } from './components/Utils/MerchantsFunctions';
 import ErrorPrinter from './components/Utils/ErrorPrinter';
-import { Icon } from 'semantic-ui-react';
-import { cursorPointer } from './components/Utils/StyleConstants';
 import useApp from './hooks/useApp';
+import HeaderGlobal from './components/Utils/HeaderGlobal';
+import CorrectRoute from './components/Utils/CorrectRoute';
 
 const App = () => {
-  const {
-    characterId,
-    currentStory,
-    isAuth,
-    pseudo,
-    isGameMaster,
-    musicMute,
-    oldCharacterId,
-  } = useSelector(store => ({
-    currentStory: store.appState.currentStory,
-    characterId: store.userInfos.characterId,
-    characterCreation: store.userInfos.characterCreation,
-    isAuth: store.appState.isAuth,
-    pseudo: store.userInfos.pseudo,
-    isGameMaster: store.appState.isGameMaster,
-    musicMute: store.sounds.musicMute,
-    oldCharacterId: store.userInfos.oldCharacterId,
-  }));
-
-  const { dispatchCallSetTilesTypes, signOut, toggleMusic } = useApp();
+  const { dispatchCallSetTilesTypes } = useApp();
 
   // useEffect(() => {
   //   firebase
@@ -343,28 +317,6 @@ const App = () => {
   //   );
   // };
 
-  const correctRoute = () => {
-    if (isAuth) {
-      if (pseudo.trim() === '') {
-        return <HasNoNickname />;
-      } else {
-        if (currentStory === '') {
-          return <StoriesPanel />;
-        } else {
-          if (
-            (!isGameMaster && characterId === '') ||
-            (oldCharacterId !== '' && characterId === '')
-          ) {
-            return <CharacterSelection />;
-          } else {
-            return <GameScreen />;
-          }
-        }
-      }
-    }
-    return <IsNotAuth />;
-  };
-
   return (
     <div
       className='App'
@@ -376,39 +328,10 @@ const App = () => {
         <ChatProvider>
           <EventProvider>
             <>
-              {correctRoute()}
+              <CorrectRoute />
               <SoundPlayer />
               <ErrorPrinter />
-              {isAuth && (
-                <Icon
-                  style={{
-                    position: 'absolute',
-                    top: 10,
-                    right: 20,
-                    cursor: cursorPointer,
-                  }}
-                  onClick={signOut}
-                  circular
-                  inverted
-                  name='shutdown'
-                  color='red'
-                />
-              )}
-              {isAuth && (
-                <Icon
-                  style={{
-                    position: 'absolute',
-                    top: 45,
-                    right: 20,
-                    cursor: cursorPointer,
-                  }}
-                  onClick={toggleMusic}
-                  circular
-                  name={!musicMute ? 'volume up' : 'volume off'}
-                  inverted
-                  color={'black'}
-                />
-              )}
+              <HeaderGlobal />
             </>
           </EventProvider>
         </ChatProvider>

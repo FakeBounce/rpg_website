@@ -5,8 +5,8 @@ import useApp from './useApp';
 const useUserInfos = () => {
   const dispatch = useDispatch();
 
-  const choosePseudo = pseudoInput => {
-    dispatch({ type: CALL_SET_USER_PSEUDO, payload: pseudoInput });
+  const choosePseudo = payload => {
+    dispatch({ type: CALL_SET_USER_PSEUDO, payload });
   };
 
   return { choosePseudo };

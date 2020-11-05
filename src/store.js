@@ -69,7 +69,7 @@ function configureStore() {
 
   // if (PERSIST_ENABLED === "true") {
   persistStore(store, null, () => {
-    if (store.getState().appState.currentStory > -1) {
+    if (store.getState().appState.currentStory !== "") {
       const currentStory = store.getState().appState.currentStory;
       const uid = store.getState().userInfos.uid;
       if (

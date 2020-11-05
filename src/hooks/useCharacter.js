@@ -12,23 +12,16 @@ import {
 const useCharacter = () => {
   const dispatch = useDispatch();
 
-  const {
-    oldCharacterId,
-    characterId,
-    characterCreation,
-    pseudo,
-    uid,
-    characters,
-  } = useSelector(store => ({
-    currentStory: store.appState.currentStory,
-    pseudo: store.userInfos.pseudo,
-    uid: store.userInfos.uid,
-    characters: store.userInfos.characters,
-    characterCreation: store.userInfos.characterCreation,
-    characterId: store.userInfos.characterId,
-    characterCreation: store.userInfos.characterCreation,
-    oldCharacterId: store.userInfos.oldCharacterId,
-  }));
+  const { oldCharacterId, characterId, pseudo, uid, characters } = useSelector(
+    store => ({
+      currentStory: store.appState.currentStory,
+      pseudo: store.userInfos.pseudo,
+      uid: store.userInfos.uid,
+      characters: store.userInfos.characters,
+      characterId: store.userInfos.characterId,
+      oldCharacterId: store.userInfos.oldCharacterId,
+    }),
+  );
 
   const dispatchUpdateCharacter = () => {
     dispatch({ type: UPDATE_CHARACTER });
@@ -47,8 +40,6 @@ const useCharacter = () => {
   };
 
   const chooseCharacter = id => {
-    console.log('id', id);
-
     const charToRegister = characters[id];
     charToRegister.gold = Math.floor(
       Math.random() * characters[id].attributes.luck * 5 + 5,
