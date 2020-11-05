@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { colors, defaultStory } from '../Utils/Constants';
 import firebase from 'firebase';
-import { loadStories } from '../Utils/DatabaseFunctions';
 import NewStoryForm from './NewStoryForm';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { cursorPointer } from '../Utils/StyleConstants';
-import useApp from '../../hooks/useApp';
 import { CALL_CREATE_STORY } from '../../redux/actionsTypes/actionsTypesAppState';
 
 const styledStoryPanel = {
@@ -35,12 +33,7 @@ const styledNewStoryTitle = {
 
 // @TODO check this component, setState isnt used
 const NewStory = ({ toggleStoryCreation }) => {
-  const { triggerError, chooseStory } = useApp();
   const dispatch = useDispatch();
-
-  const { stories } = useSelector(store => ({
-    stories: store.appState.stories,
-  }));
 
   const callCreateStory = payload => {
     dispatch({ type: CALL_CREATE_STORY, payload });
@@ -55,8 +48,7 @@ const NewStory = ({ toggleStoryCreation }) => {
       wallpaper: iconPath,
     };
 
-    const lastStoryIndex = stories.length;
-    callCreateStory({lastStoryIndex, story})
+    callCreateStory({ story });
   };
 
   return (

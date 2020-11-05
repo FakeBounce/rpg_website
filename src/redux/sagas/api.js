@@ -52,3 +52,30 @@ export function onValueChannel(path = '') {
     console.log('An error occured:', error);
   }
 }
+
+export const storageTempReplacing = (
+  uid = '',
+  characterId = '',
+  picture = {},
+) => {
+  let storageRef = firebase.storage().ref();
+  const extension = picture.name.split('.')[1] || '.png';
+
+  storageRef
+    .child(`images/${uid}/temp_character.${extension}`)
+    .delete()
+    .catch(error => {
+      console.log('An error occured:', error);
+      // Uh-oh, an error occurred!
+      // triggerError(error);
+    });
+
+  storageRef
+    .child(`images/${uid}/character_${characterId}.${extension}`)
+    .put(picture)
+    .catch(error => {
+      console.log('An error occured:', error);
+      // Uh-oh, an error occurred!
+      // triggerError(error);
+    });
+};

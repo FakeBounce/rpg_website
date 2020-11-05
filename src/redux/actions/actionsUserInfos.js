@@ -1,4 +1,4 @@
-import * as actionsTypesUserInfos from "../actionsTypes/actionsTypesUserInfos";
+import * as actionsTypesUserInfos from '../actionsTypes/actionsTypesUserInfos';
 
 export const setUserInfos = payload => {
   return {
@@ -23,6 +23,20 @@ export const setUserPseudo = payload => {
 export const callSetUserPseudo = payload => {
   return {
     type: actionsTypesUserInfos.CALL_SET_USER_PSEUDO,
+    payload,
+  };
+};
+
+export const setCharacterId = payload => {
+  return {
+    type: actionsTypesUserInfos.SET_CHARACTER_ID,
+    payload,
+  };
+};
+
+export const setupCharacterCreation = payload => {
+  return {
+    type: actionsTypesUserInfos.SETUP_CHARACTER_CREATION,
     payload,
   };
 };

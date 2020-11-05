@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import useApp from '../hooks/useApp';
 import { ADD_NEW_EVENT } from '../redux/actionsTypes/actionsTypesEvents';
 
 const EventContext = React.createContext(undefined);
@@ -20,7 +19,6 @@ function EventProvider(props) {
     storyCharacters: store.team.characters,
   }));
   const dispatch = useDispatch();
-  const { triggerError } = useApp();
 
   const addAllViewers = () => {
     const newViewersTab = storyCharacters.map(sc => {

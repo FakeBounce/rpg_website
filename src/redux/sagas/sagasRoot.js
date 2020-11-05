@@ -29,6 +29,7 @@ function* rootSaga() {
   yield spawn(sagasCharacter.watchCallListenOtherCharacter);
   yield spawn(sagasCharacter.watchCallSelectOtherCharacter);
   yield spawn(sagasCharacter.watchUpdateCharacter);
+  yield spawn(sagasCharacter.watchCreateCharacter);
   // Events
   yield spawn(sagasEvents.watchCallListenCurrentEvent);
   yield spawn(sagasEvents.watchCallListenHistoryEvents);

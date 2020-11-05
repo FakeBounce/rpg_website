@@ -14,6 +14,7 @@ import StoriesPanel from './components/StoryPanel';
 import { defaultState } from './components/Utils/Constants';
 import GameScreen from './containers/GameScreen';
 import SoundPlayer from './components/SoundPlayer/SoundPlayer';
+import firebase from 'firebase';
 import {
   // listenArtefacts,
   // loadUnusedArtefacts,
@@ -55,6 +56,7 @@ const App = () => {
     pseudo,
     isGameMaster,
     musicMute,
+    oldCharacterId,
   } = useSelector(store => ({
     currentStory: store.appState.currentStory,
     characterId: store.userInfos.characterId,
@@ -63,9 +65,62 @@ const App = () => {
     pseudo: store.userInfos.pseudo,
     isGameMaster: store.appState.isGameMaster,
     musicMute: store.sounds.musicMute,
+    oldCharacterId: store.userInfos.oldCharacterId,
   }));
 
   const { dispatchCallSetTilesTypes, signOut, toggleMusic } = useApp();
+
+  // useEffect(() => {
+  //   firebase
+  //     .database()
+  //     .ref('users')
+  //     .once('value')
+  //     .then(snapshot => {
+  //       const users = snapshot.val();
+
+  //       Object.keys(users).map(uKey => {
+  //         // if (Array.isArray(users[uKey].characters)) {
+  //         //   users[uKey].characters.map(c => {
+  //         //     const newPostKey = firebase
+  //         //       .database()
+  //         //       .ref(`users/${uKey}/characters`)
+  //         //       .push().key;
+
+  //         //     firebase
+  //         //       .database()
+  //         //       .ref(`users/${uKey}/characters/${newPostKey}`)
+  //         //       .set(c)
+  //         //       .catch(error => {
+  //         //         // Handle Errors here.
+  //         //         this.triggerError(error);
+  //         //       });
+
+  //         //     firebase
+  //         //       .database()
+  //         //       .ref(`users/${uKey}/characters/${c.id}`)
+  //         //       .remove()
+  //         //       .catch(error => {
+  //         //         // Handle Errors here.
+  //         //         this.triggerError(error);
+  //         //       });
+  //         //   });
+  //         // }
+
+  //         if (users[uKey].characters) {
+  //           Object.keys(users[uKey].characters).map(cKey => {
+  //             firebase
+  //               .database()
+  //               .ref(`users/${uKey}/characters/${cKey}/id`)
+  //               .set(cKey)
+  //               .catch(error => {
+  //                 // Handle Errors here.
+  //                 this.triggerError(error);
+  //               });
+  //           });
+  //         }
+  //       });
+  //     });
+  // }, []);
   // constructor(props) {
   //   super(props);
 
@@ -293,10 +348,13 @@ const App = () => {
       if (pseudo.trim() === '') {
         return <HasNoNickname />;
       } else {
-        if (currentStory === -1) {
+        if (currentStory === '') {
           return <StoriesPanel />;
         } else {
-          if (!isGameMaster && characterId === 0) {
+          if (
+            (!isGameMaster && characterId === '') ||
+            (oldCharacterId !== '' && characterId === '')
+          ) {
             return <CharacterSelection />;
           } else {
             return <GameScreen />;

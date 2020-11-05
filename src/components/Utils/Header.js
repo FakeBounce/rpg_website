@@ -1,31 +1,30 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import ReactTooltip from "react-tooltip";
-import { Icon } from "semantic-ui-react";
-import { cursorPointer, heightHeader } from "./StyleConstants";
-import { hydrateAllMerchants, resetStoryMerchants } from "./MerchantsFunctions";
-import Camera from "./Camera";
-import { togglePlayerView } from "../../redux/actions/actionsAppState";
-import { CALL_GET_ITEM_LIST } from "../../redux/actionsTypes/actionsTypesItems";
-import useApp from "../../hooks/useApp";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
+import { Icon } from 'semantic-ui-react';
+import { cursorPointer, heightHeader } from './StyleConstants';
+import { hydrateAllMerchants, resetStoryMerchants } from './MerchantsFunctions';
+import Camera from './Camera';
+import { togglePlayerView } from '../../redux/actions/actionsAppState';
+import { CALL_GET_ITEM_LIST } from '../../redux/actionsTypes/actionsTypesItems';
+import useCharacter from '../../hooks/useCharacter';
 
 const styledHeaderLeft = {
   height: heightHeader,
 };
 
 const styledHeader = {
-  width: "100%",
+  width: '100%',
   height: `${heightHeader}px`,
   backgroundImage: `url(./common/dravos_header.jpg)`,
-  backgroundSize: "cover",
-  display: "flex",
-  justifyContent: "space-between",
+  backgroundSize: 'cover',
+  display: 'flex',
+  justifyContent: 'space-between',
   // backgroundColor: colors.background,
 };
 
 const Header = props => {
-  
-  const { selectAnotherCharacter } = useApp();
+  const { selectAnotherCharacter } = useCharacter();
   const dispatch = useDispatch();
   const [hasHydrated, setHasHydrated] = useState(false);
 
@@ -84,102 +83,102 @@ const Header = props => {
       <div
         style={{
           width: 250,
-          position: "relative",
+          position: 'relative',
         }}
       >
         <Icon
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 80,
             right: 20,
             cursor: cursorPointer,
           }}
           onClick={selectAnotherCharacter}
           circular
-          name={"address book"}
+          name={'address book'}
           inverted
-          color={"black"}
-          data-tip={"Characters"}
+          color={'black'}
+          data-tip={'Characters'}
         />
         <Icon
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 115,
             right: 20,
             cursor: cursorPointer,
           }}
           onClick={accessChatHelp}
           circular
-          name={"chat"}
+          name={'chat'}
           inverted
-          color={onChatHelp ? "blue" : "black"}
-          data-tip={"Chat help"}
+          color={onChatHelp ? 'blue' : 'black'}
+          data-tip={'Chat help'}
         />
         <Icon
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 10,
             right: 60,
             cursor: cursorPointer,
           }}
           onClick={toggleBestiary}
           circular
-          name={"bug"}
+          name={'bug'}
           inverted
-          color={isOnBestiary ? "blue" : "black"}
-          data-tip={"Bestiary"}
-          data-place="bottom"
+          color={isOnBestiary ? 'blue' : 'black'}
+          data-tip={'Bestiary'}
+          data-place='bottom'
         />
         <Icon
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 45,
             right: 60,
             cursor: cursorPointer,
           }}
           onClick={toggleMerchantList}
           circular
-          name={"gem"}
+          name={'gem'}
           inverted
-          color={isOnMerchantList ? "blue" : "black"}
-          data-tip={"Merchant list"}
+          color={isOnMerchantList ? 'blue' : 'black'}
+          data-tip={'Merchant list'}
         />
         {isGameMaster && (
           <Icon
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 80,
               right: 60,
               cursor: cursorPointer,
             }}
             onClick={dispatchTogglePlayerView}
             circular
-            name={"cogs"}
+            name={'cogs'}
             inverted
-            color={"black"}
-            data-tip={"Toggle Player View"}
+            color={'black'}
+            data-tip={'Toggle Player View'}
           />
         )}
         {isGameMaster && (
           <Icon
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 115,
               right: 60,
               cursor: cursorPointer,
             }}
             onClick={toggleEvent}
             circular
-            name={"time"}
+            name={'time'}
             inverted
-            color={isEventHidden ? "red" : "green"}
-            data-tip={"Toggle event"}
+            color={isEventHidden ? 'red' : 'green'}
+            data-tip={'Toggle event'}
           />
         )}
         {isGameMaster && (
           <Icon
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 10,
               right: 100,
               cursor: cursorPointer,
@@ -189,27 +188,27 @@ const Header = props => {
               hydrateMerchants();
             }}
             circular
-            name={"theme"}
+            name={'theme'}
             inverted
-            color={hasHydrated ? "green" : "black"}
-            data-tip={"Hydrate merchant"}
-            data-place="bottom"
+            color={hasHydrated ? 'green' : 'black'}
+            data-tip={'Hydrate merchant'}
+            data-place='bottom'
           />
         )}
         {isGameMaster && (
           <Icon
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 45,
               right: 100,
               cursor: cursorPointer,
             }}
             onClick={resetMerchants}
             circular
-            name={"cart"}
+            name={'cart'}
             inverted
-            color={hasHydrated ? "green" : "black"}
-            data-tip={"Reset merchant"}
+            color={hasHydrated ? 'green' : 'black'}
+            data-tip={'Reset merchant'}
           />
         )}
         <ReactTooltip />
