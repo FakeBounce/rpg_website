@@ -41,6 +41,12 @@ export const setupCharacterCreation = payload => {
   };
 };
 
+export const getAllCharacters = () => {
+  return {
+    type: actionsTypesUserInfos.CALL_GET_ALL_USER_CHARACTERS,
+  };
+};
+
 export const setAllCharacters = payload => {
   return {
     type: actionsTypesUserInfos.SET_ALL_CHARACTERS,

@@ -9,7 +9,6 @@ import {
 } from 'redux-saga/effects';
 
 import * as actionsTypesCharacter from '../actionsTypes/actionsTypesCharacter';
-import * as actionsTypesUserInfos from '../actionsTypes/actionsTypesUserInfos';
 import * as actionsCharacter from '../actions/actionsCharacter';
 import * as actionsAppState from '../actions/actionsAppState';
 import * as actionsUserInfos from '../actions/actionsUserInfos';
@@ -21,6 +20,7 @@ import {
   onValueChannel,
   firebaseDbNewKey,
   storageTempReplacing,
+  firebaseDbRemove,
 } from './api';
 import * as actionsTypesAppState from '../actionsTypes/actionsTypesAppState';
 import { setCharacter } from '../actions/actionsCharacter';
@@ -64,6 +64,14 @@ function* listenCharacter() {
   try {
     const currentStory = yield select(currentStorySelector);
     const currentUid = yield select(currentUidSelector);
+
+    const characterId = yield call(
+      firebaseDbOnce,
+      `/stories/${currentStory}/characters/${currentUid}/characterId`,
+    );
+
+    yield put(actionsUserInfos.setCharacterId(characterId));
+
     const channel = yield call(
       onValueChannel,
       '/stories/' + currentStory + '/characters/' + currentUid + '/character',
@@ -205,22 +213,35 @@ function* createCharacter({ payload }) {
     const uid = yield select(currentUidSelector);
 
     const newCharKey = firebaseDbNewKey(`users/${uid}/characters`);
+    const extension = payload.picture.name.split('.')[1] || '.png';
+    const newFileName = `character_${newCharKey}.${extension}`;
+    const newIconPath = `images/${uid}/${newFileName}`;
+    const newIcon = payload.character.icon.replace(
+      `temp_character.${extension}`,
+      newFileName,
+    );
+    storageTempReplacing(uid, newCharKey, payload.picture);
 
     firebaseDbSet(`users/${uid}/characters/${newCharKey}`, {
-      character: payload.character,
-      characterId: newCharKey,
+      ...payload.character,
+      iconPath: newIconPath,
+      icon: newIcon,
+      id: newCharKey,
     }).catch(error => {
       console.log('createCharacter set to user saga err:', { error });
     });
 
     firebaseDbSet(`stories/${currentStory}/characters/${uid}`, {
-      character: payload.charForStory,
+      character: {
+        ...payload.charForStory,
+        id: newCharKey,
+        iconPath: newIconPath,
+        icon: newIcon,
+      },
       characterId: newCharKey,
     }).catch(error => {
       console.log('createCharacter set to story saga err:', { error });
     });
-
-    storageTempReplacing(uid, newCharKey, payload.picture);
 
     yield put(setCharacter(payload.charForStory));
 
@@ -231,7 +252,7 @@ function* createCharacter({ payload }) {
       }),
     );
 
-    yield put(actionsTypesUserInfos.CALL_GET_ALL_USER_CHARACTERS);
+    yield put(actionsUserInfos.getAllCharacters());
   } catch (error) {
     console.log('createCharacter try  global saga err:', { error });
 
@@ -243,5 +264,28 @@ export function* watchCreateCharacter() {
   yield takeLatest(
     actionsTypesCharacter.CALL_CREATE_CHARACTER,
     createCharacter,
+  );
+}
+
+function* deleteCharacter({ payload }) {
+  try {
+    const uid = yield select(currentUidSelector);
+
+    firebaseDbRemove(`users/${uid}/characters/${payload.id}`).catch(error => {
+      console.log('deleteCharacter remove saga err:', { error });
+    });
+
+    yield put(actionsUserInfos.getAllCharacters());
+  } catch (error) {
+    console.log('createCharacter try  global saga err:', { error });
+
+    yield call(characterError);
+  }
+}
+
+export function* watchDeleteCharacter() {
+  yield takeLatest(
+    actionsTypesCharacter.CALL_DELETE_CHARACTER,
+    deleteCharacter,
   );
 }

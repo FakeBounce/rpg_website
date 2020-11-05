@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { cursorPointer } from '../Utils/StyleConstants';
 import useCharacter from '../../hooks/useCharacter';
+import firebase from 'firebase';
 
 const styledItem = {
   display: 'inline-block',
@@ -20,13 +21,15 @@ const styledText = {
   display: 'inline-block',
 };
 const CharacterPreview = ({ icon, name, id }) => {
-  const { chooseCharacter, modifyCharacter } = useCharacter();
+  const { chooseCharacter, modifyCharacter, deleteCharacter } = useCharacter();
+
   return (
     <div style={styledItem}>
       <img src={icon} alt={name} style={styledIcon} />
       <div style={styledText}>{name}</div>
       <button onClick={() => chooseCharacter(id)}>Selectionner</button>
       <button onClick={() => modifyCharacter(id)}>Modifier</button>
+      <button onClick={() => deleteCharacter(id)}>Supprimer</button>
     </div>
   );
 };

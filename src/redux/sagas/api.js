@@ -12,6 +12,13 @@ export const firebaseDbSet = (path = '', toSet = {}) => {
     .set(toSet);
 };
 
+export const firebaseDbRemove = (path = '') => {
+  return firebase
+    .database()
+    .ref(path)
+    .remove();
+};
+
 export const firebaseDbNewKey = (path = '') => {
   return firebase
     .database()

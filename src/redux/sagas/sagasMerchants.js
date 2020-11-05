@@ -40,7 +40,7 @@ export function* getMerchantList() {
       yield call(merchantsError, 'No storry selected');
     }
   } catch (error) {
-    console.log('callSetUserPseudo try saga err:', { error });
+    console.log('getMerchantList global try saga err:', { error });
 
     yield call(merchantsError);
   }
