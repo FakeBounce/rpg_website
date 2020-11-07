@@ -88,6 +88,24 @@ const CharacterAttributes = () => {
 
   if (!character || !character.attributes) return null;
 
+  const mentalBonus =
+    parseInt(character.mentalState, 10) ===
+      Math.ceil(parseInt(character.maxMentalState, 10) / 2) ||
+    parseInt(character.mentalState, 10) ===
+      Math.floor(parseInt(character.maxMentalState, 10) / 2)
+      ? 0
+      : parseInt(character.mentalState, 10) <
+        parseInt(character.maxMentalState, 10) / 4 - 1
+      ? -15
+      : parseInt(character.mentalState, 10) <
+        parseInt(character.maxMentalState, 10) / 2
+      ? -5
+      : parseInt(character.mentalState, 10) >=
+        parseInt(character.maxMentalState, 10) - 1
+      ? 15
+      : 5;
+
+  console.log('mentalBonus', mentalBonus);
   return (
     <div style={styles.characterAttributeInfos}>
       {attributes.map(a => {
@@ -114,7 +132,7 @@ const CharacterAttributes = () => {
                 }}
               />
             ) : (
-              character.attributes[a]
+              character.attributes[a] + mentalBonus
             )}
             <AttributeDice
               launchCommand={launchCommand}
