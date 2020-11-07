@@ -1,46 +1,47 @@
-import React, { Component } from "react";
-import firebase from "firebase";
-import ButtonLarge from "./ButtonLarge";
-import { cursorPointer, heightHeader } from "./StyleConstants";
-import { colors } from "./Constants";
-import { connect } from "react-redux";
-import { Icon } from "semantic-ui-react";
+import React, { Component } from 'react';
+import firebase from 'firebase';
+import ButtonLarge from './ButtonLarge';
+import { cursorPointer, heightHeader } from './StyleConstants';
+import { colors } from './Constants';
+import { connect } from 'react-redux';
+import { Icon } from 'semantic-ui-react';
 
 const styledVideoContainer = {
   width: (window.innerWidth - 300) / 7 - 7,
   height: heightHeader,
-  float: "left",
-  position: "relative",
+  float: 'left',
+  position: 'relative',
   marginLeft: 7,
+  padding: '0px 5px',
 };
 const styledVideo = {
   width: (window.innerWidth - 300) / 7 - 12,
   height: heightHeader,
-  float: "left",
-  position: "relative",
+  float: 'left',
+  position: 'relative',
 };
 
 const styledCall = {
-  position: "absolute",
-  left: 6,
-  top: 15,
+  position: 'absolute',
+  left: ((window.innerWidth - 300) / 7 - 12) / 2,
+  top: 55,
   cursor: cursorPointer,
 };
 
 const styledMuteImg = {
-  position: "absolute",
-  float: "left",
+  position: 'absolute',
+  float: 'left',
   width: 41,
   height: 22,
   zIndex: 10,
-  left: 0,
-  bottom: 0,
+  left: ((window.innerWidth - 300) / 7) / 2 -6,
+  bottom: 5,
   color: colors.text,
 };
 
 const styledCloseRoomImg = {
-  position: "absolute",
-  float: "left",
+  position: 'absolute',
+  float: 'left',
   width: 41,
   height: 22,
   zIndex: 10,
@@ -50,8 +51,8 @@ const styledCloseRoomImg = {
 };
 
 const styledRoomImg = {
-  position: "absolute",
-  float: "left",
+  position: 'absolute',
+  float: 'left',
   width: 41,
   height: 22,
   zIndex: 10,
@@ -61,12 +62,12 @@ const styledRoomImg = {
 };
 
 const styledCameraCadre = {
-  position: "absolute",
+  position: 'absolute',
   top: 0,
   left: 0,
   height: heightHeader,
   width: (window.innerWidth - 300) / 7,
-  float: "left",
+  float: 'left',
 };
 
 class Camera extends Component {
@@ -79,16 +80,16 @@ class Camera extends Component {
       friendsMute: {},
       room: [],
     };
-    this.database = firebase.database().ref("camera");
+    this.database = firebase.database().ref('camera');
     this.yourId = props.uid;
     this.servers = {
       iceServers: [
-        { urls: "stun:stun.services.mozilla.com" },
-        { urls: "stun:stun.l.google.com:19302" },
+        { urls: 'stun:stun.services.mozilla.com' },
+        { urls: 'stun:stun.l.google.com:19302' },
         {
-          urls: "turn:numb.viagenie.ca",
-          credential: "webrtc",
-          username: "test@mail.com",
+          urls: 'turn:numb.viagenie.ca',
+          credential: 'webrtc',
+          username: 'test@mail.com',
         },
       ],
     };
@@ -110,7 +111,7 @@ class Camera extends Component {
     //       room: snapshot.val() || [],
     //     }));
     //   });
-    window.addEventListener("beforeunload", ev => {
+    window.addEventListener('beforeunload', ev => {
       // ev.preventDefault();
       return this.closeLocalstream();
     });
@@ -127,7 +128,7 @@ class Camera extends Component {
   sendMessage = (data, type, id = this.yourId) => {
     const msg = firebase
       .database()
-      .ref("camera/" + id)
+      .ref('camera/' + id)
       .push({ message: data, type, sender: this.yourId });
     msg.remove();
   };
@@ -135,9 +136,9 @@ class Camera extends Component {
   sendIce = (data, id, isRemote = false) => {
     const msg = firebase
       .database()
-      .ref("camera/" + id)
+      .ref('camera/' + id)
       .push({
-        type: "ice",
+        type: 'ice',
         isRemote,
         message: JSON.stringify(data),
         sender: this.yourId,
@@ -153,7 +154,7 @@ class Camera extends Component {
 
     firebase
       .database()
-      .ref("camera/" + this.yourId + "/isConnected")
+      .ref('camera/' + this.yourId + '/isConnected')
       .set(true);
 
     navigator.mediaDevices
@@ -165,8 +166,8 @@ class Camera extends Component {
 
         firebase
           .database()
-          .ref("/camera")
-          .once("value")
+          .ref('/camera')
+          .once('value')
           .then(snapshot => {
             Object.keys(snapshot.val()).map(key => {
               if (key !== this.yourId && snapshot.val()[key].isConnected) {
@@ -178,7 +179,7 @@ class Camera extends Component {
                 this.friendsVideoLocal[key].onicecandidate = e => {
                   e.candidate
                     ? this.sendIce(e.candidate, key)
-                    : console.log("Sent all ice, local, offer, " + key);
+                    : console.log('Sent all ice, local, offer, ' + key);
                 };
 
                 window.localStream
@@ -195,21 +196,21 @@ class Camera extends Component {
                     offerToReceiveVideo: 1,
                   })
                   .then(offer =>
-                    this.setDescriptionsFromOffer(offer, key, "askingOffer"),
+                    this.setDescriptionsFromOffer(offer, key, 'askingOffer'),
                   );
               }
               return null;
             });
           })
           .catch(error => {
-            console.log("error", error);
+            console.log('error', error);
           });
 
         firebase
           .database()
-          .ref("camera/" + this.yourId)
-          .on("child_added", snapshot => {
-            if (snapshot.val().type === "askingOffer") {
+          .ref('camera/' + this.yourId)
+          .on('child_added', snapshot => {
+            if (snapshot.val().type === 'askingOffer') {
               const msg = JSON.parse(snapshot.val().message);
               this.friendsVideoRemote[
                 snapshot.val().sender
@@ -222,7 +223,7 @@ class Camera extends Component {
                 e.candidate
                   ? this.sendIce(e.candidate, snapshot.val().sender, true)
                   : console.log(
-                      "Sent all ice, remote, answer, " + snapshot.val().sender,
+                      'Sent all ice, remote, answer, ' + snapshot.val().sender,
                     );
               };
 
@@ -249,7 +250,7 @@ class Camera extends Component {
                 e.candidate
                   ? this.sendIce(e.candidate, snapshot.val().sender)
                   : console.log(
-                      "Sent all ice, local, offer, " + snapshot.val().sender,
+                      'Sent all ice, local, offer, ' + snapshot.val().sender,
                     );
               };
 
@@ -270,11 +271,11 @@ class Camera extends Component {
                   this.setDescriptionsFromOffer(
                     offer,
                     snapshot.val().sender,
-                    "offer",
+                    'offer',
                   ),
                 );
             }
-            if (snapshot.val().type === "offer") {
+            if (snapshot.val().type === 'offer') {
               const msg = JSON.parse(snapshot.val().message);
               this.friendsVideoRemote[
                 snapshot.val().sender
@@ -287,7 +288,7 @@ class Camera extends Component {
                 e.candidate
                   ? this.sendIce(e.candidate, snapshot.val().sender, true)
                   : console.log(
-                      "Sent all ice, remote, answer, " + snapshot.val().sender,
+                      'Sent all ice, remote, answer, ' + snapshot.val().sender,
                     );
               };
 
@@ -304,20 +305,20 @@ class Camera extends Component {
                   this.setDescriptionsFromAnswer(answer, snapshot.val().sender),
                 );
             }
-            if (snapshot.val().type === "answer") {
+            if (snapshot.val().type === 'answer') {
               const msg = JSON.parse(snapshot.val().message);
               this.friendsVideoLocal[
                 snapshot.val().sender
               ].setRemoteDescription(new RTCSessionDescription(msg.sdp));
             }
-            if (snapshot.val().type === "ice") {
+            if (snapshot.val().type === 'ice') {
               const msg = JSON.parse(snapshot.val().message);
               if (snapshot.val().isRemote) {
                 this.friendsVideoLocal[snapshot.val().sender]
                   .addIceCandidate(new RTCIceCandidate(msg))
                   .then(() => {
                     console.log(
-                      "Added local ice candidates for sender " +
+                      'Added local ice candidates for sender ' +
                         snapshot.val().sender,
                     );
                   });
@@ -326,7 +327,7 @@ class Camera extends Component {
                   .addIceCandidate(new RTCIceCandidate(msg))
                   .then(() => {
                     console.log(
-                      "Added remote ice candidates for sender " +
+                      'Added remote ice candidates for sender ' +
                         snapshot.val().sender,
                     );
                   });
@@ -354,7 +355,7 @@ class Camera extends Component {
         JSON.stringify({
           sdp: this.friendsVideoRemote[sender].localDescription,
         }),
-        "answer",
+        'answer',
         sender,
       );
     });
@@ -366,7 +367,7 @@ class Camera extends Component {
 
       // @TODO check that
       this.friendsVideoRemote[index].onconnectionstatechange = state => {
-        console.log("state on change", state);
+        console.log('state on change', state);
       };
 
       const tempRemoteVideos = { ...this.state.friendsVideoRemote };
@@ -405,7 +406,7 @@ class Camera extends Component {
         () => {
           firebase
             .database()
-            .ref("camera/" + this.yourId + "/isConnected")
+            .ref('camera/' + this.yourId + '/isConnected')
             .set(false);
         },
       );
@@ -452,11 +453,11 @@ class Camera extends Component {
     const { isGameMaster } = this.props;
 
     return (
-      <div>
+      <div style={{ position: 'relative' }}>
         <div style={styledVideoContainer}>
           <img
-            src={"./common/info2.png"}
-            alt="cadre"
+            src={'./common/info2.png'}
+            alt='cadre'
             style={styledCameraCadre}
           />
           <video
@@ -476,17 +477,21 @@ class Camera extends Component {
             </ButtonLarge>
           )}
           {isDisabled && (
-            <ButtonLarge onClick={this.closeLocalstream} style={styledMuteImg}>
-              X
-            </ButtonLarge>
+            <Icon
+              name='call'
+              onClick={this.closeLocalstream}
+              circular
+              color={'red'}
+              style={styledMuteImg}
+            />
           )}
         </div>
         {Object.keys(friendsVideoRemote).map(key => {
           return (
             <div style={styledVideoContainer}>
               <img
-                src={"./common/info2.png"}
-                alt="cadre"
+                src={'./common/info2.png'}
+                alt='cadre'
                 style={styledCameraCadre}
               />
               <video
@@ -510,22 +515,22 @@ class Camera extends Component {
                 onClick={this.muteSomeone(key)}
                 src={
                   friendsMute[key]
-                    ? "./common/soundMuted.png"
-                    : "./common/soundUnmuted.png"
+                    ? './common/soundMuted.png'
+                    : './common/soundUnmuted.png'
                 }
                 style={styledMuteImg}
-                alt="sound muted or not"
+                alt='sound muted or not'
               />
               {isGameMaster && (
                 <img
                   onClick={this.createPrivateRoom(key)}
                   src={
                     room.indexOf([key]) > -1
-                      ? "./common/soundUnmuted.png"
-                      : "./common/soundMuted.png"
+                      ? './common/soundUnmuted.png'
+                      : './common/soundMuted.png'
                   }
                   style={styledRoomImg}
-                  alt="sound muted or not"
+                  alt='sound muted or not'
                 />
               )}
             </div>
@@ -533,10 +538,10 @@ class Camera extends Component {
         })}
         {!isDisabled && (
           <Icon
-            name="call"
+            name='call'
             onClick={this.showMyFace}
             circular
-            color={"green"}
+            color={'green'}
             style={styledCall}
           />
         )}
