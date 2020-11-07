@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { colors, defaultStory } from '../Utils/Constants';
+import { colors, defaultStory, defaultCharacterGM } from '../Utils/Constants';
 import firebase from 'firebase';
 import NewStoryForm from './NewStoryForm';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { cursorPointer } from '../Utils/StyleConstants';
 import { CALL_CREATE_STORY } from '../../redux/actionsTypes/actionsTypesAppState';
@@ -31,9 +31,12 @@ const styledNewStoryTitle = {
   margin: 0,
 };
 
-// @TODO check this component, setState isnt used
 const NewStory = ({ toggleStoryCreation }) => {
   const dispatch = useDispatch();
+  const { uid, pseudo } = useSelector(store => ({
+    uid: store.userInfos.uid,
+    pseudo: store.userInfos.pseudo,
+  }));
 
   const callCreateStory = payload => {
     dispatch({ type: CALL_CREATE_STORY, payload });
@@ -46,6 +49,16 @@ const NewStory = ({ toggleStoryCreation }) => {
       map,
       gameMaster: firebase.auth().currentUser.uid,
       wallpaper: iconPath,
+      characters: {
+        [uid]: {
+          characterId: 'GameMaster',
+          character: {
+            ...defaultCharacterGM,
+            userPseudo: pseudo,
+            userUid: uid,
+          },
+        },
+      },
     };
 
     callCreateStory({ story });

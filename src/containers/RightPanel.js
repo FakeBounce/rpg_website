@@ -11,7 +11,10 @@ import SongPanel from '../components/SongPanel';
 import { useSelector, useDispatch } from 'react-redux';
 import { useChatContext } from '../contexts/chatContext';
 import useApp from '../hooks/useApp';
-import { CALL_LISTEN_OTHER_CHARACTER } from '../redux/actionsTypes/actionsTypesCharacter';
+import {
+  CALL_LISTEN_OTHER_CHARACTER,
+  CALL_SET_CHARACTER,
+} from '../redux/actionsTypes/actionsTypesCharacter';
 
 const styles = {
   RightPanel: {
@@ -46,6 +49,7 @@ const RightPanel = () => {
     gold: 0,
     currentExchangeCharacter: null,
     isOnChar: true,
+    mentalDamage: 0,
   });
   const dispatch = useDispatch();
   const { setChatInput } = useChatContext();
@@ -54,6 +58,13 @@ const RightPanel = () => {
   const dispatchListenCharacter = payload => {
     dispatch({
       type: CALL_LISTEN_OTHER_CHARACTER,
+      payload,
+    });
+  };
+
+  const dispatchSetCharacter = payload => {
+    dispatch({
+      type: CALL_SET_CHARACTER,
       payload,
     });
   };
@@ -124,6 +135,33 @@ const RightPanel = () => {
       });
   };
 
+  const onMentalChange = () => {
+    const { mentalState, maxMentalState } = character;
+    const { mentalDamage } = panelState;
+
+    const mentalLeft =
+      parseInt(mentalState, 10) + mentalDamage < 0
+        ? 0
+        : parseInt(mentalState, 10) + mentalDamage > maxMentalState
+        ? maxMentalState
+        : parseInt(mentalState, 10) + mentalDamage;
+
+    firebase
+      .database()
+      .ref(
+        'stories/' +
+          currentStory +
+          '/characters/' +
+          characterUid +
+          '/character/mentalState',
+      )
+      .set(parseInt(mentalLeft, 10))
+      .catch(error => {
+        // Handle Errors here.
+        triggerError(error);
+      });
+  };
+
   const onStatusChange = () => {
     const { status } = panelState;
 
@@ -145,7 +183,7 @@ const RightPanel = () => {
 
   const onItemUse = (i, value) => {
     if (value > -1) {
-      const newCharacterItems = [...character.items];
+      let newCharacterItems = [...character.items];
 
       if (value > 0) {
         newCharacterItems[i].quantity = value;
@@ -158,20 +196,7 @@ const RightPanel = () => {
         items: newCharacterItems,
       };
 
-      firebase
-        .database()
-        .ref(
-          'stories/' +
-            currentStory +
-            '/characters/' +
-            characterUid +
-            '/character',
-        )
-        .set(newCharacter)
-        .catch(error => {
-          // Handle Errors here.
-          triggerError(error);
-        });
+      dispatchSetCharacter(newCharacter);
     }
   };
 
@@ -323,6 +348,7 @@ const RightPanel = () => {
     gold,
     currentExchangeCharacter,
     isOnChar,
+    mentalDamage,
   } = panelState;
 
   return (
@@ -340,6 +366,8 @@ const RightPanel = () => {
           onStatusChange={onStatusChange}
           toggleIsOnChar={toggleIsOnChar}
           status={status}
+          mentalDamage={mentalDamage}
+          onMentalChange={onMentalChange}
         />
       ) : (
         <SongPanel toggleIsOnChar={toggleIsOnChar} />

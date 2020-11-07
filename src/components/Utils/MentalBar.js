@@ -45,6 +45,7 @@ const MentalBar = ({
     for (let i = 0; i < maxMentalState - 1 && i < mentalState - 1; i++) {
       toDisplay.push(
         <div
+          key={`mental-${i}`}
           style={{
             borderRight: '1px solid',
             borderColor: colors.backgroundMentalHit,

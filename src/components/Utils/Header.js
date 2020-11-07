@@ -114,35 +114,40 @@ const Header = props => {
           color={onChatHelp ? 'blue' : 'black'}
           data-tip={'Chat help'}
         />
-        <Icon
-          style={{
-            position: 'absolute',
-            top: 10,
-            right: 60,
-            cursor: cursorPointer,
-          }}
-          onClick={toggleBestiary}
-          circular
-          name={'bug'}
-          inverted
-          color={isOnBestiary ? 'blue' : 'black'}
-          data-tip={'Bestiary'}
-          data-place='bottom'
-        />
-        <Icon
-          style={{
-            position: 'absolute',
-            top: 45,
-            right: 60,
-            cursor: cursorPointer,
-          }}
-          onClick={toggleMerchantList}
-          circular
-          name={'gem'}
-          inverted
-          color={isOnMerchantList ? 'blue' : 'black'}
-          data-tip={'Merchant list'}
-        />
+        {isGameMaster && (
+          <Icon
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 60,
+              cursor: cursorPointer,
+            }}
+            onClick={toggleBestiary}
+            circular
+            name={'bug'}
+            inverted
+            color={isOnBestiary ? 'blue' : 'black'}
+            data-tip={'Bestiary'}
+            data-place='bottom'
+          />
+        )}
+
+        {isGameMaster && (
+          <Icon
+            style={{
+              position: 'absolute',
+              top: 45,
+              right: 60,
+              cursor: cursorPointer,
+            }}
+            onClick={toggleMerchantList}
+            circular
+            name={'gem'}
+            inverted
+            color={isOnMerchantList ? 'blue' : 'black'}
+            data-tip={'Merchant list'}
+          />
+        )}
         {isGameMaster && (
           <Icon
             style={{

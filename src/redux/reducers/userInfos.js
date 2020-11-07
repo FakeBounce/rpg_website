@@ -18,6 +18,7 @@ const initialState = {
   isUpdating: false,
   characterCreation: false,
   characterId: '',
+  oldCharacterId: '',
 };
 
 const userInfos = (state = initialState, action) => {

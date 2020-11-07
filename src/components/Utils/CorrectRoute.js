@@ -31,13 +31,10 @@ const CorrectRoute = () => {
       if (currentStory === '') {
         return <StoriesPanel />;
       } else {
-        if (
-          (!isGameMaster && characterId === '') ||
-          (oldCharacterId !== '' && characterId === '')
-        ) {
-          return <CharacterSelection />;
-        } else {
+        if (isGameMaster || (characterId !== '' && oldCharacterId === '')) {
           return <GameScreen />;
+        } else {
+          return <CharacterSelection />;
         }
       }
     }

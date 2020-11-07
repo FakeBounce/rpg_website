@@ -510,7 +510,7 @@ export const defaultState = {
   bestiary: [],
   character: {},
   characterCreation: false,
-  characterId: "",
+  characterId: '',
   characters: {},
   chatHistory: {},
   chatInput: '',
@@ -1312,4 +1312,30 @@ export const defaultStory = {
     },
   ],
   wallpaper: './common/dravos.jpg',
+};
+
+export const defaultCharacterGM = {
+  description: 'GameMaster',
+  gold: 999,
+  health: 9999,
+  icon:
+    'https://firebasestorage.googleapis.com/v0/b/rpgwebsite-8a535.appspot.com/o/images%2FgameMaster.jpg?alt=media&token=0d6e2083-0ba8-4fcb-8555-3bcfedfa692d',
+  iconPath: 'images/gameMaster.jpg',
+  id: 'GameMaster',
+  maxHealth: 60,
+  maxMentalState: 9,
+  mentalState: 9,
+  name: 'GameMaster',
+  status: 'GODLIKE',
+  attributes: {
+    charisma: 90,
+    constitution: 90,
+    dexterity: 90,
+    education: 90,
+    luck: 90,
+    magic: 90,
+    perception: 90,
+    strength: 90,
+    willpower: 90,
+  },
 };

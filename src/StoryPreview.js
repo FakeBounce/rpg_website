@@ -101,7 +101,6 @@ const StoryPreview = () => {
   }, [textToDisplay]);
 
   const scrollToBottom = () => {
-    console.log('scrollContent');
     if (scrollContent !== null) {
       scrollContent.current.scrollIntoView({ behavior: 'smooth' });
     }
@@ -111,8 +110,6 @@ const StoryPreview = () => {
     const normalized = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     return normalized.split('/n');
   };
-
-  console.log('textToDisplay', textToDisplay);
 
   return (
     <div

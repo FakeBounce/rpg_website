@@ -296,6 +296,7 @@ const useChat = () => {
     const realPseudo = isGameMaster ? 'GM' : character.name;
     const splittedString = chatInput.trim().split('/gmw ');
     let hasWhisperAction = false;
+
     if (splittedString.length > 1) {
       hasWhisperAction = true;
       Object.keys(users).map(key => {
@@ -686,6 +687,10 @@ const useChat = () => {
     }
   };
 
+  const sendGMGold = () => {
+    setChatInput(`/goldgm `);
+  };
+
   return {
     changeActiveChatTab,
     changeActiveWhisperTab,
@@ -696,6 +701,7 @@ const useChat = () => {
     onDrop,
     talkInChat,
     toggleGMCommands,
+    sendGMGold,
   };
 };
 

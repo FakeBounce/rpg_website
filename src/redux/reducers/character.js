@@ -20,10 +20,32 @@ const initialState = {
 const character = (state = initialState, action) => {
   switch (action.type) {
     case SET_CHARACTER: {
-      return {
-        ...state,
-        ...action.payload,
-      };
+      const tempCharacter = { ...state, ...action.payload };
+      if (
+        (action.payload.weapons && action.payload.weapons.length === 0) ||
+        !action.payload.weapons
+      ) {
+        tempCharacter.weapons = [];
+      }
+      if (
+        (action.payload.abilities && action.payload.abilities.length === 0) ||
+        !action.payload.abilities
+      ) {
+        tempCharacter.abilities = [];
+      }
+      if (
+        (action.payload.skills && action.payload.skills.length === 0) ||
+        !action.payload.skills
+      ) {
+        tempCharacter.skills = [];
+      }
+      if (
+        (action.payload.items && action.payload.items.length === 0) ||
+        !action.payload.items
+      ) {
+        tempCharacter.items = [];
+      }
+      return tempCharacter;
     }
     case RESET_APP: {
       return initialState;

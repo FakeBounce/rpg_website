@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { connect } from "react-redux";
-import { useToastContext } from "../../contexts/toastContext";
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { useToastContext } from '../../contexts/toastContext';
 
 const ErrorPrinter = ({ error }) => {
   const { notify } = useToastContext();
 
   useEffect(() => {
-    if (error && error !== "") {
-      console.log("error", error);
-      // notify(error.toString(), "error", {
-      //   toastId: "error",
-      // });
+    if (error && error !== '' && error !== 'error.transfer.failed') {
+      console.log('error', error);
+      notify(error.toString(), 'error', {
+        toastId: 'error',
+      });
     }
   }, [error, notify]);
 

@@ -1,15 +1,27 @@
-import React from "react";
-import { useCharacterContext } from "../../contexts/characterContext";
+import React from 'react';
+import { useCharacterContext } from '../../contexts/characterContext';
+
+const styledCreationNameContainer = {
+  display: 'flex',
+  flex: 1,
+  justifyContent: 'center',
+};
+
+const styledCreationName = {
+  minWidth: '30%',
+  textAlign: 'center',
+};
 
 const CharacterCreationName = () => {
   const { name, setName } = useCharacterContext();
 
   return (
-    <div>
+    <div style={styledCreationNameContainer}>
       <input
-        type="text"
-        name="name"
-        placeholder="name"
+        style={styledCreationName}
+        type='text'
+        name='Name'
+        placeholder='Name'
         value={name}
         onChange={e => {
           setName(e.target.value);

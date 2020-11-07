@@ -18,7 +18,6 @@ const styledBoxHeader = {
 
 const styledBoxBack = {
   width: 250,
-  height: 20,
   marginBottom: 25,
   textAlign: 'center',
 };
@@ -85,9 +84,9 @@ const CharacterSelection = () => {
           <div style={styledCenterHeader}>
             {isUpdating ? 'Update a character' : 'Create a character'}
           </div>
-          <button style={styledBoxBack} onClick={keepCharacter}>
+          <ButtonLarge style={styledBoxBack} onClick={keepCharacter}>
             Retourner sur l'histoire
-          </button>
+          </ButtonLarge>
         </div>
         <CharacterProvider>
           <CharacterCreationPanel />

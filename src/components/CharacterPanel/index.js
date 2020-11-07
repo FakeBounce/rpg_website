@@ -29,8 +29,9 @@ const CharacterPanel = ({
   onItemUse,
   onGoldChange,
   toggleIsOnChar,
+  mentalDamage,
+  onMentalChange,
 }) => {
-
   const { triggerError } = useApp();
   const { isGameMaster } = useSelector(store => ({
     isGameMaster: store.appState.isGameMaster,
@@ -68,6 +69,8 @@ const CharacterPanel = ({
           onItemUse={onItemUse}
           onGoldChange={onGoldChange}
           toggleIsOnChar={toggleIsOnChar}
+          mentalDamage={mentalDamage}
+          onMentalChange={onMentalChange}
         />
       </div>
     </div>
@@ -86,7 +89,6 @@ CharacterPanel.propTypes = {
   onItemUse: PropTypes.func.isRequired,
   onGoldChange: PropTypes.func.isRequired,
   toggleIsOnChar: PropTypes.func.isRequired,
-  triggerError: PropTypes.func.isRequired,
 };
 
 export default CharacterPanel;
