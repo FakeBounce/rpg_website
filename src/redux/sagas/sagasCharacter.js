@@ -13,7 +13,11 @@ import * as actionsCharacter from '../actions/actionsCharacter';
 import * as actionsAppState from '../actions/actionsAppState';
 import * as actionsUserInfos from '../actions/actionsUserInfos';
 import { getTranslations } from '../../i18n';
-import { currentStorySelector, currentUidSelector } from '../../selectors';
+import {
+  currentStorySelector,
+  currentUidSelector,
+  currentPseudoSelector,
+} from '../../selectors';
 import {
   firebaseDbOnce,
   firebaseDbSet,
@@ -142,9 +146,15 @@ function* selectOtherCharacter({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
     const uid = yield select(currentUidSelector);
+    const pseudo = yield select(currentPseudoSelector);
 
     firebaseDbSet(`stories/${currentStory}/characters/${uid}`, {
-      character: payload.character,
+      character: {
+        ...payload.character,
+        status: 'OK',
+        userPseudo: pseudo,
+        userUid: uid,
+      },
       characterId: payload.characterId,
     }).catch(error => {
       console.log('selectOtherCharacter set saga err:', { error });
@@ -153,6 +163,14 @@ function* selectOtherCharacter({ payload }) {
     // Needed
     yield put(actionsCharacter.setCharacter(payload.character));
     yield put(actionsUserInfos.setCharacterId(payload.characterId));
+
+    yield put(
+      actionsUserInfos.setupCharacterCreation({
+        characterCreation: false,
+        characterId: payload.characterId,
+        oldCharacterId: '',
+      }),
+    );
 
     // Already listening
     // const channel = yield call(
@@ -194,6 +212,14 @@ function* updateCharacter({ payload }) {
     }).catch(error => {
       console.log('updateCharacter set saga err:', { error });
     });
+
+    yield put(
+      actionsUserInfos.setupCharacterCreation({
+        characterCreation: false,
+        characterId: payload.id,
+        oldCharacterId: '',
+      }),
+    );
   } catch (error) {
     console.log('updateCharacter try saga err:', { error });
 
@@ -247,8 +273,10 @@ function* createCharacter({ payload }) {
       actionsUserInfos.setupCharacterCreation({
         characterCreation: false,
         characterId: newCharKey,
+        oldCharacterId: '',
       }),
     );
+    yield put(actionsCharacter.callListenCharacter());
 
     yield put(actionsUserInfos.getAllCharacters());
   } catch (error) {

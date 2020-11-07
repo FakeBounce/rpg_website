@@ -1,9 +1,15 @@
-import * as actionsTypesCharacter from "../actionsTypes/actionsTypesCharacter";
+import * as actionsTypesCharacter from '../actionsTypes/actionsTypesCharacter';
 
 export const setCharacter = payload => {
   return {
     type: actionsTypesCharacter.SET_CHARACTER,
     payload,
+  };
+};
+
+export const callListenCharacter = () => {
+  return {
+    type: actionsTypesCharacter.CALL_LISTEN_CHARACTER,
   };
 };
 
