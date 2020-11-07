@@ -42,6 +42,7 @@ export const storiesSelector = state => state.appState.stories;
 export const isGameMasterSelector = state =>
   state.userInfos.uid === state.appState.gameMaster;
 export const currentUidSelector = state => state.userInfos.uid;
+export const currentPseudoSelector = state => state.userInfos.pseudo;
 export const currentMusicNameSelector = state =>
   state.sounds.music.isMusicFirst
     ? state.sounds.music.musicNameFirst

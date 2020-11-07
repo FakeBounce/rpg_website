@@ -105,7 +105,6 @@ const CharacterAttributes = () => {
       ? 15
       : 5;
 
-  console.log('mentalBonus', mentalBonus);
   return (
     <div style={styles.characterAttributeInfos}>
       {attributes.map(a => {
@@ -132,7 +131,7 @@ const CharacterAttributes = () => {
                 }}
               />
             ) : (
-              character.attributes[a] + mentalBonus
+              parseInt(character.attributes[a], 10) + mentalBonus
             )}
             <AttributeDice
               launchCommand={launchCommand}

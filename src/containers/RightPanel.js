@@ -33,13 +33,13 @@ const RightPanel = () => {
     isGameMaster,
     characterUid,
     character,
-    song,
+    pseudo,
   } = useSelector(store => ({
     currentStory: store.appState.currentStory,
     isGameMaster: store.appState.isGameMaster,
     characterUid: store.character.userUid,
     character: store.character,
-    song: store.sounds.song,
+    pseudo: store.userInfos.pseudo,
   }));
 
   const [panelState, setPanelState] = useState({
@@ -70,18 +70,22 @@ const RightPanel = () => {
   };
 
   const chatWithTeamMember = receiverPseudo => {
-    if (receiverPseudo === 'GM') {
-      setChatInput(`/gmw `);
-    } else {
-      setChatInput(`/w ${receiverPseudo} `);
+    if (pseudo !== receiverPseudo) {
+      if (receiverPseudo === 'GM') {
+        setChatInput(`/gmw `);
+      } else {
+        setChatInput(`/w ${receiverPseudo} `);
+      }
     }
   };
 
   const goldWithTeamMember = receiverPseudo => {
-    if (receiverPseudo === 'GM') {
-      setChatInput(`/goldgm `);
-    } else {
-      setChatInput(`/gold ${receiverPseudo} `);
+    if (pseudo !== receiverPseudo) {
+      if (receiverPseudo === 'GM') {
+        setChatInput(`/goldgm `);
+      } else {
+        setChatInput(`/gold ${receiverPseudo} `);
+      }
     }
   };
 
