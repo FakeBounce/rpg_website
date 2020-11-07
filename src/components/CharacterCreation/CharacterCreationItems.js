@@ -1,5 +1,5 @@
-import React from "react";
-import { useCharacterContext } from "../../contexts/characterContext";
+import React from 'react';
+import { useCharacterContext } from '../../contexts/characterContext';
 
 const CharacterCreationItems = () => {
   const {
@@ -17,7 +17,7 @@ const CharacterCreationItems = () => {
         return (
           <div key={`item-${index}`}>
             <input
-              type="text"
+              type='text'
               placeholder={`Item ${index + 1} + description if needed`}
               defaultValue={item.name}
               onChange={e => {
@@ -25,8 +25,8 @@ const CharacterCreationItems = () => {
               }}
             />
             <input
-              type="number"
-              placeholder="X"
+              type='number'
+              placeholder='X'
               value={item.quantity ? item.quantity : 1}
               onChange={e => {
                 onChangeItemsQuantity(index, e.target.value);

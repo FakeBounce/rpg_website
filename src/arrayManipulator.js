@@ -23,6 +23,6 @@ export const removeIndex = (oldArray, index) => {
 
 export const updateIndex = (oldArray, index, value) => {
   const obj = [...oldArray];
-  obj[index] = value;
+  obj[index].name = value;
   return obj;
 };

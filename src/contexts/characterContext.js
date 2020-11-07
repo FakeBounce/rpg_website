@@ -123,6 +123,7 @@ function CharacterProvider(props) {
     obj[index] = {
       ...obj[index],
       quantity: parseInt(value, 10),
+      rarity: 1,
     };
     setItems(obj);
   };
