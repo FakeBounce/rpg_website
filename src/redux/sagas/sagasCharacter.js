@@ -23,7 +23,6 @@ import {
   firebaseDbRemove,
 } from './api';
 import * as actionsTypesAppState from '../actionsTypes/actionsTypesAppState';
-import { setCharacter } from '../actions/actionsCharacter';
 
 function* characterError(error = getTranslations('error.transfer.failed')) {
   yield put(actionsAppState.printError(error));
@@ -108,8 +107,8 @@ function* listenOtherCharacter({ payload }) {
       firebaseDbOnce,
       '/stories/' + currentStory + '/characters/' + payload + '/character',
     );
-    yield put(setCharacter(newCharacter));
-    yield put(actionsTypesCharacter.CANCEL_LISTEN_CHARACTER);
+    yield put(actionsCharacter.setCharacter(newCharacter));
+    yield put(actionsCharacter.cancelListenCharacter());
 
     const channel = yield call(
       onValueChannel,
@@ -126,7 +125,7 @@ function* listenOtherCharacter({ payload }) {
     ]);
     channel.close();
   } catch (error) {
-    console.log('listenCharacter try saga err:', { error });
+    console.log('listenOtherCharacter try saga err:', { error });
 
     yield call(characterError);
   }
@@ -144,7 +143,6 @@ function* selectOtherCharacter({ payload }) {
     const currentStory = yield select(currentStorySelector);
     const uid = yield select(currentUidSelector);
 
-    console.log('payload', payload);
     firebaseDbSet(`stories/${currentStory}/characters/${uid}`, {
       character: payload.character,
       characterId: payload.characterId,
@@ -153,7 +151,7 @@ function* selectOtherCharacter({ payload }) {
     });
 
     // Needed
-    yield put(setCharacter(payload.character));
+    yield put(actionsCharacter.setCharacter(payload.character));
     yield put(actionsUserInfos.setCharacterId(payload.characterId));
 
     // Already listening
@@ -243,7 +241,7 @@ function* createCharacter({ payload }) {
       console.log('createCharacter set to story saga err:', { error });
     });
 
-    yield put(setCharacter(payload.charForStory));
+    yield put(actionsCharacter.setCharacter(payload.charForStory));
 
     yield put(
       actionsUserInfos.setupCharacterCreation({

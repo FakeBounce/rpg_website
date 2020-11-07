@@ -76,7 +76,13 @@ const ChatHistory = ({ activeChatTab }) => {
     let isFiltered = true;
     switch (activeChatTab) {
       case 'All':
-        isFiltered = false;
+        if (
+          row.channel === 'All' ||
+          (row.channel === 'Team' && !isGameMaster) ||
+          row.channel === 'Dices'
+        ) {
+          isFiltered = false;
+        }
         break;
       case 'Team':
         if (row.channel === 'Team' && !isGameMaster) {

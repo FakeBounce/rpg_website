@@ -20,3 +20,9 @@ export const callListenOtherCharacter = payload => {
     payload,
   };
 };
+
+export const cancelListenCharacter = () => {
+  return {
+    type: actionsTypesCharacter.CANCEL_LISTEN_CHARACTER,
+  };
+};

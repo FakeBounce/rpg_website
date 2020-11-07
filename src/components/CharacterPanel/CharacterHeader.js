@@ -54,6 +54,7 @@ const styledCharacterHeaderInactiveIcon = {
 const CharacterHeader = () => {
   const {
     icon,
+    iconPath,
     name,
     health,
     maxHealth,
@@ -63,8 +64,10 @@ const CharacterHeader = () => {
     isGameMaster,
     uid,
     currentStory,
+    characterId,
   } = useSelector(store => ({
     icon: store.character.icon,
+    iconPath: store.character.iconPath,
     name: store.character.name,
     health: store.character.health,
     maxHealth: store.character.maxHealth,
@@ -74,76 +77,59 @@ const CharacterHeader = () => {
     uid: store.userInfos.uid,
     currentStory: store.appState.currentStory,
     isGameMaster: store.appState.isGameMaster,
+    characterId: store.userInfos.characterId,
   }));
   const { triggerError } = useApp();
 
   const onDrop = picture => {
-    const path =
-      'images/' +
-      uid +
-      '/stories/' +
-      currentStory +
-      '/' +
-      picture[picture.length - 1].name;
+    if (picture.length > 0) {
+      const extension =
+        picture[picture.length - 1].name.split('.')[1] || '.png';
+      const path = `images/${uid}/character_${characterId}.${extension}`;
 
-    firebase
-      .database()
-      .ref(
-        'stories/' +
-          currentStory +
-          '/characters/' +
-          uid +
-          '/character/iconPath',
-      )
-      .once('value')
-      .then(snapshot => {
-        firebase
-          .storage()
-          .ref()
-          .child(snapshot.val())
-          .delete()
-          .then(() => {
-            // File deleted successfully
-            firebase
-              .storage()
-              .ref()
-              .child(path)
-              .put(picture[picture.length - 1])
-              .then(() => {
-                firebase
-                  .storage()
-                  .ref()
-                  .child(path)
-                  .getDownloadURL()
-                  .then(url => {
-                    let updates = {};
-                    updates[uid + '/character/iconPath'] = path;
-                    updates[uid + '/character/icon'] = url;
+      firebase
+        .storage()
+        .ref()
+        .child(iconPath)
+        .delete()
+        .then(() => {
+          // File deleted successfully
+          firebase
+            .storage()
+            .ref()
+            .child(path)
+            .put(picture[picture.length - 1])
+            .then(() => {
+              firebase
+                .storage()
+                .ref()
+                .child(path)
+                .getDownloadURL()
+                .then(url => {
+                  let updates = {};
+                  updates[uid + '/character/iconPath'] = path;
+                  updates[uid + '/character/icon'] = url;
 
-                    firebase
-                      .database()
-                      .ref('stories/' + currentStory + '/characters/')
-                      .update(updates)
-                      .catch(error => {
-                        // Handle Errors here.
-                        triggerError(error);
-                      });
-                  })
-                  .catch(error => {
-                    // Handle any errors
-                    triggerError(error);
-                  });
-              });
-          })
-          .catch(error => {
-            // Uh-oh, an error occurred!
-            triggerError(error);
-          });
-      })
-      .catch(error => {
-        // Handle any errors
-        triggerError(error);
-      });
+                  firebase
+                    .database()
+                    .ref('stories/' + currentStory + '/characters/')
+                    .update(updates)
+                    .catch(error => {
+                      // Handle Errors here.
+                      triggerError(error);
+                    });
+                })
+                .catch(error => {
+                  // Handle any errors
+                  triggerError(error);
+                });
+            });
+        })
+        .catch(error => {
+          // Uh-oh, an error occurred!
+          triggerError(error);
+        });
+    }
   };
 
   return (

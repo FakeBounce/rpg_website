@@ -3,13 +3,13 @@ import { cursorPointer } from '../Utils/StyleConstants';
 import CharacterCreationName from './CharacterCreationName';
 import CharacterCreationBox from './CharacterCreationBox';
 import { useCharacterContext } from '../../contexts/characterContext';
+import ButtonLarge from '../Utils/ButtonLarge';
 
 const styledItem = {
   display: 'inline-block',
   border: '1px solid green',
   width: '80%',
   position: 'relative',
-  cursor: cursorPointer,
 };
 
 const CharacterCreationPanel = () => {
@@ -19,7 +19,7 @@ const CharacterCreationPanel = () => {
     <div style={styledItem}>
       <CharacterCreationName />
       <CharacterCreationBox />
-      <button onClick={validateBeforeCreate}>Validate</button>
+      <ButtonLarge onClick={validateBeforeCreate}>Validate</ButtonLarge>
     </div>
   );
 };

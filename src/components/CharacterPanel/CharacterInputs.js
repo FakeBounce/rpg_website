@@ -15,7 +15,7 @@ const CharacterInputsLifeSelect = {
   position: 'relative',
   float: 'left',
   display: 'inline-block',
-  width: 70,
+  width: 50,
   height: 19,
 };
 const CharacterInputsLifeButton = {
@@ -51,6 +51,8 @@ const CharacterInputs = ({
   onStatusChange,
   onGoldChange,
   damageTaken,
+  mentalDamage,
+  onMentalChange,
 }) => {
   const { isGameMaster } = useSelector(store => ({
     isGameMaster: store.appState.isGameMaster,
@@ -106,6 +108,20 @@ const CharacterInputs = ({
           </ButtonLarge>
         </div>
       )}
+
+      <input
+        type='number'
+        placeholder='X'
+        name='mentalDamage'
+        value={mentalDamage}
+        onChange={e => {
+          onChange(e.target.name, parseInt(e.target.value, 10));
+        }}
+        style={CharacterInputsLifeInput}
+      />
+      <ButtonLarge onClick={onMentalChange} style={CharacterInputsLifeButton}>
+        MP
+      </ButtonLarge>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ButtonLarge from '../Utils/ButtonLarge';
+import useChat from '../../hooks/useChat';
 
 const styledChatButton = {
   width: 25,
@@ -9,16 +9,13 @@ const styledChatButton = {
   padding: '0px',
 };
 
-const ChatSubmit = ({ talkInChat }) => {
+const ChatSubmit = () => {
+  const { talkInChat } = useChat();
   return (
     <ButtonLarge style={styledChatButton} onClick={talkInChat}>
       OK
     </ButtonLarge>
   );
-};
-
-ChatSubmit.propTypes = {
-  talkInChat: PropTypes.func.isRequired,
 };
 
 export default ChatSubmit;

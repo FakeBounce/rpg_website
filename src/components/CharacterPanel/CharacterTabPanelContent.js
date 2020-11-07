@@ -64,6 +64,9 @@ const CharacterTabPanelContent = ({ tab, tabName }) => {
             tabName.toLowerCase(),
         )
         .set(obj)
+        .then(() => {
+          setNewValue('');
+        })
         .catch(error => {
           // Handle Errors here.
           console.log('Error', error);

@@ -6,11 +6,13 @@ import {
   takeEvery,
   call,
   all,
+  select,
 } from 'redux-saga/effects';
 
 import * as actionsTypesAppState from '../actionsTypes/actionsTypesAppState';
 import * as actionsAppState from '../actions/actionsAppState';
 import * as actionsMapInfos from '../actions/actionsMapInfos';
+import * as actionsCharacter from '../actions/actionsCharacter';
 import { getTranslations } from '../../i18n';
 import {
   firebaseDbOnce,
@@ -18,6 +20,7 @@ import {
   firebaseDbSet,
   firebaseDbNewKey,
 } from './api';
+import { currentUidSelector } from '../../selectors';
 
 function* appStateError(
   { payload } = getTranslations('error.transfer.failed'),
@@ -97,6 +100,7 @@ export function* watchCallListenStoryUsers() {
 
 function* createStory({ payload }) {
   try {
+    const currentUid = yield select(currentUidSelector);
     const newStoryKey = firebaseDbNewKey('/stories');
     firebaseDbSet(`stories/${newStoryKey}`, payload.story).catch(error => {
       console.log('createStory set saga err:', { error });
@@ -105,6 +109,11 @@ function* createStory({ payload }) {
     yield put(actionsAppState.setAllStories(stories));
     yield put(actionsAppState.setCurrentStory(newStoryKey));
     yield put(actionsAppState.dispatchTogglePlayerMastering(true));
+    yield put(
+      actionsCharacter.setCharacter(
+        payload.story.characters[currentUid].character,
+      ),
+    );
   } catch (error) {
     console.log('createStory try saga err:', { error });
 

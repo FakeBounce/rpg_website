@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TeamCharacter from './TeamCharacter';
 import { widthRightPanel, heightLeft } from '../Utils/StyleConstants';
-import TeamHeader from './TeamHeader';
+// import TeamHeader from './TeamHeader';
 import { colors } from '../Utils/Constants';
 import { useSelector } from 'react-redux';
 
@@ -15,8 +15,7 @@ const TeamPanelContainer = {
 };
 const TeamPanelCharacters = {
   width: `${widthRightPanel}px`,
-  height: `${heightLeft / 2 - 25}px`,
-  marginTop: 25,
+  height: `${heightLeft / 2}px`,
   position: 'relative',
   float: 'left',
   display: 'inline-block',
@@ -32,8 +31,7 @@ const TeamPanelGMContainer = {
 };
 const TeamPanelGMCharacters = {
   width: '100%',
-  height: `${heightLeft / 2 - 25}px`,
-  marginTop: 25,
+  height: `${heightLeft / 2}px`,
   position: 'relative',
   float: 'left',
   display: 'inline-block',
@@ -58,7 +56,7 @@ const TeamPanel = ({
 
   return (
     <div style={isGameMaster ? TeamPanelGMContainer : TeamPanelContainer}>
-      <TeamHeader />
+      {/* <TeamHeader /> */}
       <div
         style={isGameMaster ? TeamPanelGMCharacters : TeamPanelCharacters}
         className='scrollbar'

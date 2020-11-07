@@ -1,14 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { widthLeft } from '../Utils/StyleConstants';
 import ChatGMButton from './ChatGMButton';
-import ChatGMDiceButton from './ChatGMDiceButton';
-import ChatGMGoldButton from './ChatGMGoldButton';
+import useChat from '../../hooks/useChat';
+import { useChatContext } from '../../contexts/chatContext';
+import { GiGoldBar, GiDiceTwentyFacesTwenty } from 'react-icons/gi';
 
 const styledChatButtons = {
-  width: widthLeft,
+  maxWidth: widthLeft,
   height: 26,
-  display: 'inline-block',
+  display: 'flex',
   padding: '0px',
 };
 
@@ -20,16 +20,21 @@ const styledChatButtons = {
 // };
 
 const ChatGMButtons = ({ onChangeTab, infoTab }) => {
+  const { toggleGMCommands, sendGMGold } = useChat();
+  const { gmCommands } = useChatContext();
+
   return (
     <div style={styledChatButtons}>
-      <ChatGMDiceButton />
-      {/* <ChatGMButton
-        onChangeTab={onChangeTab}
-        nameToChange='Whisper'
-        isActive={infoTab === 'Whisper'}
-      /> */}
-      <ChatGMDiceButton />
-      <ChatGMGoldButton />
+      <ChatGMButton
+        icon={'Dice to GM'}
+        func={toggleGMCommands}
+        isActive={gmCommands}
+      >
+        <GiDiceTwentyFacesTwenty />
+      </ChatGMButton>
+      <ChatGMButton func={sendGMGold}>
+        <GiGoldBar />
+      </ChatGMButton>
     </div>
   );
 };

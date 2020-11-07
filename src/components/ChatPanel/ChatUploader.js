@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { cursorPointer } from '../Utils/StyleConstants';
 import FileUploader from '../CharacterCreation/FileUploader';
+import useChat from '../../hooks/useChat';
 
 const styledChatImageContainer = {
   width: 20,
@@ -18,7 +19,8 @@ const styledFileUploaderButton = {
 
 const styledFileUploader = { padding: 0, margin: 0, display: 'block' };
 
-const ChatUploader = ({ onDrop }) => {
+const ChatUploader = () => {
+  const { onDrop } = useChat();
   return (
     <div style={styledChatImageContainer}>
       <FileUploader
@@ -32,10 +34,6 @@ const ChatUploader = ({ onDrop }) => {
       />
     </div>
   );
-};
-
-ChatUploader.propTypes = {
-  onDrop: PropTypes.func.isRequired,
 };
 
 export default ChatUploader;

@@ -1,37 +1,56 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { cursorPointer } from '../Utils/StyleConstants';
 
 const styledTabsContainer = {
-  width: '100%',
   height: 50,
   paddingTop: 10,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 };
 
 const styledTab = {
-  width: '33%',
-  position: 'relative',
-  float: 'left',
+  display: 'flex',
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderLeft: '1px solid white',
+  borderBottom: '1px solid white',
+  cursor: cursorPointer,
 };
 
 const styledActiveTab = {
-  width: '33%',
-  position: 'relative',
-  float: 'left',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flex: 1,
+  borderLeft: '1px solid white',
+  borderBottom: '1px solid white',
+  backgroundColor: 'white',
+  color: 'black',
+  cursor: cursorPointer,
 };
 
 const CharacterCreationStatsTabs = ({ currentPanel, changePanel }) => {
   return (
     <div style={styledTabsContainer}>
       <div
-        style={currentPanel === 'attributes' ? styledTab : styledActiveTab}
+        style={currentPanel === 'attributes' ? styledActiveTab : styledTab}
         onClick={() => changePanel('attributes')}
       >
         Attributes
       </div>
-      <div style={styledTab} onClick={() => changePanel('skills')}>
+      <div
+        style={currentPanel === 'skills' ? styledActiveTab : styledTab}
+        onClick={() => changePanel('skills')}
+      >
         Skills
       </div>
-      <div style={styledTab} onClick={() => changePanel('items')}>
+      <div
+        style={currentPanel === 'items' ? styledActiveTab : styledTab}
+        onClick={() => changePanel('items')}
+      >
         Items
       </div>
     </div>

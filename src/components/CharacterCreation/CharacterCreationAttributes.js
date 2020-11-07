@@ -9,6 +9,15 @@ const styledBoxHeader = {
   textAlign: 'center',
 };
 
+const styledAttribute = {
+  padding: 5,
+};
+
+const styledAttributeInput = {
+  marginLeft: 5,
+  width: 50,
+};
+
 const CharacterCreationAttributes = () => {
   const {
     attributes,
@@ -21,8 +30,8 @@ const CharacterCreationAttributes = () => {
       <div style={styledBoxHeader}>Attributes :</div>
       {namedAttributes.map(a => {
         return (
-          <div key={`attribute-${a}`}>
-            {a} :
+          <div key={`attribute-${a}`} style={styledAttribute}>
+            {a.toUpperCase()} :
             <input
               type='number'
               name={a}
@@ -31,6 +40,7 @@ const CharacterCreationAttributes = () => {
               onChange={e => {
                 onChangeAttribute(e.target.name, e.target.value);
               }}
+              style={styledAttributeInput}
               min='5'
               max='75'
             />

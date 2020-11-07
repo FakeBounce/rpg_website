@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import CharacterTabButtons from './CharacterTabButtons';
 import CharacterTabPanel from './CharacterTabPanel';
@@ -31,23 +32,32 @@ const CharacterOtherInfos = ({
   onItemUse,
   damageTaken,
   toggleIsOnChar,
+  mentalDamage,
+  onMentalChange,
 }) => {
+  const { isGameMaster } = useSelector(store => ({
+    isGameMaster: store.appState.isGameMaster,
+  }));
   return (
     <div style={styles.characterOtherInfos}>
       <CharacterTabButtons onChangeTab={onChangeTab} infoTab={infoTab} />
       <CharacterTabPanel infoTab={infoTab} onItemUse={onItemUse} />
-      <CharacterInputs
-        status={status}
-        gold={gold}
-        infoTab={infoTab}
-        damageTaken={damageTaken}
-        onChange={onChange}
-        onChangeTab={onChangeTab}
-        onLifeChange={onLifeChange}
-        onStatusChange={onStatusChange}
-        onGoldChange={onGoldChange}
-        toggleIsOnChar={toggleIsOnChar}
-      />
+      {isGameMaster && (
+        <CharacterInputs
+          status={status}
+          gold={gold}
+          infoTab={infoTab}
+          damageTaken={damageTaken}
+          onChange={onChange}
+          onChangeTab={onChangeTab}
+          onLifeChange={onLifeChange}
+          onStatusChange={onStatusChange}
+          onGoldChange={onGoldChange}
+          toggleIsOnChar={toggleIsOnChar}
+          mentalDamage={mentalDamage}
+          onMentalChange={onMentalChange}
+        />
+      )}
     </div>
   );
 };

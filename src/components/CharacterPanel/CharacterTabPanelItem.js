@@ -10,24 +10,24 @@ const styledTabPanelItem = {
   width: `${widthRightPanelLeft - 6}px`,
   paddingHorizontal: 5,
   position: 'relative',
-  float: 'left',
-  display: 'inline-block',
   borderBottom: '1px solid black',
+  display: 'flex',
+  justifyContent: 'space-between',
 };
 
 const styledItemName = {
-  width: `${widthRightPanelLeft - 120}px`,
-  position: 'relative',
-  float: 'left',
-  display: 'inline-block',
+  display: 'flex',
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginLeft: 10,
 };
 
 const styledItemQuantity = {
-  width: 30,
+  maxWidth: 30,
   height: 26,
-  position: 'relative',
-  float: 'left',
-  display: 'inline-block',
+  display: 'flex',
+  flex: 1,
   padding: 0,
   margin: 0,
   textAlign: 'center',
@@ -56,10 +56,11 @@ const styledDiscoverButton = {
 const CharacterTabPanelItem = ({ onItemUse }) => {
   const [itemValue, setItemValue] = useState('');
 
-  const { currentStory, isGameMaster, character } = useSelector(store => ({
+  const { currentStory, isGameMaster, character, characterItems } = useSelector(store => ({
     currentStory: store.appState.currentStory,
     isGameMaster: store.appState.isGameMaster,
     character: store.character,
+    characterItems: store.character.items || [],
   }));
 
   const onChangeItem = value => {
@@ -87,6 +88,9 @@ const CharacterTabPanelItem = ({ onItemUse }) => {
           '/character/items',
       )
       .set(obj)
+      .then(() => {
+        setItemValue('');
+      })
       .catch(error => {
         // Handle Errors here.
         console.log('Error', error);
@@ -113,12 +117,25 @@ const CharacterTabPanelItem = ({ onItemUse }) => {
       });
   };
 
+  console.log('characterItems',characterItems)
   return (
     <div>
-      {character.items &&
-        character.items.map((item, index) => {
+      {characterItems.length > 0 &&
+        characterItems.map((item, index) => {
           return (
             <div key={`${item.name}-${index}`} style={styledTabPanelItem}>
+              <div style={styledItemName}>
+                {/* {character.education < item.rarity * 9 && !item.isDiscovered
+                  ? '???'
+                  : item.name} */}
+                {item.name}
+              </div>
+              {/* <ButtonLarge
+                style={styledItemButton}
+                onClick={() => onItemUse(index, item.quantity - 1)}
+              >
+                Use ({item.quantity} left)
+              </ButtonLarge> */}
               <input
                 type='number'
                 value={item.quantity}
@@ -127,26 +144,14 @@ const CharacterTabPanelItem = ({ onItemUse }) => {
                   onItemUse(index, e.target.value);
                 }}
               />
-              <div style={styledItemName}>
-                {/* {character.education < item.rarity * 9 && !item.isDiscovered
-                  ? '???'
-                  : item.name} */}
-                  {item.name}
-              </div>
-              <ButtonLarge
-                style={styledItemButton}
-                onClick={() => onItemUse(index, item.quantity - 1)}
-              >
-                Use ({item.quantity} left)
-              </ButtonLarge>
-              {isGameMaster && (
+              {/* {isGameMaster && (
                 <ButtonLarge
                   style={styledDiscoverButton}
                   onClick={discoverItem(index, !item.isDiscovered)}
                 >
                   {item.isDiscovered ? 'Uncover' : 'Discover'}
                 </ButtonLarge>
-              )}
+              )} */}
             </div>
           );
         })}

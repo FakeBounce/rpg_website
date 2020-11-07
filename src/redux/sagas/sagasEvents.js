@@ -73,22 +73,19 @@ export function* watchCallListenHistoryEvents() {
 
 export function* callAddNewEvent({ payload }) {
   try {
-    console.log('payload', payload);
     const currentStory = yield select(currentStorySelector);
-    if (currentStory !== "") {
+    if (currentStory !== '') {
       const newPostKey = firebaseDbNewKey(`stories/${currentStory}/events`);
-
-      console.log('newPostKey', newPostKey);
 
       firebaseDbSet(
         `stories/${currentStory}/events/${newPostKey}`,
         payload,
       ).catch(error => {
-        console.log('callAddNewEvent set saga err:', { error });
+        console.log('callAddNewEvent event set saga err:', { error });
       });
       firebaseDbSet(`stories/${currentStory}/currentEvent`, newPostKey).catch(
         error => {
-          console.log('callAddNewEvent set saga err:', { error });
+          console.log('callAddNewEvent set current saga err:', { error });
         },
       );
       yield call(actionsEvents.setCurrentEvent, newPostKey);
@@ -96,7 +93,7 @@ export function* callAddNewEvent({ payload }) {
       yield call(eventsError, 'No story selected');
     }
   } catch (error) {
-    console.log('callAddNewEvent try saga err:', { error });
+    console.log('callAddNewEvent global try saga err:', { error });
 
     yield call(eventsError);
   }
