@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Grid.css';
 import Town from './Town';
+import ReactTooltip from 'react-tooltip';
 
 import { gridDimension } from '../Utils/StyleConstants';
 import { useSelector } from 'react-redux';
@@ -12,9 +13,13 @@ const Tile = ({ row, town, showTownList, cancelTownList }) => {
     tilesTypes: store.mapInfos.tilesTypes,
   }));
 
+  const tileClassName = `grid ${
+    row.isCurrent ? 'is-current' : row.hasObjective ? 'has-objective' : ''
+  }`;
+
   return (
     <div
-      className={`grid ${row.isCurrent && 'is-current'}`}
+      className={tileClassName}
       style={{
         backgroundColor: tilesTypes[row.environment]
           ? tilesTypes[row.environment].backgroundColor
@@ -22,6 +27,7 @@ const Tile = ({ row, town, showTownList, cancelTownList }) => {
         width: `${(gridDimension * currentZoom) / 10}px`,
         height: `${(gridDimension * currentZoom) / 10}px`,
       }}
+      data-tip={row.hasObjective ? row.objectiveName : null}
     >
       {row.hasFog && (
         <div
@@ -38,8 +44,10 @@ const Tile = ({ row, town, showTownList, cancelTownList }) => {
           showTownList={showTownList}
           cancelTownList={cancelTownList}
           isCurrent={row.isCurrent || false}
+          showTooltip={!row.hasObjective}
         />
       )}
+      {row.hasObjective && <ReactTooltip />}
     </div>
   );
 };

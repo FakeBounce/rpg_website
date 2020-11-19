@@ -12,14 +12,12 @@ function TileGMProvider(props) {
   const { triggerError } = useApp();
 
   const setTexture = (x, y) => {
-    console.log('useStore', store.getState());
     const storeValues = store.getState();
 
     const currentStory = storeValues.appState.currentStory;
     const stories = storeValues.appState.stories;
     const currentScale = storeValues.mapInfos.currentScale;
     const textureToApply = storeValues.mapInfos.textureToApply;
-
 
     let updates = {};
     let path = '';

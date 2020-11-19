@@ -14,7 +14,13 @@ const styledIcon = {
   height: '100%',
 };
 
-const Town = ({ town, showTownList, cancelTownList, isCurrent }) => {
+const Town = ({
+  town,
+  showTownList,
+  cancelTownList,
+  isCurrent,
+  showTooltip,
+}) => {
   return (
     <div
       style={styledItem}
@@ -25,14 +31,14 @@ const Town = ({ town, showTownList, cancelTownList, isCurrent }) => {
           cancelTownList();
         }
       }}
-      data-tip={town.name}
+      data-tip={showTooltip ? town.name : null}
     >
       <img
         src={'./map/town-size-' + town.size + '.jpg'}
         style={styledIcon}
         alt={town.name}
       />
-      <ReactTooltip />
+      {showTooltip && <ReactTooltip />}
     </div>
   );
 };
@@ -46,6 +52,7 @@ Town.propTypes = {
   showTownList: PropTypes.func.isRequired,
   cancelTownList: PropTypes.func,
   isCurrent: PropTypes.bool.isRequired,
+  showTooltip: PropTypes.bool.isRequired,
 };
 
 export default Town;

@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import './Grid.css';
 import Town from './Town';
-import { useDispatch } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
 
 import { SET_CURRENT_TOWN } from '../../redux/actionsTypes/actionsTypesMapInfos';
 
@@ -26,9 +27,13 @@ const TileGM = ({
     dispatch({ type: SET_CURRENT_TOWN, payload });
   };
 
+  const tileClassName = `grid ${
+    row.isCurrent ? 'is-current' : row.hasObjective ? 'has-objective' : ''
+  }`;
+
   return (
     <div
-      className={`grid ${row.isCurrent && 'is-current'}`}
+      className={tileClassName}
       style={{
         backgroundColor: tilesTypes[row.environment]
           ? tilesTypes[row.environment].backgroundColor
@@ -40,6 +45,7 @@ const TileGM = ({
         if (textureToApply) setTexture(positionX, index);
         else showInfos(row);
       }}
+      data-tip={row.hasObjective ? row.objectiveName : null}
     >
       {town && (
         <Town
@@ -48,6 +54,7 @@ const TileGM = ({
             setCurrentTown(row.hasTown);
             showInfos(row);
           }}
+          showTooltip={!row.hasObjective}
           isCurrent={true}
         />
       )}
@@ -60,6 +67,7 @@ const TileGM = ({
           }}
         />
       )}
+      {row.hasObjective && <ReactTooltip />}
     </div>
   );
 };

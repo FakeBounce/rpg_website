@@ -84,7 +84,11 @@
 }
 
 .is-current {
-    border: 2px solid #991510;
+    border: 2px solid #E53E3E;
+}
+
+.has-objective {
+    border: 2px solid #DD6B20;
 }
 
 .fog-gm:hover {
