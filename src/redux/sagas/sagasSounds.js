@@ -6,57 +6,61 @@ import {
   takeLatest,
   takeEvery,
   take,
-} from "redux-saga/effects";
+} from 'redux-saga/effects';
 
-import * as actionsTypesSounds from "../actionsTypes/actionsTypesSounds";
-import * as actionsSounds from "../actions/actionsSounds";
-import * as actionsAppState from "../actions/actionsAppState";
-import { currentStorySelector, noiseSelector, songSelector } from "../../selectors";
-import { getTranslations } from "../../i18n";
-import { firebaseDbSet, onValueChannel } from "./api";
-import * as actionsTypesAppState from "../actionsTypes/actionsTypesAppState";
+import * as actionsTypesSounds from '../actionsTypes/actionsTypesSounds';
+import * as actionsSounds from '../actions/actionsSounds';
+import * as actionsAppState from '../actions/actionsAppState';
+import {
+  currentStorySelector,
+  noiseSelector,
+  songSelector,
+} from '../../selectors';
+import { getTranslations } from '../../i18n';
+import { firebaseDbSet, onValueChannel } from './api';
+import * as actionsTypesAppState from '../actionsTypes/actionsTypesAppState';
 
-function* soundsError(error = getTranslations("error.transfer.failed")) {
+function* soundsError(error = getTranslations('error.transfer.failed')) {
   yield put(actionsAppState.printError(error));
 
   yield delay(5000);
-  yield put(actionsAppState.printError(""));
+  yield put(actionsAppState.printError(''));
 }
 
 export function* callResetSounds() {
   try {
     const currentStory = yield select(currentStorySelector);
-    if (currentStory !== "") {
-      firebaseDbSet("/stories/" + currentStory + "/music", {
+    if (currentStory !== '') {
+      firebaseDbSet('/stories/' + currentStory + '/music', {
         musicMute: false,
-        musicNameFirst: "",
-        musicNameSecond: "",
-        musicStatusFirst: "STOPPED",
-        musicStatusSecond: "STOPPED",
+        musicNameFirst: '',
+        musicNameSecond: '',
+        musicStatusFirst: 'STOPPED',
+        musicStatusSecond: 'STOPPED',
         musicVolume: 50,
         musicVolumeFirst: 50,
         musicVolumeSecond: 0,
         isMusicFirst: true,
         isMusicTransition: false,
       }).catch(error => {
-        console.log("callResetSounds saga err:", { error });
+        console.log('callResetSounds saga err:', { error });
       });
 
-      firebaseDbSet("/stories/" + currentStory + "/noise", {
+      firebaseDbSet('/stories/' + currentStory + '/noise', {
         noiseMute: false,
-        noiseName: "",
-        noiseStatus: "STOPPED",
+        noiseName: '',
+        noiseStatus: 'STOPPED',
         noiseVolume: 50,
       }).catch(error => {
-        console.log("callResetSounds set saga err:", { error });
+        console.log('callResetSounds set saga err:', { error });
       });
 
       yield call(actionsSounds.toggleMusicFirst, true);
     } else {
-      yield call(soundsError, "No story selected");
+      yield call(soundsError, 'No story selected');
     }
   } catch (error) {
-    console.log("callResetSounds try saga err:", { error });
+    console.log('callResetSounds try saga err:', { error });
 
     yield call(soundsError);
   }
@@ -72,20 +76,20 @@ export function* callStopNoise() {
   try {
     const currentStory = yield select(currentStorySelector);
     const noise = yield select(noiseSelector);
-    if (currentStory !== "") {
-      firebaseDbSet("/stories/" + currentStory + "/noise", {
+    if (currentStory !== '') {
+      firebaseDbSet('/stories/' + currentStory + '/noise', {
         ...noise,
-        noiseStatus: "STOPPED",
-        noiseName: "",
+        noiseStatus: 'STOPPED',
+        noiseName: '',
       }).catch(error => {
-        console.log("callStopNoise set saga err:", { error });
+        console.log('callStopNoise set saga err:', { error });
       });
       // yield call(actionsSounds.stopNoise);
     } else {
-      yield call(soundsError, "No story selected");
+      yield call(soundsError, 'No story selected');
     }
   } catch (error) {
-    console.log("callStopNoise try saga err:", { error });
+    console.log('callStopNoise try saga err:', { error });
 
     yield call(soundsError);
   }
@@ -97,24 +101,54 @@ export function* watchCallStopNoise() {
   yield takeLatest(actionsTypesSounds.CALL_STOP_NOISE, callStopNoise);
 }
 
+export function* toggleNoiseLooping() {
+  try {
+    const currentStory = yield select(currentStorySelector);
+    const noise = yield select(noiseSelector);
+    if (currentStory !== '') {
+      firebaseDbSet('/stories/' + currentStory + '/noise', {
+        ...noise,
+        isLooping: !noise.isLooping,
+      }).catch(error => {
+        console.log('toggleNoiseLooping setter saga err:', { error });
+      });
+    } else {
+      yield call(soundsError, 'No story selected');
+    }
+  } catch (error) {
+    console.log('toggleNoiseLooping global try saga err:', { error });
+
+    yield call(soundsError);
+  }
+
+  return null;
+}
+
+export function* watchCallToggleNoiseLooping() {
+  yield takeLatest(
+    actionsTypesSounds.CALL_TOGGLE_NOISE_LOOPING,
+    toggleNoiseLooping,
+  );
+}
+
 export function* callStopSong() {
   try {
     const currentStory = yield select(currentStorySelector);
     const song = yield select(songSelector);
-    if (currentStory !== "") {
-      firebaseDbSet("/stories/" + currentStory + "/song", {
+    if (currentStory !== '') {
+      firebaseDbSet('/stories/' + currentStory + '/song', {
         ...song,
-        songName: "",
-        songStatus: "STOPPED",
+        songName: '',
+        songStatus: 'STOPPED',
       }).catch(error => {
-        console.log("callStopSong set saga err:", { error });
+        console.log('callStopSong set saga err:', { error });
       });
       // yield call(actionsSounds.stopSong);
     } else {
-      yield call(soundsError, "No story selected");
+      yield call(soundsError, 'No story selected');
     }
   } catch (error) {
-    console.log("callStopSong try saga err:", { error });
+    console.log('callStopSong try saga err:', { error });
 
     yield call(soundsError);
   }
@@ -129,19 +163,19 @@ export function* watchCallStopSong() {
 export function* callLoadSong({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
-    if (currentStory !== "") {
-      firebaseDbSet("/stories/" + currentStory + "/song", {
+    if (currentStory !== '') {
+      firebaseDbSet('/stories/' + currentStory + '/song', {
         ...payload,
       }).catch(error => {
-        console.log("callLoadSong set saga err:", { error });
+        console.log('callLoadSong set saga err:', { error });
       });
 
       // yield call(actionsSounds.loadSong, params);
     } else {
-      yield call(soundsError, "No story selected");
+      yield call(soundsError, 'No story selected');
     }
   } catch (error) {
-    console.log("callLoadSong try saga err:", { error });
+    console.log('callLoadSong try saga err:', { error });
     yield call(soundsError);
   }
 
@@ -155,18 +189,18 @@ export function* watchCallLoadSong() {
 export function* callLoadMusic({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
-    if (currentStory !== "") {
-      firebaseDbSet("/stories/" + currentStory + "/music", {
+    if (currentStory !== '') {
+      firebaseDbSet('/stories/' + currentStory + '/music', {
         ...payload,
       }).catch(error => {
-        console.log("callLoadMusic set saga err:", { error });
+        console.log('callLoadMusic set saga err:', { error });
       });
       // yield call(actionsSounds.loadMusic, params);
     } else {
-      yield call(soundsError, "No story selected");
+      yield call(soundsError, 'No story selected');
     }
   } catch (error) {
-    console.log("callLoadMusic try saga err:", { error });
+    console.log('callLoadMusic try saga err:', { error });
 
     yield call(soundsError);
   }
@@ -181,18 +215,18 @@ export function* watchCallLoadMusic() {
 export function* callLoadNoise({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
-    if (currentStory !== "") {
-      firebaseDbSet("/stories/" + currentStory + "/noise", {
+    if (currentStory !== '') {
+      firebaseDbSet('/stories/' + currentStory + '/noise', {
         ...payload,
       }).catch(error => {
-        console.log("callLoadNoise set saga err:", { error });
+        console.log('callLoadNoise set saga err:', { error });
       });
       // yield call(actionsSounds.loadNoise, params); // useless because already listening
     } else {
-      yield call(soundsError, "No story selected");
+      yield call(soundsError, 'No story selected');
     }
   } catch (error) {
-    console.log("callLoadNoise try saga err:", { error });
+    console.log('callLoadNoise try saga err:', { error });
 
     yield call(soundsError);
   }
@@ -209,7 +243,7 @@ function* listenMusic() {
     const currentStory = yield select(currentStorySelector);
     const channel = yield call(
       onValueChannel,
-      "/stories/" + currentStory + "/music",
+      '/stories/' + currentStory + '/music',
     );
 
     yield takeEvery(channel, function*(data) {
@@ -222,7 +256,7 @@ function* listenMusic() {
     ]);
     channel.close();
   } catch (error) {
-    console.log("listenMusic try saga err:", { error });
+    console.log('listenMusic try saga err:', { error });
 
     yield call(soundsError);
   }
@@ -237,7 +271,7 @@ function* listenNoise() {
     const currentStory = yield select(currentStorySelector);
     const channel = yield call(
       onValueChannel,
-      "/stories/" + currentStory + "/noise",
+      '/stories/' + currentStory + '/noise',
     );
 
     yield takeEvery(channel, function*(data) {
@@ -250,7 +284,7 @@ function* listenNoise() {
     ]);
     channel.close();
   } catch (error) {
-    console.log("listenNoise try saga err:", { error });
+    console.log('listenNoise try saga err:', { error });
 
     yield call(soundsError);
   }
@@ -265,7 +299,7 @@ function* listenSong() {
     const currentStory = yield select(currentStorySelector);
     const channel = yield call(
       onValueChannel,
-      "/stories/" + currentStory + "/song",
+      '/stories/' + currentStory + '/song',
     );
 
     yield takeEvery(channel, function*(data) {
@@ -278,7 +312,7 @@ function* listenSong() {
     ]);
     channel.close();
   } catch (error) {
-    console.log("listenSong try saga err:", { error });
+    console.log('listenSong try saga err:', { error });
 
     yield call(soundsError);
   }

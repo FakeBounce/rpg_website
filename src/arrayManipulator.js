@@ -3,7 +3,7 @@ export const addEmptyString = (oldArray, limit = 0, error = () => {}) => {
     return error;
   }
   const obj = [...oldArray];
-  obj.push("");
+  obj.push('');
   return obj;
 };
 
@@ -23,6 +23,6 @@ export const removeIndex = (oldArray, index) => {
 
 export const updateIndex = (oldArray, index, value) => {
   const obj = [...oldArray];
-  obj[index].name = value;
+  obj[index] = value;
   return obj;
 };

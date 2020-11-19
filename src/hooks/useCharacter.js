@@ -24,8 +24,8 @@ const useCharacter = () => {
     }),
   );
 
-  const dispatchUpdateCharacter = () => {
-    dispatch({ type: UPDATE_CHARACTER });
+  const dispatchUpdateCharacter = payload => {
+    dispatch({ type: UPDATE_CHARACTER, payload });
   };
 
   const dispatchCallSelectOtherCharacter = payload => {
@@ -77,6 +77,7 @@ const useCharacter = () => {
     dispatchUpdateCharacter({
       character,
       characterId: character.id,
+      userUid: character.userUid,
     });
   };
 

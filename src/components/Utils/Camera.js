@@ -34,7 +34,7 @@ const styledMuteImg = {
   width: 41,
   height: 22,
   zIndex: 10,
-  left: ((window.innerWidth - 300) / 7) / 2 -6,
+  left: (window.innerWidth - 300) / 7 / 2 - 6,
   bottom: 5,
   color: colors.text,
 };
@@ -510,7 +510,7 @@ class Camera extends Component {
                   }
                 }}
               />
-
+              {/* 
               <img
                 onClick={this.muteSomeone(key)}
                 src={
@@ -532,7 +532,7 @@ class Camera extends Component {
                   style={styledRoomImg}
                   alt='sound muted or not'
                 />
-              )}
+              )} */}
             </div>
           );
         })}

@@ -65,6 +65,7 @@ function* rootSaga() {
   yield spawn(sagasSounds.watchCallListenNoise);
   yield spawn(sagasSounds.watchCallListenMusic);
   yield spawn(sagasSounds.watchCallListenSong);
+  yield spawn(sagasSounds.watchCallToggleNoiseLooping);
 }
 
 export default rootSaga;

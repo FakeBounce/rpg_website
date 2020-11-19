@@ -115,7 +115,12 @@ function CharacterProvider(props) {
   };
 
   const onChangeItems = (index, value) => {
-    setItems(updateIndex(items, index, value));
+    const obj = [...items];
+    obj[index] = {
+      ...obj[index],
+      name: value,
+    };
+    setItems(obj);
   };
 
   const onChangeItemsQuantity = (index, value) => {

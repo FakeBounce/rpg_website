@@ -8,16 +8,16 @@ import {
   LOAD_SONG,
   LOAD_MUSIC,
   LOAD_NOISE,
-} from "../actionsTypes/actionsTypesSounds";
-import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
+} from '../actionsTypes/actionsTypesSounds';
+import { RESET_APP } from '../actionsTypes/actionsTypesAppState';
 
 const initialState = {
   music: {
     musicMute: false,
-    musicNameFirst: "",
-    musicNameSecond: "",
-    musicStatusFirst: "STOPPED",
-    musicStatusSecond: "STOPPED",
+    musicNameFirst: '',
+    musicNameSecond: '',
+    musicStatusFirst: 'STOPPED',
+    musicStatusSecond: 'STOPPED',
     musicVolume: 50,
     musicVolumeFirst: 50,
     musicVolumeSecond: 0,
@@ -26,15 +26,17 @@ const initialState = {
   },
   noise: {
     noiseMute: false,
-    noiseName: "",
-    noiseStatus: "STOPPED",
+    noiseName: '',
+    noiseStatus: 'STOPPED',
     noiseVolume: 50,
+    isLooping: false,
   },
   song: {
-    songName: "",
-    songStatus: "STOPPED",
+    songName: '',
+    songStatus: 'STOPPED',
     songVolume: 50,
   },
+  globalMute: false,
 };
 
 const sounds = (state = initialState, action) => {
@@ -42,8 +44,7 @@ const sounds = (state = initialState, action) => {
     case TOGGLE_MUSIC: {
       return {
         ...state,
-        music: { ...state.music, musicMute: !state.music.musicMute },
-        noise: { ...state.noise, noiseMute: !state.noise.noiseMute },
+        globalMute: !state.globalMute,
       };
     }
     case TOGGLE_MUSIC_FIRST: {
@@ -55,13 +56,13 @@ const sounds = (state = initialState, action) => {
     case STOP_NOISE: {
       return {
         ...state,
-        noise: { ...state.noise, noiseStatus: "STOPPED", noiseName: "" },
+        noise: { ...state.noise, noiseStatus: 'STOPPED', noiseName: '' },
       };
     }
     case STOP_SONG: {
       return {
         ...state,
-        song: { ...state.song, songStatus: "STOPPED", songName: "" },
+        song: { ...state.song, songStatus: 'STOPPED', songName: '' },
       };
     }
     // case UPDATE_ALL_MUSIC: {
