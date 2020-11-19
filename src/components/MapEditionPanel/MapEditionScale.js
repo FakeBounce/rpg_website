@@ -2,6 +2,12 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_CURRENT_SCALE } from '../../redux/actionsTypes/actionsTypesMapInfos';
 
+const styledMapEditionScaleBox = {
+  display: 'flex',
+  flex: 1,
+  maxHeight: 20,
+};
+
 const MapEditionScale = () => {
   const dispatch = useDispatch();
 
@@ -14,7 +20,7 @@ const MapEditionScale = () => {
   };
 
   return (
-    <div>
+    <div style={styledMapEditionScaleBox}>
       <span style={{ marginRight: 10 }}>Taille du pinceau :</span>
       <input
         type='number'
@@ -22,7 +28,7 @@ const MapEditionScale = () => {
           setCurrentScale(parseInt(e.target.value, 10));
         }}
         value={currentScale}
-        style={{ maxWidth: 150 }}
+        style={{ maxWidth: 30 }}
       />
     </div>
   );

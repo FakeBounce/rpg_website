@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { towns } from '../Utils/Constants';
+import ButtonLarge from '../Utils/ButtonLarge';
 import { useSelector } from 'react-redux';
 
 const styledBoxHeader = {
@@ -13,12 +14,31 @@ const styledBoxHeader = {
   position: 'relative',
 };
 
+const styledObjectiveBox = {
+  display: 'flex',
+  flex: 1,
+  flexDirection: 'column',
+};
+
+const styledObjectiveInputBox = {
+  display: 'flex',
+  flex: 1,
+  maxHeight: 20,
+};
+
+const styledObjectiveButtonsBox = {
+  display: 'flex',
+  flex: 1,
+};
+
 const MapEditionTileInfos = ({
-  setTownToAssign,
   toggleIsCurrent,
   toggleHasTown,
-  townToAssign,
+  updateTileObjective,
+  removeObjective,
 }) => {
+  const [townToAssign, setTownToAssign] = useState(-1);
+  const [objectiveName, setObjectiveName] = useState('');
   const { currentTile } = useSelector(store => ({
     currentTile: store.mapInfos.currentTile,
   }));
@@ -36,8 +56,10 @@ const MapEditionTileInfos = ({
           <input
             type='number'
             name='townToAssign'
-            value={townToAssign}
-            onChange={e => setTownToAssign(parseInt(e.target.value, 10))}
+            defaultValue={townToAssign}
+            onChange={e => {
+              setTownToAssign(parseInt(e.target.value, 10));
+            }}
           />
           {currentTile.hasTown > -1 && (
             <div>
@@ -45,12 +67,54 @@ const MapEditionTileInfos = ({
               <br />
             </div>
           )}
-          <button onClick={() => toggleHasTown}>Validate</button>
+          <button
+            onClick={() => {
+              toggleHasTown(townToAssign);
+            }}
+          >
+            Validate
+          </button>
           <br />
           isCurrent : {currentTile.isCurrent}
           <button onClick={toggleIsCurrent}>Toggle current</button>
           <br />x :{currentTile.x}
           <br />y : {currentTile.y}
+          <br />
+          <div style={styledObjectiveBox}>
+            <div style={styledObjectiveInputBox}>
+              hasObjective :{' '}
+              {currentTile.hasObjective ? currentTile.objectiveName : 'False'}
+              <input
+                type='text'
+                name='objectiveName'
+                defaultValue={
+                  currentTile.hasObjective
+                    ? currentTile.objectiveName
+                    : objectiveName
+                }
+                onChange={e => {
+                  setObjectiveName(e.target.value);
+                }}
+              />
+            </div>
+            <div style={styledObjectiveButtonsBox}>
+              <ButtonLarge
+                onClick={() => {
+                  setObjectiveName('');
+                  updateTileObjective(objectiveName);
+                }}
+              >
+                Validate obj
+              </ButtonLarge>
+              <ButtonLarge
+                onClick={() => {
+                  removeObjective();
+                }}
+              >
+                Remove obj
+              </ButtonLarge>
+            </div>
+          </div>
         </div>
       )}
     </div>

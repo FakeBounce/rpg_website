@@ -1,17 +1,15 @@
-import React, { useState } from "react";
-
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import MapEditionTileInfos from "./MapEditionTileInfos";
-import MapEditionTilesList from "./MapEditionTilesList";
-import MapEditionScale from "./MapEditionScale";
-import { heightLeft, widthLeft } from "../Utils/StyleConstants";
-import useApp from "../../hooks/useApp";
-import { useSelector, useDispatch } from "react-redux";
-import { SET_CURRENT_TILE } from "../../redux/actionsTypes/actionsTypesMapInfos";
+import React from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import MapEditionTileInfos from './MapEditionTileInfos';
+import MapEditionTilesList from './MapEditionTilesList';
+import MapEditionScale from './MapEditionScale';
+import { heightLeft, widthLeft } from '../Utils/StyleConstants';
+import useApp from '../../hooks/useApp';
+import { useSelector, useDispatch } from 'react-redux';
+import { SET_CURRENT_TILE } from '../../redux/actionsTypes/actionsTypesMapInfos';
 
 const MapEditionPanel = ({ changeCurrentScale }) => {
-  const [townToAssign, setTownToAssign] = useState(-1);
   const { triggerError } = useApp();
   const dispatch = useDispatch();
 
@@ -34,29 +32,32 @@ const MapEditionPanel = ({ changeCurrentScale }) => {
   };
 
   const toggleIsCurrent = () => {
-    const newTile = { ...currentTile, isCurrent: currentTile.isCurrent ? false : true };
+    const newTile = {
+      ...currentTile,
+      isCurrent: currentTile.isCurrent ? false : true,
+    };
 
     firebase
       .database()
       .ref(
-        "maps/" +
+        'maps/' +
           stories[currentStory].map +
-          "/" +
+          '/' +
           currentY +
-          "/" +
+          '/' +
           currentX +
-          "/isCurrent",
+          '/isCurrent',
       )
       .set(null)
       .then(() => {
         firebase
           .database()
           .ref(
-            "maps/" +
+            'maps/' +
               stories[currentStory].map +
-              "/" +
+              '/' +
               newTile.y +
-              "/" +
+              '/' +
               newTile.x,
           )
           .set(newTile)
@@ -65,7 +66,7 @@ const MapEditionPanel = ({ changeCurrentScale }) => {
             if (newTile.isCurrent) {
               firebase
                 .database()
-                .ref("stories/" + currentStory + "/currentX")
+                .ref('stories/' + currentStory + '/currentX')
                 .set(parseInt(newTile.x, 10))
                 .catch(error => {
                   // Handle Errors here.
@@ -73,7 +74,7 @@ const MapEditionPanel = ({ changeCurrentScale }) => {
                 });
               firebase
                 .database()
-                .ref("stories/" + currentStory + "/currentY")
+                .ref('stories/' + currentStory + '/currentY')
                 .set(parseInt(newTile.y, 10))
                 .catch(error => {
                   // Handle Errors here.
@@ -92,20 +93,71 @@ const MapEditionPanel = ({ changeCurrentScale }) => {
       });
   };
 
-  const toggleHasTown = () => {
+  const toggleHasTown = newTown => {
     const newTile = { ...currentTile };
-    newTile.hasTown = townToAssign;
+    newTile.hasTown = newTown;
     firebase
       .database()
       .ref(
-        "maps/" +
+        'maps/' +
           stories[currentStory].map +
-          "/" +
+          '/' +
           currentTile.y +
-          "/" +
+          '/' +
           currentTile.x,
       )
       .set(newTile)
+      .then(() => {
+        setCurrentTile(newTile);
+      })
+      .catch(error => {
+        // Handle Errors here.
+        triggerError(error);
+      });
+  };
+
+  const updateTileObjective = newObjective => {
+    const newTile = { ...currentTile };
+    newTile.hasObjective = true;
+    newTile.objectiveName = newObjective;
+    firebase
+      .database()
+      .ref(
+        'maps/' +
+          stories[currentStory].map +
+          '/' +
+          currentTile.y +
+          '/' +
+          currentTile.x,
+      )
+      .set(newTile)
+      .then(() => {
+        setCurrentTile(newTile);
+      })
+      .catch(error => {
+        // Handle Errors here.
+        triggerError(error);
+      });
+  };
+
+  const removeObjective = () => {
+    const newTile = { ...currentTile };
+    newTile.hasObjective = false;
+    newTile.objectiveName = '';
+    firebase
+      .database()
+      .ref(
+        'maps/' +
+          stories[currentStory].map +
+          '/' +
+          currentTile.y +
+          '/' +
+          currentTile.x,
+      )
+      .set(newTile)
+      .then(() => {
+        setCurrentTile(newTile);
+      })
       .catch(error => {
         // Handle Errors here.
         triggerError(error);
@@ -116,20 +168,23 @@ const MapEditionPanel = ({ changeCurrentScale }) => {
     <div
       style={{
         width: widthLeft / 2,
-        position: "absolute",
+        position: 'absolute',
         height: heightLeft / 2,
         top: heightLeft / 2,
         left: -widthLeft / 2,
-        textAlign: "left",
+        textAlign: 'left',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
       }}
     >
       <MapEditionTilesList />
       <MapEditionScale changeCurrentScale={changeCurrentScale} />
       <MapEditionTileInfos
-        setTownToAssign={setTownToAssign}
         toggleIsCurrent={toggleIsCurrent}
         toggleHasTown={toggleHasTown}
-        townToAssign={townToAssign}
+        updateTileObjective={updateTileObjective}
+        removeObjective={removeObjective}
       />
     </div>
   );
