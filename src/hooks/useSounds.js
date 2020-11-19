@@ -5,11 +5,12 @@ import {
   CALL_RESET_SOUNDS,
   CALL_STOP_NOISE,
   CALL_STOP_SONG,
-} from "../redux/actionsTypes/actionsTypesSounds";
-import { useDispatch, useSelector } from "react-redux";
-import firebase from "firebase";
-import { CALL_PRINT_ERROR } from "../redux/actionsTypes/actionsTypesAppState";
-import debounce from "lodash/debounce";
+  CALL_TOGGLE_NOISE_LOOPING,
+} from '../redux/actionsTypes/actionsTypesSounds';
+import { useDispatch, useSelector } from 'react-redux';
+import firebase from 'firebase';
+import { CALL_PRINT_ERROR } from '../redux/actionsTypes/actionsTypesAppState';
+import debounce from 'lodash/debounce';
 
 const useSounds = () => {
   const dispatch = useDispatch();
@@ -17,8 +18,8 @@ const useSounds = () => {
   const {
     currentStory,
     music: {
-      musicNameFirst,
-      musicNameSecond,
+      // musicNameFirst,
+      // musicNameSecond,
       musicVolume,
       isMusicFirst,
       isMusicTransition,
@@ -36,65 +37,99 @@ const useSounds = () => {
   const onChangeMusics = (name, value) => {
     const obj = {};
     obj[name] = value;
-    if (name === "musicName") {
+    if (name === 'musicName') {
       if (!isMusicTransition) {
         if (isMusicFirst) {
-          for (let i = 1; i < 21; i++) {
-            setTimeout(() => {
-              firebase
-                .database()
-                .ref("/stories/" + currentStory + "/music")
-                .set({
-                  ...music,
-                  musicVolumeFirst: musicVolume * ((100 - i * 5) / 100),
-                  musicVolumeSecond: musicVolume * ((i * 5) / 100),
-                  isMusicTransition: i !== 20,
-                  musicStatusFirst:
-                    i !== 20 && musicNameFirst !== "" ? "PLAYING" : "STOPPED",
-                  musicStatusSecond: "PLAYING",
-                  musicNameSecond: value,
-                  isMusicFirst: false,
-                })
-                .catch(error => {
-                  dispatch({ type: CALL_PRINT_ERROR, payload: error });
-                });
-            }, i * 300);
-          }
+          firebase
+            .database()
+            .ref('/stories/' + currentStory + '/music')
+            .set({
+              ...music,
+              musicVolume: musicVolume,
+              musicVolumeFirst: musicVolume,
+              musicVolumeSecond: musicVolume,
+              isMusicTransition: false,
+              musicStatusFirst: 'STOPPED',
+              musicStatusSecond: 'PLAYING',
+              musicNameSecond: value,
+              isMusicFirst: false,
+            })
+            .catch(error => {
+              dispatch({ type: CALL_PRINT_ERROR, payload: error });
+            });
+          // for (let i = 1; i < 21; i++) {
+          // setTimeout(() => {
+          // firebase
+          //   .database()
+          //   .ref('/stories/' + currentStory + '/music')
+          //   .set({
+          //     ...music,
+          //     musicVolumeFirst: musicVolume * ((100 - i * 5) / 100),
+          //     musicVolumeSecond: musicVolume * ((i * 5) / 100),
+          //     isMusicTransition: i !== 20,
+          //     musicStatusFirst:
+          //       i !== 20 && musicNameFirst !== '' ? 'PLAYING' : 'STOPPED',
+          //     musicStatusSecond: 'PLAYING',
+          //     musicNameSecond: value,
+          //     isMusicFirst: false,
+          //   })
+          //   .catch(error => {
+          //     dispatch({ type: CALL_PRINT_ERROR, payload: error });
+          //   });
+          // }, i * 300);
+          // }
         } else {
-          for (let i = 1; i < 21; i++) {
-            setTimeout(() => {
-              firebase
-                .database()
-                .ref("/stories/" + currentStory + "/music")
-                .set({
-                  ...music,
-                  musicVolumeSecond: (musicVolume * (100 - i * 5)) / 100,
-                  musicVolumeFirst: musicVolume * ((i * 5) / 100),
-                  isMusicTransition: i !== 20,
-                  musicStatusSecond:
-                    i !== 20 && musicNameSecond !== "" ? "PLAYING" : "STOPPED",
-                  musicStatusFirst: "PLAYING",
-                  musicNameFirst: value,
-                  isMusicFirst: true,
-                })
-                .catch(error => {
-                  dispatch({ type: CALL_PRINT_ERROR, payload: error });
-                });
-            }, i * 300);
-          }
+          firebase
+            .database()
+            .ref('/stories/' + currentStory + '/music')
+            .set({
+              ...music,
+              musicVolume: musicVolume,
+              musicVolumeFirst: musicVolume,
+              musicVolumeSecond: musicVolume,
+              isMusicTransition: false,
+              musicStatusSecond: 'STOPPED',
+              musicStatusFirst: 'PLAYING',
+              musicNameFirst: value,
+              isMusicFirst: true,
+            })
+            .catch(error => {
+              dispatch({ type: CALL_PRINT_ERROR, payload: error });
+            });
+          // for (let i = 1; i < 21; i++) {
+          //   setTimeout(() => {
+          //     firebase
+          //       .database()
+          //       .ref('/stories/' + currentStory + '/music')
+          //       .set({
+          //         ...music,
+          //         musicVolumeSecond: (musicVolume * (100 - i * 5)) / 100,
+          //         musicVolumeFirst: musicVolume * ((i * 5) / 100),
+          //         isMusicTransition: i !== 20,
+          //         musicStatusSecond:
+          //           i !== 20 && musicNameSecond !== '' ? 'PLAYING' : 'STOPPED',
+          //         musicStatusFirst: 'PLAYING',
+          //         musicNameFirst: value,
+          //         isMusicFirst: true,
+          //       })
+          //       .catch(error => {
+          //         dispatch({ type: CALL_PRINT_ERROR, payload: error });
+          //       });
+          //   }, i * 300);
+          // }
         }
       }
     } else {
       if (
-        name === "songName" ||
-        name === "songStatus" ||
-        name === "songVolume"
+        name === 'songName' ||
+        name === 'songStatus' ||
+        name === 'songVolume'
       ) {
         debouncedSavingSound({ ...song, ...obj });
       } else if (
-        name === "noiseName" ||
-        name === "noiseStatus" ||
-        name === "noiseVolume"
+        name === 'noiseName' ||
+        name === 'noiseStatus' ||
+        name === 'noiseVolume'
       ) {
         debouncedSavingNoise({ ...noise, ...obj });
       } else {
@@ -136,14 +171,29 @@ const useSounds = () => {
       type: CALL_LOAD_NOISE,
       payload: {
         ...noise,
-        noiseStatus: "PLAYING",
+        noiseStatus: 'PLAYING',
         noiseName: n,
       },
     });
   };
 
   const changeCurrentMusic = m => {
-    onChangeMusics("musicName", m);
+    onChangeMusics('musicName', m);
+  };
+
+  const updateVolume = v => {
+    firebase
+      .database()
+      .ref('/stories/' + currentStory + '/music')
+      .set({
+        ...music,
+        musicVolume: v,
+        musicVolumeFirst: v,
+        musicVolumeSecond: v,
+      })
+      .catch(error => {
+        dispatch({ type: CALL_PRINT_ERROR, payload: error });
+      });
   };
 
   const changeCurrentSong = m => {
@@ -151,7 +201,7 @@ const useSounds = () => {
       type: CALL_LOAD_SONG,
       payload: {
         ...song,
-        songStatus: "PLAYING",
+        songStatus: 'PLAYING',
         songName: m,
       },
     });
@@ -169,14 +219,20 @@ const useSounds = () => {
     dispatch({ type: CALL_STOP_NOISE });
   };
 
+  const toggleNoiseLooping = () => {
+    dispatch({ type: CALL_TOGGLE_NOISE_LOOPING });
+  };
+
   return {
     onChangeMusics,
+    updateVolume,
     changeCurrentNoise,
     changeCurrentMusic,
     changeCurrentSong,
     resetSounds,
     resetSongs,
     resetNoise,
+    toggleNoiseLooping,
   };
 };
 

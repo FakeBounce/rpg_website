@@ -56,12 +56,14 @@ const styledDiscoverButton = {
 const CharacterTabPanelItem = ({ onItemUse }) => {
   const [itemValue, setItemValue] = useState('');
 
-  const { currentStory, isGameMaster, character, characterItems } = useSelector(store => ({
-    currentStory: store.appState.currentStory,
-    isGameMaster: store.appState.isGameMaster,
-    character: store.character,
-    characterItems: store.character.items || [],
-  }));
+  const { currentStory, isGameMaster, character, characterItems } = useSelector(
+    store => ({
+      currentStory: store.appState.currentStory,
+      isGameMaster: store.appState.isGameMaster,
+      character: store.character,
+      characterItems: store.character.items || [],
+    }),
+  );
 
   const onChangeItem = value => {
     setItemValue(value);
@@ -117,7 +119,6 @@ const CharacterTabPanelItem = ({ onItemUse }) => {
       });
   };
 
-  console.log('characterItems',characterItems)
   return (
     <div>
       {characterItems.length > 0 &&

@@ -38,10 +38,13 @@ function* characterError(error = getTranslations('error.transfer.failed')) {
 export function* callSetCharacter({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
-    const currentUid = yield select(currentUidSelector);
     if (currentStory !== '') {
       firebaseDbSet(
-        'stories/' + currentStory + '/characters/' + currentUid + '/character',
+        'stories/' +
+          currentStory +
+          '/characters/' +
+          payload.userUid +
+          '/character',
         payload,
       ).catch(error => {
         console.log('callLoadNoise set saga err:', { error });
@@ -204,10 +207,9 @@ export function* watchCallSelectOtherCharacter() {
 function* updateCharacter({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
-    const uid = yield select(currentUidSelector);
 
-    firebaseDbSet(`stories/${currentStory}/characters/${uid}`, {
-      character: payload.charToRegister,
+    firebaseDbSet(`stories/${currentStory}/characters/${payload.userUid}`, {
+      character: payload.character,
       characterId: payload.id,
     }).catch(error => {
       console.log('updateCharacter set saga err:', { error });

@@ -1,27 +1,27 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React from 'react';
+import { useSelector } from 'react-redux';
 
-import { cursorPointer } from "../Utils/StyleConstants";
-import { currentMusicNameSelector } from "../../selectors";
-import useSounds from "../../hooks/useSounds";
-import { Button } from "semantic-ui-react";
+import { cursorPointer } from '../Utils/StyleConstants';
+import { currentMusicNameSelector } from '../../selectors';
+import useSounds from '../../hooks/useSounds';
+import { Button } from 'semantic-ui-react';
 
 const styledBoxHeaderMusic = {
-  height: "20px",
-  textAlign: "center",
+  height: '20px',
+  textAlign: 'center',
 };
 
 const styledMusicVolume = {
-  width: "50%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
+  width: '50%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 };
 
 const styledMusicControlsContainer = {
-  width: "100%",
-  display: "flex",
-  flexDirection: "row",
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'row',
   marginTop: 10,
   marginBottom: 10,
 };
@@ -31,7 +31,7 @@ const styledResetSoundButton = {
 };
 
 const SoundPanelMusicHeader = () => {
-  const { onChangeMusics, resetSounds } = useSounds();
+  const { updateVolume, resetSounds } = useSounds();
 
   const {
     currentMusicName,
@@ -51,17 +51,15 @@ const SoundPanelMusicHeader = () => {
         Reset
       </Button>
       <div style={styledBoxHeaderMusic}>
-        Modifier la musique ({currentMusicName || "None"})
+        Modifier la musique ({currentMusicName || 'None'})
       </div>
       <div style={styledMusicVolume}>
         <input
-          type="range"
-          onChange={e =>
-            onChangeMusics(e.target.name, parseInt(e.target.value, 10))
-          }
-          min="0"
-          max="100"
-          name={isMusicFirst ? "musicVolumeFirst" : "musicVolumeSecond"}
+          type='range'
+          onChange={e => updateVolume(parseInt(e.target.value, 10))}
+          min='0'
+          max='100'
+          name={isMusicFirst ? 'musicVolumeFirst' : 'musicVolumeSecond'}
           value={isMusicFirst ? musicVolumeFirst : musicVolumeSecond}
         />
       </div>

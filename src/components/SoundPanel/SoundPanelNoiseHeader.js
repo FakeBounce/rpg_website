@@ -4,13 +4,13 @@ import { useSelector } from "react-redux";
 import useSounds from "../../hooks/useSounds";
 
 const styledBoxHeaderNoise = {
-  width: "50%",
+  width: "33%",
   height: "20px",
   textAlign: "center",
 };
 
 const styledNoiseVolume = {
-  width: "50%",
+  width: "33%",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -25,10 +25,10 @@ const styledMusicControlsContainer = {
 };
 
 const SoundPanelNoiseHeader = () => {
-  const { onChangeMusics } = useSounds();
+  const { onChangeMusics, toggleNoiseLooping } = useSounds();
 
   const {
-    noise: { noiseName, noiseVolume },
+    noise: { noiseName, noiseVolume, isLooping },
   } = useSelector(store => ({
     noise: store.sounds.noise,
   }));
@@ -49,6 +49,9 @@ const SoundPanelNoiseHeader = () => {
           name="noiseVolume"
           value={noiseVolume}
         />
+      </div>
+      <div style={styledBoxHeaderNoise} onClick={toggleNoiseLooping}>
+        ({isLooping ?"Looping" : "NLooping"})
       </div>
     </div>
   );

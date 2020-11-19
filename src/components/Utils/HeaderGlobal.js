@@ -5,9 +5,9 @@ import { cursorPointer } from './StyleConstants';
 import useApp from '../../hooks/useApp';
 
 const HeaderGlobal = () => {
-  const { isAuth, musicMute } = useSelector(store => ({
+  const { isAuth, globalMute } = useSelector(store => ({
     isAuth: store.appState.isAuth,
-    musicMute: store.sounds.music.musicMute,
+    globalMute: store.sounds.globalMute,
   }));
 
   const { signOut, toggleMusic } = useApp();
@@ -37,7 +37,7 @@ const HeaderGlobal = () => {
           }}
           onClick={toggleMusic}
           circular
-          name={!musicMute ? 'volume up' : 'volume off'}
+          name={!globalMute ? 'volume up' : 'volume off'}
           inverted
           color={'black'}
         />
