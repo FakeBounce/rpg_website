@@ -9,7 +9,7 @@ import {
   SET_ALL_STORIES,
   SET_STORY_USERS,
   RESET_APP,
-  SET_APP_VERSION
+  SET_APP_VERSION,
 } from '../actionsTypes/actionsTypesAppState';
 
 const initialState = {
@@ -83,7 +83,10 @@ const appState = (state = initialState, action) => {
       };
     }
     case RESET_APP: {
-      return initialState;
+      return {
+        ...initialState,
+        version: state.version,
+      };
     }
     case SET_APP_VERSION: {
       return {

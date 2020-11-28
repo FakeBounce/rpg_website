@@ -29,6 +29,7 @@ import {
 import {
   SET_GAME_MASTER,
   SET_APP_VERSION,
+  CALL_SIGN_OUT,
 } from './redux/actionsTypes/actionsTypesAppState';
 import { CALL_LISTEN_TEAM_CHARACTERS } from './redux/actionsTypes/actionsTypesTeam';
 import { CALL_GET_ALL_USER_CHARACTERS } from './redux/actionsTypes/actionsTypesUserInfos';
@@ -85,46 +86,49 @@ function configureStore() {
     .once('value')
     .then(snapshot => {
       // if (PERSIST_ENABLED === "true") {
-      if (store.getState().appState.version === snapshot.val()) {
-        persistStore(store, null, () => {
-          if (store.getState().appState.currentStory !== '') {
-            const currentStory = store.getState().appState.currentStory;
-            const uid = store.getState().userInfos.uid;
-            if (
-              typeof store.getState().appState.stories[currentStory]
-                .characters !== 'undefined' &&
-              typeof store.getState().appState.stories[currentStory].characters[
-                uid
-              ] !== 'undefined'
-            ) {
-              store.dispatch({ type: CALL_GET_ITEM_LIST });
-            }
-            store.dispatch({ type: CALL_LISTEN_CHARACTER });
-            store.dispatch({
-              type: SET_GAME_MASTER,
-              payload: store.getState().appState.stories[currentStory]
-                .gameMaster,
-            });
-            store.dispatch({ type: CALL_LISTEN_MAP_TILES });
-            store.dispatch({ type: CALL_LISTEN_BESTIARY });
-            store.dispatch({ type: CALL_LISTEN_CHAT_HISTORY });
-            store.dispatch({ type: CALL_LISTEN_MUSIC });
-            store.dispatch({ type: CALL_LISTEN_NOISE });
-            store.dispatch({ type: CALL_LISTEN_SONG });
-            store.dispatch({ type: CALL_LISTEN_MERCHANT_LIST });
-            store.dispatch({ type: CALL_LISTEN_ALL_TOWNS });
-            store.dispatch({ type: CALL_LISTEN_ALL_QUESTS });
-            store.dispatch({ type: CALL_LISTEN_CURRENT_X });
-            store.dispatch({ type: CALL_LISTEN_CURRENT_Y });
-            store.dispatch({ type: CALL_LISTEN_CURRENT_EVENT });
-            store.dispatch({ type: CALL_LISTEN_EVENTS_HISTORY });
-            store.dispatch({ type: CALL_LISTEN_TEAM_CHARACTERS });
-            store.dispatch({ type: CALL_GET_ALL_USER_CHARACTERS });
+
+      persistStore(store, null, () => {
+        if (
+          store.getState().appState.currentStory !== '' &&
+          store.getState().appState.version === snapshot.val()
+        ) {
+          const currentStory = store.getState().appState.currentStory;
+          const uid = store.getState().userInfos.uid;
+          if (
+            typeof store.getState().appState.stories[currentStory]
+              .characters !== 'undefined' &&
+            typeof store.getState().appState.stories[currentStory].characters[
+              uid
+            ] !== 'undefined'
+          ) {
+            store.dispatch({ type: CALL_GET_ITEM_LIST });
           }
-        });
-      } else {
+          store.dispatch({ type: CALL_LISTEN_CHARACTER });
+          store.dispatch({
+            type: SET_GAME_MASTER,
+            payload: store.getState().appState.stories[currentStory].gameMaster,
+          });
+          store.dispatch({ type: CALL_LISTEN_MAP_TILES });
+          store.dispatch({ type: CALL_LISTEN_BESTIARY });
+          store.dispatch({ type: CALL_LISTEN_CHAT_HISTORY });
+          store.dispatch({ type: CALL_LISTEN_MUSIC });
+          store.dispatch({ type: CALL_LISTEN_NOISE });
+          store.dispatch({ type: CALL_LISTEN_SONG });
+          store.dispatch({ type: CALL_LISTEN_MERCHANT_LIST });
+          store.dispatch({ type: CALL_LISTEN_ALL_TOWNS });
+          store.dispatch({ type: CALL_LISTEN_ALL_QUESTS });
+          store.dispatch({ type: CALL_LISTEN_CURRENT_X });
+          store.dispatch({ type: CALL_LISTEN_CURRENT_Y });
+          store.dispatch({ type: CALL_LISTEN_CURRENT_EVENT });
+          store.dispatch({ type: CALL_LISTEN_EVENTS_HISTORY });
+          store.dispatch({ type: CALL_LISTEN_TEAM_CHARACTERS });
+          store.dispatch({ type: CALL_GET_ALL_USER_CHARACTERS });
+        } else {
+          store.dispatch({ type: CALL_SIGN_OUT });
+        }
         store.dispatch({ type: SET_APP_VERSION, payload: snapshot.val() });
-      }
+      });
+
       // }
     })
     .catch(error => {
