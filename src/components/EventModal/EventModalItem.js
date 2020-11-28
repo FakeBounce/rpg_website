@@ -55,7 +55,7 @@ const EventModalItem = ({
             min={0}
             max={eventHistory[currentEvent].quantityLeft}
             onChange={e => {
-              onChange(e.target.name, parseInt(e.target.value, 10));
+              onChange(parseInt(e.target.value, 10));
             }}
           />
           {eventHistory[currentEvent].item.name}

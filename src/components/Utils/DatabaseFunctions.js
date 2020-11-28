@@ -636,7 +636,7 @@ export const populateBestiary = (currentStory, doSetState) => {
           });
           firebase
             .database()
-            .ref("stories/" + 0 + "/bestiary")
+            .ref("stories/" + currentStory + "/bestiary")
             .set(tempBestiary)
             .catch(error => {
               // Handle Errors here.

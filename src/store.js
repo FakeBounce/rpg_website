@@ -1,5 +1,6 @@
 // import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import { createStore, compose, applyMiddleware } from 'redux';
+import firebase from 'firebase';
 import storage from 'redux-persist/es/storage';
 import rootReducer from './redux/reducers/root';
 import createSagaMiddleware from 'redux-saga';
@@ -25,12 +26,23 @@ import {
   CALL_LISTEN_CURRENT_EVENT,
   CALL_LISTEN_EVENTS_HISTORY,
 } from './redux/actionsTypes/actionsTypesEvents';
-import { SET_GAME_MASTER } from './redux/actionsTypes/actionsTypesAppState';
+import {
+  SET_GAME_MASTER,
+  SET_APP_VERSION,
+} from './redux/actionsTypes/actionsTypesAppState';
 import { CALL_LISTEN_TEAM_CHARACTERS } from './redux/actionsTypes/actionsTypesTeam';
 import { CALL_GET_ALL_USER_CHARACTERS } from './redux/actionsTypes/actionsTypesUserInfos';
 
 // Env
 // const { PERSIST_ENABLED, PERSIST_PURGE } = Config;
+
+const config = {
+  apiKey: 'AIzaSyA7Uk2daoLGmxUlJp07uEvXu826Q3_uXdc',
+  authDomain: 'rpgwebsite-8a535.firebaseapp.com',
+  databaseURL: 'https://rpgwebsite-8a535.firebaseio.com/',
+  storageBucket: 'gs://rpgwebsite-8a535.appspot.com',
+};
+firebase.initializeApp(config);
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -67,43 +79,60 @@ const reducer =
 function configureStore() {
   const store = createStore(reducer, {}, composedEnhancer);
 
-  // if (PERSIST_ENABLED === "true") {
-  persistStore(store, null, () => {
-    if (store.getState().appState.currentStory !== "") {
-      const currentStory = store.getState().appState.currentStory;
-      const uid = store.getState().userInfos.uid;
-      if (
-        typeof store.getState().appState.stories[currentStory].characters !==
-          'undefined' &&
-        typeof store.getState().appState.stories[currentStory].characters[
-          uid
-        ] !== 'undefined'
-      ) {
-        store.dispatch({ type: CALL_GET_ITEM_LIST });
+  firebase
+    .database()
+    .ref('/version')
+    .once('value')
+    .then(snapshot => {
+      // if (PERSIST_ENABLED === "true") {
+      if (store.getState().appState.version === snapshot.val()) {
+        persistStore(store, null, () => {
+          if (store.getState().appState.currentStory !== '') {
+            const currentStory = store.getState().appState.currentStory;
+            const uid = store.getState().userInfos.uid;
+            if (
+              typeof store.getState().appState.stories[currentStory]
+                .characters !== 'undefined' &&
+              typeof store.getState().appState.stories[currentStory].characters[
+                uid
+              ] !== 'undefined'
+            ) {
+              store.dispatch({ type: CALL_GET_ITEM_LIST });
+            }
+            store.dispatch({ type: CALL_LISTEN_CHARACTER });
+            store.dispatch({
+              type: SET_GAME_MASTER,
+              payload: store.getState().appState.stories[currentStory]
+                .gameMaster,
+            });
+            store.dispatch({ type: CALL_LISTEN_MAP_TILES });
+            store.dispatch({ type: CALL_LISTEN_BESTIARY });
+            store.dispatch({ type: CALL_LISTEN_CHAT_HISTORY });
+            store.dispatch({ type: CALL_LISTEN_MUSIC });
+            store.dispatch({ type: CALL_LISTEN_NOISE });
+            store.dispatch({ type: CALL_LISTEN_SONG });
+            store.dispatch({ type: CALL_LISTEN_MERCHANT_LIST });
+            store.dispatch({ type: CALL_LISTEN_ALL_TOWNS });
+            store.dispatch({ type: CALL_LISTEN_ALL_QUESTS });
+            store.dispatch({ type: CALL_LISTEN_CURRENT_X });
+            store.dispatch({ type: CALL_LISTEN_CURRENT_Y });
+            store.dispatch({ type: CALL_LISTEN_CURRENT_EVENT });
+            store.dispatch({ type: CALL_LISTEN_EVENTS_HISTORY });
+            store.dispatch({ type: CALL_LISTEN_TEAM_CHARACTERS });
+            store.dispatch({ type: CALL_GET_ALL_USER_CHARACTERS });
+          }
+        });
+      } else {
+        store.dispatch({ type: SET_APP_VERSION, payload: snapshot.val() });
       }
-      store.dispatch({ type: CALL_LISTEN_CHARACTER });
-      store.dispatch({
-        type: SET_GAME_MASTER,
-        payload: store.getState().appState.stories[currentStory].gameMaster,
-      });
-      store.dispatch({ type: CALL_LISTEN_MAP_TILES });
-      store.dispatch({ type: CALL_LISTEN_BESTIARY });
-      store.dispatch({ type: CALL_LISTEN_CHAT_HISTORY });
-      store.dispatch({ type: CALL_LISTEN_MUSIC });
-      store.dispatch({ type: CALL_LISTEN_NOISE });
-      store.dispatch({ type: CALL_LISTEN_SONG });
-      store.dispatch({ type: CALL_LISTEN_MERCHANT_LIST });
-      store.dispatch({ type: CALL_LISTEN_ALL_TOWNS });
-      store.dispatch({ type: CALL_LISTEN_ALL_QUESTS });
-      store.dispatch({ type: CALL_LISTEN_CURRENT_X });
-      store.dispatch({ type: CALL_LISTEN_CURRENT_Y });
-      store.dispatch({ type: CALL_LISTEN_CURRENT_EVENT });
-      store.dispatch({ type: CALL_LISTEN_EVENTS_HISTORY });
-      store.dispatch({ type: CALL_LISTEN_TEAM_CHARACTERS });
-      store.dispatch({ type: CALL_GET_ALL_USER_CHARACTERS });
-    }
-  });
-  // }
+      // }
+    })
+    .catch(error => {
+      console.log('error', error);
+      return error;
+      // this.triggerError(error);
+    });
+
   return store;
 }
 

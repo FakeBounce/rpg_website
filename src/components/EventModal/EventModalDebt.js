@@ -54,7 +54,7 @@ const EventModalDebt = ({
               min={0}
               max={event.gold}
               onChange={e => {
-                onChange(e.target.name, parseInt(e.target.value, 10));
+                onChange(parseInt(e.target.value, 10));
               }}
             />
             gold
