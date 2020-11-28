@@ -114,9 +114,4 @@ const StoryQuestsAndMerchantsPanel = ({ isOnQuest }) => {
   );
 };
 
-StoryQuestsAndMerchantsPanel.propTypes = {
-  dispatchCallPrintError: PropTypes.func.isRequired,
-  isOnQuest: PropTypes.bool.isRequired,
-};
-
 export default StoryQuestsAndMerchantsPanel;
