@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { cursorPointer } from '../Utils/StyleConstants';
+import { useEventContext } from '../../contexts/eventContext';
 
 const styledItem = {
   width: '100%',
@@ -19,7 +20,9 @@ const styledItemIcon = {
   position: 'relative',
 };
 
-const EventItem = ({ itemEvent, setItemEvent, i, ikey }) => {
+const EventItem = ({ i, ikey }) => {
+  const { itemEvent, setItemEvent } = useEventContext();
+
   return (
     <div
       key={`event-item-${i.name}`}
@@ -43,8 +46,6 @@ const EventItem = ({ itemEvent, setItemEvent, i, ikey }) => {
 };
 
 EventItem.propTypes = {
-  itemEvent: PropTypes.object.isRequired,
-  setItemEvent: PropTypes.func.isRequired,
   i: PropTypes.object.isRequired,
   ikey: PropTypes.string.isRequired,
 };

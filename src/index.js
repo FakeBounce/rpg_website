@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import firebase from 'firebase';
+
 import { WindowProvider } from './contexts/windowContext';
 import { StyleProvider } from './contexts/styleContext';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -15,14 +15,6 @@ import { MapGeneratorProvider } from './contexts/mapGeneratorContext';
 
 const store = configureStore();
 sagaMiddleware.run(sagasRoot);
-
-const config = {
-  apiKey: 'AIzaSyA7Uk2daoLGmxUlJp07uEvXu826Q3_uXdc',
-  authDomain: 'rpgwebsite-8a535.firebaseapp.com',
-  databaseURL: 'https://rpgwebsite-8a535.firebaseio.com/',
-  storageBucket: 'gs://rpgwebsite-8a535.appspot.com',
-};
-firebase.initializeApp(config);
 window.soundManager.setup({ debugMode: false });
 
 ReactDOM.render(

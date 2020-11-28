@@ -514,7 +514,7 @@ export const defaultState = {
   characters: {},
   chatHistory: {},
   chatInput: '',
-  currentEvent: -1,
+  currentEvent: "",
   currentMerchant: -1,
   currentQuest: -1,
   currentScale: 1,
@@ -1049,7 +1049,7 @@ export const defaultStory = {
   artefacts: {},
   bestiary: {},
   chat: {},
-  currentEvent: -1,
+  currentEvent: "",
   currentX: 25,
   currentY: 25,
   draw: {

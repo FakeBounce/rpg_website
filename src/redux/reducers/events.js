@@ -5,7 +5,7 @@ import {
 import { RESET_APP } from "../actionsTypes/actionsTypesAppState";
 
 const initialState = {
-  currentEvent: -1,
+  currentEvent: "",
   history: [],
 };
 

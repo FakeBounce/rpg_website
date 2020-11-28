@@ -9,6 +9,7 @@ import {
   SET_ALL_STORIES,
   SET_STORY_USERS,
   RESET_APP,
+  SET_APP_VERSION
 } from '../actionsTypes/actionsTypesAppState';
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
   error: '',
   stories: [],
   users: [],
+  version: '',
 };
 
 const appState = (state = initialState, action) => {
@@ -82,6 +84,12 @@ const appState = (state = initialState, action) => {
     }
     case RESET_APP: {
       return initialState;
+    }
+    case SET_APP_VERSION: {
+      return {
+        ...state,
+        version: action.payload,
+      };
     }
     default:
       return state;

@@ -34,7 +34,7 @@ const GameScreen = () => {
   }));
 
   const canReadEvent = () => {
-    if (currentEvent > -1) {
+    if (currentEvent !== '') {
       if (eventHistory[currentEvent]) {
         if (eventHistory[currentEvent].isActive) {
           if (isGameMaster && !isEventHidden) {

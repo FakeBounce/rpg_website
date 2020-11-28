@@ -38,8 +38,6 @@ const EventItemForm = () => {
     setDescriptionEvent,
     quantityEvent,
     setQuantityEvent,
-    itemEvent,
-    setItemEvent,
   } = useEventContext();
 
   const { items } = useSelector(store => ({
@@ -80,7 +78,7 @@ const EventItemForm = () => {
       });
       setFilteredItems([...tempFilter]);
     }
-  }, [filteredItems, filterType, filterText]);
+  }, [filterType, filterText]);
 
   return (
     <div>
@@ -106,8 +104,6 @@ const EventItemForm = () => {
           return (
             <EventItem
               key={`event-item-${i.itemType}-${i.name}-${i.type}`}
-              itemEvent={itemEvent}
-              setItemEvent={setItemEvent}
               i={{
                 ...i,
                 name:
@@ -148,7 +144,6 @@ const EventItemForm = () => {
 EventItemForm.propTypes = {
   descriptionEvent: PropTypes.string.isRequired,
   quantityEvent: PropTypes.number.isRequired,
-  itemEvent: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

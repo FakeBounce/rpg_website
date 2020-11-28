@@ -107,7 +107,7 @@ const CharacterTabPanelItem = ({ onItemUse }) => {
       .database()
       .ref(
         'stories/' +
-          0 +
+          currentStory +
           '/characters/' +
           character.userUid +
           '/character/items',

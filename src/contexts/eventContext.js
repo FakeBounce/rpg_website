@@ -108,6 +108,7 @@ function EventProvider(props) {
         descriptionEvent,
         setDescriptionEvent,
         itemEvent,
+        setItemEvent,
         viewers,
         addAllViewers,
         removeAllViewers,

@@ -1,6 +1,5 @@
-import React, { Fragment, PureComponent } from "react";
-import PropTypes from "prop-types";
-
+import React, { Fragment, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   heightCameras,
   heightHeader,
@@ -8,97 +7,112 @@ import {
   widthRightPanel,
   mapWidth,
   widthLeft,
-} from "../Utils/StyleConstants";
-import firebase from "firebase";
-import EventModalActionHistory from "./EventModalActionHistory";
-import EventModalItem from "./EventModalItem";
-import EventModalGold from "./EventModalGold";
-import EventModalDescription from "./EventModalDescription";
-import EventModalViewers from "./EventModalViewers";
-import EventModalDebt from "./EventModalDebt";
-import Draw from "./Draw";
-import { colors } from "../Utils/Constants";
-import ButtonLarge from "../Utils/ButtonLarge";
-import { connect } from "react-redux";
-import { setCurrentEvent } from "../../redux/actions/actionsEvents";
-import { CALL_PRINT_ERROR } from "../../redux/actionsTypes/actionsTypesAppState";
+} from '../Utils/StyleConstants';
+import firebase from 'firebase';
+import EventModalActionHistory from './EventModalActionHistory';
+import EventModalItem from './EventModalItem';
+import EventModalGold from './EventModalGold';
+import EventModalDescription from './EventModalDescription';
+import EventModalViewers from './EventModalViewers';
+import EventModalDebt from './EventModalDebt';
+import Draw from './Draw';
+import { colors } from '../Utils/Constants';
+import ButtonLarge from '../Utils/ButtonLarge';
+import { SET_CURRENT_EVENT } from '../../redux/actionsTypes/actionsTypesEvents';
+import useApp from '../../hooks/useApp';
 
 const styledEventModal = {
-  position: "absolute",
+  position: 'absolute',
   zIndex: 99,
   top: `${heightHeader / 2}px`,
   left: `${widthRightPanel / 2}px`,
   width: `${widthLeft + mapWidth}px`,
   height: `${heightHeader / 2 + heightCameras / 2 + heightLeft - 50}px`,
-  border: "2px solid brown",
+  border: '2px solid brown',
   borderRadius: 40,
   backgroundColor: colors.background,
   color: colors.text,
 };
 
 const styledEventTitle = {
-  width: "100%",
+  width: '100%',
   height: 40,
   marginTop: 15,
   marginBottom: 15,
-  textAlign: "center",
+  textAlign: 'center',
   fontSize: 25,
-  float: "left",
-  position: "relative",
-  display: "inline-block",
+  float: 'left',
+  position: 'relative',
+  display: 'inline-block',
 };
 
 const styledEventAction = {
-  margin: "0px 15px",
+  margin: '0px 15px',
   padding: 5,
-  textAlign: "center",
-  position: "relative",
-  display: "inline-block",
+  textAlign: 'center',
+  position: 'relative',
+  display: 'inline-block',
 };
 
-class EventModal extends PureComponent {
-  state = {
-    numberWanted: 0,
-  };
+const EventModal = () => {
+  const [numberWanted, setNumberWanted] = useState(0);
 
-  resetCurrentEvent = () => {
-    const { currentStory, dispatchCallPrintError } = this.props;
+  const {
+    gameMaster,
+    isGameMaster,
+    uid,
+    currentStory,
+    eventHistory,
+    currentEvent,
+    character,
+    storyCharacters,
+  } = useSelector(store => ({
+    uid: store.userInfos.uid,
+    currentStory: store.appState.currentStory,
+    gameMaster: store.appState.gameMaster,
+    isGameMaster: store.appState.isGameMaster,
+    eventHistory: store.events.history,
+    currentEvent: store.events.currentEvent,
+    character: store.character,
+    storyCharacters: store.team.characters,
+  }));
+  const { triggerError } = useApp();
+  const dispatch = useDispatch();
+
+  const resetCurrentEvent = () => {
     firebase
       .database()
-      .ref("stories/" + currentStory + "/currentEvent")
+      .ref('stories/' + currentStory + '/currentEvent')
       .set(-1)
       .catch(error => {
         // Handle Errors here.
-        dispatchCallPrintError(error);
+        triggerError(error);
       });
   };
 
-  updateCurrentEvent = newEventHistory => {
-    const { currentStory, dispatchCallPrintError } = this.props;
+  const updateCurrentEvent = newEventHistory => {
     firebase
       .database()
-      .ref("stories/" + currentStory + "/events")
+      .ref('stories/' + currentStory + '/events')
       .set(newEventHistory)
       .catch(error => {
         // Handle Errors here.
-        dispatchCallPrintError(error);
+        triggerError(error);
       });
   };
 
-  updateCharacterGold = goldWanted => {
-    const { currentStory, uid, dispatchCallPrintError } = this.props;
+  const updateCharacterGold = goldWanted => {
     firebase
       .database()
-      .ref("stories/" + currentStory + "/characters/" + uid + "/character/gold")
+      .ref('stories/' + currentStory + '/characters/' + uid + '/character/gold')
       .set(goldWanted)
       .catch(error => {
         // Handle Errors here.
-        dispatchCallPrintError(error);
+        triggerError(error);
       });
   };
 
-  addItem = (item, quantity) => {
-    const { currentStory, uid, character, dispatchCallPrintError } = this.props;
+  const addItem = (item, quantity) => {
     const newItemsTab = character.items ? [...character.items] : [];
     let hasAlready = false;
     if (character.items) {
@@ -116,21 +130,20 @@ class EventModal extends PureComponent {
     }
     firebase
       .database()
-      .ref("stories/" + currentStory + "/characters/" + uid + "/character")
+      .ref('stories/' + currentStory + '/characters/' + uid + '/character')
       .set({
         ...character,
         items: newItemsTab,
       })
       .catch(error => {
         // Handle Errors here.
-        dispatchCallPrintError(error);
+        triggerError(error);
       });
   };
 
-  takeAllItems = () => {
-    const { currentEvent, eventHistory, isGameMaster, character } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const takeAllItems = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       const quantityLeft = newEvent.quantityLeft;
       newEvent.quantityLeft = 0;
@@ -143,19 +156,17 @@ class EventModal extends PureComponent {
           `@${realPseudo} has taken all the items left (${quantityLeft}).`,
         ];
       }
-      const newEventHistory = [...eventHistory];
+      const newEventHistory = { ...eventHistory };
       newEventHistory[currentEvent] = { ...newEvent };
 
-      this.addItem(newEvent.item, quantityLeft);
-      this.updateCurrentEvent(newEventHistory);
+      addItem(newEvent.item, quantityLeft);
+      updateCurrentEvent(newEventHistory);
     }
   };
 
-  takeXItem = () => {
-    const { currentEvent, eventHistory, isGameMaster, character } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    const { numberWanted } = this.state;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const takeXItem = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       newEvent.quantityLeft = newEvent.quantityLeft - numberWanted;
 
@@ -181,18 +192,17 @@ class EventModal extends PureComponent {
         }
       }
 
-      const newEventHistory = [...eventHistory];
+      const newEventHistory = { ...eventHistory };
       newEventHistory[currentEvent] = { ...newEvent };
 
-      this.addItem(newEvent.item, numberWanted);
-      this.updateCurrentEvent(newEventHistory);
+      addItem(newEvent.item, numberWanted);
+      updateCurrentEvent(newEventHistory);
     }
   };
 
-  onlyOneItem = () => {
-    const { currentEvent, eventHistory, isGameMaster, character } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const onlyOneItem = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       newEvent.quantityLeft = newEvent.quantityLeft - 1;
 
@@ -216,18 +226,17 @@ class EventModal extends PureComponent {
         }
       }
 
-      const newEventHistory = [...eventHistory];
+      const newEventHistory = { ...eventHistory };
       newEventHistory[currentEvent] = { ...newEvent };
 
-      this.addItem(newEvent.item, 1);
-      this.updateCurrentEvent(newEventHistory);
+      addItem(newEvent.item, 1);
+      updateCurrentEvent(newEventHistory);
     }
   };
 
-  lastItem = () => {
-    const { currentEvent, eventHistory, isGameMaster, character } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const lastItem = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       newEvent.quantityLeft = 0;
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
@@ -235,18 +244,17 @@ class EventModal extends PureComponent {
       } else {
         newEvent.actionHistory = [`@${realPseudo} has taken the last item.`];
       }
-      const newEventHistory = [...eventHistory];
+      const newEventHistory = { ...eventHistory };
       newEventHistory[currentEvent] = { ...newEvent };
 
-      this.addItem(newEvent.item, 1);
-      this.updateCurrentEvent(newEventHistory);
+      addItem(newEvent.item, 1);
+      updateCurrentEvent(newEventHistory);
     }
   };
 
-  giveAllGold = () => {
-    const { currentEvent, eventHistory, character, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const giveAllGold = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       const goldGiven = newEvent.gold - newEvent.goldLeft;
 
@@ -261,13 +269,13 @@ class EventModal extends PureComponent {
             `@${realPseudo} has given all the gold (${goldGiven}). How generous !`,
           ];
         }
-        const newEventHistory = [...eventHistory];
+        const newEventHistory = { ...eventHistory };
         newEventHistory[currentEvent] = { ...newEvent };
 
-        this.updateCharacterGold(
+        updateCharacterGold(
           parseInt(character.gold, 10) - parseInt(goldGiven, 10),
         );
-        this.updateCurrentEvent(newEventHistory);
+        updateCurrentEvent(newEventHistory);
       } else {
         newEvent.goldLeft = newEvent.goldLeft + parseInt(character.gold, 10);
         if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
@@ -285,20 +293,18 @@ class EventModal extends PureComponent {
             )}). How generous !`,
           ];
         }
-        const newEventHistory = [...eventHistory];
+        const newEventHistory = { ...eventHistory };
         newEventHistory[currentEvent] = { ...newEvent };
 
-        this.updateCharacterGold(0);
-        this.updateCurrentEvent(newEventHistory);
+        updateCharacterGold(0);
+        updateCurrentEvent(newEventHistory);
       }
     }
   };
 
-  giveXGold = () => {
-    const { currentEvent, eventHistory, character, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    const { numberWanted } = this.state;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const giveXGold = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       if (
         numberWanted <
         eventHistory[currentEvent].gold - eventHistory[currentEvent].goldLeft
@@ -314,37 +320,29 @@ class EventModal extends PureComponent {
             `@${realPseudo} has given ${numberWanted} gold.`,
           ];
         }
-        const newEventHistory = [...eventHistory];
+        const newEventHistory = { ...eventHistory };
         newEventHistory[currentEvent] = { ...newEvent };
 
-        this.updateCurrentEvent(newEventHistory);
-        this.updateCharacterGold(
+        updateCurrentEvent(newEventHistory);
+        updateCharacterGold(
           parseInt(character.gold, 10) - parseInt(numberWanted, 10),
         );
       } else {
-        this.giveAllGold();
+        giveAllGold();
       }
     }
   };
 
-  giveEquivalentGold = () => {
-    const {
-      currentEvent,
-      eventHistory,
-      storyCharacters,
-      character,
-      isGameMaster,
-      gameMaster,
-    } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const giveEquivalentGold = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
 
       let charactersLeft = 0;
       storyCharacters.map(storyCharacter => {
         if (
-          storyCharacter.status !== "Dead" &&
-          storyCharacter.status !== "Inactive" &&
+          storyCharacter.status !== 'Dead' &&
+          storyCharacter.status !== 'Inactive' &&
           storyCharacter.userUid !== gameMaster
         ) {
           ++charactersLeft;
@@ -367,19 +365,18 @@ class EventModal extends PureComponent {
             `@${realPseudo} has given his part (${goldGiven}) of gold.`,
           ];
         }
-        const newEventHistory = [...eventHistory];
+        const newEventHistory = { ...eventHistory };
         newEventHistory[currentEvent] = { ...newEvent };
 
-        this.updateCharacterGold(parseInt(character.gold, 10) - goldGiven);
-        this.updateCurrentEvent(newEventHistory);
+        updateCharacterGold(parseInt(character.gold, 10) - goldGiven);
+        updateCurrentEvent(newEventHistory);
       }
     }
   };
 
-  takeAllGold = () => {
-    const { currentEvent, eventHistory, character, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const takeAllGold = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       const goldTaken = newEvent.goldLeft;
       newEvent.goldLeft = 0;
@@ -392,21 +389,19 @@ class EventModal extends PureComponent {
           `@${realPseudo} has taken all the gold left (${goldTaken}).`,
         ];
       }
-      const newEventHistory = [...eventHistory];
+      const newEventHistory = { ...eventHistory };
       newEventHistory[currentEvent] = { ...newEvent };
 
-      this.updateCharacterGold(
+      updateCharacterGold(
         parseInt(character.gold, 10) + parseInt(goldTaken, 10),
       );
-      this.updateCurrentEvent(newEventHistory);
+      updateCurrentEvent(newEventHistory);
     }
   };
 
-  takeXGold = () => {
-    const { currentEvent, eventHistory, character, isGameMaster } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    const { numberWanted } = this.state;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const takeXGold = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       if (numberWanted <= eventHistory[currentEvent].goldLeft) {
         const newEvent = { ...eventHistory[currentEvent] };
         newEvent.goldLeft = newEvent.goldLeft - numberWanted;
@@ -419,35 +414,27 @@ class EventModal extends PureComponent {
             `@${realPseudo} has taken ${numberWanted} gold.`,
           ];
         }
-        const newEventHistory = [...eventHistory];
+        const newEventHistory = { ...eventHistory };
         newEventHistory[currentEvent] = { ...newEvent };
 
-        this.updateCurrentEvent(newEventHistory);
-        this.updateCharacterGold(
+        updateCurrentEvent(newEventHistory);
+        updateCharacterGold(
           parseInt(character.gold, 10) + parseInt(numberWanted, 10),
         );
       }
     }
   };
 
-  takeEquivalentGold = () => {
-    const {
-      currentEvent,
-      eventHistory,
-      storyCharacters,
-      character,
-      isGameMaster,
-      gameMaster,
-    } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const takeEquivalentGold = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
 
       let charactersLeft = 0;
       storyCharacters.map(storyCharacter => {
         if (
-          storyCharacter.status !== "Dead" &&
-          storyCharacter.status !== "Inactive" &&
+          storyCharacter.status !== 'Dead' &&
+          storyCharacter.status !== 'Inactive' &&
           storyCharacter.userUid !== gameMaster
         ) {
           ++charactersLeft;
@@ -470,57 +457,42 @@ class EventModal extends PureComponent {
             `@${realPseudo} has taken his part (${goldTaken}) of gold.`,
           ];
         }
-        const newEventHistory = [...eventHistory];
+        const newEventHistory = { ...eventHistory };
         newEventHistory[currentEvent] = { ...newEvent };
 
-        this.updateCharacterGold(parseInt(character.gold, 10) + goldTaken);
-        this.updateCurrentEvent(newEventHistory);
+        updateCharacterGold(parseInt(character.gold, 10) + goldTaken);
+        updateCurrentEvent(newEventHistory);
       }
     }
   };
 
-  takeNothing = () => {
-    const {
-      currentEvent,
-      eventHistory,
-      character,
-      isGameMaster,
-      dispatchSetCurrentEvent,
-    } = this.props;
-    const realPseudo = isGameMaster ? "GM" : character.name;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const takeNothing = () => {
+    const realPseudo = isGameMaster ? 'GM' : character.name;
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       if (newEvent.actionHistory && newEvent.actionHistory.length > 0) {
         newEvent.actionHistory.push(`@${realPseudo} choosed to take nothing.`);
       } else {
         newEvent.actionHistory = [`@${realPseudo} choosed to take nothing.`];
       }
-      const newEventHistory = [...eventHistory];
+      const newEventHistory = { ...eventHistory };
       newEventHistory[currentEvent] = { ...newEvent };
 
-      this.updateCurrentEvent(newEventHistory);
-      dispatchSetCurrentEvent(-1);
+      updateCurrentEvent(newEventHistory);
+      setCurrentEvent(-1);
     }
   };
 
-  closeEvent = () => {
-    const {
-      currentEvent,
-      eventHistory,
-      dispatchSetCurrentEvent,
-      isGameMaster,
-      uid,
-      storyCharacters,
-    } = this.props;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const closeEvent = () => {
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       if (isGameMaster) {
         const newEvent = { ...eventHistory[currentEvent] };
         newEvent.isActive = false;
-        const newEventHistory = [...eventHistory];
+        const newEventHistory = { ...eventHistory };
         newEventHistory[currentEvent] = { ...newEvent };
 
-        this.updateCurrentEvent(newEventHistory);
-        this.resetCurrentEvent();
+        updateCurrentEvent(newEventHistory);
+        resetCurrentEvent();
       } else {
         const newEvent = { ...eventHistory[currentEvent] };
         newEvent.hasViewed.push(uid);
@@ -531,49 +503,33 @@ class EventModal extends PureComponent {
         } else if (newEvent.hasViewed.length === storyCharacters.length) {
           newEvent.isActive = false;
         }
-        const newEventHistory = [...eventHistory];
+        const newEventHistory = { ...eventHistory };
         newEventHistory[currentEvent] = { ...newEvent };
 
-        this.updateCurrentEvent(newEventHistory);
+        updateCurrentEvent(newEventHistory);
 
         if (!newEvent.isActive) {
-          this.resetCurrentEvent();
+          resetCurrentEvent();
         } else {
-          dispatchSetCurrentEvent(-1);
+          setCurrentEvent(-1);
         }
       }
     }
   };
 
-  onChange = (name, value) => {
-    const obj = {};
-    obj[name] = value;
-    this.setState(state => ({
-      ...state,
-      ...obj,
-    }));
-  };
-
-  addViewerToEvent = eventUserUid => {
-    const { currentEvent, eventHistory } = this.props;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const addViewerToEvent = eventUserUid => {
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
       newEvent.viewers.push(eventUserUid);
-      const newEventHistory = [...eventHistory];
+      const newEventHistory = { ...eventHistory };
       newEventHistory[currentEvent] = { ...newEvent };
 
-      this.updateCurrentEvent(newEventHistory);
+      updateCurrentEvent(newEventHistory);
     }
   };
 
-  removeViewerFromEvent = eventUserUid => {
-    const {
-      currentEvent,
-      eventHistory,
-      storyCharacters,
-      gameMaster,
-    } = this.props;
-    if (currentEvent > -1 && eventHistory[currentEvent].isActive) {
+  const removeViewerFromEvent = eventUserUid => {
+    if (currentEvent !== '' && eventHistory[currentEvent].isActive) {
       const newEvent = { ...eventHistory[currentEvent] };
 
       if (newEvent.viewers && newEvent.viewers.length > 0) {
@@ -593,127 +549,94 @@ class EventModal extends PureComponent {
         });
         newEvent.viewers = [...userIds];
       }
-      const newEventHistory = [...eventHistory];
+      const newEventHistory = { ...eventHistory };
       newEventHistory[currentEvent] = { ...newEvent };
 
-      this.updateCurrentEvent(newEventHistory);
+      updateCurrentEvent(newEventHistory);
     }
   };
 
-  render() {
-    const {
-      isGameMaster,
-      currentEvent,
-      eventHistory,
-      storyCharacters,
-      uid,
-    } = this.props;
-
-    const { numberWanted } = this.state;
-
-    return (
-      <div style={styledEventModal}>
-        <div style={styledEventTitle}>EVENEMENT !</div>
-        {eventHistory[currentEvent].type !== "draw" && (
-          <EventModalViewers
-            removeViewerFromEvent={this.removeViewerFromEvent}
-            addViewerToEvent={this.addViewerToEvent}
-          />
-        )}
-        {eventHistory[currentEvent].type !== "draw" && (
-          <EventModalDescription />
-        )}
-        {eventHistory[currentEvent].type !== "draw" && (
-          <EventModalActionHistory />
-        )}
-        {eventHistory[currentEvent].type === "gold" && (
-          <EventModalGold
-            event={eventHistory[currentEvent]}
-            numberWanted={numberWanted}
-            closeEvent={this.closeEvent}
-            takeNothing={this.takeNothing}
-            takeXGold={this.takeXGold}
-            takeAllGold={this.takeAllGold}
-            onChange={this.onChange}
-            takeEquivalentGold={this.takeEquivalentGold}
-          />
-        )}
-        {eventHistory[currentEvent].type === "debt" && (
-          <EventModalDebt
-            event={eventHistory[currentEvent]}
-            numberWanted={numberWanted}
-            closeEvent={this.closeEvent}
-            onChange={this.onChange}
-            giveXGold={this.giveXGold}
-            giveAllGold={this.giveAllGold}
-            giveEquivalentGold={this.giveEquivalentGold}
-          />
-        )}
-        {eventHistory[currentEvent].type === "item" && (
-          <EventModalItem
-            numberWanted={numberWanted}
-            closeEvent={this.closeEvent}
-            takeNothing={this.takeNothing}
-            lastItem={this.lastItem}
-            onlyOneItem={this.onlyOneItem}
-            takeXItem={this.takeXItem}
-            takeAllItems={this.takeAllItems}
-            onChange={this.onChange}
-          />
-        )}
-        {eventHistory[currentEvent].type === "draw" && (
-          <Fragment>
-            <Draw
-              key={"gm-drawer"}
-              name={"GameMaster"}
-              disabled={!isGameMaster}
-            />
-            {storyCharacters.map(sc => {
-              return (
-                <Draw
-                  key={"drawer-" + sc.userUid}
-                  drawUid={sc.userUid}
-                  disabled={uid !== sc.userUid}
-                  name={sc.name}
-                />
-              );
-            })}
-            {isGameMaster && (
-              <ButtonLarge style={styledEventAction} onClick={this.closeEvent}>
-                Delete Event
-              </ButtonLarge>
-            )}
-          </Fragment>
-        )}
-      </div>
-    );
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchSetCurrentEvent: payload => {
-      dispatch(setCurrentEvent(payload));
-    },
-      dispatchCallPrintError: payload => {
-      dispatch({ type: CALL_PRINT_ERROR, payload });
-    },
+  const setCurrentEvent = payload => {
+    dispatch({
+      type: SET_CURRENT_EVENT,
+      payload,
+    });
   };
+
+  return (
+    <div style={styledEventModal}>
+      <div style={styledEventTitle}>EVENEMENT !</div>
+      {eventHistory[currentEvent].type !== 'draw' && (
+        <EventModalViewers
+          removeViewerFromEvent={removeViewerFromEvent}
+          addViewerToEvent={addViewerToEvent}
+        />
+      )}
+      {eventHistory[currentEvent].type !== 'draw' && <EventModalDescription />}
+      {eventHistory[currentEvent].type !== 'draw' && (
+        <EventModalActionHistory />
+      )}
+      {eventHistory[currentEvent].type === 'gold' && (
+        <EventModalGold
+          event={eventHistory[currentEvent]}
+          numberWanted={numberWanted}
+          closeEvent={closeEvent}
+          takeNothing={takeNothing}
+          takeXGold={takeXGold}
+          takeAllGold={takeAllGold}
+          onChange={setNumberWanted}
+          takeEquivalentGold={takeEquivalentGold}
+        />
+      )}
+      {eventHistory[currentEvent].type === 'debt' && (
+        <EventModalDebt
+          event={eventHistory[currentEvent]}
+          numberWanted={numberWanted}
+          closeEvent={closeEvent}
+          onChange={setNumberWanted}
+          giveXGold={giveXGold}
+          giveAllGold={giveAllGold}
+          giveEquivalentGold={giveEquivalentGold}
+        />
+      )}
+      {eventHistory[currentEvent].type === 'item' && (
+        <EventModalItem
+          numberWanted={numberWanted}
+          closeEvent={closeEvent}
+          takeNothing={takeNothing}
+          lastItem={lastItem}
+          onlyOneItem={onlyOneItem}
+          takeXItem={takeXItem}
+          takeAllItems={takeAllItems}
+          onChange={setNumberWanted}
+        />
+      )}
+      {eventHistory[currentEvent].type === 'draw' && (
+        <Fragment>
+          <Draw
+            key={'gm-drawer'}
+            name={'GameMaster'}
+            disabled={!isGameMaster}
+          />
+          {storyCharacters.map(sc => {
+            return (
+              <Draw
+                key={'drawer-' + sc.userUid}
+                drawUid={sc.userUid}
+                disabled={uid !== sc.userUid}
+                name={sc.name}
+              />
+            );
+          })}
+          {isGameMaster && (
+            <ButtonLarge style={styledEventAction} onClick={closeEvent}>
+              Delete Event
+            </ButtonLarge>
+          )}
+        </Fragment>
+      )}
+    </div>
+  );
 };
 
-const mapStateToProps = store => ({
-  currentStory: store.appState.currentStory,
-  isGameMaster: store.appState.isGameMaster,
-  uid: store.userInfos.uid,
-  character: store.character,
-  currentEvent: store.events.currentEvent,
-  eventHistory: store.events.history,
-  storyCharacters: store.team.characters,
-});
-
-EventModal.propTypes = {
-  dispatchSetCurrentEvent: PropTypes.func.isRequired,
-  dispatchCallPrintError: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EventModal);
+export default EventModal;

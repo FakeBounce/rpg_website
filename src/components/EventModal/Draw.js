@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import CanvasDraw from 'react-canvas-draw';
 import useApp from '../../hooks/useApp';
 import { mapWidth, widthLeft } from '../Utils/StyleConstants';
+import { useSelector } from 'react-redux';
 
 const defaultWidth = (widthLeft + mapWidth) / 2 - 10 + 2;
 const otherWidth = ((widthLeft + mapWidth) / 2 - 10) / 2;
@@ -11,6 +12,10 @@ const otherWidth = ((widthLeft + mapWidth) / 2 - 10) / 2;
 const Draw = ({ drawUid, name, disabled }) => {
   const [color, setColor] = useState(drawUid === 'default' ? 'black' : 'red');
   const canvas = useRef(null);
+
+  const { currentStory } = useSelector(store => ({
+    currentStory: store.appState.currentStory,
+  }));
 
   const { triggerError } = useApp();
 
@@ -29,15 +34,15 @@ const Draw = ({ drawUid, name, disabled }) => {
     // @TODO: sagas
     firebase
       .database()
-      .ref('stories/' + 0 + '/draw/' + drawUid)
+      .ref('stories/' + currentStory + '/draw/' + drawUid)
       .on('value', snapshot => {
-        if (canvas) {
+        if (canvas && canvas.current) {
           if (typeof snapshot.val() === 'string') {
-            canvas.loadSaveData(snapshot.val(), false);
+            canvas.current.loadSaveData(snapshot.val(), false);
           } else {
             firebase
               .database()
-              .ref('stories/' + 0 + '/draw/' + drawUid)
+              .ref('stories/' + currentStory + '/draw/' + drawUid)
               .set('{"lines":[],"width":400,"height":400}')
               .catch(error => {
                 // Handle Errors here.
@@ -78,8 +83,8 @@ const Draw = ({ drawUid, name, disabled }) => {
       {!disabled && (
         <button
           onClick={() => {
-            if (canvas) {
-              canvas.clear();
+            if (canvas && canvas.current) {
+              canvas.current.clear();
             }
           }}
         >
@@ -89,8 +94,8 @@ const Draw = ({ drawUid, name, disabled }) => {
       {!disabled && (
         <button
           onClick={() => {
-            if (canvas) {
-              canvas.undo();
+            if (canvas.current) {
+              canvas.current.undo();
             }
           }}
         >
@@ -100,21 +105,21 @@ const Draw = ({ drawUid, name, disabled }) => {
       {!disabled && (
         <button
           onClick={() => {
-            if (canvas) {
+            if (canvas && canvas.current) {
               firebase
                 .database()
-                .ref('stories/' + 0 + '/draw')
+                .ref('stories/' + currentStory + '/draw')
                 .once('value')
                 .then(sn => {
                   // canvas.loadSaveData(sn.val(), false);
 
                   const cv = sn.val();
-                  cv[drawUid] = canvas.getSaveData();
+                  cv[drawUid] = canvas.current.getSaveData();
                   // cv.colors = ['black'];
                   // cv.colorsLeft = ['pink','red','green','purple','orange','yellow','blue', 'grey', 'brown'];
                   firebase
                     .database()
-                    .ref('stories/' + 0 + '/draw')
+                    .ref('stories/' + currentStory + '/draw')
                     .set(cv)
                     .catch(error => {
                       // Handle Errors here.
@@ -131,13 +136,13 @@ const Draw = ({ drawUid, name, disabled }) => {
       {!disabled && (
         <button
           onClick={() => {
-            if (canvas) {
+            if (canvas && canvas.current) {
               firebase
                 .database()
-                .ref('stories/' + 0 + '/draw/default')
+                .ref('stories/' + currentStory + '/draw/default')
                 .once('value')
                 .then(sn => {
-                  canvas.loadSaveData(sn.val(), false);
+                  canvas.current.loadSaveData(sn.val(), false);
                 })
                 .catch(e => triggerError(e));
             }
@@ -149,13 +154,13 @@ const Draw = ({ drawUid, name, disabled }) => {
       {!disabled && (
         <button
           onClick={() => {
-            if (canvas) {
+            if (canvas && canvas.current) {
               firebase
                 .database()
-                .ref('stories/' + 0 + '/draw/' + drawUid)
+                .ref('stories/' + currentStory + '/draw/' + drawUid)
                 .once('value')
                 .then(sn => {
-                  canvas.loadSaveData(sn.val(), false);
+                  canvas.current.loadSaveData(sn.val(), false);
                 })
                 .catch(e => triggerError(e));
             }
