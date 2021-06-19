@@ -873,7 +873,7 @@ export const tempoImagesList = [
   { path: 'common/7.jpg', name: 'Bataille barbare' },
   { path: 'common/8.jpg', name: 'Liche/Mort vivant' },
   { path: 'common/9.jpg', name: 'Ange' },
-  { path: 'common/Airship.png', name: 'Airship' },
+  { path: 'common/Airship.jpg', name: 'Airship' },
   { path: 'common/Bandit.jpg', name: 'Bandit de base' },
   { path: 'common/BanditChaud.jpg', name: 'Bandit supérieur' },
   { path: 'common/BossBandit.jpg', name: 'Boss des bandits' },
