@@ -871,10 +871,10 @@ export const bestiary = [
 export const tempoImagesList = [
   { path: 'common/noTown.jpg', name: 'Camping' },
   { path: 'common/dark_forest.jpg', name: 'Dark Forest' },
-  { path: 'common/angel.jpg', name: 'Angel' },
-  { path: 'common/demon.jpg', name: 'Demon' },
   { path: 'common/desert.jpg', name: 'Deset tempest' },
   { path: 'common/cavern.jpg', name: 'Cavern' },
+  /*{ path: 'common/angel.jpg', name: 'Angel' },
+  { path: 'common/demon.jpg', name: 'Demon' },
   { path: 'common/2.jpg', name: 'Artorias' },
   { path: 'common/3.jpg', name: 'Armée des morts' },
   { path: 'common/4.jpg', name: 'Femme samourai' },
@@ -883,6 +883,7 @@ export const tempoImagesList = [
   { path: 'common/7.jpg', name: 'Bataille barbare' },
   { path: 'common/8.jpg', name: 'Liche/Mort vivant' },
   { path: 'common/9.jpg', name: 'Ange' },
+  { path: 'common/10.jpg', name: 'Guerrier sans bras avec cape' },*/
   { path: 'common/Airship.jpg', name: 'Airship' },
   { path: 'common/Bandit.jpg', name: 'Bandit de base' },
   { path: 'common/BanditChaud.jpg', name: 'Bandit supérieur' },
