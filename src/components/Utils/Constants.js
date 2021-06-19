@@ -883,7 +883,17 @@ export const tempoImagesList = [
   { path: 'common/7.jpg', name: 'Bataille barbare' },
   { path: 'common/8.jpg', name: 'Liche/Mort vivant' },
   { path: 'common/9.jpg', name: 'Ange' },
-  { path: 'common/10.png', name: 'Guerrier sans bras avec cape' },
+  { path: 'common/Airship.png', name: 'Airship' },
+  { path: 'common/Bandit.jpg', name: 'Bandit de base' },
+  { path: 'common/BanditChaud.jpg', name: 'Bandit supérieur' },
+  { path: 'common/BossBandit.jpg', name: 'Boss des bandits' },
+  { path: 'common/Capitale.jpg', name: 'Capitale' },
+  { path: 'common/ElfeBlanc.jpg', name: 'Elfe blanc invocateur' },
+  { path: 'common/Fort1.jpg', name: 'Premier Fort' },
+  { path: 'common/Fort2.jpg', name: 'Deuxième Fort' },
+  { path: 'common/IleChats.jpg', name: 'L île aux chats' },
+  { path: 'common/NidColombe.jpg', name: 'Le Nid des Colombes' },
+  { path: 'common/VilleMobile.jpg', name: 'Ville Mobile' },
 ];
 
 export const bonusList = [-30, -20, -10, 0, 10, 20, 30];
