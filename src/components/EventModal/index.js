@@ -24,10 +24,11 @@ import useApp from '../../hooks/useApp';
 const styledEventModal = {
   position: 'absolute',
   zIndex: 99,
-  top: `${heightHeader / 2}px`,
+  // top: `${heightHeader / 2}px`,
+  bottom : '60px',
   left: `${widthRightPanel / 2}px`,
   width: `${widthLeft + mapWidth}px`,
-  height: `${heightHeader / 2 + heightCameras / 2 + heightLeft - 50}px`,
+  height: `${heightHeader / 2 + heightCameras / 2 + heightLeft - 50 - 100}px`,
   border: '2px solid brown',
   borderRadius: 40,
   backgroundColor: colors.background,

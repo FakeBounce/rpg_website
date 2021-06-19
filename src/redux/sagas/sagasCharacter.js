@@ -208,6 +208,7 @@ function* updateCharacter({ payload }) {
   try {
     const currentStory = yield select(currentStorySelector);
 
+    console.log('currentStory', currentStory);
     firebaseDbSet(`stories/${currentStory}/characters/${payload.userUid}`, {
       character: payload.character,
       characterId: payload.id,

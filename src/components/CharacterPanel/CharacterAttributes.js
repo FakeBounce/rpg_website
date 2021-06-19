@@ -88,22 +88,24 @@ const CharacterAttributes = () => {
 
   if (!character || !character.attributes) return null;
 
-  const mentalBonus =
-    parseInt(character.mentalState, 10) ===
-      Math.ceil(parseInt(character.maxMentalState, 10) / 2) ||
-    parseInt(character.mentalState, 10) ===
-      Math.floor(parseInt(character.maxMentalState, 10) / 2)
-      ? 0
-      : parseInt(character.mentalState, 10) <
-        parseInt(character.maxMentalState, 10) / 4 - 1
-      ? -15
-      : parseInt(character.mentalState, 10) <
-        parseInt(character.maxMentalState, 10) / 2
-      ? -5
-      : parseInt(character.mentalState, 10) >=
-        parseInt(character.maxMentalState, 10) - 1
-      ? 15
-      : 5;
+  // const mentalBonus =
+  //   parseInt(character.mentalState, 10) ===
+  //     Math.ceil(parseInt(character.maxMentalState, 10) / 2) ||
+  //   parseInt(character.mentalState, 10) ===
+  //     Math.floor(parseInt(character.maxMentalState, 10) / 2)
+  //     ? 0
+  //     : parseInt(character.mentalState, 10) <
+  //       parseInt(character.maxMentalState, 10) / 4 - 1
+  //     ? -15
+  //     : parseInt(character.mentalState, 10) <
+  //       parseInt(character.maxMentalState, 10) / 2
+  //     ? -5
+  //     : parseInt(character.mentalState, 10) >=
+  //       parseInt(character.maxMentalState, 10) - 1
+  //     ? 15
+  //     : 5;
+
+      const mentalBonus = 0; // Fix craft
 
   return (
     <div style={styles.characterAttributeInfos}>

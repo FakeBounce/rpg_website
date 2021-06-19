@@ -600,7 +600,7 @@ export const attributes = [
   'dexterity', // Souplesse et technique. Esquive, saut, lancer d'objets/tirs
   'magic', // Utilisation de sorts ou d'objets magiques connus
   'constitution', // Résistance physique. Résistance aux altérations, points de vies
-  'willpower', // Résistance mentale. Résistance aux contrôles, sondes ou autre interaction avec l'esprit. Permet de bouger même si le corps ne le permet pas
+  'craft',// 'willpower', // Résistance mentale. Résistance aux contrôles, sondes ou autre interaction avec l'esprit. Permet de bouger même si le corps ne le permet pas
   'perception', // Vue, ouïe, toucher, instinct, anticipation.
   'charisma', // Prestance, persuasion. Se fait plus ou moins remarquer
   'education', // Utilisation d'objets magiques, connaissance du monde
@@ -924,6 +924,12 @@ export const attributesDices = {
     image: './common/dice_willpower.png',
     alt: 'Willpower dice',
     tip: 'Willpower',
+  },
+  craft: {
+    attribute: 'craft',
+    image: './common/dice_willpower.png',
+    alt: 'Craft dice',
+    tip: 'Craft',
   },
   charisma: {
     attribute: 'charisma',
@@ -1347,5 +1353,6 @@ export const defaultCharacterGM = {
     perception: 90,
     strength: 90,
     willpower: 90,
+    craft: 90,
   },
 };

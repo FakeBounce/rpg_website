@@ -178,13 +178,13 @@ const CharacterHeader = () => {
           health={health}
           maxHealth={maxHealth}
         />
-        <MentalBar
+        {/* <MentalBar
           isGM={isGameMaster}
           width={`${Math.floor((mentalState / maxMentalState) * 100)}%`}
           maxWidth={`${maxMentalState * 14}px`}
           mentalState={mentalState}
           maxMentalState={maxMentalState}
-        />
+        /> */}
       </div>
       <CharacterHeaderInfos />
     </div>
