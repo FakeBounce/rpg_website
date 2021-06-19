@@ -200,6 +200,7 @@ const IsNotAuth = () => {
           />
         </div>
         <Logs />
+        <div>V 1.0.0</div>
       </div>
     </div>
   );
