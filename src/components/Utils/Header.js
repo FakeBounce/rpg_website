@@ -216,6 +216,15 @@ const Header = props => {
             data-tip={'Reset merchant'}
           />
         )}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 150,
+          }}
+        >
+          V 1.0.0
+        </div>
         <ReactTooltip />
       </div>
     </div>
