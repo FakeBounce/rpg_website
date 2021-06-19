@@ -71,6 +71,7 @@ const useCharacter = () => {
   };
 
   const updateCharacter = character => {
+    console.log('character',character)
     dispatch({ type: SET_IS_UPDATING, payload: true });
     const charTab = characters;
     charTab[character.id] = character;
@@ -105,6 +106,7 @@ const useCharacter = () => {
           perception,
           constitution,
           willpower = 50,
+          craft = 50,
         },
       } = characters[id];
 
@@ -118,7 +120,8 @@ const useCharacter = () => {
         education -
         magic -
         perception -
-        willpower
+        willpower -
+        craft
       );
     }
     return 0;

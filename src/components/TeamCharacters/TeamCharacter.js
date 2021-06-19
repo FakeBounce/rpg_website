@@ -37,22 +37,6 @@ const styledCharacterTeamExchangeImage = {
   height: 25,
 };
 
-const styledCharacterTeamHeaderImageContainer = {
-  position: 'relative',
-  width: `${imageSize / 2}px`,
-  height: `${imageSize / 2}px`,
-  float: 'left',
-  display: 'inline-block',
-};
-
-const styledCharacterTeamHeaderInactiveImage = {
-  position: 'absolute',
-  width: `${imageSize}px`,
-  height: `${imageSize}px`,
-  backgroundColor: 'grey',
-  opacity: 0.3,
-};
-
 const TeamCharacter = ({
   icon,
   name,
@@ -230,13 +214,13 @@ const TeamCharacter = ({
           width={`${Math.floor((health / maxHealth) * 100)}%`}
           maxWidth={`${140}px`}
         />
-        <MentalBar
+        {/* <MentalBar
           isGM={isGM}
           width={`${Math.floor((mentalState / maxMentalState) * 100)}%`}
           maxWidth={`${maxMentalState * 14}px`}
           mentalState={mentalState}
           maxMentalState={maxMentalState}
-        />
+        /> */}
       </div>
     </div>
   );

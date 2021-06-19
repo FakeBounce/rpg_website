@@ -30,6 +30,7 @@ function CharacterProvider(props) {
     perception: 50,
     strength: 50,
     willpower: 50,
+    craft: 50,
   });
 
   const { uid, isUpdating, characterId, character } = useSelector(store => ({
@@ -216,16 +217,18 @@ function CharacterProvider(props) {
         attributes.constitution !== character.constitution
           ? parseInt(character.health, 10) +
             (parseInt(attributes.constitution, 10) -
-              parseInt(character.constitution, 10))
+              parseInt(character.attributes.constitution, 10))
           : character.health;
 
       const mentalState = character.willpower
         ? attributes.willpower !== character.willpower
           ? parseInt(character.mentalState, 10) +
             (Math.ceil(parseInt(attributes.willpower, 10) / 8.5) -
-              Math.ceil(parseInt(character.willpower, 10) / 8.5))
+              Math.ceil(parseInt(character.attributes.willpower, 10) / 8.5))
           : character.mentalState
         : attributes.willpower;
+
+      console.log('character', character);
 
       updateCharacter({
         attributes,
@@ -241,7 +244,8 @@ function CharacterProvider(props) {
         mentalState,
         maxHealth: parseInt(attributes.constitution, 10) + 10,
         maxMentalState: Math.ceil(parseInt(attributes.willpower, 10) / 8.5) + 1,
-        id: characterId,
+        id: character.id,
+        userUid: character.userUid
       });
     } else {
       createCharacter(
